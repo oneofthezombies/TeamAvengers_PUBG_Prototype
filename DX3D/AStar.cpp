@@ -9,6 +9,7 @@ AStar::AStar()
     //int a;
     //int b;
 }
+//delete
 
 
 AStar::~AStar()
