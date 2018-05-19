@@ -7,6 +7,7 @@ AStar::AStar()
 {
     int c;
 }
+//delete
 
 
 AStar::~AStar()
