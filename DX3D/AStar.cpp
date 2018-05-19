@@ -6,6 +6,7 @@
 AStar::AStar()
 {
     //merge testing
+    int b;
 }
 
 
