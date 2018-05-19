@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{D9781ED6-A279-4E67-8978-13E5C99922B1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DX3D</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ActionCube.h" />
+    <ClInclude Include="ActionMoveTo.h" />
+    <ClInclude Include="ActionRepeat.h" />
+    <ClInclude Include="ActionSequence.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Asciitok.h" />
+    <ClInclude Include="AseCharacter.h" />
+    <ClInclude Include="AseLoader.h" />
+    <ClInclude Include="AseObject.h" />
+    <ClInclude Include="AStar.h" />
+    <ClInclude Include="AStarNode.h" />
+    <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColorCube.h" />
+    <ClInclude Include="Cubeman.h" />
+    <ClInclude Include="CubemanParts.h" />
+    <ClInclude Include="D3DUtility.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="DeviceManager.h" />
+    <ClInclude Include="DrawingGroup.h" />
+    <ClInclude Include="DX3D.h" />
+    <ClInclude Include="FontManager.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="GlobalDefinition.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Heap.h" />
+    <ClInclude Include="HeightMap.h" />
+    <ClInclude Include="Hexagon.h" />
+    <ClInclude Include="IAction.h" />
+    <ClInclude Include="IActionObject.h" />
+    <ClInclude Include="IDisplayObject.h" />
+    <ClInclude Include="IMap.h" />
+    <ClInclude Include="IScene.h" />
+    <ClInclude Include="IUIObject.h" />
+    <ClInclude Include="IUnitObject.h" />
+    <ClInclude Include="KeyboardManager.h" />
+    <ClInclude Include="MapManager.h" />
+    <ClInclude Include="ObjLoader.h" />
+    <ClInclude Include="ObjManager.h" />
+    <ClInclude Include="ObjMap.h" />
+    <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="Picking.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SampleUI.h" />
+    <ClInclude Include="SceneGrid.h" />
+    <ClInclude Include="SceneHeightmap.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneObjMap.h" />
+    <ClInclude Include="SceneTest.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TimeManager.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIImage.h" />
+    <ClInclude Include="UIText.h" />
+    <ClInclude Include="Walls.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ActionCube.cpp" />
+    <ClCompile Include="ActionMoveTo.cpp" />
+    <ClCompile Include="ActionRepeat.cpp" />
+    <ClCompile Include="ActionSequence.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AseCharacter.cpp" />
+    <ClCompile Include="AseLoader.cpp" />
+    <ClCompile Include="AseObject.cpp" />
+    <ClCompile Include="AStar.cpp" />
+    <ClCompile Include="AStarNode.cpp" />
+    <ClCompile Include="BaseObject.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColorCube.cpp" />
+    <ClCompile Include="Cubeman.cpp" />
+    <ClCompile Include="CubemanParts.cpp" />
+    <ClCompile Include="D3DUtility.cpp" />
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DeviceManager.cpp" />
+    <ClCompile Include="DrawingGroup.cpp" />
+    <ClCompile Include="DX3D.cpp" />
+    <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="GlobalDefinition.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Heap.cpp" />
+    <ClCompile Include="HeightMap.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
+    <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="IActionObject.cpp" />
+    <ClCompile Include="IDisplayObject.cpp" />
+    <ClCompile Include="IUIObject.cpp" />
+    <ClCompile Include="IUnitObject.cpp" />
+    <ClCompile Include="KeyboardManager.cpp" />
+    <ClCompile Include="MapManager.cpp" />
+    <ClCompile Include="ObjLoader.cpp" />
+    <ClCompile Include="ObjManager.cpp" />
+    <ClCompile Include="ObjMap.cpp" />
+    <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="SampleUI.cpp" />
+    <ClCompile Include="SceneGrid.cpp" />
+    <ClCompile Include="SceneHeightmap.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneObjMap.cpp" />
+    <ClCompile Include="SceneTest.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="UIText.cpp" />
+    <ClCompile Include="Walls.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DX3D.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DX3D.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
