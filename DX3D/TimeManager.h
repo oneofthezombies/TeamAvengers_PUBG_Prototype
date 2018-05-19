@@ -6,15 +6,15 @@ class TimeManager
 {
 	SINGLETON(TimeManager)
 private:
-	DWORD	prevTime;
-	DWORD	deltaTime;
+    system_clock::time_point prevTime;
+    float deltaTime;
 	float	sumTime;
 	int		frameCnt;
 	int		fps;
 
 public:
 	void	Update();
-	float	GetDeltaTime() { return deltaTime / 1000.0f; }
+    float	GetDeltaTime() { return deltaTime; }
 	int		GetFPS() { return fps; }
 };
 
