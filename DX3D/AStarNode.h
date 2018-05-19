@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseObject.h"
 
+//test
+
 // 현재 노드의 이웃노드 정보
 struct EDGE_INFO
 {
