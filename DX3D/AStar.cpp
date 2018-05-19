@@ -9,6 +9,7 @@ AStar::AStar()
 }
 //delete2
 
+
 AStar::~AStar()
 {
 	SAFE_DELETE(m_pOpenNodeHeap);
