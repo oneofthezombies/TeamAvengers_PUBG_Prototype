@@ -5,9 +5,7 @@
 #include "Heap.h"
 AStar::AStar()
 {
-    //merge testing
-    //int a;
-    //int b;
+    int c;
 }
 
 
