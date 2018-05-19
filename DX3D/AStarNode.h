@@ -1,10 +1,12 @@
 #pragma once
 #include "BaseObject.h"
 
+//test
+
 // 현재 노드의 이웃노드 정보
 struct EDGE_INFO
 {
-	int index;
+    int index;
 
 	// 내 노드로부터 이웃노드까지의 비용(거리)
 	float edgeCost;
