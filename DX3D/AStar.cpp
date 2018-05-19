@@ -6,6 +6,7 @@
 AStar::AStar()
 {
     //merge testing
+    int a;
     int b;
 }
 
@@ -65,7 +66,7 @@ void AStar::Render()
 void AStar::InitNode(IMap* pMap)
 {
 	int nodeDim = 30;
-	float interval = pMap->GetSize().x / (float)(nodeDim - 0.99f);//1ÁÖ¸é ÅÍÁ®¼­.. map size ³¡±îÁö ÇÏ±â À§ÇØ
+	float interval = pMap->GetSize().x / (float)(nodeDim - 0.99f);//1ì£¼ë©´ í„°ì ¸ì„œ.. map size ëê¹Œì§€ í•˜ê¸° ìœ„í•´
 
 	for (int posZ = 0; posZ < nodeDim; posZ++)
 	{
@@ -86,13 +87,13 @@ void AStar::InitNode(IMap* pMap)
 
 	for (size_t i = 0; i < m_vecNode.size(); i++)
 	{
-		//Á¦ÀÏ ¿ìÃø ¿­À» Á¦¿ÜÇÏ°í ÀÚ½ÅÀÇ ¿ìÃø ³ëµå¿Í ¼­·Î Edge µî·Ï
+		//ì œì¼ ìš°ì¸¡ ì—´ì„ ì œì™¸í•˜ê³  ìì‹ ì˜ ìš°ì¸¡ ë…¸ë“œì™€ ì„œë¡œ Edge ë“±ë¡
 		if (i % nodeDim/*pos x*/ != nodeDim - 1)
 		{
 			m_vecNode[i]->AddEdge(m_vecNode[i + 1]);
 			m_vecNode[i + 1]->AddEdge(m_vecNode[i]);
 		}
-		//Á¦ÀÏ À­ È¾À» Á¦¿ÜÇÏ°í ÀÚ½ÅÀÇ À­ ³ëµå¿Í ¼­·Î Edge µî·Ï
+		//ì œì¼ ìœ— íš¡ì„ ì œì™¸í•˜ê³  ìì‹ ì˜ ìœ— ë…¸ë“œì™€ ì„œë¡œ Edge ë“±ë¡
 		if (i < m_vecNode.size() - nodeDim)
 		{
 			m_vecNode[i]->AddEdge(m_vecNode[i + nodeDim]);
@@ -101,8 +102,8 @@ void AStar::InitNode(IMap* pMap)
 	}
 
 	/*
-	i = x + dim * z 2Â÷¿ø¿¡¼­ 1Â÷¿øÀ¸·Î
-	i % dim = x 1Â÷¿ø¿¡¼­ 2Â÷¿øÀ¸·Î
+	i = x + dim * z 2ì°¨ì›ì—ì„œ 1ì°¨ì›ìœ¼ë¡œ
+	i % dim = x 1ì°¨ì›ì—ì„œ 2ì°¨ì›ìœ¼ë¡œ
 	*/
 }
 
@@ -110,22 +111,22 @@ void AStar::FindPath(D3DXVECTOR3 startPos, D3DXVECTOR3 destPos, OUT vector<int>&
 {
 	RestNodes();
 	
-	int startNodeIdx = FindClosestNode(startPos);	//½ÃÀÛ³ëµå Ã£±â
-	int destNodeIdx = FindClosestNode(destPos);		//¸¶Áö¸· ³ëµå Ã£±â
+	int startNodeIdx = FindClosestNode(startPos);	//ì‹œì‘ë…¸ë“œ ì°¾ê¸°
+	int destNodeIdx = FindClosestNode(destPos);		//ë§ˆì§€ë§‰ ë…¸ë“œ ì°¾ê¸°
 
 	if (startNodeIdx == -1 || destNodeIdx == -1)
-		return; //¾øÀ¸¸é Á¾·á
+		return; //ì—†ìœ¼ë©´ ì¢…ë£Œ
 
-	//Ãâ¹ßÁö ³ëµå¸¦ ÃÊ±âÈ­ ÇØÁÖ°í ¿­¸² »óÅÂ·Î ¸¸µç´Ù
+	//ì¶œë°œì§€ ë…¸ë“œë¥¼ ì´ˆê¸°í™” í•´ì£¼ê³  ì—´ë¦¼ ìƒíƒœë¡œ ë§Œë“ ë‹¤
 	float g = 0.0f;
 	float h = GetManHattanDistance(startNodeIdx, destNodeIdx);
 	float f = g + h;
 
 	m_vecNode[startNodeIdx]->SetValue(STATE_OPEN, g, h, f, startNodeIdx);
-	//m_pOpenNodeList.push_back(m_vecNode[startNodeIdx]);//ÇöÀç open list¿¡ ÇÏ³ª°¡ ÀÖ´Ù. ÀÌÁ¦ ¸ñÀûÁö±îÁö ³Ö¾î¼­ »ç¿ë
+	//m_pOpenNodeList.push_back(m_vecNode[startNodeIdx]);//í˜„ì¬ open listì— í•˜ë‚˜ê°€ ìˆë‹¤. ì´ì œ ëª©ì ì§€ê¹Œì§€ ë„£ì–´ì„œ ì‚¬ìš©
 	m_pOpenNodeHeap->Insert(m_vecNode[startNodeIdx]);
-	//¸ñÀûÁö ³ëµå°¡ ´İÈû »çì°¡ µÉ ¶§±îÁö Ãâ¹ßÁö ³ëµåºÎÅÍ È®ÀåÇØ ³ª°£´Ù
-	//È®ÀåÀ» ¿Ï·áÇÑ ³ëµå´Â ´İÈû »óÅÂ·Î ¸¸µç´Ù
+	//ëª©ì ì§€ ë…¸ë“œê°€ ë‹«í˜ ì‚¬Âï§¡ ë  ë•Œê¹Œì§€ ì¶œë°œì§€ ë…¸ë“œë¶€í„° í™•ì¥í•´ ë‚˜ê°„ë‹¤
+	//í™•ì¥ì„ ì™„ë£Œí•œ ë…¸ë“œëŠ” ë‹«í˜ ìƒíƒœë¡œ ë§Œë“ ë‹¤
 	while (m_vecNode[destNodeIdx]->m_nodeState != STATE_CLOSE)
 	{
 		int currIndex = GetMinFNodeIndex();
@@ -134,23 +135,23 @@ void AStar::FindPath(D3DXVECTOR3 startPos, D3DXVECTOR3 destPos, OUT vector<int>&
 		Extend(currIndex, destNodeIdx);
 		m_vecNode[currIndex]->m_nodeState = STATE_CLOSE;
 	}
-	//ÀÌÁ¦ ±æÀ» ´Ù Ã£Àº »óÅÂ
+	//ì´ì œ ê¸¸ì„ ë‹¤ ì°¾ì€ ìƒíƒœ
 
-	//¸ñÀûÁö ³ëµåºÎÅÍ Ãâ¹ßÁö ³ëµå ÀÌÀü ±îÁö °æÀ¯ ³ëµåµéÀÇ ÀÎµ¦½º¸¦ path ¸ñ·Ï¿¡ Ãß°¡
-	//¸ñ·Ï¿¡ Ãß°¡ÇÑ ³ëµåµéÀº »ç¿ë »óÅÂ·Î ¸¸µç´Ù
+	//ëª©ì ì§€ ë…¸ë“œë¶€í„° ì¶œë°œì§€ ë…¸ë“œ ì´ì „ ê¹Œì§€ ê²½ìœ  ë…¸ë“œë“¤ì˜ ì¸ë±ìŠ¤ë¥¼ path ëª©ë¡ì— ì¶”ê°€
+	//ëª©ë¡ì— ì¶”ê°€í•œ ë…¸ë“œë“¤ì€ ì‚¬ìš© ìƒíƒœë¡œ ë§Œë“ ë‹¤
 	int currIndex = destNodeIdx;
 	while (currIndex != startNodeIdx)
 	{
 		m_vecNode[currIndex]->m_nodeState = STATE_USING;
 		vecIndex.push_back(currIndex);
-		currIndex = m_vecNode[currIndex]->m_via;//via´Â ÀÚ±â ÀÌÀü ³ëµå¿¡ ´ëÇÑ index
+		currIndex = m_vecNode[currIndex]->m_via;//viaëŠ” ìê¸° ì´ì „ ë…¸ë“œì— ëŒ€í•œ index
 	}
-	//Ãâ¹ßÁö ³ëµåÀÇ ÀÎµ¦½ºµµ Path ¸ñ·Ï¿¡ Ãß°¡ÇÏ°í »ç¿ë »óÅÂ·Î ¸¸µç´Ù
+	//ì¶œë°œì§€ ë…¸ë“œì˜ ì¸ë±ìŠ¤ë„ Path ëª©ë¡ì— ì¶”ê°€í•˜ê³  ì‚¬ìš© ìƒíƒœë¡œ ë§Œë“ ë‹¤
 	m_vecNode[currIndex]->m_nodeState = STATE_USING;
 	vecIndex.push_back(currIndex);
 	
-	//ÀÌ ¸®½ºÆ®´Â 
-	//¸ñÀûÁö -> °æÀ¯Áö .... -> Ãâ¹ßÁö ÀÎµ¦½º ¸ñ·Ï ¿Ï¼º
+	//ì´ ë¦¬ìŠ¤íŠ¸ëŠ” 
+	//ëª©ì ì§€ -> ê²½ìœ ì§€ .... -> ì¶œë°œì§€ ì¸ë±ìŠ¤ ëª©ë¡ ì™„ì„±
 
 	//m_pOpenNodeList.clear();
 	m_pOpenNodeHeap->Clear();
@@ -172,7 +173,7 @@ int AStar::FindClosestNode(const D3DXVECTOR3& pos)
 
 	for (int i = 0; i < m_vecNode.size(); i++)
 	{
-		if (m_vecNode[i]->m_nodeState == STATE_WALL)//Àå¾Ö¹° ³ëµå´Â ¹«½ÃÇÏ°í
+		if (m_vecNode[i]->m_nodeState == STATE_WALL)//ì¥ì• ë¬¼ ë…¸ë“œëŠ” ë¬´ì‹œí•˜ê³ 
 			continue;
 
 		D3DXVECTOR3 subtract = pos - m_vecNode[i]->GetLocation();
@@ -184,7 +185,7 @@ int AStar::FindClosestNode(const D3DXVECTOR3& pos)
 			closestNodeIndex = i;
 		}
 	}
-	return closestNodeIndex;	//°É¸°¾Ö°¡ ¾øÀ¸¸é -1 returnµÈ´Ù.
+	return closestNodeIndex;	//ê±¸ë¦°ì• ê°€ ì—†ìœ¼ë©´ -1 returnëœë‹¤.
 }
 
 float AStar::GetManHattanDistance(int from, int to)
@@ -225,8 +226,8 @@ void AStar::Extend(int targetIdx, int destIdx)
 		int index = vecEdge[i]->index;
 		AStarNode* currNode = m_vecNode[index];
 
-		if (currNode->m_nodeState == STATE_CLOSE) continue;//´İÈù ³ëµåÀÌ°Å³ª
-		if (currNode->m_nodeState == STATE_WALL) continue;//Àå¾Ö¹°ÀÏ ½Ã¿¡ Ãß°¡ÇØ ÁÖÁö ¾Ê´Â °Í
+		if (currNode->m_nodeState == STATE_CLOSE) continue;//ë‹«íŒ ë…¸ë“œì´ê±°ë‚˜
+		if (currNode->m_nodeState == STATE_WALL) continue;//ì¥ì• ë¬¼ì¼ ì‹œì— ì¶”ê°€í•´ ì£¼ì§€ ì•ŠëŠ” ê²ƒ
 
 		float G = m_vecNode[targetIdx]->m_g + vecEdge[i]->edgeCost;
 		float H = GetManHattanDistance(index, destIdx);
@@ -242,22 +243,22 @@ void AStar::Extend(int targetIdx, int destIdx)
 
 void AStar::MakeDirectPath(const D3DXVECTOR3 & startPos, const D3DXVECTOR3 & destPos, OUT vector<int>& vecIndex)
 {
-	//Àå¾Ö¹° ¾øÀ¸¸é ³ëµå Àß¶ó³»±â
+	//ì¥ì• ë¬¼ ì—†ìœ¼ë©´ ë…¸ë“œ ì˜ë¼ë‚´ê¸°
 	if (m_vecObstacle.empty() == true)
 	{
-		//Àå¾Ö¹°ÀÌ ¾øÀ¸¸é Á÷¼±À¸·Î ÀÌµ¿
+		//ì¥ì• ë¬¼ì´ ì—†ìœ¼ë©´ ì§ì„ ìœ¼ë¡œ ì´ë™
 		vecIndex.clear();
 	}
 	else
 	{
 		int numNodeToErase = 0;
-		//½ÃÀÛ ÁöÁ¡ºÎÅÍ Àå¾Ö¹° ±³Â÷ ÀÌÀü ÁöÁ¡±îÁö ³ëµå »èÁ¦
-		CalcEraseCount(startPos/*Ä³¸¯ÅÍÀ§Ä¡*/, vecIndex, true, numNodeToErase);
+		//ì‹œì‘ ì§€ì ë¶€í„° ì¥ì• ë¬¼ êµì°¨ ì´ì „ ì§€ì ê¹Œì§€ ë…¸ë“œ ì‚­ì œ
+		CalcEraseCount(startPos/*ìºë¦­í„°ìœ„ì¹˜*/, vecIndex, true, numNodeToErase);
 		if (numNodeToErase > 0)
 			vecIndex.erase(vecIndex.end() - numNodeToErase, vecIndex.end());
 
-		//¸¶Áö¸· ÁöÁ¡ºÎÅÍ Àå¾Ö¹° ±³Â÷ ÀÌÀü ÁöÁ¡±îÁö ³ëµå »èÁ¦
-		CalcEraseCount(destPos/*¸¶¿ì½ºÆ÷ÀÎÅÍ·Î ÂóÀº °ø°£»óÀÇ À§Ä¡*/, vecIndex, false, numNodeToErase);
+		//ë§ˆì§€ë§‰ ì§€ì ë¶€í„° ì¥ì• ë¬¼ êµì°¨ ì´ì „ ì§€ì ê¹Œì§€ ë…¸ë“œ ì‚­ì œ
+		CalcEraseCount(destPos/*ë§ˆìš°ìŠ¤í¬ì¸í„°ë¡œ ì°ì€ ê³µê°„ìƒì˜ ìœ„ì¹˜*/, vecIndex, false, numNodeToErase);
 		if (numNodeToErase == vecIndex.size()) numNodeToErase--;
 		if (numNodeToErase > 0)
 			vecIndex.erase(vecIndex.begin(), vecIndex.begin() + numNodeToErase);
