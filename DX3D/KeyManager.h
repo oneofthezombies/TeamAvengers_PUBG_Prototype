@@ -11,12 +11,13 @@ private:
 
 	KeyManager();
 	~KeyManager();
+
 public:
 	//ΩÃ±€≈Ê
-	static KeyManager& GetInstance()
+	static KeyManager* GetInstance()
 	{
 		static KeyManager instance;
-		return instance;
+		return &instance;
 	}
 
 	HRESULT Init();
