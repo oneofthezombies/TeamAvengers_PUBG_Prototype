@@ -119,6 +119,12 @@ struct VERTEX_RHWC	//w의 역수라는 의미 //w값으로 같은 차원인지 아닌지를 계산하는
 	VERTEX_RHWC() {}
 	VERTEX_RHWC(D3DXVECTOR4 _p, D3DCOLOR _c)
 		:p(_p), c(_c) {}
+    VERTEX_RHWC(const float x, const float y, const float z, const float w, 
+                const D3DCOLOR c)
+        : p(x, y, z, w)
+        , c(c)
+    {
+    }
 
 	enum { FVF = D3DFVF_XYZRHW | D3DFVF_DIFFUSE };
 };

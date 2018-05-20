@@ -11,19 +11,20 @@ ObjManager::~ObjManager()
 {
 }
 
-void ObjManager::AddObject(BaseObject * pObj)
+void ObjManager::AddObject(BaseObject* pObj)
 {
 	m_setObject.insert(pObj);
 }
 
-void ObjManager::RemoveObject(BaseObject * pObj)
+void ObjManager::RemoveObject(BaseObject* pObj)
 {
 	m_setObject.erase(pObj);
 }
 
 void ObjManager::Destroy()
 {
-	assert(m_setObject.empty() && "생성된 객체 중 삭제되지 않은 객체가 있습니다.");
+    if (!m_setObject.empty())
+        MessageBox(NULL, TEXT("생성된 객체 중 삭제되지 않은 객체가 있습니다."), 0, 0);
 }
 
 void ObjManager::AddToTagList(WORD _tag, IDisplayObject * _pObj)

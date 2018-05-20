@@ -26,3 +26,15 @@ void IDisplayObject::ReleaseAll()
 
 	Release();
 }
+
+void IDisplayObject::UpdateChildren()
+{
+    for (auto& c : m_vecPChild)
+        SAFE_UPDATE(c);
+}
+
+void IDisplayObject::RenderChildren()
+{
+    for (auto& c : m_vecPChild)
+        SAFE_RENDER(c);
+}

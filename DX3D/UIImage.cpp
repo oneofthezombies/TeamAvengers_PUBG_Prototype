@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "UIImage.h"
+#include "UIManager.h"
 
-
-UIImage::UIImage(LPD3DXSPRITE pSprite, int uiTag)
-	: IUIObject(pSprite,uiTag)
-	, m_pTex(NULL)
+UIImage::UIImage(IUIObjectDelegate* pIUIObjectDelegate, int uiTag)
+    : IUIObject(pIUIObjectDelegate, uiTag)
+    , m_pTex(nullptr)
 {
 }
 
@@ -19,8 +19,9 @@ void UIImage::Render()
 		RECT rect;
 		SetRect(&rect, 0, 0, m_size.x, m_size.y);
 
-		m_pSprite->Draw(m_pTex, &rect, &m_pivot, &m_combinedPos, m_color);
+		g_pSprite->Draw(m_pTex, &rect, &m_pivot, &m_combinedPos, m_color);
 	}
+
 	IUIObject::Render();
 }
 

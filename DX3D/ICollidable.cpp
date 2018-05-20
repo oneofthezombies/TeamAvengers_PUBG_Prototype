@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ICollidable.h"
+#include "CollisionManager.h"
 
 ColliderBase::ColliderBase(Type type)
     : m_type(type)
@@ -21,12 +22,12 @@ void ColliderBase::SetColor(const D3DCOLOR color)
 }
 
 SphereCollider::SphereCollider()
-    : ColliderBase(ColliderBase::Type::Sphere)
+    : ColliderBase(ColliderBase::Type::kSphere)
 {
 }
 
 BoxCollider::BoxCollider()
-    : ColliderBase(ColliderBase::Type::Box)
+    : ColliderBase(ColliderBase::Type::kBox)
     , m_vCenter(0.0f, 0.0f, 0.0f)
     , m_vExtent(0.0f, 0.0f, 0.0f)
     , m_mTransform(0.0f, 0.0f, 0.0f, 0.0f,
@@ -72,7 +73,7 @@ void BoxCollider::Render()
 
     const auto dv = g_pDevice;
     dv->SetTransform(D3DTS_WORLD, &m_mTransform);
-    dv->SetTexture(0, NULL);
+    dv->SetTexture(0, nullptr);
     dv->DrawIndexedPrimitiveUP(D3DPT_LINELIST, 0, vertices.size(), indices.size() / 2, indices.data(), D3DFMT_INDEX16, vertices.data(), sizeof VERTEX_PC);
 }
 
@@ -93,12 +94,15 @@ const D3DXMATRIXA16& BoxCollider::GetTransform() const
 
 ICollidable::ICollidable()
     : IDisplayObject()
-    , m_pCollider(NULL)
+    , m_pCollider(nullptr)
 {
+    g_pCollisionManager->AddICollidable(*this);
 }
 
 ICollidable::~ICollidable()
 {
+    g_pCollisionManager->RemoveICollidable(*this);
+
     SAFE_DELETE(m_pCollider);
 }
 
