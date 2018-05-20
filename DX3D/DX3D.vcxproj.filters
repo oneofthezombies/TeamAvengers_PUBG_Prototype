@@ -201,6 +201,9 @@
     <ClInclude Include="KeyManager.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SceneShotting.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -337,6 +340,9 @@
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
     <ClCompile Include="KeyManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneShotting.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

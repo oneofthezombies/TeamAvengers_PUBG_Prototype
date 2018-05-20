@@ -5,6 +5,7 @@
 #include "SceneObjMap.h"
 #include "SceneHeightmap.h"
 #include "SceneTest.h"
+#include "SceneShotting.h"
 
 SceneManager::SceneManager()
 {
@@ -21,11 +22,13 @@ void SceneManager::Init()
 	m_vecScene.push_back(new SceneObjMap());
 	m_vecScene.push_back(new SceneHeightmap());
 	m_vecScene.push_back(new SceneTest());
+	m_vecScene.push_back(new SceneShotting());
 
 	//SetCurrentScene(SCENE_GRID);
 	//SetCurrentScene(SCENE_OBJMAP);
 	//SetCurrentScene(SCENE_HEIGHTMAP);
-	SetCurrentScene(SCENE_TEST);
+	//SetCurrentScene(SCENE_TEST);
+	SetCurrentScene(SCENE_SHOTTING);
 }
 
 void SceneManager::Destroy()
