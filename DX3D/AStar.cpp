@@ -5,9 +5,8 @@
 #include "Heap.h"
 AStar::AStar()
 {
-    int c;
+    
 }
-//delete2
 
 
 AStar::~AStar()
