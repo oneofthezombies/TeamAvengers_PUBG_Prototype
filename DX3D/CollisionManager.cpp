@@ -257,6 +257,8 @@ void CollisionManager::RemoveCollidable(ICollidable& val)
 
 void CollisionManager::NotifyCollision()
 {
+    if (m_usetCollidable.size() < 2) return;
+
     for (auto it1 = m_usetCollidable.begin(); it1 != prev(m_usetCollidable.end()); ++it1)
     {
         ICollidable* o1 = *it1;
