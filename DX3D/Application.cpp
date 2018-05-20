@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Application.h"
-
+#include "CollisionManager.h"
 
 Application::Application()
 {
@@ -16,10 +16,12 @@ void Application::Init()
 	g_pDeviceManager->Init();
 	g_pCamera->Init();
 	g_pSceneManager->Init();
+    g_pCollisionManager.Init();
 }
 
 void Application::Destroy()
 {
+    g_pCollisionManager.Destroy();
 	g_pSceneManager->Destroy();
 	g_pObjMgr->Destroy();
 	g_pTextureManager->Destroy();
@@ -34,6 +36,7 @@ void Application::Update()
 	g_pTimeManager->Update();
 	g_pKeyboardManager->Update();
 	g_pSceneManager->Update();
+    g_pCollisionManager.Update();
 	g_pCamera->Update();
 }
 
@@ -45,6 +48,7 @@ void Application::Render()
 	g_pDevice->BeginScene();
 
 	g_pSceneManager->Render();
+    g_pCollisionManager.Render();
 	Debug->Print();
 
 	if (GetAsyncKeyState('M') & 0x0001)

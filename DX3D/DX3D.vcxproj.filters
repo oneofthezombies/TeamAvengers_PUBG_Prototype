@@ -48,6 +48,9 @@
     <Filter Include="소스 파일\3.Object\DisplayObject">
       <UniqueIdentifier>{c82ae2d6-bfed-4717-818e-1676d966ba2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ootz_odd">
+      <UniqueIdentifier>{44c17e6c-6fe7-4908-8a72-09708295c08c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceManager.h">
@@ -198,6 +201,15 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ootz_odd</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>ootz_odd</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollidable.h">
+      <Filter>ootz_odd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -333,6 +345,12 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>ootz_odd</Filter>
+    </ClCompile>
+    <ClCompile Include="ICollidable.cpp">
+      <Filter>ootz_odd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">
