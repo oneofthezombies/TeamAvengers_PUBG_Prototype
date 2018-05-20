@@ -183,6 +183,8 @@
     <ClInclude Include="ICollidable.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
+    <ClInclude Include="UIInteractionMessage.h" />
+    <ClInclude Include="UIInventory.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="IUIObject.h" />
     <ClInclude Include="IUnitObject.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIGameOver.h" />
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIText.h" />

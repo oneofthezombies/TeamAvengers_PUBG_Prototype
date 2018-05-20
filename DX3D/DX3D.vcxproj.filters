@@ -232,6 +232,15 @@
     <ClInclude Include="UIText.h">
       <Filter>ootz_ui</Filter>
     </ClInclude>
+    <ClInclude Include="UIGameOver.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInventory.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInteractionMessage.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
