@@ -54,6 +54,9 @@
     <Filter Include="ootz_skybox">
       <UniqueIdentifier>{15890d36-c57b-4258-9c65-9a48efeac1f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ootz_ui">
+      <UniqueIdentifier>{35506a84-1116-4d9f-b556-e92d9d75408e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceManager.h">
@@ -192,11 +195,6 @@
       <Filter>소스 파일\3.Object\DisplayObject</Filter>
     </ClInclude>
     <ClInclude Include="ObjManager.h" />
-    <ClInclude Include="IUIObject.h" />
-    <ClInclude Include="UIImage.h" />
-    <ClInclude Include="SampleUI.h" />
-    <ClInclude Include="UIButton.h" />
-    <ClInclude Include="UIText.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="AStar.h" />
@@ -215,6 +213,24 @@
     </ClInclude>
     <ClInclude Include="SkyBox.h">
       <Filter>ootz_skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="IUIObject.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleUI.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>ootz_ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -339,11 +355,6 @@
       <Filter>소스 파일\3.Object\DisplayObject</Filter>
     </ClCompile>
     <ClCompile Include="ObjManager.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
-    <ClCompile Include="UIImage.cpp" />
-    <ClCompile Include="SampleUI.cpp" />
-    <ClCompile Include="UIButton.cpp" />
-    <ClCompile Include="UIText.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="AStar.cpp" />
@@ -359,6 +370,24 @@
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>ootz_skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>ootz_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="IUIObject.cpp">
+      <Filter>ootz_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleUI.cpp">
+      <Filter>ootz_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>ootz_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>ootz_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>ootz_ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

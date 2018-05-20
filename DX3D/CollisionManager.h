@@ -6,12 +6,13 @@
 
 class ICollidable;
 class BoxCollider;
+class SphereCollider;
 
 class CollisionManager
     : public SingletonBase<CollisionManager>
 {
 private:
-    unordered_set<ICollidable*> m_usetCollidable;
+    unordered_set<ICollidable*> m_usetICollidable;
     bool m_bIsRender;
 
     CollisionManager();
@@ -19,14 +20,23 @@ private:
 
     bool HasCollision(const BoxCollider& lhs, const BoxCollider& rhs);
 
+    // no impl
+    bool HasCollision(const BoxCollider& lhs, const SphereCollider& rhs);
+
+    // no impl
+    bool HasCollision(const SphereCollider& lhs, const BoxCollider& rhs);
+
+    // no impl
+    bool HasCollision(const SphereCollider& lhs, const SphereCollider& rhs);
+
 public:
     void Init();
     void Destroy();
     void Update();
     void Render();
 
-    void AddCollidable(ICollidable& val);
-    void RemoveCollidable(ICollidable& val);
+    void AddICollidable(ICollidable& val);
+    void RemoveICollidable(ICollidable& val);
     void NotifyCollision();
     void SetIsRender(const bool val);
 

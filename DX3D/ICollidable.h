@@ -7,10 +7,10 @@ class ColliderBase
 public:
     enum Type
     {
-        Box,
+        kBox,
 
         // Not yet used
-        Sphere
+        kSphere
     };
 
 private:

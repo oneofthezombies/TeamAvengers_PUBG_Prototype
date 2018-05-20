@@ -1,11 +1,13 @@
 #pragma once
 #include "IUIObject.h"
-class UIImage : public IUIObject
+
+class UIImage 
+    : public IUIObject
 {
 public:
 	LPDIRECT3DTEXTURE9 m_pTex;
 
-	UIImage(LPD3DXSPRITE pSprite, int uiTag = -1);
+	UIImage(IUIObjectDelegate* pIUIObjectDelegate = nullptr, int uiTag = -1);
 	virtual ~UIImage();
 
 	virtual void Render() override;

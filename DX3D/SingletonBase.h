@@ -9,9 +9,9 @@ protected:
 public:
     ~SingletonBase() = default;
 
-    static T& GetInstance()
+    static T* GetInstance()
     {
         static T instance;
-        return instance;
+        return &instance;
     }
 };

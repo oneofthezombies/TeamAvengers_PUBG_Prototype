@@ -4,6 +4,8 @@
 #include "Grid.h"
 #include "ParticleTest.h"
 #include "SkyBox.h"
+#include "ICollidable.h"
+#include "UIText.h"
 
 SceneTest::SceneTest()
 {
@@ -42,6 +44,14 @@ void SceneTest::Init()
 	g_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	g_pDevice->SetSamplerState(1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	g_pDevice->SetSamplerState(1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+
+    SampleCollidable* sc = new SampleCollidable;
+    sc->Init();
+    AddSimpleDisplayObj(sc);
+
+    SampleCollidable2* sc2 = new SampleCollidable2;
+    sc2->Init();
+    AddSimpleDisplayObj(sc2);
 }
 
 void SceneTest::Update()

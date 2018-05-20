@@ -1,5 +1,6 @@
 #pragma once
-#define g_pFontMgr FontManager::GetInstance()
+
+#define g_pFontManager FontManager::GetInstance()
 
 namespace FONT
 {
@@ -12,6 +13,7 @@ namespace FONT
 class FontManager
 {
 	SINGLETON(FontManager)
+
 private:
 	map <FONT::FontType, LPD3DXFONT> m_mapFont;
 public:

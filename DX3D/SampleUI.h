@@ -3,7 +3,7 @@
 #include "UIButton.h"
 class IUIObject;
 
-class SampleUI :public IDisplayObject, public IUIButtonDelegate
+class SampleUI :public IDisplayObject//, public IUIButtonDelegate
 {
 private:
 	LPD3DXSPRITE m_pSprite;
@@ -21,6 +21,6 @@ public:
 	virtual void Render() override;
 
 	// Inherited via IUIButtonDelegate
-	virtual void OnClick(UIButton * pSender) override;
+	//virtual void OnClick(UIButton * pSender) override;
 };
 
