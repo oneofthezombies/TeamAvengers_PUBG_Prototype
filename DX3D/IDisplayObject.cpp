@@ -8,7 +8,6 @@ IDisplayObject::IDisplayObject()
 	D3DXMatrixIdentity(&m_matWorld);
 }
 
-
 IDisplayObject::~IDisplayObject()
 {
 }

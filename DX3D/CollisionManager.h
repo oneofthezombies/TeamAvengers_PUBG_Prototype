@@ -17,7 +17,7 @@ private:
     CollisionManager();
     virtual ~CollisionManager() = default;
 
-    bool hasCollision(const BoxCollider& lhs, const BoxCollider& rhs);
+    bool HasCollision(const BoxCollider& lhs, const BoxCollider& rhs);
 
 public:
     void Init();
