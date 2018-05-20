@@ -51,6 +51,9 @@
     <Filter Include="ootz_odd">
       <UniqueIdentifier>{44c17e6c-6fe7-4908-8a72-09708295c08c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ootz_skybox">
+      <UniqueIdentifier>{15890d36-c57b-4258-9c65-9a48efeac1f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceManager.h">
@@ -210,6 +213,9 @@
     <ClInclude Include="ICollidable.h">
       <Filter>ootz_odd</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>ootz_skybox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -350,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="ICollidable.cpp">
       <Filter>ootz_odd</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>ootz_skybox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

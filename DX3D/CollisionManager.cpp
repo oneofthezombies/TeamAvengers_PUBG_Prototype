@@ -7,7 +7,7 @@ CollisionManager::CollisionManager()
 {
 }
 
-bool CollisionManager::hasCollision(const BoxCollider& lhs, const BoxCollider& rhs)
+bool CollisionManager::HasCollision(const BoxCollider& lhs, const BoxCollider& rhs)
 {
     const D3DXMATRIXA16& A_transform = lhs.GetTransform();
     const D3DXMATRIXA16& B_transform = rhs.GetTransform();
@@ -86,7 +86,7 @@ bool CollisionManager::hasCollision(const BoxCollider& lhs, const BoxCollider& r
     r1 = B_extent.x * absDotAB[2][0]
        + B_extent.y * absDotAB[2][1] 
        + B_extent.z * absDotAB[2][2];
-    r01 = A_extent.y + r1;
+    r01 = A_extent.z + r1;
     if (r > r01)
         return false;
 
@@ -277,7 +277,7 @@ void CollisionManager::NotifyCollision()
                 const BoxCollider* a = static_cast<BoxCollider*>(c1);
                 const BoxCollider* b = static_cast<BoxCollider*>(c2);
 
-                if (hasCollision(*a, *b))
+                if (HasCollision(*a, *b))
                 {
                     o1->OnCollision(*o2);
                     o2->OnCollision(*o1);

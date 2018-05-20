@@ -71,6 +71,11 @@ struct VERTEX_PT
 
 	VERTEX_PT() {}
 	VERTEX_PT(D3DXVECTOR3 _p, D3DXVECTOR2 _t) :p(_p), t(_t) {}
+    VERTEX_PT(const float x, const float y, const float z, const float u, const float v)
+        : p(x, y, z)
+        , t(u, v)
+    {
+    }
 
 	enum { FVF = D3DFVF_XYZ | D3DFVF_TEX1 };
 };
@@ -95,6 +100,14 @@ struct VERTEX_PNT
 	VERTEX_PNT() {}
 	VERTEX_PNT(D3DXVECTOR3 _p, D3DXVECTOR3 _n, D3DXVECTOR2 _t)
 		:p(_p), n(_n), t(_t) {}
+    VERTEX_PNT(const float x, const float y, const float z, 
+               const float nx, const float ny, const float nz, 
+               const float u, const float v)
+        : p(x, y, z)
+        , n(nx, ny, nz)
+        , t(u, v)
+    {
+    }
 
 	enum { FVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1};
 };

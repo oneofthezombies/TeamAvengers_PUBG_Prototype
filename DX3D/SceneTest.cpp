@@ -3,6 +3,7 @@
 #include "Frustum.h"
 #include "Grid.h"
 #include "ParticleTest.h"
+#include "SkyBox.h"
 
 SceneTest::SceneTest()
 {
@@ -18,6 +19,13 @@ SceneTest::~SceneTest()
 
 void SceneTest::Init()
 {
+    SkyBox* skyBox = new SkyBox;
+    D3DXMATRIXA16 tr;
+    const float scale = 20.0f;
+    D3DXMatrixScaling(&tr, scale, scale, scale);
+    skyBox->Init(&tr);
+    AddSimpleDisplayObj(skyBox);
+
 	m_pGrid = new Grid; m_pGrid->Init();
 	IDisplayObject* pObj = NULL;
 	//pObj = new Frustum; pObj->Init(); AddSimpleDisplayObj(pObj);
