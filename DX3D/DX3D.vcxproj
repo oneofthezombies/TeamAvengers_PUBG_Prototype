@@ -185,6 +185,7 @@
     <ClInclude Include="IUIObject.h" />
     <ClInclude Include="IUnitObject.h" />
     <ClInclude Include="KeyboardManager.h" />
+    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="ObjManager.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="ObjManager.cpp" />

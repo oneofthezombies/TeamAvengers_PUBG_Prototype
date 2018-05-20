@@ -198,6 +198,9 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="KeyManager.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -333,6 +336,9 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">
