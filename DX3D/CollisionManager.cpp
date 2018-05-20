@@ -212,6 +212,7 @@ bool CollisionManager::hasCollision(const BoxCollider& lhs, const BoxCollider& r
 
 void CollisionManager::Init()
 {
+    ///* for test */
     //SampleCollidable* sc = new SampleCollidable;
     //sc->Init();
     //AddCollidable(*sc);
@@ -219,6 +220,7 @@ void CollisionManager::Init()
     //SampleCollidable2* sc2 = new SampleCollidable2;
     //sc2->Init();
     //AddCollidable(*sc2);
+    ///**/
 }
 
 void CollisionManager::Destroy()
@@ -229,10 +231,10 @@ void CollisionManager::Destroy()
 
 void CollisionManager::Update()
 {
-    /* for test */
+    ///* for test */
     //for (auto c : m_usetCollidable)
     //    c->Update();
-    /**/
+    ///**/
 
     NotifyCollision();
 }
