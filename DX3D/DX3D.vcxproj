@@ -162,6 +162,7 @@
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
     <ClInclude Include="CubemanParts.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IActionObject.h" />
+    <ClInclude Include="ICollidable.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
     <ClInclude Include="IScene.h" />
@@ -199,6 +201,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneObjMap.h" />
     <ClInclude Include="SceneTest.h" />
+    <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureManager.h" />
@@ -221,6 +224,7 @@
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
     <ClCompile Include="CubemanParts.cpp" />
@@ -238,6 +242,7 @@
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="IActionObject.cpp" />
+    <ClCompile Include="ICollidable.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
