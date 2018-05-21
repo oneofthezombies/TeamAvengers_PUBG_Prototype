@@ -204,6 +204,7 @@
     <ClInclude Include="SceneShotting.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Ground.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -345,6 +346,7 @@
     <ClCompile Include="SceneShotting.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">

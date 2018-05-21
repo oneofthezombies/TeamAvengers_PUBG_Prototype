@@ -14,6 +14,7 @@ Application::~Application()
 void Application::Init()
 {
 	g_pDeviceManager->Init();
+	g_pKeyManager->Init();
 	g_pCamera->Init();
 	g_pSceneManager->Init();
 }
@@ -25,6 +26,7 @@ void Application::Destroy()
 	g_pTextureManager->Destroy();
 	g_pFontMgr->Destroy();
 	Debug->Destroy();
+	g_pKeyManager->Destroy(); //아직 형식 맞춰주는 용
 	g_pDeviceManager->Destroy();
 }
 

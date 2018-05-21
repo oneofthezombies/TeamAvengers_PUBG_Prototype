@@ -3,8 +3,8 @@
 
 Camera::Camera()
 {
-	m_distance = 10.0f;
-	m_basePosY = 5.0f;
+	m_distance = 32.0f;
+	m_basePosY = 10.0f;
 	m_eye = D3DXVECTOR3(0, m_basePosY, -m_distance);
 	m_lookAt = D3DXVECTOR3(0, 0, 0);
 	m_up = D3DXVECTOR3(0, 1, 0);
@@ -32,9 +32,8 @@ void Camera::Init()
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 
-	D3DXMatrixPerspectiveFovLH(&m_matProj,
-		D3DX_PI / 4.0f,
-		rc.right / (float)rc.bottom, 1, 1000);
+	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DX_PI / 4.0f, 
+		                       rc.right / (float)rc.bottom, 1.0f, 100.f);
 	g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
 }
 
