@@ -162,6 +162,7 @@
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
     <ClInclude Include="CubemanParts.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="DrawingGroup.h" />
     <ClInclude Include="DX3D.h" />
+    <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GlobalDefinition.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IActionObject.h" />
+    <ClInclude Include="ICamera.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
     <ClInclude Include="IScene.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="ThirdPersonCamera.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIImage.h" />
@@ -221,6 +225,7 @@
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
     <ClCompile Include="CubemanParts.cpp" />
@@ -229,6 +234,7 @@
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="DrawingGroup.cpp" />
     <ClCompile Include="DX3D.cpp" />
+    <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />
@@ -238,6 +244,7 @@
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="IActionObject.cpp" />
+    <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
@@ -262,6 +269,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="ThirdPersonCamera.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIImage.cpp" />

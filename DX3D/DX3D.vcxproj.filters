@@ -198,6 +198,10 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="ICamera.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="FirstPersonCamera.h" />
+    <ClInclude Include="ThirdPersonCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -333,6 +337,10 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="ICamera.cpp" />
+    <ClCompile Include="FirstPersonCamera.cpp" />
+    <ClCompile Include="ThirdPersonCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">
