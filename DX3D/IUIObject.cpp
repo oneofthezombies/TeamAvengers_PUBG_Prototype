@@ -10,6 +10,8 @@ IUIObject::IUIObject(IUIObjectDelegate* pIUIObjectDelegate, int uiTag)
     , m_color(D3DCOLOR_XRGB(255, 255, 255))
     , m_bPrevIsMouseOn(false)
     , m_bCurrIsMouseOn(false)
+    , m_combinedPos(0.0f, 0.0f, 0.0f)
+    , m_pivot(0.0f, 0.0f, 0.0f)
 {
     if (pIUIObjectDelegate)
         pIUIObjectDelegate->m_pIUIObject = this;
@@ -97,7 +99,7 @@ void IUIObject::GetFinalRect(RECT* OutRect)
     const float left = m_combinedPos.x * mat._11 + mat._41;
     const float top = m_combinedPos.y * mat._22 + mat._42;
     const float right = left + m_size.x * mat._11;
-    const float bottom = top + m_size.x * mat._22;
+    const float bottom = top + m_size.y * mat._22;
 
 	SetRect(OutRect, 
             static_cast<int>(left), 

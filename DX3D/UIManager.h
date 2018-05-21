@@ -12,8 +12,12 @@ class UIManager
     : public SingletonBase<UIManager>
 {
 private:
-    unordered_set<IUIObject*> m_usetIUIObject;
     LPD3DXSPRITE              m_pSprite;
+
+    unordered_set<IUIObject*> m_usetIUIObject;
+    deque<IUIObject*>         m_toDeletes;
+    int                       m_instanceID;
+    
     POINT m_prevMousePos;
     POINT m_currMousePos;
     bool m_prevIsPushedMouseButtonLeft;
@@ -29,11 +33,17 @@ private:
 public:
     void Init();
     void Destroy();
+    void Destroy(IUIObject& val);
+    void Destroy(const int instanceID);
+
     void Update();
     void Render();
 
     void AddIUIObject(IUIObject& val);
     void RemoveIUIObject(IUIObject& val);
+
+    void UpdateToDeletes();
+
 
     const LPD3DXSPRITE GetSprite() const;
     const POINT& GetCurrentMousePos() const;

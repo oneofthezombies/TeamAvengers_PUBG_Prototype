@@ -60,7 +60,7 @@ void UIButton::SetTexture(const string& idle, const string& mouseOver, const str
 void UIButton::SetText(LPD3DXFONT font, LPCTSTR text)
 {
 	UIText* pText = new UIText(font);
-	AddChild(pText);
+	AddChild(*pText);
 	pText->m_text = text;
 	pText->m_size = m_size;
 }
