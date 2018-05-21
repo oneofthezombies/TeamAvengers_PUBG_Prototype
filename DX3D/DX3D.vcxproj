@@ -161,6 +161,7 @@
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="GlobalDefinition.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeightMap.h" />
     <ClInclude Include="Hexagon.h" />
@@ -223,6 +225,7 @@
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="BaseObject.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
@@ -237,6 +240,7 @@
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeightMap.cpp" />
     <ClCompile Include="Hexagon.cpp" />

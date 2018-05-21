@@ -1,5 +1,6 @@
 #pragma once
 #include "IDisplayObject.h"
+
 class Ground : public IDisplayObject
 {
 private:

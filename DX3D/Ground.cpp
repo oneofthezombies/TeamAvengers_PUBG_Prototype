@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #include "Ground.h"
 
-
 Ground::Ground(int col, int row, float size)
 	: m_col(col)
 	, m_row(row)
 	, m_size(size)
 {
-
 }
-
 
 Ground::~Ground()
 {
@@ -102,4 +99,5 @@ void Ground::Render()
 	g_pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_numVertices, 0, m_numIndices / 3);
 	
 	g_pDevice->SetRenderState(D3DRS_LIGHTING, true);
+	g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
