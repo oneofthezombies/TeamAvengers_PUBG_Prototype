@@ -87,17 +87,16 @@ void Ground::Update()
 
 void Ground::Render()
 {
-	D3DXMatrixIdentity(&m_matWorld);
+	const auto dv = g_pDevice;
+	dv->SetRenderState(D3DRS_LIGHTING, false);
+	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	g_pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-	g_pDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
-	g_pDevice->SetStreamSource(0, m_pVB, 0, sizeof(VERTEX_PC));
-	g_pDevice->SetIndices(m_pIB);
-	g_pDevice->SetFVF(VERTEX_PC::FVF);
-	g_pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_numVertices, 0, m_numIndices / 3);
+	dv->SetTransform(D3DTS_WORLD, &m_matWorld);
+	dv->SetStreamSource(0, m_pVB, 0, sizeof(VERTEX_PC));
+	dv->SetIndices(m_pIB);
+	dv->SetFVF(VERTEX_PC::FVF);
+	dv->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_numVertices, 0, m_numIndices / 3);
 	
-	g_pDevice->SetRenderState(D3DRS_LIGHTING, true);
-	g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	dv->SetRenderState(D3DRS_LIGHTING, true);
+	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }

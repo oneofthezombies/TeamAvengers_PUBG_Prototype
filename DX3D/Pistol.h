@@ -1,8 +1,9 @@
 #pragma once
 #include "IDisplayObject.h"
 
+/* ±«√— */
 class Bullet;
-class Gun : public IDisplayObject
+class Pistol : public IDisplayObject
 {
 private:
 	LPD3DXMESH       m_pGunMesh;           //√—¿ª ±◊∑¡¡÷±‚ ¿ß«— ∏ﬁΩ¨
@@ -22,12 +23,15 @@ private:
 	D3DXMATRIXA16    m_matT;
 
 public:
-	Gun(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
-	~Gun();
+	Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
+	~Pistol();
 
 	// IDisplayObject¿ª(∏¶) ≈Î«ÿ ªÛº”µ 
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;
+
+	void Fire(); //√—ΩÓ±‚
+	void Load(); //¿Â¿¸
 };
 

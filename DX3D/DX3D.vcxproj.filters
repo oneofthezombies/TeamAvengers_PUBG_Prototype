@@ -204,13 +204,16 @@
     <ClInclude Include="SceneShotting.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Gun.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Ground.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTemp.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Pistol.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -354,13 +357,16 @@
     <ClCompile Include="SceneShotting.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Ground.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTemp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Pistol.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

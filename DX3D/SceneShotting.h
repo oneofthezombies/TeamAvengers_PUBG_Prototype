@@ -2,12 +2,14 @@
 #include "IScene.h"
 
 class Ground;
-class Gun;
+//class Gun;
+class PlayerTemp;
 class SceneShotting : public IScene
 {
 private:
 	Ground*           m_pGround;
-	Gun*              m_pGun;
+	//Gun*              m_pGun;
+	PlayerTemp*       m_pPlayerTemp;
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±‚¡ÿº±
 

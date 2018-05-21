@@ -20,6 +20,7 @@ D3DXVECTOR3 g_aCubeVertex[8] = {
 	D3DXVECTOR3(1.0f,  1.0f,  1.0f),
 	D3DXVECTOR3(1.0f, -1.0f,  1.0f)
 };
+
 DWORD FtoDw(float f)
 {
 	return *((DWORD*)&f);

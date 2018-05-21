@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
+#include "IScene.h"
 
 Bullet::Bullet(float scale, float velocity)
 	: m_scale(scale)       //0.08f
@@ -31,7 +32,7 @@ void Bullet::Update()
 		if (IsInBorderArea()) //경계구역 안이면 총알 이동
 			D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 		else                  //경계구역을 넘어서면 총알을 죽임
-			m_isFire = false; 
+			m_isFire = false;
 	}
 
 	//변환행렬
@@ -40,17 +41,18 @@ void Bullet::Update()
 
 void Bullet::Render()
 {
-	g_pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	const auto dv = g_pDevice;
+	dv->SetRenderState(D3DRS_LIGHTING, false);
+	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
 	if (m_isFire) //발사된 총알만 그려주기
 	{
-		g_pDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+		dv->SetTransform(D3DTS_WORLD, &m_matWorld);
 		m_pBulletMesh->DrawSubset(0);
 	}
 
-	g_pDevice->SetRenderState(D3DRS_LIGHTING, true);
-	g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	dv->SetRenderState(D3DRS_LIGHTING, true);
+	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
 bool Bullet::IsInBorderArea()
