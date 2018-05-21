@@ -22,7 +22,7 @@ Cubeman::Cubeman()
 
 Cubeman::~Cubeman()
 {
-	m_pRootParts->ReleaseAll();
+	m_pRootParts->Release();
 }
 
 void Cubeman::Init()
@@ -193,6 +193,6 @@ void Cubeman::CreateParts(CubemanParts *& pParts,
 	D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
 	mat = matS * matT;
 	pParts->Init(&mat, vecUV);
-	pParts->SetPosition(&pos);
-	pParent->AddChild(pParts);
+	pParts->SetPosition(pos);
+	pParent->AddChild(*pParts);
 }

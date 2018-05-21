@@ -24,7 +24,7 @@ void ActionMoveTo::UpdateAction()
 {
 	D3DXVECTOR3 pos;
 	D3DXVec3Lerp(&pos, &m_from, &m_to, GetTimeRate());
-	m_pTarget->SetPosition(&pos);
+	m_pTarget->SetPosition(pos);
 }
 
 

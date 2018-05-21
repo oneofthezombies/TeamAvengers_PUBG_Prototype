@@ -57,6 +57,9 @@
     <Filter Include="ootz_ui">
       <UniqueIdentifier>{35506a84-1116-4d9f-b556-e92d9d75408e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ootz_impl">
+      <UniqueIdentifier>{7da41b5f-cdd0-4a9b-8e0c-37ec891cea54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceManager.h">
@@ -81,9 +84,6 @@
       <Filter>소스 파일\2.Singleton</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>소스 파일\1.Main</Filter>
     </ClInclude>
     <ClInclude Include="BaseObject.h">
@@ -195,7 +195,6 @@
       <Filter>소스 파일\3.Object\DisplayObject</Filter>
     </ClInclude>
     <ClInclude Include="ObjManager.h" />
-    <ClInclude Include="FontManager.h" />
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="Heap.h" />
@@ -231,6 +230,21 @@
     </ClInclude>
     <ClInclude Include="UIText.h">
       <Filter>ootz_ui</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>ootz_impl</Filter>
+    </ClInclude>
+    <ClInclude Include="InteractionMessageBox.h">
+      <Filter>ootz_impl</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverUI.h">
+      <Filter>ootz_impl</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>소스 파일\2.Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>소스 파일\1.Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -355,7 +369,6 @@
       <Filter>소스 파일\3.Object\DisplayObject</Filter>
     </ClCompile>
     <ClCompile Include="ObjManager.cpp" />
-    <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="Heap.cpp" />
@@ -388,6 +401,12 @@
     </ClCompile>
     <ClCompile Include="UIText.cpp">
       <Filter>ootz_ui</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>소스 파일\2.Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverUI.cpp">
+      <Filter>ootz_impl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
