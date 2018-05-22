@@ -1,4 +1,9 @@
 #pragma once
+
+///
+/// this SampleUI.h has legacy unrunnable code
+///
+
 #include "IDisplayObject.h"
 #include "UIButton.h"
 class IUIObject;
