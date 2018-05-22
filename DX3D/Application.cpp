@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Application.h"
-
+#include "CollisionManager.h"
+#include "UIManager.h"
 
 Application::Application()
 {
@@ -13,20 +14,24 @@ Application::~Application()
 
 void Application::Init()
 {
-	g_pDeviceManager->Init();
-	g_pKeyManager->Init();
-	g_pCamera->Init();
-	g_pSceneManager->Init();
+    g_pDeviceManager->Init();
+    g_pKeyManager->Init();
+    g_pUIManager->Init();
+    g_pCamera->Init();
+    g_pSceneManager->Init();
+    g_pCollisionManager->Init();
 }
 
 void Application::Destroy()
 {
+    g_pCollisionManager->Destroy();
+    g_pUIManager->Destroy();
 	g_pSceneManager->Destroy();
 	g_pObjMgr->Destroy();
 	g_pTextureManager->Destroy();
-	g_pFontMgr->Destroy();
+	g_pFontManager->Destroy();
 	Debug->Destroy();
-	g_pKeyManager->Destroy(); //¾ÆÁ÷ Çü½Ä ¸ÂÃçÁÖ´Â ¿ë
+	g_pKeyManager->Destroy(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½
 	g_pDeviceManager->Destroy();
 }
 
@@ -36,6 +41,8 @@ void Application::Update()
 	g_pTimeManager->Update();
 	g_pKeyboardManager->Update();
 	g_pSceneManager->Update();
+    g_pCollisionManager->Update();
+    g_pUIManager->Update();
 	g_pCamera->Update();
 }
 
@@ -47,12 +54,12 @@ void Application::Render()
 	g_pDevice->BeginScene();
 
 	g_pSceneManager->Render();
+    g_pCollisionManager->Render();
+    g_pUIManager->Render();
 	Debug->Print();
 
 	if (GetAsyncKeyState('M') & 0x0001)
-	{
 		Debug->ShowMessageBox();
-	}
 
 	g_pDevice->EndScene();
 	g_pDevice->Present(NULL, NULL, NULL, NULL);

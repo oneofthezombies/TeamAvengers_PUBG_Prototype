@@ -1,15 +1,17 @@
 #pragma once
-#include "IUIObject.h"
-class UIImage : public IUIObject
-{
-public:
-	LPDIRECT3DTEXTURE9 m_pTex;
+#include "UIObject.h"
 
-	UIImage(LPD3DXSPRITE pSprite, int uiTag = -1);
+class UIImage : public UIObject
+{
+private:
+    LPDIRECT3DTEXTURE9 m_pTex;
+
+public:
+	UIImage();
 	virtual ~UIImage();
 
 	virtual void Render() override;
 
-	void SetTexture(string fullPath);
+	void SetTexture(const string fullPath);
 };
 

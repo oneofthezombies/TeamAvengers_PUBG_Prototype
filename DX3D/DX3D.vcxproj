@@ -163,6 +163,7 @@
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
     <ClInclude Include="CubemanParts.h" />
@@ -183,10 +184,13 @@
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IActionObject.h" />
+    <ClInclude Include="ICollidable.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
+    <ClInclude Include="InteractionMessageBox.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="IScene.h" />
-    <ClInclude Include="IUIObject.h" />
+    <ClInclude Include="UIObject.h" />
     <ClInclude Include="IUnitObject.h" />
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="KeyManager.h" />
@@ -206,12 +210,16 @@
     <ClInclude Include="SceneObjMap.h" />
     <ClInclude Include="SceneShotting.h" />
     <ClInclude Include="SceneTest.h" />
+    <ClInclude Include="SingletonBase.h" />
+    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
+    <ClInclude Include="GameOverUI.h" />
     <ClInclude Include="UIImage.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIText.h" />
     <ClInclude Include="Walls.h" />
   </ItemGroup>
@@ -229,6 +237,7 @@
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
     <ClCompile Include="CubemanParts.cpp" />
@@ -239,6 +248,7 @@
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="GameOverUI.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -250,8 +260,9 @@
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="IActionObject.cpp" />
+    <ClCompile Include="ICollidable.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
+    <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
@@ -270,6 +281,7 @@
     <ClCompile Include="SceneObjMap.cpp" />
     <ClCompile Include="SceneShotting.cpp" />
     <ClCompile Include="SceneTest.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -280,6 +292,7 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIText.cpp" />
     <ClCompile Include="Walls.cpp" />
   </ItemGroup>
