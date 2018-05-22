@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "Bullet.h"
-#include "IScene.h"
 
 Bullet::Bullet(float scale, float velocity)
-	: m_scale(scale)       //0.08f
+	: Item(ITEM_TAG::Bullet, "Bullet", "I am a Bullet")
+	, m_scale(scale)       //0.08f
 	, m_velocity(velocity) //10.f
 	, m_isFire(false)      //아직 발사되지 않았다
 	, m_pBulletMesh(nullptr)

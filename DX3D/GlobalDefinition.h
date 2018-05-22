@@ -38,6 +38,19 @@ enum TAG_DISPLAYOBJECT {
 	TAG_PLAYER
 };
 
+enum class ITEM_TAG
+{
+	Pistol,
+	Bullet
+};
+
+enum class ITEM_STATE
+{
+	Dropped,    //땅에 떨어진 상태
+	Unmounted,  //미장착
+	Mounting    //장착
+};
+
 struct KEYBOARD_STATE
 {
 	D3DXVECTOR3 deltaPos;

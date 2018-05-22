@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "Pistol.h"
 #include "Bullet.h"
-#include "IScene.h"
 
 Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
-	: m_bulletNum(bulletNum)
+	: Item(ITEM_TAG::Pistol, "Pistol", "I am a Pistol")
+	, m_bulletNum(bulletNum)
 	, m_bulletFireCoolTime(bulletFireCoolTime) //0.4f
 	, m_velocity(velocity) //5.f;
 	, m_scale(scale)       //0.7f
@@ -15,12 +15,6 @@ Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scal
 
 Pistol::~Pistol()
 {
-	/* 총알 Release */
-	for (auto bullet : m_vecBullet)
-	{
-		SAFE_RELEASE(bullet);
-	}
-
 	SAFE_RELEASE(m_pGunMesh);
 }
 
@@ -34,14 +28,6 @@ void Pistol::Init()
 	D3DXMatrixScaling(&m_matS, m_scale, m_scale, m_scale);
 	D3DXMatrixRotationY(&m_matRotY, m_rotY);
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
-
-	//최대 장전 개수에서 현재 있는 총알 개수를 빼준만큼 장전해준다
-	for (int i = 0; i < m_bulletNum; ++i)
-	{
-		Bullet* bullet = new Bullet(0.08f, 10.f);
-		bullet->Init(); /* 총알 Init */
-		m_vecBullet.emplace_back(bullet);
-	}
 }
 
 void Pistol::Update()
@@ -55,35 +41,22 @@ void Pistol::Update()
 	//변환행렬
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 	m_matWorld = m_matS * m_matRotY * m_matT;
-
-	/* 총알 Update */
-	for (auto bullet : m_vecBullet)
-	{
-		SAFE_UPDATE(bullet);
-	}
 }
 
 void Pistol::Render()
 {
-	const auto dv = g_pDevice;
-	dv->SetRenderState(D3DRS_LIGHTING, false);
-	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-	dv->SetTransform(D3DTS_WORLD, &m_matWorld);
-	m_pGunMesh->DrawSubset(0);
-
-	dv->SetRenderState(D3DRS_LIGHTING, true);
-	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	/* 총알 Render */
-	for (auto bullet : m_vecBullet)
+	if (m_state == ITEM_STATE::Mounting)
 	{
-		SAFE_RENDER(bullet);
-	}
+		const auto dv = g_pDevice;
+		dv->SetRenderState(D3DRS_LIGHTING, false);
+		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	Debug->AddText("The number of Bullets: ");
-	Debug->AddText(m_vecBullet.size());
-	Debug->EndLine();
+		dv->SetTransform(D3DTS_WORLD, &m_matWorld);
+		m_pGunMesh->DrawSubset(0);
+
+		dv->SetRenderState(D3DRS_LIGHTING, true);
+		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	}
 }
 
 void Pistol::Fire()
@@ -92,7 +65,7 @@ void Pistol::Fire()
 	{
 		m_bulletFireCoolDown = m_bulletFireCoolTime;
 
-		for (auto bullet : m_vecBullet)
+		for (auto bullet : m_vecPBullet)
 		{
 			if (bullet->GetIsFire() == false) //소멸된 미사일 중에서 하나를 살린다
 			{
@@ -104,6 +77,7 @@ void Pistol::Fire()
 	}
 }
 
-void Pistol::Load()
+void Pistol::Load(vector<Bullet*>& vecBullet)
 {	
+	m_vecPBullet = vecBullet;
 }

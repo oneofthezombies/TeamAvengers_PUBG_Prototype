@@ -176,6 +176,7 @@
     <ClInclude Include="GlobalDefinition.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Pistol.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeightMap.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Pistol.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeightMap.cpp" />

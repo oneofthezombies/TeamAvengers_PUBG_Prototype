@@ -1,13 +1,13 @@
 #pragma once
-#include "IDisplayObject.h"
+#include "Item.h"
 
 /* 권총 */
 class Bullet;
-class Pistol : public IDisplayObject
+class Pistol : public Item
 {
 private:
 	LPD3DXMESH       m_pGunMesh;           //총을 그려주기 위한 메쉬
-	vector<Bullet*>  m_vecBullet;          //총알 담을 벡터
+	vector<Bullet*>  m_vecPBullet;          //총알 담을 벡터
 	const int        m_bulletNum;          //최대 장전 개수
 
 	const int        m_bulletFireCoolTime; 
@@ -24,14 +24,14 @@ private:
 
 public:
 	Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
-	~Pistol();
+	virtual ~Pistol();
 
-	// IDisplayObject을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;
 
+	size_t GetBulletNum() { return m_vecPBullet.size(); }
 	void Fire(); //총쏘기
-	void Load(); //장전
+	void Load(vector<Bullet*>& vecBullet); //장전
 };
 

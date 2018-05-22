@@ -1,6 +1,7 @@
 #pragma once
+#include "Item.h"
 
-class Bullet : public IDisplayObject
+class Bullet : public Item
 {
 private:
 	LPD3DXMESH    m_pBulletMesh;  //총알을 출력하기 위한 메쉬
@@ -17,7 +18,6 @@ public:
 	Bullet(float scale, float velocity);
 	~Bullet();
 
-	// IDisplayObject을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;

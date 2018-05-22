@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "SceneShotting.h"
 #include "Ground.h"
-//#include "Gun.h"
 #include "PlayerTemp.h"
+#include "Pistol.h"
+#include "Bullet.h"
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
-	//, m_pGun(nullptr)
 	, m_pPlayerTemp(nullptr)
+    , m_pPistol(nullptr)
 {
 }
 
@@ -37,32 +38,47 @@ void SceneShotting::Init()
 	m_pGround->Init();
 	AddSimpleDisplayObj(m_pGround);
 
-	//ÃÑ
-	//m_pGun = new Gun(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
-	//m_pGun->Init();
-	//AddSimpleDisplayObj(m_pGun);
-
 	//ÀÓ½ÃÇÃ·¹ÀÌ¾î
 	m_pPlayerTemp = new PlayerTemp();
 	m_pPlayerTemp->Init();
 	AddSimpleDisplayObj(m_pPlayerTemp);
+
+	//±ÇÃÑ
+	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	m_pPistol->Init();
+	AddSimpleDisplayObj(m_pPistol);
+
+	//ÃÑ¾Ë 10°³ »ý¼º
+	m_vecPBullet.reserve(10);
+	for (int i = 0; i < 10; ++i)
+	{
+		Bullet* bullet = new Bullet(0.08f, 10.f);
+		bullet->Init();
+		m_vecPBullet.push_back(bullet);
+		AddSimpleDisplayObj(bullet);
+	}
+
+	//ÃÑÀÌ¶û ÃÑ¾Ë¸Ô±â
+	m_pPlayerTemp->PutItemInInventory(m_pPistol);
+	for (auto bullet : m_vecPBullet){ m_pPlayerTemp->PutItemInInventory(bullet); }
 }
 
 void SceneShotting::Update()
 {
 	OnUpdateIScene();
+	m_pPlayerTemp->ShowInventory();
 }
 
 void SceneShotting::Render()
 {
 	OnRenderIScene();
 
-	const auto dv = g_pDevice;
-	
-	//±âÁØ¼±
+
+	//x, y, z ±âÁØ¼± ±×¸®±â 
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
-	
+
+	const auto dv = g_pDevice;
 	dv->SetRenderState(D3DRS_LIGHTING, false);
 	
 	dv->SetTransform(D3DTS_WORLD, &matI);
