@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "Pistol.h"
 #include "Bullet.h"
+#include "IScene.h"
 
 Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
 	: Item(ITEM_TAG::Pistol, "Pistol", "I am a Pistol")
-	, m_bulletNum(bulletNum)
+	, m_maxBullet(bulletNum)
 	, m_bulletFireCoolTime(bulletFireCoolTime) //0.4f
 	, m_velocity(velocity) //5.f;
 	, m_scale(scale)       //0.7f
@@ -59,25 +60,32 @@ void Pistol::Render()
 	}
 }
 
+void Pistol::ShowBulletNumForDebug()
+{
+	Debug->EndLine();
+	Debug->AddText("BulletNum: ");
+	Debug->AddText(GetBulletNum());
+	Debug->EndLine();
+}
+
 void Pistol::Fire()
 {
 	if (m_bulletFireCoolDown <= 0.f)
 	{
 		m_bulletFireCoolDown = m_bulletFireCoolTime;
 
-		for (auto bullet : m_vecPBullet)
+		if (m_vecPBullet.empty() == false)        //총알이 있으면
 		{
-			if (bullet->GetIsFire() == false) //소멸된 미사일 중에서 하나를 살린다
-			{
-				bullet->SetIsFire(true);
-				bullet->SetPosition(&D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z + 1.f)); //플레이어 위치에서 발사하되, 플레이어보다 약간 앞쪽에서 발사
-				break; //미사일 하나만 날리고 반복문 탈출
-			}
+			Bullet* bullet = m_vecPBullet.back(); //총알을 하나 꺼내고
+			m_vecPBullet.pop_back();              //벡터에서 지워줌 (실제 릴리즈는 현재씬의 Update에서)
+			bullet->SetIsFire(true);
+			bullet->SetPosition(&D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z + 1.f));
+			g_pCurrentScene->AddSimpleDisplayObj(bullet);
 		}
 	}
 }
 
-void Pistol::Load(vector<Bullet*>& vecBullet)
+void Pistol::Load(Bullet* bullet)
 {	
-	m_vecPBullet = vecBullet;
+	m_vecPBullet.emplace_back(bullet);
 }

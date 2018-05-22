@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
+#include "IScene.h"
 
 Bullet::Bullet(float scale, float velocity)
 	: Item(ITEM_TAG::Bullet, "Bullet", "I am a Bullet")
@@ -7,6 +8,7 @@ Bullet::Bullet(float scale, float velocity)
 	, m_velocity(velocity) //10.f
 	, m_isFire(false)      //아직 발사되지 않았다
 	, m_pBulletMesh(nullptr)
+	, m_isDie(false)
 {
 }
 
@@ -31,8 +33,8 @@ void Bullet::Update()
 
 		if (IsInBorderArea()) //경계구역 안이면 총알 이동
 			D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
-		else                  //경계구역을 넘어서면 총알을 죽임
-			m_isFire = false;
+		else                  //경계구역 밖이면 총알 죽임
+			g_pCurrentScene->Destroy(this);
 	}
 
 	//변환행렬
@@ -59,5 +61,7 @@ bool Bullet::IsInBorderArea()
 {
 	if (m_pos.z < 20.f) //현재는 Ground의 행이 20이므로
 		return true;
+	else
+		m_isDie = true;
 	return false;
 }

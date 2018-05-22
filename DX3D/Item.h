@@ -19,6 +19,7 @@ public:
 	virtual void Render() override;
 
 	ITEM_TAG GetItemTag() { return m_tag; }
+	ITEM_STATE GetItemState() { return m_state; }
 	void SetItemState(ITEM_STATE state) { m_state = state; }
 };
 

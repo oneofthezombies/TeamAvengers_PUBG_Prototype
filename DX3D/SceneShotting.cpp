@@ -58,15 +58,19 @@ void SceneShotting::Init()
 		AddSimpleDisplayObj(bullet);
 	}
 
-	//ÃÑÀÌ¶û ÃÑ¾Ë¸Ô±â
+	//ÃÑÀÌ¶û ÃÑ¾Ë¸Ô±â //Æ÷ÀÎÅÍ¿¡ ´ëÇÑ ¼ÒÀ¯±ÇÀ» ¸íÈ®È÷ ÇØ¾ßÇÑ´Ù
 	m_pPlayerTemp->PutItemInInventory(m_pPistol);
-	for (auto bullet : m_vecPBullet){ m_pPlayerTemp->PutItemInInventory(bullet); }
+	m_pPistol = nullptr;
+	for (auto bullet : m_vecPBullet)
+	{ 
+		m_pPlayerTemp->PutItemInInventory(bullet);
+	}
+	m_vecPBullet.clear();
 }
 
 void SceneShotting::Update()
 {
 	OnUpdateIScene();
-	m_pPlayerTemp->ShowInventory();
 }
 
 void SceneShotting::Render()

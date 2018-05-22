@@ -242,6 +242,7 @@
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Pistol.cpp" />
     <ClCompile Include="Heap.cpp" />

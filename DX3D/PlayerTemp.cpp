@@ -33,6 +33,14 @@ void PlayerTemp::Update()
 	//변환행렬 재설정
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 	m_matWorld = m_matT;
+
+	/* 디버그 */
+	//인벤토리 디버그용
+	ShowInventoryForDebug();
+
+	//총알 개수 디버그용
+	if (m_pPistol)
+		m_pPistol->ShowBulletNumForDebug();
 }
 
 void PlayerTemp::Render()
@@ -50,10 +58,10 @@ void PlayerTemp::Render()
 
 void PlayerTemp::PutItemInInventory(Item* item)
 {
-	item->SetItemState(ITEM_STATE::Unmounted);
+	item->SetItemState(ITEM_STATE::InInventory);
 	m_mapInventory[item->GetItemTag()].push_back(item);
 }
-void PlayerTemp::ShowInventory()
+void PlayerTemp::ShowInventoryForDebug()
 {
 	Debug->AddText("<Inventory>");
 	Debug->EndLine();
@@ -68,14 +76,51 @@ void PlayerTemp::ShowInventory()
 		{
 		case ITEM_TAG::Pistol:
 			Debug->AddText("- Pistol: ");
+			Debug->AddText(item.second.size());
+			Debug->EndLine();
+
+			for (auto i : item.second)
+			{
+				switch (i->GetItemState())
+				{
+				case ITEM_STATE::Dropped:
+					Debug->AddText("Dropped");
+					break;
+				case ITEM_STATE::InInventory:
+					Debug->AddText("InInventory");
+					break;
+				case ITEM_STATE::Mounting:
+					Debug->AddText("Mounting");
+					break;
+				} //swtich ItemState
+				Debug->EndLine();
+			} // for item.second()
+
 			break;
 		case ITEM_TAG::Bullet:
 			Debug->AddText("- Bullet: ");
+			Debug->AddText(item.second.size());
+			Debug->EndLine();
+
+			for (auto i : item.second)
+			{
+				switch (i->GetItemState())
+				{
+				case ITEM_STATE::Dropped:
+					Debug->AddText("Dropped");
+					break;
+				case ITEM_STATE::InInventory:
+					Debug->AddText("InInventory");
+					break;
+				case ITEM_STATE::Mounting:
+					Debug->AddText("Mounting");
+					break;
+				} //swtich ItemState
+				Debug->EndLine();
+			} // for item.second()
 			break;
-		}
-		Debug->AddText(item.second.size());
-		Debug->EndLine();
-	}
+		} //switch itemTag
+	} //for m_mapInventory
 }
 
 
@@ -143,7 +188,7 @@ void PlayerTemp::KeyUnmount()
 	{
 		if (m_pPistol)
 		{
-			m_pPistol->SetItemState(ITEM_STATE::Unmounted); //장착해제중
+			m_pPistol->SetItemState(ITEM_STATE::InInventory); //장착해제중
 			m_pPistol = nullptr;
 			std::cout << "장착 해제" << std::endl;
 		}
@@ -161,23 +206,27 @@ void PlayerTemp::KeyLoad()
 			//총알 찾기
 			for (auto item : m_mapInventory)
 			{
-				auto itemTag = item.first;
-				if (itemTag == ITEM_TAG::Bullet)
+				if (item.first == ITEM_TAG::Bullet)
 				{
-					for (auto bullet : item.second)
+					int need = m_pPistol->GetNeedBullet(); //장전에 필요한 총알 수 
+					auto& bullets = item.second;
+					for (int i = 0; i < need; ++i)
 					{
-						m_vecPBullet.emplace_back(static_cast<Bullet*>(bullet));
+						if (bullets.empty() == false)
+						{
+							auto bullet = bullets.back();
+							bullet->SetItemState(ITEM_STATE::Mounting);
+							m_pPistol->Load(static_cast<Bullet*>(bullet));
+							bullets.pop_back();
+							std::cout << "장전완료" << std::endl;
+						}
 					}
-				}
-			}
-
-			//총알 찾았으면 장전
-			if (m_vecPBullet.empty() == false)
-			{
-				m_pPistol->Load(m_vecPBullet);
-				m_vecPBullet.clear();
-				std::cout << "총알 장전!!!" << std::endl;
-			}
+				}//if ITEM_TAG::Bullet
+			}//for m_mapInventory
+		}//if m_pPistol
+		else //m_pPistpol == nullptr
+		{
+			std::cout << "총을 장착하고 장전해줘~!" << std::endl;
 		}
 	}
 }

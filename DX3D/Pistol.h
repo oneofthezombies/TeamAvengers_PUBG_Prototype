@@ -6,9 +6,9 @@ class Bullet;
 class Pistol : public Item
 {
 private:
-	LPD3DXMESH       m_pGunMesh;           //총을 그려주기 위한 메쉬
+	LPD3DXMESH       m_pGunMesh;            //총을 그려주기 위한 메쉬
 	vector<Bullet*>  m_vecPBullet;          //총알 담을 벡터
-	const int        m_bulletNum;          //최대 장전 개수
+	const int        m_maxBullet;           //최대 장전 개수
 
 	const int        m_bulletFireCoolTime; 
 	int              m_bulletFireCoolDown; //총알 발사는 지정된 쿨타임 시간이 지나야 다시 발사가능
@@ -31,7 +31,10 @@ public:
 	virtual void Render() override;
 
 	size_t GetBulletNum() { return m_vecPBullet.size(); }
+	void ShowBulletNumForDebug();
+	int GetNeedBullet() { return m_maxBullet - GetBulletNum(); }
+
 	void Fire(); //총쏘기
-	void Load(vector<Bullet*>& vecBullet); //장전
+	void Load(Bullet* bullet); //장전
 };
 

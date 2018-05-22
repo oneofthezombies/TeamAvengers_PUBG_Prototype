@@ -10,9 +10,9 @@ class PlayerTemp : public IDisplayObject
 private:
 	LPD3DXMESH                   m_pPlayerMesh; //임시플레이어를 그려주기 위한 메쉬
 	
+	//TODO: multimap으로 변경할 것
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
 	Pistol*                      m_pPistol;     //장착중인 총
-	vector<Bullet*>              m_vecPBullet;  //총알 장전을 위한 임시 변수
 
 	float                        m_velocity;
 	bool                         m_isRun;
@@ -31,7 +31,7 @@ public:
 
 	size_t GetInventorySize() { return m_mapInventory.size(); }
 	void PutItemInInventory(Item* item);
-	void ShowInventory();
+	void ShowInventoryForDebug();
 
 	/* 키 입력 관련 함수로 분리*/
 	void KeyMove();    //이동

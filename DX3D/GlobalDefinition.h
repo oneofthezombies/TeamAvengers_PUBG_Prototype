@@ -46,9 +46,9 @@ enum class ITEM_TAG
 
 enum class ITEM_STATE
 {
-	Dropped,    //땅에 떨어진 상태
-	Unmounted,  //미장착
-	Mounting    //장착
+	Dropped,     //땅에 떨어진 상태
+	InInventory, //인벤토리에 있음
+	Mounting     //장착중
 };
 
 struct KEYBOARD_STATE
