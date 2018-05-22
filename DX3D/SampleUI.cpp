@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "SampleUI.h"
-#include "IUIObject.h"
+#include "UIObject.h"
 #include "UIImage.h"
 #include "UIText.h"
-
 
 enum
 {
