@@ -6,12 +6,12 @@
 #include "SkyBox.h"
 #include "ICollidable.h"
 #include "UIText.h"
+#include "SampleCollidable.h"
 
 SceneTest::SceneTest()
 {
 	m_pGrid = NULL;
 }
-
 
 SceneTest::~SceneTest()
 {
@@ -21,12 +21,12 @@ SceneTest::~SceneTest()
 
 void SceneTest::Init()
 {
-    SkyBox* skyBox = new SkyBox;
-    D3DXMATRIXA16 tr;
-    const float scale = 20.0f;
-    D3DXMatrixScaling(&tr, scale, scale, scale);
-    skyBox->Init(&tr);
-    AddSimpleDisplayObj(skyBox);
+    //SkyBox* skyBox = new SkyBox;
+    //D3DXMATRIXA16 tr;
+    //const float scale = 20.0f;
+    //D3DXMatrixScaling(&tr, scale, scale, scale);
+    //skyBox->Init(&tr);
+    //AddSimpleDisplayObj(skyBox);
 
 	m_pGrid = new Grid; m_pGrid->Init();
 	IDisplayObject* pObj = NULL;
@@ -44,14 +44,6 @@ void SceneTest::Init()
 	g_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	g_pDevice->SetSamplerState(1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	g_pDevice->SetSamplerState(1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-
-    SampleCollidable* sc = new SampleCollidable;
-    sc->Init();
-    AddSimpleDisplayObj(sc);
-
-    SampleCollidable2* sc2 = new SampleCollidable2;
-    sc2->Init();
-    AddSimpleDisplayObj(sc2);
 }
 
 void SceneTest::Update()

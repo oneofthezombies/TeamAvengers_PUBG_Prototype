@@ -48,17 +48,8 @@
     <Filter Include="소스 파일\3.Object\DisplayObject">
       <UniqueIdentifier>{c82ae2d6-bfed-4717-818e-1676d966ba2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ootz_odd">
-      <UniqueIdentifier>{44c17e6c-6fe7-4908-8a72-09708295c08c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ootz_skybox">
-      <UniqueIdentifier>{15890d36-c57b-4258-9c65-9a48efeac1f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ootz_ui">
-      <UniqueIdentifier>{35506a84-1116-4d9f-b556-e92d9d75408e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ootz_impl">
-      <UniqueIdentifier>{7da41b5f-cdd0-4a9b-8e0c-37ec891cea54}</UniqueIdentifier>
+    <Filter Include="ootz">
+      <UniqueIdentifier>{f8199f84-9f01-4072-bf11-87ad18eb5a9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -201,51 +192,52 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="ParticleTest.h" />
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ootz_odd</Filter>
-    </ClInclude>
-    <ClInclude Include="SingletonBase.h">
-      <Filter>ootz_odd</Filter>
-    </ClInclude>
-    <ClInclude Include="ICollidable.h">
-      <Filter>ootz_odd</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>ootz_skybox</Filter>
-    </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>ootz_ui</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleUI.h">
-      <Filter>ootz_ui</Filter>
-    </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>ootz_ui</Filter>
-    </ClInclude>
-    <ClInclude Include="UIImage.h">
-      <Filter>ootz_ui</Filter>
-    </ClInclude>
-    <ClInclude Include="UIText.h">
-      <Filter>ootz_ui</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>ootz_impl</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractionMessageBox.h">
-      <Filter>ootz_impl</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverUI.h">
-      <Filter>ootz_impl</Filter>
-    </ClInclude>
     <ClInclude Include="FontManager.h">
       <Filter>소스 파일\2.Singleton</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>소스 파일\1.Main</Filter>
     </ClInclude>
-    <ClInclude Include="UIObject.h">
-      <Filter>ootz_ui</Filter>
+    <ClInclude Include="GameOverUI.h">
+      <Filter>ootz</Filter>
     </ClInclude>
+    <ClInclude Include="InteractionMessageBox.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollidable.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleCollidable.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>ootz</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -375,39 +367,40 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>ootz_odd</Filter>
-    </ClCompile>
-    <ClCompile Include="ICollidable.cpp">
-      <Filter>ootz_odd</Filter>
-    </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>ootz_skybox</Filter>
-    </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>ootz_ui</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleUI.cpp">
-      <Filter>ootz_ui</Filter>
-    </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>ootz_ui</Filter>
-    </ClCompile>
-    <ClCompile Include="UIImage.cpp">
-      <Filter>ootz_ui</Filter>
-    </ClCompile>
-    <ClCompile Include="UIText.cpp">
-      <Filter>ootz_ui</Filter>
-    </ClCompile>
     <ClCompile Include="FontManager.cpp">
       <Filter>소스 파일\2.Singleton</Filter>
     </ClCompile>
     <ClCompile Include="GameOverUI.cpp">
-      <Filter>ootz_impl</Filter>
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="ICollidable.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleCollidable.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>ootz</Filter>
     </ClCompile>
     <ClCompile Include="UIObject.cpp">
-      <Filter>ootz_ui</Filter>
+      <Filter>ootz</Filter>
     </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>ootz</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">

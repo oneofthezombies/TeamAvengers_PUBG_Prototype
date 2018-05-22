@@ -1,3 +1,7 @@
+///
+/// this SampleUI.cpp has legacy unrunnable code
+///
+
 #include "stdafx.h"
 #include "SampleUI.h"
 #include "UIObject.h"
