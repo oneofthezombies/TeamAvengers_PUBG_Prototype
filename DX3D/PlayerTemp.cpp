@@ -208,8 +208,8 @@ void PlayerTemp::KeyLoad()
 			{
 				if (item.first == ITEM_TAG::Bullet)
 				{
-					int need = m_pPistol->GetNeedBullet(); //장전에 필요한 총알 수 
-					auto& bullets = item.second;
+					int need = m_pPistol->GetNeedBullet(); //장전에 필요한 총알 수
+					auto& bullets = item.second; 
 					for (int i = 0; i < need; ++i)
 					{
 						if (bullets.empty() == false)
