@@ -3,8 +3,8 @@
 
 Camera::Camera()
 {
-	m_distance = 10.0f;
-	m_basePosY = 5.0f;
+	m_distance = 32.0f;
+	m_basePosY = 10.0f;
 	m_eye = D3DXVECTOR3(0, m_basePosY, -m_distance);
 	m_lookAt = D3DXVECTOR3(0, 0, 0);
 	m_up = D3DXVECTOR3(0, 1, 0);
@@ -25,16 +25,15 @@ Camera::~Camera()
 
 void Camera::Init()
 {
-	D3DXMatrixLookAtLH(&m_matView,
-		&m_eye, &m_lookAt, &m_up);
+	g_pCamera->SetTarget(&D3DXVECTOR3(0.f, 0.f, 1.f)); //카메라 타겟 설정
+
+	D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
 	g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
 
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 
-	D3DXMatrixPerspectiveFovLH(&m_matProj,
-		D3DX_PI / 4.0f,
-		rc.right / (float)rc.bottom, 1, 1000);
+	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DX_PI / 4.0f, rc.right / (float)rc.bottom, 1.0f, 100.f);
 	g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
 }
 
@@ -55,8 +54,7 @@ void Camera::Update()
 		m_eye = *m_pTarget + m_eye;
 	}
 
-	D3DXMatrixLookAtLH(&m_matView,
-		&m_eye, &m_lookAt, &m_up);
+	D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
 	g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
 
 	if (GetAsyncKeyState('1') & 0x0001)
@@ -106,11 +104,11 @@ void Camera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	break;
-	case WM_MOUSEWHEEL:
-		m_distance -= GET_WHEEL_DELTA_WPARAM(wParam) / 50.0f;
-		if (m_distance <= 10) m_distance = 10;
-		if (m_distance >= 30) m_distance = 30;
-		break;
+	//case WM_MOUSEWHEEL:
+	//	m_distance -= GET_WHEEL_DELTA_WPARAM(wParam) / 50.0f;
+	//	if (m_distance <= 10) m_distance = 10;
+	//	if (m_distance >= 30) m_distance = 30;
+	//	break;
 	}
 }
 //D3DXVec3Unproject(out v3,in v3,viewport,projection,view,world) //한번에 viewport에서 local로 

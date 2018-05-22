@@ -30,11 +30,25 @@ enum SCENE_INDEX {
 	SCENE_GRID,
 	SCENE_OBJMAP,
 	SCENE_HEIGHTMAP,
-	SCENE_TEST
+	SCENE_TEST,
+	SCENE_SHOTTING
 };
 
 enum TAG_DISPLAYOBJECT {
 	TAG_PLAYER
+};
+
+enum class ITEM_TAG
+{
+	Pistol,
+	Bullet
+};
+
+enum class ITEM_STATE
+{
+	Dropped,     //땅에 떨어진 상태
+	InInventory, //인벤토리에 있음
+	Mounting     //장착중
 };
 
 struct KEYBOARD_STATE

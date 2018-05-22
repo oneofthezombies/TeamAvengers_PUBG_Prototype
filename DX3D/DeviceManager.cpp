@@ -48,6 +48,8 @@ HRESULT DeviceManager::Init()
 	{
 		return E_FAIL;
 	}
+
+	return S_OK;
 }
 
 LPDIRECT3DDEVICE9 DeviceManager::GetDevice()

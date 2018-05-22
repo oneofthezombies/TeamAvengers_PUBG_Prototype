@@ -14,10 +14,11 @@ Application::~Application()
 
 void Application::Init()
 {
-	g_pDeviceManager->Init();
+    g_pDeviceManager->Init();
+    g_pKeyManager->Init();
     g_pUIManager->Init();
-	g_pCamera->Init();
-	g_pSceneManager->Init();
+    g_pCamera->Init();
+    g_pSceneManager->Init();
     g_pCollisionManager->Init();
 }
 
@@ -30,6 +31,7 @@ void Application::Destroy()
 	g_pTextureManager->Destroy();
 	g_pFontManager->Destroy();
 	Debug->Destroy();
+	g_pKeyManager->Destroy(); //���� ��� �����ִ� ��
 	g_pDeviceManager->Destroy();
 }
 

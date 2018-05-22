@@ -56,6 +56,11 @@ void DebugManager::AddText(D3DXVECTOR3 str)
 	strcat_s(m_str, (to_string(str.x) + " , " + to_string(str.y) + " , " + to_string(str.z)).c_str());
 }
 
+void DebugManager::AddText(size_t str)
+{
+	strcat_s(m_str, to_string(str).data());
+}
+
 void DebugManager::EndLine()
 {
 	if (strlen(m_str) == 0) return;
