@@ -63,6 +63,20 @@ LPD3DXFONT FontManager::GetFont(const Font::Type val)
                            HANGEUL_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, FF_DONTCARE,
                            TEXT("08서울남산체 M"), &m_umapFont[val]);
         }
+        else if (val == Font::kInteractionMessageF)
+        {
+            AddFontResource(TEXT("resources/fonts/SeoulNamsanM.ttf"));
+            D3DXCreateFont(g_pDevice, 16, 8, FW_NORMAL, 1, false,
+                           HANGEUL_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, FF_DONTCARE,
+                           TEXT("08서울남산체 M"), &m_umapFont[val]);
+        }
+        else if (val == Font::kInteractionMessageDescription)
+        {
+            AddFontResource(TEXT("resources/fonts/SeoulNamsanM.ttf"));
+            D3DXCreateFont(g_pDevice, 18, 9, FW_NORMAL, 1, false,
+                           HANGEUL_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, FF_DONTCARE,
+                           TEXT("08서울남산체 M"), &m_umapFont[val]);
+        }
 	}
 	return m_umapFont[val];
 }

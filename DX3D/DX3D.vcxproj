@@ -187,8 +187,9 @@
     <ClInclude Include="ICollidable.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
-    <ClInclude Include="InteractionMessageBox.h" />
-    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="SampleUIButtonListner.h" />
+    <ClInclude Include="UIInteractionMessage.h" />
+    <ClInclude Include="UIInventory.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="SampleCollidable.h" />
     <ClInclude Include="UIObject.h" />
@@ -218,7 +219,7 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
-    <ClInclude Include="GameOverUI.h" />
+    <ClInclude Include="UIGameOver.h" />
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIText.h" />
@@ -249,7 +250,8 @@
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
-    <ClCompile Include="GameOverUI.cpp" />
+    <ClCompile Include="SampleUIButtonListner.cpp" />
+    <ClCompile Include="UIGameOver.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -264,6 +266,7 @@
     <ClCompile Include="ICollidable.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="SampleCollidable.cpp" />
+    <ClCompile Include="UIInteractionMessage.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />

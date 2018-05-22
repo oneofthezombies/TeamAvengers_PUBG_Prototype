@@ -204,7 +204,7 @@ void PlayerTemp::KeyLoad()
 		if (m_pPistol) //장착하고 있는 총이 있으면
 		{
 			//총알 찾기
-			for (auto item : m_mapInventory)
+			for (auto& item : m_mapInventory)
 			{
 				if (item.first == ITEM_TAG::Bullet)
 				{

@@ -59,6 +59,6 @@ void IDisplayObject::RenderChildren()
 
 void IDisplayObject::ReleaseChildren()
 {
-    for (auto& c : m_vecPChild)
+    for (auto c : m_vecPChild)
         SAFE_RELEASE(c);
 }

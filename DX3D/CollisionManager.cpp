@@ -242,6 +242,7 @@ void CollisionManager::Render()
 {
     if (!m_bIsRender) return;
 
+    g_pDevice->SetRenderState(D3DRS_LIGHTING, false);
     for (auto& c : m_usetICollidable)
     {
         ColliderBase* collider = c->GetCollider();
@@ -249,6 +250,7 @@ void CollisionManager::Render()
 
         collider->Render();
     }
+    g_pDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 void CollisionManager::AddICollidable(ICollidable& val)
@@ -280,6 +282,8 @@ void CollisionManager::NotifyCollision()
 
             ColliderBase* c2 = o2->GetCollider();
             if (!c2) continue;
+
+            if (o1 == o2) continue;
 
             if (c1->GetType() == ColliderBase::Type::kBox &&
                 c2->GetType() == ColliderBase::Type::kBox)

@@ -1,466 +1,508 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>
-      </Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="소스 파일\1.Main">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>
-      </Extensions>
-    </Filter>
-    <Filter Include="소스 파일\2.Singleton">
-      <UniqueIdentifier>{3b87f3ff-6c27-4d7a-9f51-b9ef2ad93b17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object">
-      <UniqueIdentifier>{574297fa-3ec0-40ca-9a5c-80bdcc62469d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\4.Scene">
-      <UniqueIdentifier>{1601107b-ee66-4700-80e6-f0016ebc997c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\_Base">
-      <UniqueIdentifier>{5b379144-4a14-4abe-b6a5-d48f297ac1bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\Cube">
-      <UniqueIdentifier>{305c21d8-5d0c-47ae-b860-5608f0bb7cf5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\Grid">
-      <UniqueIdentifier>{37298702-52ad-4a29-81cc-c8e6dccd7814}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\Action">
-      <UniqueIdentifier>{6d96de00-896e-4f76-badf-ddb4863899c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\OBJ">
-      <UniqueIdentifier>{0650a0a5-75a3-41ea-94be-bd6e816a18f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\ASE">
-      <UniqueIdentifier>{d00a7411-e3f2-464a-9eef-2b4eecf57273}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\Utiliy">
-      <UniqueIdentifier>{f2c16e93-7765-435e-99d2-e2fc66057cd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\3.Object\DisplayObject">
-      <UniqueIdentifier>{c82ae2d6-bfed-4717-818e-1676d966ba2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ootz">
-      <UniqueIdentifier>{f8199f84-9f01-4072-bf11-87ad18eb5a9c}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DeviceManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalDefinition.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneGrid.h">
-      <Filter>소스 파일\4.Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseObject.h">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="IScene.h">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorCube.h">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="IDisplayObject.h">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Cubeman.h">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="CubemanParts.h">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>소스 파일\3.Object\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="D3DUtility.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Walls.h">
-      <Filter>소스 파일\3.Object\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionMoveTo.h">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionRepeat.h">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionSequence.h">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="IAction.h">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="IActionObject.h">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionCube.h">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Hexagon.h">
-      <Filter>소스 파일\3.Object\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawingGroup.h">
-      <Filter>소스 파일\3.Object\OBJ</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjLoader.h">
-      <Filter>소스 파일\3.Object\OBJ</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObjMap.h">
-      <Filter>소스 파일\4.Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjMap.h">
-      <Filter>소스 파일\3.Object\OBJ</Filter>
-    </ClInclude>
-    <ClInclude Include="IMap.h">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="MapManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="AseLoader.h">
-      <Filter>소스 파일\3.Object\ASE</Filter>
-    </ClInclude>
-    <ClInclude Include="AseObject.h">
-      <Filter>소스 파일\3.Object\ASE</Filter>
-    </ClInclude>
-    <ClInclude Include="Asciitok.h">
-      <Filter>소스 파일\3.Object\ASE</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneHeightmap.h">
-      <Filter>소스 파일\4.Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="AseCharacter.h">
-      <Filter>소스 파일\3.Object\ASE</Filter>
-    </ClInclude>
-    <ClInclude Include="IUnitObject.h">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="HeightMap.h">
-      <Filter>소스 파일\3.Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Ray.h">
-      <Filter>소스 파일\3.Object\Utiliy</Filter>
-    </ClInclude>
-    <ClInclude Include="Picking.h">
-      <Filter>소스 파일\3.Object\DisplayObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjManager.h" />
-    <ClInclude Include="AStarNode.h" />
-    <ClInclude Include="AStar.h" />
-    <ClInclude Include="Heap.h" />
-    <ClInclude Include="Frustum.h" />
-    <ClInclude Include="SceneTest.h" />
-    <ClInclude Include="ParticleTest.h" />
-    <ClInclude Include="FontManager.h">
-      <Filter>소스 파일\2.Singleton</Filter>
-    <ClInclude Include="KeyManager.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneShotting.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerTemp.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Pistol.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>소스 파일</Filter>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ootz_odd</Filter>
-    </ClInclude>
-    <ClInclude Include="SingletonBase.h">
-      <Filter>ootz_odd</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverUI.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractionMessageBox.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="ICollidable.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleCollidable.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="SingletonBase.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="UIButton.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="UIImage.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="UIObject.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="UIText.h">
-      <Filter>ootz</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleUI.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="DeviceManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="GlobalDefinition.cpp">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClCompile>
-    <ClCompile Include="DX3D.cpp">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClCompile>
     <ClCompile Include="SceneGrid.cpp">
-      <Filter>소스 파일\4.Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseObject.cpp">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClCompile>
-    <ClCompile Include="ColorCube.cpp">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyboardManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="IDisplayObject.cpp">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Cubeman.cpp">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="CubemanParts.cpp">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>소스 파일\3.Object\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="D3DUtility.cpp">
-      <Filter>소스 파일\1.Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Walls.cpp">
-      <Filter>소스 파일\3.Object\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionMoveTo.cpp">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionRepeat.cpp">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionSequence.cpp">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="IAction.cpp">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="IActionObject.cpp">
-      <Filter>소스 파일\3.Object\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionCube.cpp">
-      <Filter>소스 파일\3.Object\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Hexagon.cpp">
-      <Filter>소스 파일\3.Object\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawingGroup.cpp">
-      <Filter>소스 파일\3.Object\OBJ</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjLoader.cpp">
-      <Filter>소스 파일\3.Object\OBJ</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneObjMap.cpp">
-      <Filter>소스 파일\4.Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjMap.cpp">
-      <Filter>소스 파일\3.Object\OBJ</Filter>
-    </ClCompile>
-    <ClCompile Include="MapManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="AseLoader.cpp">
-      <Filter>소스 파일\3.Object\ASE</Filter>
-    </ClCompile>
-    <ClCompile Include="AseObject.cpp">
-      <Filter>소스 파일\3.Object\ASE</Filter>
+      <Filter>1. Scene</Filter>
     </ClCompile>
     <ClCompile Include="SceneHeightmap.cpp">
-      <Filter>소스 파일\4.Scene</Filter>
+      <Filter>1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObjMap.cpp">
+      <Filter>1. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTest.cpp">
+      <Filter>1. Scene</Filter>
     </ClCompile>
     <ClCompile Include="AseCharacter.cpp">
-      <Filter>소스 파일\3.Object\ASE</Filter>
+      <Filter>Common Interface\ASE</Filter>
     </ClCompile>
-    <ClCompile Include="IUnitObject.cpp">
-      <Filter>소스 파일\3.Object\_Base</Filter>
+    <ClCompile Include="AStar.cpp">
+      <Filter>Utilitiy\AStar</Filter>
+    </ClCompile>
+    <ClCompile Include="AStarNode.cpp">
+      <Filter>Utilitiy\AStar</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorCube.cpp">
+      <Filter>2. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Cubeman.cpp">
+      <Filter>2. Object\CubeMan</Filter>
+    </ClCompile>
+    <ClCompile Include="CubemanParts.cpp">
+      <Filter>2. Object\CubeMan</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DUtility.cpp">
+      <Filter>Utilitiy</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>2. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalDefinition.cpp">
+      <Filter>Utilitiy</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>2. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Heap.cpp">
+      <Filter>Utilitiy</Filter>
     </ClCompile>
     <ClCompile Include="HeightMap.cpp">
-      <Filter>소스 파일\3.Object</Filter>
+      <Filter>3. Map</Filter>
     </ClCompile>
-    <ClCompile Include="Ray.cpp">
-      <Filter>소스 파일\3.Object\Utiliy</Filter>
-    </ClCompile>
-    <ClCompile Include="Picking.cpp">
-      <Filter>소스 파일\3.Object\DisplayObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjManager.cpp" />
-    <ClCompile Include="AStarNode.cpp" />
-    <ClCompile Include="AStar.cpp" />
-    <ClCompile Include="Heap.cpp" />
-    <ClCompile Include="Frustum.cpp" />
-    <ClCompile Include="SceneTest.cpp" />
-    <ClCompile Include="ParticleTest.cpp" />
-    <ClCompile Include="FontManager.cpp">
-      <Filter>소스 파일\2.Singleton</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverUI.cpp">
-      <Filter>ootz</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneShotting.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerTemp.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Pistol.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="IScene.cpp">
-      <Filter>소스 파일\3.Object\_Base</Filter>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>ootz</Filter>
+    <ClCompile Include="Hexagon.cpp">
+      <Filter>2. Object</Filter>
     </ClCompile>
     <ClCompile Include="ICollidable.cpp">
-      <Filter>ootz</Filter>
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IDisplayObject.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IScene.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IUnitObject.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MapManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjMap.cpp">
+      <Filter>3. Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjLoader.cpp">
+      <Filter>Utilitiy\OBJ</Filter>
+    </ClCompile>
+    <ClCompile Include="AseLoader.cpp">
+      <Filter>Utilitiy\ASE</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleTest.cpp">
+      <Filter>2. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Picking.cpp">
+      <Filter>2. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Utilitiy</Filter>
     </ClCompile>
     <ClCompile Include="SampleCollidable.cpp">
-      <Filter>ootz</Filter>
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleUI.cpp">
+      <Filter>Sample</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
-      <Filter>ootz</Filter>
+      <Filter>2. Object</Filter>
     </ClCompile>
-    <ClCompile Include="UIButton.cpp">
-      <Filter>ootz</Filter>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="UIImage.cpp">
-      <Filter>ootz</Filter>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Walls.cpp">
+      <Filter>2. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D.cpp">
+      <Filter>Main&amp;PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Main&amp;PCH</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
-      <Filter>ootz</Filter>
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneShotting.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="Pistol.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTemp.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="IAction.cpp">
+      <Filter>Common Interface\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="IActionObject.cpp">
+      <Filter>Common Interface\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Common Interface\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>Common Interface\UI</Filter>
     </ClCompile>
     <ClCompile Include="UIObject.cpp">
-      <Filter>ootz</Filter>
+      <Filter>Common Interface\UI</Filter>
     </ClCompile>
     <ClCompile Include="UIText.cpp">
-      <Filter>ootz</Filter>
+      <Filter>Common Interface\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SampleUI.cpp" />
+    <ClCompile Include="UIGameOver.cpp">
+      <Filter>2. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AseObject.cpp">
+      <Filter>Common Interface\ASE</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionCube.cpp">
+      <Filter>2. Object\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionMoveTo.cpp">
+      <Filter>2. Object\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionRepeat.cpp">
+      <Filter>2. Object\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionSequence.cpp">
+      <Filter>2. Object\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawingGroup.cpp">
+      <Filter>Utilitiy</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleUIButtonListner.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="UIInteractionMessage.cpp">
+      <Filter>2. Object\UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SceneGrid.h">
+      <Filter>1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHeightmap.h">
+      <Filter>1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObjMap.h">
+      <Filter>1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTest.h">
+      <Filter>1. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AseCharacter.h">
+      <Filter>Common Interface\ASE</Filter>
+    </ClInclude>
+    <ClInclude Include="AStar.h">
+      <Filter>Utilitiy\AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarNode.h">
+      <Filter>Utilitiy\AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorCube.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Cubeman.h">
+      <Filter>2. Object\CubeMan</Filter>
+    </ClInclude>
+    <ClInclude Include="CubemanParts.h">
+      <Filter>2. Object\CubeMan</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DUtility.h">
+      <Filter>Utilitiy</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalDefinition.h">
+      <Filter>Utilitiy</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>Utilitiy</Filter>
+    </ClInclude>
+    <ClInclude Include="HeightMap.h">
+      <Filter>3. Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Hexagon.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollidable.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IDisplayObject.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IMap.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IScene.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnitObject.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MapManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMap.h">
+      <Filter>3. Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Asciitok.h">
+      <Filter>Utilitiy\ASE</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjLoader.h">
+      <Filter>Utilitiy\OBJ</Filter>
+    </ClInclude>
+    <ClInclude Include="AseLoader.h">
+      <Filter>Utilitiy\ASE</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleTest.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Picking.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Utilitiy</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleCollidable.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleUI.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Walls.h">
+      <Filter>2. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D.h">
+      <Filter>Main&amp;PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Main&amp;PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Main&amp;PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Main&amp;PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneShotting.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="Pistol.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTemp.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="IAction.h">
+      <Filter>Common Interface\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="IActionObject.h">
+      <Filter>Common Interface\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Common Interface\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>Common Interface\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>Common Interface\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>Common Interface\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInventory.h">
+      <Filter>2. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIGameOver.h">
+      <Filter>2. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AseObject.h">
+      <Filter>Common Interface\ASE</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionCube.h">
+      <Filter>2. Object\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionMoveTo.h">
+      <Filter>2. Object\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionRepeat.h">
+      <Filter>2. Object\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSequence.h">
+      <Filter>2. Object\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawingGroup.h">
+      <Filter>Utilitiy</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleUIButtonListner.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInteractionMessage.h">
+      <Filter>2. Object\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DX3D.ico">
+      <Filter>Main&amp;PCH</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>Main&amp;PCH</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="1. Scene">
+      <UniqueIdentifier>{57fc7c19-7f3a-4081-b21d-3b44d3f2b5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Scene\SceneShotting">
+      <UniqueIdentifier>{33a0f931-6f1e-4058-96c9-cdb7d3bb973d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Object">
+      <UniqueIdentifier>{986361bb-722e-416d-b72a-8f5504b71fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Object\CubeMan">
+      <UniqueIdentifier>{882f3850-b409-41da-a362-d3c5e1b5c22e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Object\UI">
+      <UniqueIdentifier>{a0749e5e-df9a-408c-b3f5-296bcd932957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Object\Action">
+      <UniqueIdentifier>{ecfdc67e-69d1-4daa-939b-b813a9baa713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3. Map">
+      <UniqueIdentifier>{b549a162-c29a-4a99-ac24-92b1d59e8943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Interface">
+      <UniqueIdentifier>{86812755-99c0-43a3-842e-e2e5d10df752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Interface\Action">
+      <UniqueIdentifier>{64bda3ee-8065-489f-be9d-adc5517b9338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Interface\UI">
+      <UniqueIdentifier>{df1864f2-7f9d-448b-a13c-2a0f222648f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common Interface\ASE">
+      <UniqueIdentifier>{79b6ef84-45e8-4b30-bb1c-3892cc13b6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main&amp;PCH">
+      <UniqueIdentifier>{591e5a92-a875-4784-9596-f7ffc3b5f3a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{7e3af0d5-d468-4527-8d55-60b516e11285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilitiy">
+      <UniqueIdentifier>{69d0aa29-f1bc-491e-b870-686ecff074a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilitiy\ASE">
+      <UniqueIdentifier>{2a5bcb92-38ab-49bf-8b87-299159a1e4e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilitiy\OBJ">
+      <UniqueIdentifier>{bafcf634-eb42-44c6-8198-0149885a5f14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilitiy\AStar">
+      <UniqueIdentifier>{89b2840f-2a0e-41bf-a4c1-ceeb4d29444d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sample">
+      <UniqueIdentifier>{fcb27165-7476-42ab-8597-663fd7b2ce28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">
-      <Filter>리소스 파일</Filter>
+      <Filter>Main&amp;PCH</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="DX3D.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
   </ItemGroup>
 </Project>

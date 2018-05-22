@@ -1,10 +1,9 @@
 #pragma once
-#include "IDisplayObject.h"
+#include "ICollidable.h"
 
 class CubemanParts;
 
-class Cubeman :
-	public IDisplayObject
+class Cubeman : public ICollidable
 {
 private:
 	CubemanParts *	m_pRootParts;
@@ -30,7 +29,6 @@ public:
 	Cubeman();
 	~Cubeman();
 
-	// IDisplayObject을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;
@@ -94,5 +92,8 @@ public:
 	{ 8, 20, 8, 16, 4, 16, 4, 20 },		// 상
 	{ 12, 16, 12, 20, 8, 20, 8, 16 }	// 하
 	};
+
+    // Inherited via ICollidable
+    virtual void OnCollision(ICollidable & other) override;
 };
 

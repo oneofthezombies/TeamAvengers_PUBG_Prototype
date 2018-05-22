@@ -4,14 +4,22 @@
 #include "PlayerTemp.h"
 #include "Pistol.h"
 #include "Bullet.h"
+#include "SampleCollidable.h"
+#include "SkyBox.h"
+#include "UIButton.h"
+#include "UIGameOver.h"
+#include "SampleUIButtonListner.h"
+#include "UIManager.h"
+#include "UIInteractionMessage.h"
+#include "Cubeman.h"
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
 	, m_pPlayerTemp(nullptr)
     , m_pPistol(nullptr)
+    , m_pSampleUIButtonListner(nullptr)
 {
 }
-
 
 SceneShotting::~SceneShotting()
 {
@@ -20,6 +28,13 @@ SceneShotting::~SceneShotting()
 
 void SceneShotting::Init()
 {
+    SkyBox* skyBox = new SkyBox;
+    D3DXMATRIXA16 m;
+    const float scale = 50.0f;
+    D3DXMatrixScaling(&m, scale, scale, scale);
+    skyBox->Init(m);
+    AddSimpleDisplayObj(skyBox);
+
 	//x, y, z ±âÁØ¼±
 	D3DCOLOR c;
 	float halfLength = 15.f;
@@ -66,11 +81,40 @@ void SceneShotting::Init()
 		m_pPlayerTemp->PutItemInInventory(bullet);
 	}
 	m_vecPBullet.clear();
+
+    CollidablePlayerBox* cpb = new CollidablePlayerBox;
+    cpb->Init();
+    AddSimpleDisplayObj(cpb);
+
+    CollidableItemBox* cib = new CollidableItemBox;
+    cib->Init();
+    AddSimpleDisplayObj(cib);
+
+    UIButton* sampleUIB = new UIButton;
+    sampleUIB->Init();
+    sampleUIB->SetSize(D3DXVECTOR2(200.0f, 200.0f));
+    sampleUIB->SetText(g_pFontManager->GetFont(Font::kIdle), TEXT("Sample"));
+    m_pSampleUIButtonListner = new SampleUIButtonListner;
+    m_pSampleUIButtonListner->SetUIButton(*sampleUIB);
+    g_pUIManager->RegisterUIObject(*sampleUIB);
+
+    Cubeman* cm = new Cubeman;
+    cm->Init();
+    cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
+    AddSimpleDisplayObj(cm);
 }
 
 void SceneShotting::Update()
 {
 	OnUpdateIScene();
+
+    if (g_pKeyManager->IsOnceKeyDown('0'))
+    {
+        Cubeman* cm = new Cubeman;
+        cm->Init();
+        cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
+        AddSimpleDisplayObj(cm);
+    }
 }
 
 void SceneShotting::Render()

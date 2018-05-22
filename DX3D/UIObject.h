@@ -1,5 +1,4 @@
 #pragma once
-#include "IDisplayObject.h"
 
 class UIObject
 {
@@ -45,5 +44,6 @@ public:
     void SetPosition(const D3DXVECTOR3& val);
     void SetCenter(const D3DXVECTOR3& val);
     void SetSize(const D3DXVECTOR2& val);
+    const D3DXVECTOR2& GetSize() const;
     void SetColor(const D3DCOLOR& val);
 };

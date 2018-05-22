@@ -41,7 +41,7 @@ public:
     virtual ~SphereCollider() = default;
 
     void Init(const float radius);
-    void Update(const D3DXMATRIXA16* transform);
+    void Update(const D3DXMATRIXA16& transform);
     virtual void Render() override;
 };
 
@@ -61,7 +61,7 @@ public:
     virtual ~BoxCollider() = default;
 
     void Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max);
-    void Update(const D3DXMATRIXA16* transform);
+    void Update(const D3DXMATRIXA16& transform);
     virtual void Render() override;
 
     D3DXVECTOR3 GetExtent() const;
@@ -70,18 +70,21 @@ public:
 
 class ICollidable : public IDisplayObject
 {
-protected:
+private:
     ColliderBase* m_pCollider;
 
 public:
     ICollidable();
     virtual ~ICollidable();
 
-    // Inherited via IDisplayObject
     virtual void Init() override;
     virtual void Update() override;
     virtual void Render() override;
 
     virtual void OnCollision(ICollidable& other) = 0;
+
+    BoxCollider& SetCollider(const D3DXVECTOR3& min, const D3DXVECTOR3& max);
+    SphereCollider& SetCollider(const float radius);
+
     ColliderBase* GetCollider() const;
 };

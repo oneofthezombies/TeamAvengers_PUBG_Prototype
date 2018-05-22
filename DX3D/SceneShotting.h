@@ -5,6 +5,8 @@ class Ground;
 class PlayerTemp;
 class Pistol;
 class Bullet;
+class SampleUIButtonListner;
+
 class SceneShotting : public IScene
 {
 private:
@@ -14,6 +16,8 @@ private:
 	vector<Bullet*>   m_vecPBullet;
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±‚¡ÿº±
+
+    SampleUIButtonListner* m_pSampleUIButtonListner;
 
 public:
 	SceneShotting();

@@ -18,7 +18,6 @@
 #include <memory.h>
 #include <tchar.h>
 
-
 // TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다.
 #include <cassert>
 #include <atlstr.h>
@@ -72,6 +71,10 @@ using std::numeric_limits;
 using std::make_pair;
 using std::pair;
 
+#include <type_traits>
+using std::is_base_of_v;
+using std::enable_if_t;
+
 #include <d3dx9.h>
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
@@ -96,6 +99,9 @@ extern HWND g_hWnd;
 #include "MapManager.h"
 #include "KeyboardManager.h"
 #include "keyManager.h"
+#include "IScene.h"
+#include "UIManager.h"
+#include "CollisionManager.h"
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console") 

@@ -107,7 +107,7 @@ void SkyBox::Init()
     MessageBox(NULL, TEXT("Do not use this method. use SkyBox::Init(const D3DXMATRIXA16* transform)"), 0, 0);
 }
 
-void SkyBox::Init(const D3DXMATRIXA16* transform)
+void SkyBox::Init(const D3DXMATRIXA16& transform)
 {
     m_pTex = g_pTextureManager->GetTexture("resources/images/skybox002.png");
 
@@ -119,11 +119,8 @@ void SkyBox::Init(const D3DXMATRIXA16* transform)
     const auto dv = g_pDevice;
     dv->CreateVertexBuffer(verticesMemorySize, D3DUSAGE_WRITEONLY, VERTEX_PT::FVF, D3DPOOL_MANAGED, &m_pVB, NULL);
 
-    if (transform)
-    {
-        for (auto& v : vertices)
-            D3DXVec3TransformCoord(&v.p, &v.p, transform);
-    }
+    for (auto& v : vertices)
+        D3DXVec3TransformCoord(&v.p, &v.p, &transform);
 
     VERTEX_PT* vb;
     m_pVB->Lock(0, 0, (LPVOID*)&vb, D3DLOCK_DISCARD);

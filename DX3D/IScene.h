@@ -1,49 +1,31 @@
 #pragma once
 #include "BaseObject.h"
-#include "IDisplayObject.h"
+
 class IDisplayObject;
 
 class IScene : public BaseObject
 {
 protected:
-	set<IDisplayObject*> m_simpleDisplayList;
-	std::deque<std::pair<float, IDisplayObject*>> m_deqToDeleteIDisplayObjects;
+    unordered_set<IDisplayObject*> m_usetIDisplayObjects;
+    unordered_map<IDisplayObject*, float> m_umapToDeleteIDisplayObjects;
 
-	IScene() {}
+    IScene();
 
 public:
-	virtual ~IScene() {}
+    virtual ~IScene();
 	virtual void Init() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
 	virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) = 0;
 
-	void AddSimpleDisplayObj(IDisplayObject* p)
-	{
-		m_simpleDisplayList.insert(p);
-	}
+    void AddSimpleDisplayObj(IDisplayObject* val);
+    void RemoveSimpleDisplayObj(IDisplayObject* val);
 
-	void RemoveSimpleDisplayObj(IDisplayObject* p)
-	{
-		m_simpleDisplayList.erase(p);
-	}
+    void OnUpdateIScene();
+    void OnRenderIScene();
+    void OnDestructIScene();
 
-	void OnUpdateIScene() 
-	{ 
-		for (auto p : m_simpleDisplayList) 
-			SAFE_UPDATE(p);
-
-		UpdateToDeleteIDisplayObjects();
-	}
-
-	void OnRenderIScene()
-	{for (auto p : m_simpleDisplayList) 
-		SAFE_RENDER(p);	}
-	void OnDestructIScene()
-	{for (auto p : m_simpleDisplayList) 
-		SAFE_RELEASE(p);}
-
-	void Destroy(IDisplayObject* p);
+	void Destroy(IDisplayObject* p, const float t = 0.0f);
 	void UpdateToDeleteIDisplayObjects();
 };
 

@@ -15,6 +15,8 @@ struct Font
         kGameOverRankingNumOther,
         kGameOverNickname,
         kGameOverGoToLobby,
+        kInteractionMessageF,
+        kInteractionMessageDescription
     };
 };
 
