@@ -149,6 +149,11 @@ void UIObject::SetSize(const D3DXVECTOR2& val)
     m_vSize = val;
 }
 
+const D3DXVECTOR2& UIObject::GetSize() const
+{
+    return m_vSize;
+}
+
 void UIObject::SetColor(const D3DCOLOR& val)
 {
     m_color = val;

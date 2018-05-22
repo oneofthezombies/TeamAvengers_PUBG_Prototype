@@ -21,8 +21,6 @@ private:
     int                             m_UIObjectInstanceID;
     bool                            m_bIsDrawBorder;
 
-    SampleUIListner* m_pSampleUIListner;
-    
     POINT m_prevMousePos;
     POINT m_currMousePos;
     bool  m_prevIsPushedMouseButtonLeft;
@@ -58,14 +56,4 @@ public:
     bool GetPreviousIsPushedMouseButtonRight() const;
 
     friend SingletonBase<UIManager>;
-};
-
-class SampleUIListner : public IUIButtonOnMouseListner
-{
-public:
-    virtual void OnMouseEnter() override;
-    virtual void OnMouseExit() override;
-    virtual void OnMouseDown(const int key) override;
-    virtual void OnMouseUp(const int key) override;
-    virtual void OnMouseDrag(const int key) override;
 };

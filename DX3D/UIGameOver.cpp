@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "GameOverUI.h"
+#include "UIGameOver.h"
 #include "UIText.h"
 #include "UIManager.h"
 #include "UIButton.h"
 
-GameOverUI::GameOverUI()
+UIGameOver::UIGameOver()
     : UIImage()
     , m_pGoToLobbyButtonListner(nullptr)
 {
 }
 
-GameOverUI::~GameOverUI()
+UIGameOver::~UIGameOver()
 {
     SAFE_DELETE(m_pGoToLobbyButtonListner);
 }
 
-void GameOverUI::Init()
+void UIGameOver::Init()
 {
     SetTexture("resources/images/black_1280_720_70.png");
     SetSize(D3DXVECTOR2(1280.0f, 720.f));
@@ -84,7 +84,7 @@ void GoToLobbyButtonListner::OnMouseExit()
 
 void GoToLobbyButtonListner::OnMouseDown(const int key)
 {
-    g_pUIManager->Destroy(*m_pHandle, 1.0f);
+    g_pUIManager->Destroy(*m_pHandle);
 }
 
 void GoToLobbyButtonListner::OnMouseUp(const int key)

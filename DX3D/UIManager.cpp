@@ -1,16 +1,11 @@
 #include "stdafx.h"
 #include "UIManager.h"
-#include "UIObject.h"
-#include "UIText.h"
-#include "UIButton.h"
-#include "GameOverUI.h"
 
 UIManager::UIManager()
     : SingletonBase<UIManager>()
     , m_pSprite(nullptr)
     , m_UIObjectInstanceID(0)
     , m_bIsDrawBorder(true)
-    , m_pSampleUIListner(nullptr)
 {
 }
 
@@ -21,18 +16,6 @@ UIManager::~UIManager()
 void UIManager::Init()
 {
     InitSprite();
-
-    UIButton* sample = new UIButton;
-    sample->Init();
-    sample->SetSize(D3DXVECTOR2(200.0f, 200.0f));
-    sample->SetText(g_pFontManager->GetFont(Font::kIdle), TEXT("Sample"));
-    m_pSampleUIListner = new SampleUIListner;
-    m_pSampleUIListner->SetUIButton(*sample);
-    RegisterUIObject(*sample);
-
-    GameOverUI* goui = new GameOverUI;
-    goui->Init();
-    RegisterUIObject(*goui);
 }
 
 void UIManager::InitSprite()
@@ -47,7 +30,6 @@ void UIManager::Destroy()
         SAFE_RELEASE(u);
         SAFE_DELETE(u);
     }
-    SAFE_DELETE(m_pSampleUIListner);
     SAFE_RELEASE(m_pSprite);
 }
 
@@ -189,29 +171,4 @@ bool UIManager::IsPushedMouseButtonRight() const
 bool UIManager::GetPreviousIsPushedMouseButtonRight() const
 {
     return m_prevIsPushedMouseButtonRight;
-}
-
-void SampleUIListner::OnMouseEnter()
-{
-    cout << "OnMouseEnter()\n";
-}
-
-void SampleUIListner::OnMouseExit()
-{
-    cout << "OnMouseExit()\n";
-}
-
-void SampleUIListner::OnMouseDown(const int key)
-{
-    cout << "OnMouseDown()\n";
-}
-
-void SampleUIListner::OnMouseUp(const int key)
-{
-    cout << "OnMouseUp()\n";
-}
-
-void SampleUIListner::OnMouseDrag(const int key)
-{
-    Debug->AddText("OnMouseDrag()\n");
 }

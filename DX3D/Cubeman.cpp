@@ -1,13 +1,16 @@
 #include "stdafx.h"
 #include "Cubeman.h"
 #include "CubemanParts.h"
+#include "IScene.h"
+#include "Bullet.h"
+#include "UIGameOver.h"
 
 Cubeman::Cubeman()
 {
 	m_pRootParts = NULL;
 
 	m_isMoving = false;
-	m_moveSpeed = 0.2f;
+	m_moveSpeed = 0.05f;
 	m_currMoveSpeedRate = 1.0f;
 	m_rotationSpeed = 0.1f;
 
@@ -22,41 +25,55 @@ Cubeman::Cubeman()
 
 Cubeman::~Cubeman()
 {
-	m_pRootParts->Release();
 }
 
 void Cubeman::Init()
 {
-	g_pCamera->SetTarget(&m_pos);
-	g_pKeyboardManager->SetMovingTarget(&m_deltaPos,
-		&m_deltaRot, &m_isJumping);
+	//g_pCamera->SetTarget(&m_pos);
+	//g_pKeyboardManager->SetMovingTarget(&m_deltaPos,
+	//	&m_deltaRot, &m_isJumping);
 
 	CreateAllParts();
+
+    SetCollider(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
+    BoxCollider* bc = static_cast<BoxCollider*>(GetCollider());
+    D3DXMATRIXA16 m;
+    D3DXMatrixTranslation(&m, 0.0f, 3.0f, 20.0f);
+    bc->Update(m);
+
+    m_rot.y += D3DX_PI;
 }
 
 void Cubeman::Update()
 {
-	UpdatePosition();
-	
-	if (GetAsyncKeyState('1') & 0x0001)
-	{
-		m_isTurnedOnLight = !m_isTurnedOnLight;
-	}
+    const float prevZ = m_pos.z;
+    m_deltaPos.z = 1.0f;
 
-	if (m_isTurnedOnLight == true)
-	{
-		D3DXVECTOR3 pos = m_pos;
-		D3DXVECTOR3 dir = m_forward;
-		D3DXCOLOR c = BLUE;
-		D3DLIGHT9 light = DXUtil::InitSpot(&dir, &pos, &c);
-		light.Phi = D3DX_PI / 4;
-		//D3DLIGHT9 light = DXUtil::InitPoint(&pos, &c);
-		g_pDevice->SetLight(10, &light);
-	}
-	g_pDevice->LightEnable(10, m_isTurnedOnLight);
+	UpdatePosition();
+    const float currZ = m_pos.z;
+	//if (GetAsyncKeyState('1') & 0x0001)
+	//{
+	//	m_isTurnedOnLight = !m_isTurnedOnLight;
+	//}
+
+	//if (m_isTurnedOnLight == true)
+	//{
+	//	D3DXVECTOR3 pos = m_pos;
+	//	D3DXVECTOR3 dir = m_forward;
+	//	D3DXCOLOR c = BLUE;
+	//	D3DLIGHT9 light = DXUtil::InitSpot(&dir, &pos, &c);
+	//	light.Phi = D3DX_PI / 4;
+	//	//D3DLIGHT9 light = DXUtil::InitPoint(&pos, &c);
+	//	g_pDevice->SetLight(10, &light);
+	//}
+	//g_pDevice->LightEnable(10, m_isTurnedOnLight);
 
 	m_pRootParts->SetMovingState(m_isMoving);
 	m_pRootParts->Update();
+
+    D3DXMATRIXA16 m;
+    D3DXMatrixTranslation(&m, 0.0f, 0.0f, currZ - prevZ);
+    static_cast<BoxCollider*>(GetCollider())->Update(m);
 }
 
 void Cubeman::Render()
@@ -195,4 +212,15 @@ void Cubeman::CreateParts(CubemanParts *& pParts,
 	pParts->Init(&mat, vecUV);
 	pParts->SetPosition(pos);
 	pParent->AddChild(*pParts);
+}
+
+void Cubeman::OnCollision(ICollidable& other)
+{
+    g_pCurrentScene->Destroy(this);
+    BulletCollider* bc = static_cast<BulletCollider*>(&other);
+    g_pCurrentScene->Destroy(bc->bullet);
+
+    UIGameOver* uigo = new UIGameOver;
+    uigo->Init();
+    g_pUIManager->RegisterUIObject(*uigo);
 }

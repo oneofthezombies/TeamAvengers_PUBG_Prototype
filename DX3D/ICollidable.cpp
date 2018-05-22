@@ -5,6 +5,7 @@
 ColliderBase::ColliderBase(Type type)
     : m_vCenter(0.0f, 0.0f, 0.0f)
     , m_type(type)
+    , m_color(D3DCOLOR_XRGB(0, 255, 0))
 {
 }
 
@@ -36,7 +37,7 @@ void SphereCollider::Init(const float radius)
 {
 }
 
-void SphereCollider::Update(const D3DXMATRIXA16* transform)
+void SphereCollider::Update(const D3DXMATRIXA16& transform)
 {
 }
 
@@ -61,12 +62,10 @@ void BoxCollider::Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max)
     D3DXMatrixIdentity(&m_mTransform);
 }
 
-void BoxCollider::Update(const D3DXMATRIXA16* transform)
+void BoxCollider::Update(const D3DXMATRIXA16& transform)
 {
-    if (!transform) return;
-
-    m_mTransform *= *transform;
-    D3DXVec3TransformCoord(&m_vCenter, &m_vCenter, transform);
+    m_mTransform *= transform;
+    D3DXVec3TransformCoord(&m_vCenter, &m_vCenter, &transform);
 }
 
 void BoxCollider::Render()
@@ -114,8 +113,29 @@ ICollidable::ICollidable()
 ICollidable::~ICollidable()
 {
     g_pCollisionManager->RemoveICollidable(*this);
-
     SAFE_DELETE(m_pCollider);
+}
+
+BoxCollider& ICollidable::SetCollider(const D3DXVECTOR3& min, const D3DXVECTOR3& max)
+{
+    if (m_pCollider)
+        SAFE_DELETE(m_pCollider);
+
+    m_pCollider = new BoxCollider;
+    BoxCollider* ret = static_cast<BoxCollider*>(m_pCollider);
+    ret->Init(min, max);
+    return *ret;
+}
+
+SphereCollider& ICollidable::SetCollider(const float radius)
+{
+    if (m_pCollider)
+        SAFE_DELETE(m_pCollider);
+
+    m_pCollider = new SphereCollider;
+    SphereCollider* ret = static_cast<SphereCollider*>(m_pCollider);
+    ret->Init(radius);
+    return *ret;
 }
 
 ColliderBase* ICollidable::GetCollider() const
@@ -133,5 +153,4 @@ void ICollidable::Update()
 
 void ICollidable::Render()
 {
-    SAFE_RENDER(m_pCollider);
 }

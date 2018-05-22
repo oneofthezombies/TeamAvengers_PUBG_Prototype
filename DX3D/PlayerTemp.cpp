@@ -155,7 +155,7 @@ void PlayerTemp::KeyMove()
 	/* 총 장착시 총 위치 업데이트 */
 	if (m_pPistol)
 	{
-		m_pPistol->SetPosition(&D3DXVECTOR3(m_pos.x, m_pos.y + 1.f, m_pos.z + 2.f)); //플레이어보다 살짝 위, 살짝 앞
+		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 1.f, m_pos.z + 2.f)); //플레이어보다 살짝 위, 살짝 앞
 	}
 }
 
@@ -204,7 +204,7 @@ void PlayerTemp::KeyLoad()
 		if (m_pPistol) //장착하고 있는 총이 있으면
 		{
 			//총알 찾기
-			for (auto item : m_mapInventory)
+			for (auto& item : m_mapInventory)
 			{
 				if (item.first == ITEM_TAG::Bullet)
 				{

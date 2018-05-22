@@ -2,8 +2,7 @@
 
 #include "IDisplayObject.h"
 
-class SkyBox
-    : public IDisplayObject
+class SkyBox : public IDisplayObject
 {
 private:
     LPDIRECT3DVERTEXBUFFER9 m_pVB;
@@ -19,9 +18,8 @@ public:
     SkyBox();
     virtual ~SkyBox();
 
-    // Inherited via IDisplayObject
     virtual void Init() override;
-    void Init(const D3DXMATRIXA16* transform);
+    void Init(const D3DXMATRIXA16& transform);
 
     virtual void Update() override;
     virtual void Render() override;

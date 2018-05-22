@@ -79,7 +79,7 @@ void Pistol::Fire()
 			Bullet* bullet = m_vecPBullet.back(); //총알을 하나 꺼내고
 			m_vecPBullet.pop_back();              //벡터에서 지워줌 (실제 릴리즈는 현재씬의 Update에서)
 			bullet->SetIsFire(true);
-			bullet->SetPosition(&D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z + 1.f));
+			bullet->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z + 1.f));
 			g_pCurrentScene->AddSimpleDisplayObj(bullet);
 		}
 	}

@@ -5,15 +5,15 @@
 
 class GoToLobbyButtonListner;
 
-class GameOverUI 
+class UIGameOver 
     : public UIImage
 {
 private:
     GoToLobbyButtonListner* m_pGoToLobbyButtonListner;
 
 public:
-    GameOverUI();
-    virtual ~GameOverUI();
+    UIGameOver();
+    virtual ~UIGameOver();
 
     virtual void Init() override;
 };

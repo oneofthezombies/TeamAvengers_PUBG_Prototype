@@ -7,7 +7,6 @@ Application::Application()
 {
 }
 
-
 Application::~Application()
 {
 }
@@ -31,7 +30,7 @@ void Application::Destroy()
 	g_pTextureManager->Destroy();
 	g_pFontManager->Destroy();
 	Debug->Destroy();
-	g_pKeyManager->Destroy(); //���� ��� �����ִ� ��
+	g_pKeyManager->Destroy();
 	g_pDeviceManager->Destroy();
 }
 
