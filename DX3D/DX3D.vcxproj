@@ -186,7 +186,7 @@
     <ClInclude Include="InteractionMessageBox.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="IScene.h" />
-    <ClInclude Include="IUIObject.h" />
+    <ClInclude Include="UIObject.h" />
     <ClInclude Include="IUnitObject.h" />
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="MapManager.h" />
@@ -250,7 +250,7 @@
     <ClCompile Include="IActionObject.cpp" />
     <ClCompile Include="ICollidable.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
+    <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="MapManager.cpp" />

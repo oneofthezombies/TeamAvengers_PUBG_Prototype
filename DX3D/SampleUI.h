@@ -23,4 +23,3 @@ public:
 	// Inherited via IUIButtonDelegate
 	//virtual void OnClick(UIButton * pSender) override;
 };
-

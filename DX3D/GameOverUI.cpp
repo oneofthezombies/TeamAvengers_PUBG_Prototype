@@ -6,83 +6,97 @@
 
 GameOverUI::GameOverUI()
     : UIImage()
+    , m_pGoToLobbyButtonListner(nullptr)
 {
 }
 
 GameOverUI::~GameOverUI()
 {
-    SAFE_DELETE(m_listner);
+    SAFE_DELETE(m_pGoToLobbyButtonListner);
 }
 
 void GameOverUI::Init()
 {
-    m_pTex = g_pTextureManager->GetTexture("resources/images/black_1280_720_70.png");
-    m_size = D3DXVECTOR2(1280.0f, 720.0f);
+    SetTexture("resources/images/black_1280_720_70.png");
+    SetSize(D3DXVECTOR2(1280.0f, 720.f));
+    g_pUIManager->RegisterUIObject(*this);
 
-    UIText* gameOverNickname = new UIText(g_pFontManager->GetFont(Font::kGameOverNickname));
-    gameOverNickname->m_text = TEXT("oneofthezombies");
-    gameOverNickname->m_color = D3DCOLOR_XRGB(255, 255, 255);
-    gameOverNickname->SetPosition(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
-    gameOverNickname->m_size = D3DXVECTOR2(500.0f, 50.0f);
-    gameOverNickname->m_drawTextFormat = DT_LEFT;
-    AddChild(*gameOverNickname);
+    UIText* nickname = new UIText;
+    nickname->SetFont(g_pFontManager->GetFont(Font::kGameOverNickname));
+    nickname->SetText(TEXT("oneofthezombies"));
+    nickname->SetColor(D3DCOLOR_XRGB(255, 255, 255));
+    nickname->SetPosition(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
+    nickname->SetSize(D3DXVECTOR2(500.0f, 50.0f));
+    nickname->SetDrawTextFormat(DT_LEFT);
+    AddChild(*nickname);
 
-    UIText* gameOverDescription = new UIText(g_pFontManager->GetFont(Font::kGameOverDescription));
-    gameOverDescription->m_text = TEXT("ÀÌ°å´ß! ¿À´Ã Àú³áÀº Ä¡Å²ÀÌ´ß!");
-    gameOverDescription->m_color = D3DCOLOR_XRGB(242, 199, 35);
-    gameOverDescription->SetPosition(D3DXVECTOR3(0.0f, 60.0f, 0.0f));
-    gameOverDescription->m_size = D3DXVECTOR2(500.0f, 50.0f);
-    gameOverDescription->m_drawTextFormat = DT_LEFT;
-    gameOverNickname->AddChild(*gameOverDescription);
+    UIText* description = new UIText;
+    description->SetFont(g_pFontManager->GetFont(Font::kGameOverDescription));
+    description->SetText(TEXT("ÀÌ°å´ß! ¿À´Ã Àú³áÀº Ä¡Å²ÀÌ´ß!"));
+    description->SetColor(D3DCOLOR_XRGB(242, 199, 35));
+    description->SetPosition(D3DXVECTOR3(0.0f, 60.0f, 0.0f));
+    description->SetSize(D3DXVECTOR2(500.0f, 50.0f));
+    description->SetDrawTextFormat(DT_LEFT);
+    nickname->AddChild(*description);
 
-    UIText* gameOverRanking = new UIText(g_pFontManager->GetFont(Font::kGameOverRanking));
-    gameOverRanking->m_text = TEXT("#1");
-    gameOverRanking->m_color = D3DCOLOR_XRGB(242, 199, 35);
-    gameOverRanking->SetPosition(D3DXVECTOR3(1280.0f - 200.0f, 50.0f, 0.0f));
-    gameOverRanking->m_size = D3DXVECTOR2(80.0f, 50.0f);
-    gameOverRanking->m_drawTextFormat = DT_RIGHT;
-    AddChild(*gameOverRanking);
+    UIText* ranking = new UIText;
+    ranking->SetFont(g_pFontManager->GetFont(Font::kGameOverRanking));
+    ranking->SetText(TEXT("#1"));
+    ranking->SetColor(D3DCOLOR_XRGB(242, 199, 35));
+    ranking->SetPosition(D3DXVECTOR3(1280.0f - 200.0f, 50.0f, 0.0f));
+    ranking->SetSize(D3DXVECTOR2(80.0f, 50.0f));
+    ranking->SetDrawTextFormat(DT_RIGHT);
+    AddChild(*ranking);
 
-    UIText* gameOverRankingNumOther = new UIText(g_pFontManager->GetFont(Font::kGameOverRankingNumOther));
-    gameOverRankingNumOther->m_text = TEXT("/50");
-    gameOverRankingNumOther->m_color = D3DCOLOR_XRGB(90, 94, 97);
-    gameOverRankingNumOther->SetPosition(D3DXVECTOR3(80.0f, 8.0f, 0.0f));
-    gameOverRankingNumOther->m_size = D3DXVECTOR2(80.0f, 50.0f);
-    gameOverRankingNumOther->m_drawTextFormat = DT_LEFT;
-    gameOverRanking->AddChild(*gameOverRankingNumOther);
+    UIText* rankingNumOther = new UIText;
+    rankingNumOther->SetFont(g_pFontManager->GetFont(Font::kGameOverRankingNumOther));
+    rankingNumOther->SetText(TEXT("/50"));
+    rankingNumOther->SetColor(D3DCOLOR_XRGB(90, 94, 97));
+    rankingNumOther->SetPosition(D3DXVECTOR3(80.0f, 8.0f, 0.0f));
+    rankingNumOther->SetSize(D3DXVECTOR2(80.0f, 50.0f));
+    rankingNumOther->SetDrawTextFormat(DT_LEFT);
+    ranking->AddChild(*rankingNumOther);
 
-    m_listner = new IUIButtonListner;
-    m_listner->m_pAttached = this;
-    UIButton* gameOverGoToLobby = new UIButton(m_listner, m_listner);
-    gameOverGoToLobby->m_size = D3DXVECTOR2(200.0f, 80.0f);
-    gameOverGoToLobby->SetPosition(D3DXVECTOR3(1280.0f - 300.0f, 720.0f - 150.0f, 0.0f));
-    AddChild(*gameOverGoToLobby);
+    UIButton* goToLobby = new UIButton;
+    goToLobby->SetSize(D3DXVECTOR2(200.0f, 80.0f));
+    goToLobby->SetPosition(D3DXVECTOR3(1280.0f - 300.0f, 720.0f - 150.0f, 0.0f));
+    AddChild(*goToLobby);
+    m_pGoToLobbyButtonListner = new GoToLobbyButtonListner;
+    m_pGoToLobbyButtonListner->SetUIButton(*goToLobby);
+    m_pGoToLobbyButtonListner->SetHandle(*this);
 
-    UIText* gameOverGoToLobbyText = new UIText(g_pFontManager->GetFont(Font::kGameOverGoToLobby));
-    gameOverGoToLobbyText->m_size = D3DXVECTOR2(200.0f, 60.0f);
-    gameOverGoToLobbyText->SetPosition(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
-    gameOverGoToLobbyText->m_text = TEXT("·Îºñ·Î ³ª°¡±â");
-    gameOverGoToLobbyText->m_color = D3DCOLOR_XRGB(93, 93, 93);
-    gameOverGoToLobby->AddChild(*gameOverGoToLobbyText);
+    UIText* goToLobbyText = new UIText;
+    goToLobbyText->SetFont(g_pFontManager->GetFont(Font::kGameOverGoToLobby));
+    goToLobbyText->SetSize(D3DXVECTOR2(200.0f, 60.0f));
+    goToLobbyText->SetPosition(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
+    goToLobbyText->SetText(TEXT("·Îºñ·Î ³ª°¡±â"));
+    goToLobbyText->SetColor(D3DCOLOR_XRGB(93, 93, 93));
+    goToLobby->AddChild(*goToLobbyText);
 }
 
-void IUIButtonListner::OnMouseEnter()
+void GoToLobbyButtonListner::OnMouseEnter()
 {
 }
 
-void IUIButtonListner::OnMouseExit()
+void GoToLobbyButtonListner::OnMouseExit()
 {
 }
 
-void IUIButtonListner::OnMouseDown(const MouseButton::Type button)
+void GoToLobbyButtonListner::OnMouseDown(const int key)
 {
-    g_pUIManager->Destroy(*m_pAttached);
+    g_pUIManager->Destroy(*m_pHandle, 1.0f);
 }
 
-void IUIButtonListner::OnMouseUp(const MouseButton::Type button)
+void GoToLobbyButtonListner::OnMouseUp(const int key)
 {
 }
 
-void IUIButtonListner::OnMouseDrag(const MouseButton::Type button)
+void GoToLobbyButtonListner::OnMouseDrag(const int key)
 {
 }
+
+void GoToLobbyButtonListner::SetHandle(UIObject& val)
+{
+    m_pHandle = &val;
+}
+

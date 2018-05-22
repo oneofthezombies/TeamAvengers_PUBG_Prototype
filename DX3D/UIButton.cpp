@@ -3,15 +3,12 @@
 #include "UIManager.h"
 #include "UIText.h"
 
-UIButton::UIButton(IUIButtonDelegate* pIUIButtonDelegate, IUIObjectDelegate* pIUIObjectDelegate, int uiTag)
-	: IUIObject(pIUIObjectDelegate, uiTag)
-	, m_pIUIButtonDelegate(pIUIButtonDelegate)
-	, m_state(State::kIdle)
-    , m_mouseButtonToRespond(MouseButton::Type::kLeft)
+UIButton::UIButton()
+    : UIObject()
+    , m_state(State::kIdle)
+    , m_KeyToRespond(VK_LBUTTON)
+    , m_pIUIButtonOnMouseListner(nullptr)
 {
-    if (pIUIButtonDelegate)
-        pIUIButtonDelegate->m_pUIButton = this;
-
     m_vecTexture.resize(m_kNumState, nullptr);
 }
 
@@ -21,11 +18,8 @@ UIButton::~UIButton()
 
 void UIButton::Update()
 {
-    UpdateCombinedPosition();
-    GetFinalRect(&m_rect);
-    UpdateOnMouseEnterExit();
-    UpdateOnMouseDownUpDrag();
-
+    UpdateViewportPosRect();
+    UpdateOnMouse();
     UpdateChildren();
 }
 
@@ -33,13 +27,19 @@ void UIButton::Render()
 {
 	if (m_vecTexture[m_state])
 	{
-		RECT size;
-		SetRect(&size, 0, 0, static_cast<int>(m_size.x), static_cast<int>(m_size.y));
+		RECT rect;
+		SetRect(&rect, 0, 0, static_cast<int>(m_vSize.x), static_cast<int>(m_vSize.y));
 
-        g_pSprite->Draw(m_vecTexture[m_state], &size, &m_pivot, &m_combinedPos, m_color);
+        g_pSprite->Draw(m_vecTexture[m_state], &rect, &m_vCenter, &m_vViewportPosition, m_color);
 	}
 
-	IUIObject::Render();
+	UIObject::Render();
+}
+
+void UIButton::UpdateOnMouse()
+{
+    UpdateOnMouseEnterExit();
+    UpdateOnMouseDownUpDrag();
 }
 
 void UIButton::SetTexture(const string& idle, const string& mouseOver, const string& select)
@@ -53,26 +53,47 @@ void UIButton::SetTexture(const string& idle, const string& mouseOver, const str
 	m_vecTexture[State::kSelect] = texMgr->GetTexture(select);
 
 	D3DXGetImageInfoFromFileA(idle.c_str(), &info);
-	m_size.x = info.Width;
-	m_size.y = info.Height;
+	m_vSize.x = info.Width;
+	m_vSize.y = info.Height;
 }
 
-void UIButton::SetText(LPD3DXFONT font, LPCTSTR text)
+void UIButton::SetText(const LPD3DXFONT font, const LPCTSTR text)
 {
-	UIText* pText = new UIText(font);
+	UIText* pText = new UIText;
 	AddChild(*pText);
-	pText->m_text = text;
-	pText->m_size = m_size;
+    pText->SetFont(font);
+    pText->SetText(text);
+    pText->SetSize(m_vSize);
 }
 
-void UIButton::SetMouseButtonToRespond(const MouseButton::Type flag)
+void UIButton::SetKeyToRespond(const int key)
 {
-    m_mouseButtonToRespond = flag;
+    m_KeyToRespond = key;
+}
+
+void UIButton::SetIUIButtonOnMouseListner(IUIButtonOnMouseListner& val)
+{
+    m_pIUIButtonOnMouseListner = &val;
+}
+
+void UIButton::UpdateOnMouseEnterExit()
+{
+    if (!m_pIUIButtonOnMouseListner) return;
+
+    m_bPrevIsMouseOn = m_bCurrIsMouseOn;
+    m_bCurrIsMouseOn = PtInRect(&m_rect, g_pUIManager->GetCurrentMousePos());
+
+    if (!m_bPrevIsMouseOn && m_bCurrIsMouseOn)
+        m_pIUIButtonOnMouseListner->OnMouseEnter();
+
+    if (m_bPrevIsMouseOn && !m_bCurrIsMouseOn)
+        m_pIUIButtonOnMouseListner->OnMouseExit();
 }
 
 void UIButton::UpdateOnMouseDownUpDrag()
 {
     const auto uiMgr = g_pUIManager;
+    if (!uiMgr) return;
 
     switch (m_state)
     {
@@ -86,24 +107,24 @@ void UIButton::UpdateOnMouseDownUpDrag()
         break;
     case State::kMouseOver:
         {
-            if (m_mouseButtonToRespond == MouseButton::kLeft)
+            if (m_KeyToRespond == VK_LBUTTON)
             {
                 if (uiMgr->IsPushedMouseButtonLeft())
                 {
                     m_state = State::kSelect;
 
-                    if (m_pIUIButtonDelegate)
-                        m_pIUIButtonDelegate->OnMouseDown(m_mouseButtonToRespond);
+                    if (m_pIUIButtonOnMouseListner)
+                        m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
                 }
             }
-            else if (m_mouseButtonToRespond == MouseButton::kRight)
+            else if (m_KeyToRespond == VK_RBUTTON)
             {
                 if (uiMgr->IsPushedMouseButtonRight())
                 {
                     m_state = State::kSelect;
 
-                    if (m_pIUIButtonDelegate)
-                        m_pIUIButtonDelegate->OnMouseDown(m_mouseButtonToRespond);
+                    if (m_pIUIButtonOnMouseListner)
+                        m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
                 }
             }
             else
@@ -114,13 +135,13 @@ void UIButton::UpdateOnMouseDownUpDrag()
         break;
     case State::kSelect:
         {
-            if (m_mouseButtonToRespond == MouseButton::kLeft)
+            if (m_KeyToRespond == VK_LBUTTON)
             {
                 if (uiMgr->IsPushedMouseButtonLeft())
                 {
                     if (m_bCurrIsMouseOn)
-                        if (m_pIUIButtonDelegate)
-                            m_pIUIButtonDelegate->OnMouseDrag(m_mouseButtonToRespond);
+                        if (m_pIUIButtonOnMouseListner)
+                            m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
                 }
                 else
                 {
@@ -129,8 +150,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                         m_state = State::kMouseOver;
 
                         if (uiMgr->GetPreviousIsPushedMouseButtonLeft())
-                            if (m_pIUIButtonDelegate)
-                                m_pIUIButtonDelegate->OnMouseUp(m_mouseButtonToRespond);
+                            if (m_pIUIButtonOnMouseListner)
+                                m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
                     }
                     else
                     {
@@ -138,13 +159,13 @@ void UIButton::UpdateOnMouseDownUpDrag()
                     }
                 }
             }
-            else if (m_mouseButtonToRespond == MouseButton::kRight)
+            else if (m_KeyToRespond == VK_RBUTTON)
             {
                 if (uiMgr->IsPushedMouseButtonRight())
                 {
                     if (m_bCurrIsMouseOn)
-                        if (m_pIUIButtonDelegate)
-                            m_pIUIButtonDelegate->OnMouseDrag(m_mouseButtonToRespond);
+                        if (m_pIUIButtonOnMouseListner)
+                            m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
                 }
                 else
                 {
@@ -153,8 +174,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                         m_state = State::kMouseOver;
 
                         if (uiMgr->GetPreviousIsPushedMouseButtonRight())
-                            if (m_pIUIButtonDelegate)
-                                m_pIUIButtonDelegate->OnMouseUp(m_mouseButtonToRespond);
+                            if (m_pIUIButtonOnMouseListner)
+                                m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
                     }
                     else
                     {
@@ -176,27 +197,18 @@ void UIButton::UpdateOnMouseDownUpDrag()
     }
 }
 
-void SampleUIButtonDelegate::OnMouseDown(const MouseButton::Type button)
+IUIButtonOnMouseListner::IUIButtonOnMouseListner()
+    : m_pUIButton(nullptr)
 {
-    cout << "OnMouseDown()\n";
 }
 
-void SampleUIButtonDelegate::OnMouseUp(const MouseButton::Type button)
+void IUIButtonOnMouseListner::SetUIButton(UIButton& val)
 {
-    cout << "OnMouseUp()\n";
+    m_pUIButton = &val;
+    m_pUIButton->SetIUIButtonOnMouseListner(*this);
 }
 
-void SampleUIButtonDelegate::OnMouseDrag(const MouseButton::Type button)
+UIButton* IUIButtonOnMouseListner::GetUIButton() const
 {
-    cout << "OnMouseDrag()\n";
-}
-
-void SampleUIButtonDelegate::OnMouseEnter()
-{
-    cout << "OnMouseEnter()\n";
-}
-
-void SampleUIButtonDelegate::OnMouseExit()
-{
-    cout << "OnMouseExit()\n";
+    return m_pUIButton;
 }

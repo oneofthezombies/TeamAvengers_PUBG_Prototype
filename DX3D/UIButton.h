@@ -1,35 +1,9 @@
 #pragma once
-#include "IUIObject.h"
+#include "UIObject.h"
 
-struct MouseButton
-{
-    enum Type : int
-    {
-        kLeft = 1,
-        kRight
-    };
-};
+class IUIButtonOnMouseListner;
 
-class UIButton;
-
-class IUIButtonDelegate
-{
-public:
-    UIButton* m_pUIButton;
-
-    IUIButtonDelegate()
-        : m_pUIButton(nullptr)
-    {
-    }
-    ~IUIButtonDelegate() = default;
-
-    virtual void OnMouseDown(const MouseButton::Type button) = 0;
-    virtual void OnMouseUp(const MouseButton::Type button) = 0;
-    virtual void OnMouseDrag(const MouseButton::Type button) = 0;
-};
-
-class UIButton 
-    : public IUIObject
+class UIButton : public UIObject
 {
 private:
 	enum State
@@ -40,36 +14,46 @@ private:
 	};
     static const int m_kNumState = 3;
 
-	State m_state;
-    MouseButton::Type m_mouseButtonToRespond;
+    IUIButtonOnMouseListner*   m_pIUIButtonOnMouseListner;
+    State                      m_state;
+    int                        m_KeyToRespond;
+    bool                       m_bPrevIsMouseOn;
+    bool                       m_bCurrIsMouseOn;
+    vector<LPDIRECT3DTEXTURE9> m_vecTexture;
+
+    void UpdateOnMouseEnterExit();
+    void UpdateOnMouseDownUpDrag();
 
 public:
-	IUIButtonDelegate* m_pIUIButtonDelegate;
-	vector<LPDIRECT3DTEXTURE9> m_vecTexture;
-
-	UIButton(IUIButtonDelegate* pIUIButtonDelegate, IUIObjectDelegate* pIUIObjectDelegate = nullptr, int uiTag = -1);
+	UIButton();
 	virtual ~UIButton();
 
 	virtual void Update() override;
 	virtual void Render() override;
 
+    void UpdateOnMouse();
+
 	void SetTexture(const string& idle, const string& mouseOver, const string& select);
-	void SetText(LPD3DXFONT font, LPCTSTR text);
-    void SetMouseButtonToRespond(const MouseButton::Type flag);
-    void UpdateOnMouseDownUpDrag();
+	void SetText(const LPD3DXFONT font, const LPCTSTR text);
+    void SetKeyToRespond(const int key);
+    void SetIUIButtonOnMouseListner(IUIButtonOnMouseListner& val);
 };
 
-class SampleUIButtonDelegate
-    : public IUIObjectDelegate 
-    , public IUIButtonDelegate
+class IUIButtonOnMouseListner
 {
-public:
-    // Inherited via IUIObjectDelegate
-    virtual void OnMouseEnter() override;
-    virtual void OnMouseExit() override;
+private:
+    UIButton* m_pUIButton;
 
-    // Inherited via IUIButtonDelegate
-    virtual void OnMouseDown(const MouseButton::Type button) override;
-    virtual void OnMouseUp(const MouseButton::Type button) override;
-    virtual void OnMouseDrag(const MouseButton::Type button) override;
+public:
+    IUIButtonOnMouseListner();
+    virtual ~IUIButtonOnMouseListner() = default;
+
+    virtual void OnMouseEnter() = 0;
+    virtual void OnMouseExit() = 0;
+    virtual void OnMouseDown(const int key) = 0;
+    virtual void OnMouseUp(const int key) = 0;
+    virtual void OnMouseDrag(const int key) = 0;
+
+    void SetUIButton(UIButton& val);
+    UIButton* GetUIButton() const;
 };

@@ -3,13 +3,13 @@
 #include "UIImage.h"
 #include "UIButton.h"
 
-class IUIButtonListner;
+class GoToLobbyButtonListner;
 
 class GameOverUI 
     : public UIImage
 {
 private:
-    IUIButtonListner* m_listner;
+    GoToLobbyButtonListner* m_pGoToLobbyButtonListner;
 
 public:
     GameOverUI();
@@ -18,19 +18,16 @@ public:
     virtual void Init() override;
 };
 
-class IUIButtonListner
-    : public IUIObjectDelegate
-    , public IUIButtonDelegate
+class GoToLobbyButtonListner : public IUIButtonOnMouseListner
 {
-public:
-    IUIObject* m_pAttached;
+    UIObject* m_pHandle;
 
-    // Inherited via IUIObjectDelegate
+public:
     virtual void OnMouseEnter() override;
     virtual void OnMouseExit() override;
+    virtual void OnMouseDown(const int key) override;
+    virtual void OnMouseUp(const int key) override;
+    virtual void OnMouseDrag(const int key) override;
 
-    // Inherited via IUIButtonDelegate
-    virtual void OnMouseDown(const MouseButton::Type button) override;
-    virtual void OnMouseUp(const MouseButton::Type button) override;
-    virtual void OnMouseDrag(const MouseButton::Type button) override;
+    void SetHandle(UIObject& val);
 };
