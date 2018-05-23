@@ -1,19 +1,19 @@
 #pragma once
 #define g_pKeyManager KeyManager::GetInstance()
 #define KEYMAX 256
-#include <bitset>
 
 class KeyManager
 {
 private:
-	std::bitset<KEYMAX> m_keyUp;
-	std::bitset<KEYMAX> m_keyDown;
+	bitset<KEYMAX> m_keyUp;
+	bitset<KEYMAX> m_keyDown;
 
     POINT m_prevMousePos;
     POINT m_currMousePos;
-    static const int m_kMouseKeySize = 2;
-    bitset<m_kMouseKeySize> m_mouseKeyDown;
-    bitset<m_kMouseKeySize> m_prevMouseKeyDown;
+    bool m_bIsKeyDownMouseL;
+    bool m_bIsKeyDownMouseR;
+    bool m_bPrevIsKeyDownMouseL;
+    bool m_bPrevIsKeyDownMouseR;
 
 	KeyManager();
 	~KeyManager();
@@ -37,8 +37,8 @@ public:
 
     const POINT& GetCurrentMousePos() const;
     const POINT& GetPreviousMousePos() const;
-    bool IsKeyDownMouseL() const;
-    bool IsKeyDownMouseR() const;
     bool GetPrevIsKeyDownMouseL() const;
     bool GetPrevIsKeyDownMouseR() const;
+    bool IsKeyDownMouseL() const;
+    bool IsKeyDownMouseR() const;
 };
