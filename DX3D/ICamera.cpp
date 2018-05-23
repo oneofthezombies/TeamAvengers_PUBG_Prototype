@@ -35,11 +35,15 @@ void ICamera::Update()
     Debug->AddText(m_basePosY);
     Debug->EndLine();
 
-        
-    //if (GetAsyncKeyState('C') & 0x0001)
-    //    m_fovY -= 0.01f;//m_aspect
-    //if (GetAsyncKeyState('X') & 0x0001)
-    //    m_fovY += 0.01f;//m_aspect
+    //    
+    //if (g_pKeyManager->IsOnceKeyDown('J'))
+    //    m_aspect -= 0.01f;//m_aspect
+    //if (g_pKeyManager->IsOnceKeyDown('N'))
+    //    m_aspect += 0.01f;//m_aspect
+
+    //D3DXMatrixPerspectiveFovLH(&m_matProj, m_fovY, m_aspect, 1, 1000);
+    //g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
+    //start
 
     m_eye = D3DXVECTOR3(m_basePosX, m_basePosY, -m_distance);
     UpdateEye();
