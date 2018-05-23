@@ -90,6 +90,7 @@ extern HWND g_hWnd;
 #include "IMap.h"
 #include "IUnitObject.h"
 #include "IAction.h"
+#include "ICamera.h"
 #include "Debug.h"
 #include "ObjManager.h"
 #include "TextureManager.h"

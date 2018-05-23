@@ -51,7 +51,8 @@ void PlayerAni::Init()
 	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f); //시작 위치 박기
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
-    g_pCamera->SetTarget(&m_pos);
+
+    g_pCameraManager->SetTarget(m_pos, m_pos);
     CreateAllParts();
 
 	/* collider init */

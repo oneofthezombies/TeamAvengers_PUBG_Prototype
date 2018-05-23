@@ -280,7 +280,6 @@
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="IMap.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="ICollidable.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="SampleCollidable.cpp" />

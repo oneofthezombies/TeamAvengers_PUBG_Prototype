@@ -6,6 +6,8 @@
 
 
 CameraManager::CameraManager()
+    : m_pTargetDir(nullptr)
+    , m_pTargetPos(nullptr)
 {
     m_pCurrentCamera = NULL;
 }
@@ -95,3 +97,19 @@ void CameraManager::Update()
 //{
 //    SAFE_WNDPROC(m_pCurrentCamera);
 //}
+
+void CameraManager::SetTarget(D3DXVECTOR3& pos, D3DXVECTOR3& dir)
+{
+    m_pTargetPos = &pos;
+    m_pTargetDir = &dir;
+}
+
+D3DXVECTOR3* CameraManager::GetTargetPos() const
+{
+    return m_pTargetPos;
+}
+
+D3DXVECTOR3* CameraManager::GetTargetDir() const
+{
+    return m_pTargetDir;
+}

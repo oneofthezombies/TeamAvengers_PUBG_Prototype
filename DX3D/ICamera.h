@@ -44,7 +44,8 @@ public://protected 으로 바꾸자
 
     POINT			m_ptPrevMouse;
     POINT           m_ptContainer;
-    //D3DXVECTOR3*	m_pTarget;
+
+
 
     //vector<D3DXVECTOR3> m_vecProjVert;
     //vector<D3DXVECTOR3> m_vecWorldVert;
@@ -55,6 +56,7 @@ public:
     virtual ~ICamera() {}
     virtual void Init();
     virtual void Update();
+
     //virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     //void SetTarget(D3DXVECTOR3* pTarget) { m_pTarget = pTarget; }
     
@@ -63,5 +65,7 @@ public:
     //void ChangeToWorldVert();
     //void SetSixPlane();
     //bool CheckSphere(BoundingSphere* sphere);
+
+    void UpdateEye();
 };
 

@@ -13,6 +13,10 @@ ICamera::ICamera()
 void ICamera::Init()
 {
     m_eye = D3DXVECTOR3(m_basePosX, m_basePosY, -m_distance);
+
+    D3DXVECTOR3* pTargetDir;
+    UpdateEye();
+
     m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y, m_eye.z + 1);
     m_up = D3DXVECTOR3(0, 1, 0);
 
@@ -38,6 +42,8 @@ void ICamera::Update()
     //    m_fovY += 0.01f;//m_aspect
 
     m_eye = D3DXVECTOR3(m_basePosX, m_basePosY, -m_distance);
+    UpdateEye();
+
     //Player가 움직여도 계속 앞을 보게 하려면 1
     m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y-0.1, m_eye.z + 1);
 
@@ -51,5 +57,11 @@ void ICamera::Update()
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
 
+}
+
+void ICamera::UpdateEye()
+{
+    if (D3DXVECTOR3* pTargetPos = g_pCameraManager->GetTargetPos())
+        m_eye += *pTargetPos;
 }
 

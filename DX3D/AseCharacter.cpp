@@ -27,7 +27,7 @@ AseCharacter::~AseCharacter()
 void AseCharacter::Init()
 {
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
-	g_pCamera->SetTarget(&m_pos);
+//	g_pCamera->SetTarget(&m_pos);
 
 	g_pKeyboardManager->SetMovingTarget(&m_keyState/*&m_deltaPos,
 												   &m_deltaRot, &m_isJumping*/);
