@@ -14,7 +14,6 @@ protected:
 	AStar*				m_pAStar;
 
 	IMap() { m_pAStar = NULL; }
-
 public:
 	virtual ~IMap() {}
 	virtual bool GetHeight(OUT float & height, const D3DXVECTOR3 & pos) = 0;

@@ -2,7 +2,6 @@
 #include "ICamera.h"
 class FirstPersonCamera : public ICamera
 {
-
 public:
     FirstPersonCamera();
     virtual ~FirstPersonCamera();

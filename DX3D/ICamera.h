@@ -1,15 +1,28 @@
 #pragma once
 #include "BaseObject.h"
-class ICamera : public BaseObject
+
+#define FP_DISTANCE -1.0f
+#define TP_DISTANCE 10.0f
+#define TP_BASEPOSX 2.0f
+#define TP_BASEPOSY 8.0f
+
+namespace CameraState
 {
-protected:
     enum CameraState
     {
-        FIRSTPERSON=1,
-        THIRDPERSON=3
+        FIRSTPERSON = 1,
+        THIRDPERSON = 3,
+        TP2FP,
+        FP2TP,
+        KYUNCHAK
     };
-    CameraState     m_cameraState;
+}
 
+class ICamera : public BaseObject
+{
+public:
+    CameraState::CameraState     m_cameraState;
+public://protected 으로 바꾸자
     D3DXVECTOR3		m_eye;
     D3DXVECTOR3		m_lookAt;
     D3DXVECTOR3		m_up;
@@ -22,9 +35,13 @@ protected:
     float			m_rotY;
 
     float           m_fovY;
+    float           m_aspect;
 
     bool			m_isLbuttonDown;
+    bool            m_isLbuttonPressed;
+    bool            m_isLbuttonUp;
     bool			m_isRbuttonDown;
+    bool            m_isALTbuttonDown;
     POINT			m_ptPrevMouse;
     //D3DXVECTOR3*	m_pTarget;
 
@@ -32,12 +49,12 @@ protected:
     //vector<D3DXVECTOR3> m_vecWorldVert;
     //vector<D3DXPLANE>	m_vecSixPlane;
 
-    ICamera() {}
+    ICamera();
 public:
     virtual ~ICamera() {}
-    virtual void Init() = 0;
-    virtual void Update() = 0;
-
+    virtual void Init();
+    virtual void Update();
+    virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     //void SetTarget(D3DXVECTOR3* pTarget) { m_pTarget = pTarget; }
     
     //functions needed for backspace currling

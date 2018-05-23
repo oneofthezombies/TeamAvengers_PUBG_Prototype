@@ -341,6 +341,7 @@
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
+    <ClCompile Include="IMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">

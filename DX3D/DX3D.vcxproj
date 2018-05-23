@@ -246,6 +246,7 @@
     <ClCompile Include="IActionObject.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
+    <ClCompile Include="IMap.cpp" />
     <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />

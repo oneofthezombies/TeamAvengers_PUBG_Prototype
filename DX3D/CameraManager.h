@@ -1,8 +1,8 @@
 #pragma once
 
 #define g_pCameraManager CameraManager::GetInstance()
-#define g_pCurrentCamera CameraManager::GetInstance()->GetCurrentMap()
-
+#define g_pCurrentCamera CameraManager::GetInstance()->GetCurrentCamera()
+#define CameraChangeSpeed 6.0f
 class ICamera;
 
 class CameraManager
@@ -11,19 +11,25 @@ class CameraManager
 
 private:
     ICamera * m_pCurrentCamera;
-    map<string, ICamera*> m_mapList;
+    map<int, ICamera*> m_mapList;
+    bool isVkeyPressed = false;
 
 public:
     //이렇게 까지 할 필요가 없을까? 단지 First와 Third만 사용할 것이기 때문에?
     //그럼 enum은 어디에다가 넣어야 하는가?
-    void AddCamera(string cameraName, ICamera* pCamera)
+    void AddCamera(int cameraState, ICamera* pCamera)
     {
-        if (m_mapList.count(cameraName) == 1)
+        if (m_mapList.count(cameraState) == 1)
             return;
-        m_mapList[cameraName] = pCamera;
+        m_mapList[cameraState] = pCamera;
     }
-    void SetCurrentCamera(string cameraName)
-    { m_pCurrentCamera = m_mapList[cameraName]; }
+    void SetCurrentCamera(int cameraState);
     ICamera* GetCurrentCamera() { return m_pCurrentCamera; }
+
+    void Init();    
+    void Destroy();
+    void Update();
+
+    void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 
