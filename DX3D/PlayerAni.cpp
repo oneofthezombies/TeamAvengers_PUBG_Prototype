@@ -52,7 +52,12 @@ void PlayerAni::Init()
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
-    g_pCameraManager->SetTarget(m_pos, m_pos);
+    D3DXMATRIXA16 m;
+    D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
+    D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
+    D3DXVec3Normalize(&m_dir, &m_dir);
+
+    g_pCameraManager->SetTarget(m_pos, m_dir);
     CreateAllParts();
 
 	/* collider init */
@@ -61,7 +66,7 @@ void PlayerAni::Init()
 	m_pBoxCollider = new BoxCollider(*this);
 	m_pBoxCollider->SetListner(*m_pCollisionListner);
 	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-	D3DXMATRIXA16 m;
+	//D3DXMATRIXA16 m;
 	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);
 	m_pBoxCollider->Update(m);
 	/* end collider init */
@@ -78,6 +83,19 @@ void PlayerAni::Update()
 
 	//¶Ù°í °È±â
 	RunAndWalk();
+
+    const float dt = g_pTimeManager->GetDeltaTime();
+    POINT currPoint;
+    POINT m_ptPrevMouse;
+    m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
+    currPoint = g_pKeyManager->GetCurrentMousePos();
+    POINT diff;
+    diff.x = currPoint.x - m_ptPrevMouse.x;
+    diff.y = currPoint.y - m_ptPrevMouse.y;
+    const float factorX = 0.1f;
+    const float factorY = 0.1f;
+    m_rot.x += diff.y * factorX * dt;
+    m_rot.y += diff.x * factorY * dt;
 
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
     {
@@ -97,6 +115,11 @@ void PlayerAni::Update()
     }
 	D3DXMATRIXA16 currM = m_matWorld;
 	D3DXMatrixInverse(&prevM, nullptr, &prevM);
+
+    D3DXMATRIXA16 m;
+    D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
+    D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
+    D3DXVec3Normalize(&m_dir, &m_dir);
 
     m_pRootParts->SetMovingState(m_isMoving);
     m_pRootParts->Update();
