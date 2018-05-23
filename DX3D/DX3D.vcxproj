@@ -163,6 +163,8 @@
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="ICollisionListner.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
@@ -187,6 +189,7 @@
     <ClInclude Include="ICollidable.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
+    <ClInclude Include="SampleCollider.h" />
     <ClInclude Include="SampleUIButtonListner.h" />
     <ClInclude Include="UIInteractionMessage.h" />
     <ClInclude Include="UIInventory.h" />
@@ -239,6 +242,8 @@
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ICollisionListner.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
@@ -250,6 +255,7 @@
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="SampleCollider.cpp" />
     <ClCompile Include="SampleUIButtonListner.cpp" />
     <ClCompile Include="UIGameOver.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />

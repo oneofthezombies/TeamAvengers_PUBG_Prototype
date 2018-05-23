@@ -4,6 +4,7 @@
 #include "IScene.h"
 #include "Bullet.h"
 #include "UIGameOver.h"
+#include "Collider.h"
 
 Cubeman::Cubeman()
 {

@@ -5,14 +5,27 @@
 #define g_pCollisionManager CollisionManager::GetInstance()
 
 class ICollidable;
+class ColliderBase;
 class BoxCollider;
 class SphereCollider;
+class ICollisionListner;
 
 class CollisionManager
     : public SingletonBase<CollisionManager>
 {
 private:
-    unordered_set<ICollidable*> m_usetICollidable;
+    struct HashColliderBase
+    {
+        size_t operator()(const pair<ColliderBase*, ColliderBase*>& p) const
+        {
+            return hash<ColliderBase*>{}(p.first) ^ hash<ColliderBase*>{}(p.second);
+        }
+    };
+
+    unordered_set<ICollidable*>                                         m_usetICollidable;
+
+    unordered_set<ColliderBase*>                                        m_usetColliderBases;
+    unordered_set<pair<ColliderBase*, ColliderBase*>, HashColliderBase> m_usetPrevCollisions;
     bool m_bIsRender;
 
     CollisionManager();
@@ -37,7 +50,12 @@ public:
 
     void AddICollidable(ICollidable& val);
     void RemoveICollidable(ICollidable& val);
-    void NotifyCollision();
+    void NotifyCollisionAboutICollidables();
+
+    void AddColliderBase(ColliderBase& val);
+    void RemoveColliderBase(ColliderBase& val);
+    void NotifyCollisionAboutColliderBases();
+
     void SetIsRender(const bool val);
 
     friend SingletonBase<CollisionManager>;

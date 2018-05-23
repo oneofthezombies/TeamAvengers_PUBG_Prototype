@@ -12,6 +12,7 @@
 #include "UIManager.h"
 #include "UIInteractionMessage.h"
 #include "Cubeman.h"
+#include "SampleCollider.h"
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
@@ -102,6 +103,14 @@ void SceneShotting::Init()
     cm->Init();
     cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
     AddSimpleDisplayObj(cm);
+
+    SampleColliderOwner1* sco1 = new SampleColliderOwner1;
+    sco1->Init();
+    AddSimpleDisplayObj(sco1);
+
+    SampleColliderOwner2* sco2 = new SampleColliderOwner2;
+    sco2->Init();
+    AddSimpleDisplayObj(sco2);
 }
 
 void SceneShotting::Update()

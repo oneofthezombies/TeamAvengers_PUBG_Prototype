@@ -208,6 +208,11 @@
     <ClCompile Include="UIInteractionMessage.cpp">
       <Filter>2. Object\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="SampleCollider.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="ICollisionListner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -435,6 +440,11 @@
     <ClInclude Include="UIInteractionMessage.h">
       <Filter>2. Object\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="SampleCollider.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollisionListner.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">
