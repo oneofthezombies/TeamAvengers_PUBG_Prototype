@@ -11,7 +11,7 @@ KeyManager::~KeyManager()
 
 HRESULT KeyManager::Init()
 {
-    //Å° °ªÀ» ÀüºÎ ´­·ÁÁ® ÀÖÁö ¾ÊÀº »óÅÂ·Î ÃÊ±âÈ­
+    //í‚¤ ê°’ì„ ì „ë¶€ ëˆŒë ¤ì ¸ ìˆì§€ ì•Šì€ ìƒíƒœë¡œ ì´ˆê¸°í™”
     for (int i = 0; i < KEYMAX; ++i)
     {
         m_keyUp.set(i, false);
@@ -33,10 +33,10 @@ void KeyManager::Update()
 
 void KeyManager::Destroy()
 {
-    //¾ÆÁ÷ »ç¿ëx
+    //ì•„ì§ ì‚¬ìš©x
 }
 
-bool KeyManager::IsOnceKeyDown(int key)  //Å°¸¦ ÇÑ¹ø¸¸ ´­·¶´ÂÁö
+bool KeyManager::IsOnceKeyDown(int key)  //í‚¤ë¥¼ í•œë²ˆë§Œ ëˆŒë €ëŠ”ì§€
 {
     if (GetAsyncKeyState(key) & 0x8000)
     {
@@ -57,7 +57,7 @@ bool KeyManager::IsOnceKeyDown(int key)  //Å°¸¦ ÇÑ¹ø¸¸ ´­·¶´ÂÁö
     return false;
 }
 
-bool KeyManager::IsOnceKeyUp(int key)    //Å°¸¦ ÇÑ¹ø ´­·¶´Ù°¡ ¶Ã´ÂÁö
+bool KeyManager::IsOnceKeyUp(int key)    //í‚¤ë¥¼ í•œë²ˆ ëˆŒë €ë‹¤ê°€ ë—ëŠ”ì§€
 {
     if (GetAsyncKeyState(key) & 0x8000)
     {
@@ -78,14 +78,14 @@ bool KeyManager::IsOnceKeyUp(int key)    //Å°¸¦ ÇÑ¹ø ´­·¶´Ù°¡ ¶Ã´ÂÁö
     return false;
 }
 
-bool KeyManager::IsStayKeyDown(int key)  //Å°°¡ °è¼Ó ´­·ÁÁ® ÀÖ´ÂÁö
+bool KeyManager::IsStayKeyDown(int key)  //í‚¤ê°€ ê³„ì† ëˆŒë ¤ì ¸ ìˆëŠ”ì§€
 {
     if (GetAsyncKeyState(key) & 0x8000)
         return true;
     return false;
 }
 
-bool KeyManager::IsToggleKey(int key)    //Åä±ÛÅ°(Ä¸½º¶ô, ³Ñ¹ö¶ô)°¡ On»óÅÂÀÎÁö
+bool KeyManager::IsToggleKey(int key)    //í† ê¸€í‚¤(ìº¡ìŠ¤ë½, ë„˜ë²„ë½)ê°€ Onìƒíƒœì¸ì§€
 {
     if (GetKeyState(key) & 0x0001)
         return true;

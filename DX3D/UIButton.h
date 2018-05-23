@@ -1,37 +1,60 @@
 #pragma once
-#include "IUIObject.h"
+#include "UIObject.h"
 
-class UIButton;
+class IUIButtonOnMouseListner;
 
-class IUIButtonDelegate
-{
-public:
-	virtual void OnClick(UIButton* pSender) = 0;
-};
-
-class UIButton : public IUIObject
+class UIButton : public UIObject
 {
 private:
-	enum ButtonState
+	enum State
 	{
-		NORMAL,
-		MOUSEOVER,
-		SELECTED,
-		COUNT
+        kIdle,
+        kMouseOver,
+        kSelect,
 	};
-	ButtonState m_buttonState;
-public:
-	IUIButtonDelegate * m_pDelegate;
-	LPDIRECT3DTEXTURE9 m_aTexture[COUNT];
+    static const int m_kNumState = 3;
 
-	UIButton(IUIButtonDelegate* pDelegate, LPD3DXSPRITE pSprite, int uiTag = -1);
+    IUIButtonOnMouseListner*   m_pIUIButtonOnMouseListner;
+    State                      m_state;
+    int                        m_KeyToRespond;
+    bool                       m_bPrevIsMouseOn;
+    bool                       m_bCurrIsMouseOn;
+    bool                       m_bIsClicked;
+    vector<LPDIRECT3DTEXTURE9> m_vecTexture;
+
+    void UpdateOnMouseEnterExit();
+    void UpdateOnMouseDownUpDrag();
+
+public:
+	UIButton();
 	virtual ~UIButton();
 
 	virtual void Update() override;
 	virtual void Render() override;
 
-	void SetTexture(string normal, string mouseOver, string selected);
-	void SetText(LPD3DXFONT font, LPCTSTR text);
+    void UpdateOnMouse();
 
+	void SetTexture(const string& idle, const string& mouseOver, const string& select);
+	void SetText(const LPD3DXFONT font, const LPCTSTR text);
+    void SetKeyToRespond(const int key);
+    void SetIUIButtonOnMouseListner(IUIButtonOnMouseListner& val);
 };
 
+class IUIButtonOnMouseListner
+{
+private:
+    UIButton* m_pUIButton;
+
+public:
+    IUIButtonOnMouseListner();
+    virtual ~IUIButtonOnMouseListner() = default;
+
+    virtual void OnMouseEnter() = 0;
+    virtual void OnMouseExit() = 0;
+    virtual void OnMouseDown(const int key) = 0;
+    virtual void OnMouseUp(const int key) = 0;
+    virtual void OnMouseDrag(const int key) = 0;
+
+    void SetUIButton(UIButton& val);
+    UIButton* GetUIButton() const;
+};

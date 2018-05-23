@@ -4,17 +4,26 @@
 
 class TimeManager
 {
-	SINGLETON(TimeManager)
 private:
-	DWORD	prevTime;
-	DWORD	deltaTime;
-	float	sumTime;
-	int		frameCnt;
-	int		fps;
+    system_clock::time_point prevTime;
+    float                    deltaTime;
+	float	                 sumTime;
+	int		                 frameCnt;
+	int		                 fps;
+
+	TimeManager();
+	~TimeManager();
 
 public:
+	//ΩÃ±€≈Ê
+	static TimeManager* GetInstance()
+	{
+		static TimeManager instance;
+		return &instance;
+	}
+
 	void	Update();
-	float	GetDeltaTime() { return deltaTime / 1000.0f; }
+    float	GetDeltaTime() { return deltaTime; }
 	int		GetFPS() { return fps; }
 };
 

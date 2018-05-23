@@ -15,41 +15,41 @@ DeviceManager::~DeviceManager()
 
 HRESULT DeviceManager::Init()
 {
-    //¹öÀü Á¤º¸¸¦ ÅëÇØ IDirect3D9 Interface ÀÇ Æ÷ÀÎÅÍ È¹µæ
+    //ë²„ì „ ì •ë³´ë¥¼ í†µí•´ IDirect3D9 Interface ì˜ í¬ì¸í„° íšë“
     m_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
     if (m_pD3D == NULL) return E_FAIL;
 
     D3DCAPS9	caps;
     int			vp;
 
-    //ÁÖ ±×·¡ÇÈÄ«µåÀÇ Á¤º¸¸¦ D3DCAPS9 ¿¡ ¹Þ¾Æ¿Â´Ù.
+    //ì£¼ ê·¸ëž˜í”½ì¹´ë“œì˜ ì •ë³´ë¥¼ D3DCAPS9 ì— ë°›ì•„ì˜¨ë‹¤.
     if (FAILED(m_pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,
         D3DDEVTYPE_HAL, &caps)))
         return E_FAIL;
 
-    //ÇÏµå¿þ¾î°¡ Á¤Á¡Ã³¸®¸¦ Áö¿øÇÏ´ÂÁö È®ÀÎ
+    //í•˜ë“œì›¨ì–´ê°€ ì •ì ì²˜ë¦¬ë¥¼ ì§€ì›í•˜ëŠ”ì§€ í™•ì¸
     if (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
         vp = D3DCREATE_HARDWARE_VERTEXPROCESSING;
     else
         vp = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
-    D3DPRESENT_PARAMETERS d3dpp;
-    ZeroMemory(&d3dpp, sizeof(D3DPRESENT_PARAMETERS));
-    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-    d3dpp.Windowed = true;
-    d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
-    d3dpp.EnableAutoDepthStencil = TRUE;
-    d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
-    d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
-    d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
-    if (FAILED(m_pD3D->CreateDevice(
-        D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL,
-        g_hWnd, vp, &d3dpp, &m_pD3DDevice)))
-    {
-        return E_FAIL;
-    }
+	D3DPRESENT_PARAMETERS d3dpp;
+	ZeroMemory(&d3dpp, sizeof(D3DPRESENT_PARAMETERS));
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.Windowed = true;
+	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+	d3dpp.EnableAutoDepthStencil = TRUE;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+	if (FAILED(m_pD3D->CreateDevice(
+		D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL,
+		g_hWnd, vp, &d3dpp, &m_pD3DDevice)))
+	{
+		return E_FAIL;
+	}
 
-    return S_OK;
+	return S_OK;
 }
 
 LPDIRECT3DDEVICE9 DeviceManager::GetDevice()
@@ -63,7 +63,7 @@ void DeviceManager::Destroy()
     {
         ULONG ul = m_pD3DDevice->Release();
         assert(ul == 0 &&
-            "µð¹ÙÀÌ½º¸¦ ÀÌ¿ëÇØ¼­ »ý¼ºÇÑ °´Ã¼ Áß ¼Ò¸êµÇÁö ¾ÊÀº °´Ã¼°¡ ÀÖ½À´Ï´Ù.");
+            "ë””ë°”ì´ìŠ¤ë¥¼ ì´ìš©í•´ì„œ ìƒì„±í•œ ê°ì²´ ì¤‘ ì†Œë©¸ë˜ì§€ ì•Šì€ ê°ì²´ê°€ ìžˆìŠµë‹ˆë‹¤.");
     }
 
     if (m_pD3D) m_pD3D->Release();

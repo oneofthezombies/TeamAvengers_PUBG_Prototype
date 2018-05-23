@@ -18,7 +18,7 @@ private:
     ~KeyManager();
 
 public:
-    //½Ì±ÛÅæ
+    //ì‹±ê¸€í†¤
     static KeyManager* GetInstance()
     {
         static KeyManager instance;
@@ -29,10 +29,10 @@ public:
     void Update();
     void Destroy();
 
-    bool IsOnceKeyDown(int key); //Å°¸¦ ÇÑ¹ø¸¸ ´­·¶´ÂÁö
-    bool IsOnceKeyUp(int key);   //Å°¸¦ ÇÑ¹ø ´­·¶´Ù°¡ ¶Ã´ÂÁö
-    bool IsStayKeyDown(int key); //Å°°¡ °è¼Ó ´­·ÁÁ® ÀÖ´ÂÁö
-    bool IsToggleKey(int key);   //Åä±ÛÅ°(Ä¸½º¶ô, ³Ñ¹ö¶ô)°¡ On»óÅÂÀÎÁö
+    bool IsOnceKeyDown(int key); //í‚¤ë¥¼ í•œë²ˆë§Œ ëˆŒë €ëŠ”ì§€
+    bool IsOnceKeyUp(int key);   //í‚¤ë¥¼ í•œë²ˆ ëˆŒë €ë‹¤ê°€ ë—ëŠ”ì§€
+    bool IsStayKeyDown(int key); //í‚¤ê°€ ê³„ì† ëˆŒë ¤ì ¸ ìˆëŠ”ì§€
+    bool IsToggleKey(int key);   //í† ê¸€í‚¤(ìº¡ìŠ¤ë½, ë„˜ë²„ë½)ê°€ Onìƒíƒœì¸ì§€
 
     const POINT& GetCurrentMousePos() const;
     const POINT& GetPreviousMousePos() const;

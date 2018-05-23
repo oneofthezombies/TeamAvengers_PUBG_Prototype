@@ -4,7 +4,7 @@
 
 TimeManager::TimeManager()
 {
-	prevTime = GetTickCount();
+    prevTime = system_clock::now();
 	sumTime = 0;
 	frameCnt = 0;
 }
@@ -16,15 +16,16 @@ TimeManager::~TimeManager()
 
 void TimeManager::Update()
 {
-	auto currentTime = GetTickCount();
-	deltaTime = currentTime - prevTime;
-	prevTime = currentTime;
+    const auto currentTime = system_clock::now();
+    duration<float> duration = currentTime - prevTime;
+    deltaTime = duration.count();
+    prevTime = currentTime;
 
 	frameCnt++;
 	sumTime += deltaTime;
-	if (sumTime >= 200)
+	if (sumTime >= 0.2f)
 	{
-		fps = frameCnt / sumTime * 1000.0f;
+		fps = frameCnt / sumTime;
 		frameCnt = 0;
 		sumTime = 0;
 	}
@@ -32,5 +33,4 @@ void TimeManager::Update()
 	Debug->AddText("FPS : ");
 	Debug->AddText(fps);
 	Debug->EndLine();
-
 }

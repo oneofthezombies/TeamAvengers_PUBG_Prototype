@@ -1,6 +1,7 @@
 #pragma once
 
 #define g_pSceneManager SceneManager::GetInstance()
+#define g_pCurrentScene SceneManager::GetInstance()->m_pCurrScene
 
 class IScene;
 
