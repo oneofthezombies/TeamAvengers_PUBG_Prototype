@@ -2,7 +2,8 @@
 #include "IScene.h"
 
 class Ground;
-class PlayerTemp;
+//class PlayerTemp;
+class PlayerAni;
 class Pistol;
 class Bullet;
 class SampleUIButtonListner;
@@ -11,7 +12,8 @@ class SceneShotting : public IScene
 {
 private:
 	Ground*           m_pGround;
-	PlayerTemp*       m_pPlayerTemp;
+	//PlayerTemp*       m_pPlayerTemp;
+	PlayerAni*        m_pPlayerAni;
 	Pistol*           m_pPistol;
 	vector<Bullet*>   m_vecPBullet;
 	
