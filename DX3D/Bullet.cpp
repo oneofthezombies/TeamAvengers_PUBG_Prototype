@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 #include "IScene.h"
+#include "Collider.h"
 
 Bullet::Bullet(float scale, float velocity)
 	: Item(ITEM_TAG::Bullet, "Bullet", "I am a Bullet")

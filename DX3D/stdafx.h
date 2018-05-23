@@ -75,6 +75,9 @@ using std::pair;
 using std::is_base_of_v;
 using std::enable_if_t;
 
+#include <functional>
+using std::hash;
+
 #include <d3dx9.h>
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")

@@ -3,6 +3,7 @@
 #include "UIInteractionMessage.h"
 #include "UIManager.h"
 #include "IScene.h"
+#include "Collider.h"
 
 CollidablePlayerBox::CollidablePlayerBox()
     : ICollidable()
