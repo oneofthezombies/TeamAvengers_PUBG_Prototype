@@ -96,7 +96,7 @@ extern HWND g_hWnd;
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "FontManager.h"
-#include "Camera.h"
+#include "CameraManager.h"
 #include "MapManager.h"
 #include "KeyboardManager.h"
 #include "keyManager.h"
