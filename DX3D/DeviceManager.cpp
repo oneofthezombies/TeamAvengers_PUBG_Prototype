@@ -4,8 +4,8 @@
 
 DeviceManager::DeviceManager()
 {
-	m_pD3D = NULL;
-	m_pD3DDevice = NULL;
+    m_pD3D = NULL;
+    m_pD3DDevice = NULL;
 }
 
 
@@ -15,23 +15,23 @@ DeviceManager::~DeviceManager()
 
 HRESULT DeviceManager::Init()
 {
-	//¹öÀü Á¤º¸¸¦ ÅëÇØ IDirect3D9 Interface ÀÇ Æ÷ÀÎÅÍ È¹µæ
-	m_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
-	if (m_pD3D == NULL) return E_FAIL;
+    //ë²„ì „ ì •ë³´ë¥¼ í†µí•´ IDirect3D9 Interface ì˜ í¬ì¸í„° íšë“
+    m_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
+    if (m_pD3D == NULL) return E_FAIL;
 
-	D3DCAPS9	caps; 
-	int			vp;
+    D3DCAPS9	caps;
+    int			vp;
 
-	//ÁÖ ±×·¡ÇÈÄ«µåÀÇ Á¤º¸¸¦ D3DCAPS9 ¿¡ ¹Þ¾Æ¿Â´Ù.
-	if (FAILED(m_pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL, &caps)))
-		return E_FAIL;
+    //ì£¼ ê·¸ëž˜í”½ì¹´ë“œì˜ ì •ë³´ë¥¼ D3DCAPS9 ì— ë°›ì•„ì˜¨ë‹¤.
+    if (FAILED(m_pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT,
+        D3DDEVTYPE_HAL, &caps)))
+        return E_FAIL;
 
-	//ÇÏµå¿þ¾î°¡ Á¤Á¡Ã³¸®¸¦ Áö¿øÇÏ´ÂÁö È®ÀÎ
-	if (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
-		vp = D3DCREATE_HARDWARE_VERTEXPROCESSING;
-	else
-		vp = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+    //í•˜ë“œì›¨ì–´ê°€ ì •ì ì²˜ë¦¬ë¥¼ ì§€ì›í•˜ëŠ”ì§€ í™•ì¸
+    if (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
+        vp = D3DCREATE_HARDWARE_VERTEXPROCESSING;
+    else
+        vp = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
 	D3DPRESENT_PARAMETERS d3dpp;
 	ZeroMemory(&d3dpp, sizeof(D3DPRESENT_PARAMETERS));
@@ -48,21 +48,23 @@ HRESULT DeviceManager::Init()
 	{
 		return E_FAIL;
 	}
+
+	return S_OK;
 }
 
 LPDIRECT3DDEVICE9 DeviceManager::GetDevice()
 {
-	return m_pD3DDevice;
+    return m_pD3DDevice;
 }
 
 void DeviceManager::Destroy()
 {
-	if (m_pD3DDevice)
-	{
-		ULONG ul = m_pD3DDevice->Release();
-		assert(ul == 0 && 
-			"µð¹ÙÀÌ½º¸¦ ÀÌ¿ëÇØ¼­ »ý¼ºÇÑ °´Ã¼ Áß ¼Ò¸êµÇÁö ¾ÊÀº °´Ã¼°¡ ÀÖ½À´Ï´Ù.");
-	}
+    if (m_pD3DDevice)
+    {
+        ULONG ul = m_pD3DDevice->Release();
+        assert(ul == 0 &&
+            "ë””ë°”ì´ìŠ¤ë¥¼ ì´ìš©í•´ì„œ ìƒì„±í•œ ê°ì²´ ì¤‘ ì†Œë©¸ë˜ì§€ ì•Šì€ ê°ì²´ê°€ ìžˆìŠµë‹ˆë‹¤.");
+    }
 
-	if (m_pD3D) m_pD3D->Release();
+    if (m_pD3D) m_pD3D->Release();
 }

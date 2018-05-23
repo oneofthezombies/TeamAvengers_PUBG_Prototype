@@ -1,17 +1,21 @@
 #pragma once
-#include "IUIObject.h"
-class UIText :
-	public IUIObject
-{
-public:
-	LPD3DXFONT		m_pFont;
-	LPCTSTR			m_text;
-	DWORD			m_drawTextFormat;
+#include "UIObject.h"
 
-	
-	UIText(LPD3DXFONT pFont , LPD3DXSPRITE pSprite, int uiTag =-1);
+class UIText : public UIObject
+{
+private:
+    LPD3DXFONT m_pFont;
+    LPCTSTR	   m_text;
+    DWORD	   m_drawTextFormat;
+
+public:
+	UIText();
 	virtual ~UIText();
 
 	virtual void Render() override;
+
+    void SetFont(const LPD3DXFONT val);
+    void SetText(const LPCTSTR val);
+    void SetDrawTextFormat(const DWORD val);
 };
 

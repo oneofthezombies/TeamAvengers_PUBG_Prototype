@@ -30,11 +30,25 @@ enum SCENE_INDEX {
 	SCENE_GRID,
 	SCENE_OBJMAP,
 	SCENE_HEIGHTMAP,
-	SCENE_TEST
+	SCENE_TEST,
+	SCENE_SHOTTING
 };
 
 enum TAG_DISPLAYOBJECT {
 	TAG_PLAYER
+};
+
+enum class ITEM_TAG
+{
+	Pistol,
+	Bullet
+};
+
+enum class ITEM_STATE
+{
+	Dropped,     //땅에 떨어진 상태
+	InInventory, //인벤토리에 있음
+	Mounting     //장착중
 };
 
 struct KEYBOARD_STATE
@@ -71,6 +85,11 @@ struct VERTEX_PT
 
 	VERTEX_PT() {}
 	VERTEX_PT(D3DXVECTOR3 _p, D3DXVECTOR2 _t) :p(_p), t(_t) {}
+    VERTEX_PT(const float x, const float y, const float z, const float u, const float v)
+        : p(x, y, z)
+        , t(u, v)
+    {
+    }
 
 	enum { FVF = D3DFVF_XYZ | D3DFVF_TEX1 };
 };
@@ -95,6 +114,14 @@ struct VERTEX_PNT
 	VERTEX_PNT() {}
 	VERTEX_PNT(D3DXVECTOR3 _p, D3DXVECTOR3 _n, D3DXVECTOR2 _t)
 		:p(_p), n(_n), t(_t) {}
+    VERTEX_PNT(const float x, const float y, const float z, 
+               const float nx, const float ny, const float nz, 
+               const float u, const float v)
+        : p(x, y, z)
+        , n(nx, ny, nz)
+        , t(u, v)
+    {
+    }
 
 	enum { FVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1};
 };
@@ -106,6 +133,12 @@ struct VERTEX_RHWC	//w의 역수라는 의미 //w값으로 같은 차원인지 아닌지를 계산하는
 	VERTEX_RHWC() {}
 	VERTEX_RHWC(D3DXVECTOR4 _p, D3DCOLOR _c)
 		:p(_p), c(_c) {}
+    VERTEX_RHWC(const float x, const float y, const float z, const float w, 
+                const D3DCOLOR c)
+        : p(x, y, z, w)
+        , c(c)
+    {
+    }
 
 	enum { FVF = D3DFVF_XYZRHW | D3DFVF_DIFFUSE };
 };

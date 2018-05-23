@@ -23,7 +23,7 @@
     <ProjectGuid>{D9781ED6-A279-4E67-8978-13E5C99922B1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DX3D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -161,8 +161,12 @@
     <ClInclude Include="AStar.h" />
     <ClInclude Include="AStarNode.h" />
     <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="ICollisionListner.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
     <ClInclude Include="CubemanParts.h" />
@@ -176,16 +180,25 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GlobalDefinition.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Ground.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Pistol.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeightMap.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IActionObject.h" />
     <ClInclude Include="ICamera.h" />
+    <ClInclude Include="ICollidable.h" />
     <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
+    <ClInclude Include="SampleCollider.h" />
+    <ClInclude Include="SampleUIButtonListner.h" />
+    <ClInclude Include="UIInteractionMessage.h" />
+    <ClInclude Include="UIInventory.h" />
     <ClInclude Include="IScene.h" />
-    <ClInclude Include="IUIObject.h" />
+    <ClInclude Include="SampleCollidable.h" />
+    <ClInclude Include="UIObject.h" />
     <ClInclude Include="IUnitObject.h" />
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="KeyManager.h" />
@@ -195,6 +208,9 @@
     <ClInclude Include="ObjMap.h" />
     <ClInclude Include="ParticleTest.h" />
     <ClInclude Include="Picking.h" />
+    <ClInclude Include="PlayerAni.h" />
+    <ClInclude Include="PlayerParts.h" />
+    <ClInclude Include="PlayerTemp.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SampleUI.h" />
@@ -202,14 +218,19 @@
     <ClInclude Include="SceneHeightmap.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneObjMap.h" />
+    <ClInclude Include="SceneShotting.h" />
     <ClInclude Include="SceneTest.h" />
+    <ClInclude Include="SingletonBase.h" />
+    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIGameOver.h" />
     <ClInclude Include="UIImage.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIText.h" />
     <ClInclude Include="Walls.h" />
   </ItemGroup>
@@ -225,8 +246,12 @@
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="AStarNode.cpp" />
     <ClCompile Include="BaseObject.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ICollisionListner.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
     <ClCompile Include="CubemanParts.cpp" />
@@ -238,8 +263,15 @@
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="SampleCollider.cpp" />
+    <ClCompile Include="SampleUIButtonListner.cpp" />
+    <ClCompile Include="UIGameOver.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="IScene.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Pistol.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeightMap.cpp" />
     <ClCompile Include="Hexagon.cpp" />
@@ -249,6 +281,11 @@
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="IMap.cpp" />
     <ClCompile Include="IUIObject.cpp" />
+    <ClCompile Include="ICollidable.cpp" />
+    <ClCompile Include="IDisplayObject.cpp" />
+    <ClCompile Include="SampleCollidable.cpp" />
+    <ClCompile Include="UIInteractionMessage.cpp" />
+    <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
@@ -258,13 +295,18 @@
     <ClCompile Include="ObjMap.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
     <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="PlayerAni.cpp" />
+    <ClCompile Include="PlayerParts.cpp" />
+    <ClCompile Include="PlayerTemp.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="SampleUI.cpp" />
     <ClCompile Include="SceneGrid.cpp" />
     <ClCompile Include="SceneHeightmap.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneObjMap.cpp" />
+    <ClCompile Include="SceneShotting.cpp" />
     <ClCompile Include="SceneTest.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -276,6 +318,7 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIText.cpp" />
     <ClCompile Include="Walls.cpp" />
   </ItemGroup>

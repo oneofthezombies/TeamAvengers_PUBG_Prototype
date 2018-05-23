@@ -1,12 +1,18 @@
 #include "stdafx.h"
 #include "UIButton.h"
+#include "UIManager.h"
 #include "UIText.h"
 
-UIButton::UIButton(IUIButtonDelegate * pDelegate, LPD3DXSPRITE pSprite, int uiTag)
-	:IUIObject(pSprite,uiTag)
-	,m_pDelegate(pDelegate)
-	,m_buttonState(NORMAL)
+UIButton::UIButton()
+    : UIObject()
+    , m_state(State::kIdle)
+    , m_KeyToRespond(VK_LBUTTON)
+    , m_pIUIButtonOnMouseListner(nullptr)
+    , m_bPrevIsMouseOn(false)
+    , m_bCurrIsMouseOn(false)
+    , m_bIsClicked(false)
 {
+    m_vecTexture.resize(m_kNumState, nullptr);
 }
 
 UIButton::~UIButton()
@@ -15,76 +21,210 @@ UIButton::~UIButton()
 
 void UIButton::Update()
 {
-	IUIObject::Update();
-
-	RECT rect;
-	GetFinalRect(&rect);
-
-	POINT mousePoint;
-	GetCursorPos(&mousePoint);//여기까지는 screen기준.
-	ScreenToClient(g_hWnd,&mousePoint);//window기준
-
-	//마우스 포인터가 버튼 영역 안에 있을때
-	if (PtInRect(&rect, mousePoint))
-	{
-		if (GetKeyState(VK_LBUTTON) & 0x8000)
-		{
-			if (m_buttonState == MOUSEOVER)
-			{
-				m_buttonState = SELECTED;
-			}
-		}
-		else
-		{
-			if (m_buttonState == SELECTED)
-			{
-				if (m_pDelegate)
-					m_pDelegate->OnClick(this);
-			}
-			m_buttonState = MOUSEOVER;
-		}
-	}
-	else//마우스 포인터가 버튼 영역 밖에 있을때
-	{
-		if (GetKeyState(VK_LBUTTON) & 0x8000)
-		{
-
-		}
-		else
-		{
-			m_buttonState = NORMAL;
-		}
-	}
+    UpdateViewportPosRect();
+    UpdateOnMouse();
+    UpdateChildren();
 }
 
 void UIButton::Render()
 {
-	if (m_aTexture[m_buttonState])
+	if (m_vecTexture[m_state])
 	{
 		RECT rect;
-		SetRect(&rect, 0, 0, m_size.x, m_size.y);
+		SetRect(&rect, 0, 0, static_cast<int>(m_vSize.x), static_cast<int>(m_vSize.y));
 
-		m_pSprite->Draw(m_aTexture[m_buttonState], &rect, &m_pivot, &m_combinedPos, m_color);
+        g_pSprite->Draw(m_vecTexture[m_state], &rect, &m_vCenter, &m_vViewportPosition, m_color);
 	}
-	IUIObject::Render();
+
+	UIObject::Render();
 }
 
-void UIButton::SetTexture(string normal, string mouseOver, string selected)
+void UIButton::UpdateOnMouse()
 {
+    UpdateOnMouseEnterExit();
+    UpdateOnMouseDownUpDrag();
+}
+
+void UIButton::SetTexture(const string& idle, const string& mouseOver, const string& select)
+{
+    const auto texMgr = g_pTextureManager;
+    if (!texMgr) return;
+
 	D3DXIMAGE_INFO info;
-	m_aTexture[NORMAL]= g_pTextureManager->GetTexture(normal);
-	m_aTexture[MOUSEOVER] = g_pTextureManager->GetTexture(mouseOver);
-	m_aTexture[SELECTED] = g_pTextureManager->GetTexture(selected);
+	m_vecTexture[State::kIdle]= texMgr->GetTexture(idle);
+	m_vecTexture[State::kMouseOver] = texMgr->GetTexture(mouseOver);
+	m_vecTexture[State::kSelect] = texMgr->GetTexture(select);
 
-	D3DXGetImageInfoFromFileA(normal.c_str(), &info);
-	m_size.x = info.Width;
-	m_size.y = info.Height;
+	D3DXGetImageInfoFromFileA(idle.c_str(), &info);
+	m_vSize.x = info.Width;
+	m_vSize.y = info.Height;
 }
 
-void UIButton::SetText(LPD3DXFONT font, LPCTSTR text)
+void UIButton::SetText(const LPD3DXFONT font, const LPCTSTR text)
 {
-	UIText* pText = new UIText(font, m_pSprite);
-	this->AddChild(pText);
-	pText->m_text = text;
-	pText->m_size = m_size;
+	UIText* pText = new UIText;
+	AddChild(*pText);
+    pText->SetFont(font);
+    pText->SetText(text);
+    pText->SetSize(m_vSize);
+}
+
+void UIButton::SetKeyToRespond(const int key)
+{
+    m_KeyToRespond = key;
+}
+
+void UIButton::SetIUIButtonOnMouseListner(IUIButtonOnMouseListner& val)
+{
+    m_pIUIButtonOnMouseListner = &val;
+}
+
+void UIButton::UpdateOnMouseEnterExit()
+{
+    if (!m_pIUIButtonOnMouseListner) return;
+
+    m_bPrevIsMouseOn = m_bCurrIsMouseOn;
+    m_bCurrIsMouseOn = PtInRect(&m_rect, g_pKeyManager->GetCurrentMousePos());
+
+    if (!m_bPrevIsMouseOn && m_bCurrIsMouseOn)
+        m_pIUIButtonOnMouseListner->OnMouseEnter();
+
+    if (m_bPrevIsMouseOn && !m_bCurrIsMouseOn)
+        m_pIUIButtonOnMouseListner->OnMouseExit();
+}
+
+/*
+
+TODO : 클릭 인식 뭐같음 수정해야 함
+
+*/
+void UIButton::UpdateOnMouseDownUpDrag()
+{
+    const auto keyMgr = g_pKeyManager;
+    if (!keyMgr) return;
+
+    switch (m_state)
+    {
+    case State::kIdle:
+        {
+            if (m_bCurrIsMouseOn)
+            {
+                m_state = State::kMouseOver;
+            }
+        }
+        break;
+    case State::kMouseOver:
+        {
+            if (m_KeyToRespond == VK_LBUTTON)
+            {
+                if (keyMgr->IsKeyDownMouseL())
+                {
+                    m_state = State::kSelect;
+
+                    if (m_pIUIButtonOnMouseListner)
+                        m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
+                }
+                else
+                {
+                    m_state = State::kIdle;
+                }
+            }
+            else if (m_KeyToRespond == VK_RBUTTON)
+            {
+                if (keyMgr->IsKeyDownMouseR())
+                {
+                    m_state = State::kSelect;
+
+                    if (m_pIUIButtonOnMouseListner)
+                        m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
+                }
+                else
+                {
+                    m_state = State::kIdle;
+                }
+            }
+            else
+            {
+                // something error
+            }
+        }
+        break;
+    case State::kSelect:
+        {
+            if (m_KeyToRespond == VK_LBUTTON)
+            {
+                if (keyMgr->IsKeyDownMouseL() && keyMgr->GetPrevIsKeyDownMouseL())
+                {
+                    if (m_bCurrIsMouseOn && m_bPrevIsMouseOn)
+                        if (m_pIUIButtonOnMouseListner)
+                            m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
+                }
+                else
+                {
+                    if (m_bCurrIsMouseOn)
+                    {
+                        m_state = State::kMouseOver;
+
+                        if (keyMgr->GetPrevIsKeyDownMouseL())
+                            if (m_pIUIButtonOnMouseListner)
+                                m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
+                    }
+                    else
+                    {
+                        m_state = State::kIdle;
+                    }
+                }
+            }
+            else if (m_KeyToRespond == VK_RBUTTON)
+            {
+                if (keyMgr->IsKeyDownMouseR() && keyMgr->GetPrevIsKeyDownMouseR())
+                {
+                    if (m_bCurrIsMouseOn && m_bPrevIsMouseOn)
+                        if (m_pIUIButtonOnMouseListner)
+                            m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
+                }
+                else
+                {
+                    if (m_bCurrIsMouseOn)
+                    {
+                        m_state = State::kMouseOver;
+
+                        if (keyMgr->GetPrevIsKeyDownMouseR())
+                            if (m_pIUIButtonOnMouseListner)
+                                m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
+                    }
+                    else
+                    {
+                        m_state = State::kIdle;
+                    }
+                }
+            }
+            else
+            {
+                // something error
+            }
+        }
+        break;
+    default:
+        {
+            // something error
+        }
+        break;
+    }
+}
+
+IUIButtonOnMouseListner::IUIButtonOnMouseListner()
+    : m_pUIButton(nullptr)
+{
+}
+
+void IUIButtonOnMouseListner::SetUIButton(UIButton& val)
+{
+    m_pUIButton = &val;
+    m_pUIButton->SetIUIButtonOnMouseListner(*this);
+}
+
+UIButton* IUIButtonOnMouseListner::GetUIButton() const
+{
+    return m_pUIButton;
 }

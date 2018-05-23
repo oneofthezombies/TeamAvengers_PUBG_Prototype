@@ -4,7 +4,7 @@
 
 class DebugManager
 {
-	SINGLETON(DebugManager);
+	SINGLETON(DebugManager)
 private:
 	LPD3DXFONT			m_pFont;
 	char				m_str[1024];
@@ -19,6 +19,7 @@ public:
 	void AddText(int str);
 	void AddText(DWORD str);
 	void AddText(D3DXVECTOR3 str);
+	void AddText(size_t str);
 	void EndLine();
 	void Print();
 	void ShowMessageBox();
