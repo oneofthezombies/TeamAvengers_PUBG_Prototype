@@ -31,6 +31,7 @@ private:
     ////Ãß°¡
     bool            m_isRunnig;
     bool            m_isLive;
+    POINT           premousef;
 
 public:
     PlayerAni();

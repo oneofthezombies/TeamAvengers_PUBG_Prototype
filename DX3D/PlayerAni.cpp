@@ -45,25 +45,29 @@ void PlayerAni::Init()
     g_pObjMgr->AddToTagList(TAG_PLAYER, this);
     g_pCamera->SetTarget(&m_pos);
     CreateAllParts();
+    premousef = g_pKeyManager->GetPreviousMousePos();
     
 }
 
 void PlayerAni::Update()
 {
+    
+    POINT currmousef;
+    //if (g_pKeyManager->IsStayKeyDown('A'))
+    //{
+    //    m_deltaRot = D3DXVECTOR3(0,-1,0);
+    //   
+    //}
+    //else if(g_pKeyManager->IsStayKeyDown('D'))
+    //{
+    //    m_deltaRot = D3DXVECTOR3(0, 1, 0);
+    //}
+    //else
+    //{
+    //    m_deltaRot = D3DXVECTOR3(0, 0, 0);
+    //}
 
-    if (g_pKeyManager->IsStayKeyDown('A'))
-    {
-        m_deltaRot = D3DXVECTOR3(0,-1,0);
-       
-    }
-    else if(g_pKeyManager->IsStayKeyDown('D'))
-    {
-        m_deltaRot = D3DXVECTOR3(0, 1, 0);
-    }
-    else
-    {
-        m_deltaRot = D3DXVECTOR3(0, 0, 0);
-    }
+
 
     if (g_pKeyManager->IsStayKeyDown('W'))
     {
@@ -72,7 +76,6 @@ void PlayerAni::Update()
     else if (g_pKeyManager->IsStayKeyDown('S'))
     {
         m_deltaPos.z = -1;
-
     }
     else
     {
@@ -101,15 +104,21 @@ void PlayerAni::Update()
     }
 
 
+    currmousef = g_pKeyManager->GetCurrentMousePos();
+    
     if (m_isLive)
     {
+        m_deltaRot.y = premousef.y - currmousef.y;
+        
         UpdatePosition();
     }
 
    
 
     Debug->AddText("test : ");
-    Debug->AddText(m_rot.x);
+    Debug->AddText(currmousef.y);
+    Debug->AddText("  //   ");
+    Debug->AddText(premousef.y);
     Debug->EndLine();
 
     
