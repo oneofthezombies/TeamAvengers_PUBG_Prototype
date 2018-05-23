@@ -149,18 +149,11 @@ void CameraKyunChak::Update()
         m_vel -= dt * 5.0f;
         m_distance += m_vel * dt;
         m_basePosY += m_vel * dt*0.5f;
-        //if (m_distance <= TP_DISTANCE - 0.1f)
-        //{
-        //    g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
-        //}
+        if (m_distance <= TP_DISTANCE - 0.1f)
+        {
+            g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
+        }
     }
-    
-
-
-        
-
-
-
     ThirdPersonCamera::Update();
 }
 

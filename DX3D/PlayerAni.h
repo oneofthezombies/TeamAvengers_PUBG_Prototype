@@ -31,7 +31,7 @@ private:
     D3DXVECTOR3		m_deltaRot;
     D3DXVECTOR3		m_forward;
     D3DXVECTOR3		m_test1;
-
+    D3DXVECTOR3     m_dir;
 
     bool			m_isMoving;
     float			m_moveSpeed;
