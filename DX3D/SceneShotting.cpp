@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "SceneShotting.h"
 #include "Ground.h"
-#include "PlayerTemp.h"
+//#include "PlayerTemp.h"
+#include "PlayerAni.h"
 #include "Pistol.h"
 #include "Bullet.h"
 #include "SampleCollidable.h"
@@ -16,7 +17,8 @@
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
-	, m_pPlayerTemp(nullptr)
+	//, m_pPlayerAniTemp(nullptr)
+	, m_pPlayerAni(nullptr)
     , m_pPistol(nullptr)
     , m_pSampleUIButtonListner(nullptr)
 {
@@ -55,9 +57,13 @@ void SceneShotting::Init()
 	AddSimpleDisplayObj(m_pGround);
 
 	//임시플레이어
-	m_pPlayerTemp = new PlayerTemp();
-	m_pPlayerTemp->Init();
-	AddSimpleDisplayObj(m_pPlayerTemp);
+	//m_pPlayerAniTemp = new PlayerTemp();
+	//m_pPlayerAniTemp->Init();
+	//AddSimpleDisplayObj(m_pPlayerAniTemp);
+	m_pPlayerAni = new PlayerAni;
+	m_pPlayerAni->Init();
+	AddSimpleDisplayObj(m_pPlayerAni);
+
 
 	//권총
 	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
@@ -75,17 +81,15 @@ void SceneShotting::Init()
 	}
 
 	//총이랑 총알먹기 //포인터에 대한 소유권을 명확히 해야한다
-	m_pPlayerTemp->PutItemInInventory(m_pPistol);
+	//m_pPlayerAniTemp->PutItemInInventory(m_pPistol);
+	m_pPlayerAni->PutItemInInventory(m_pPistol);
 	m_pPistol = nullptr;
 	for (auto bullet : m_vecPBullet)
 	{ 
-		m_pPlayerTemp->PutItemInInventory(bullet);
+		//m_pPlayerAniTemp->PutItemInInventory(bullet);
+		m_pPlayerAni->PutItemInInventory(bullet);
 	}
 	m_vecPBullet.clear();
-
-    CollidablePlayerBox* cpb = new CollidablePlayerBox;
-    cpb->Init();
-    AddSimpleDisplayObj(cpb);
 
     CollidableItemBox* cib = new CollidableItemBox;
     cib->Init();
