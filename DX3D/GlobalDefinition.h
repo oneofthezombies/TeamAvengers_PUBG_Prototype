@@ -40,7 +40,7 @@ enum TAG_DISPLAYOBJECT {
 
 enum class ITEM_TAG
 {
-	Pistol,
+	Gun,
 	Bullet
 };
 
@@ -49,6 +49,12 @@ enum class ITEM_STATE
 	Dropped,     //땅에 떨어진 상태
 	InInventory, //인벤토리에 있음
 	Mounting     //장착중
+};
+
+enum class GUN_TAG
+{
+	Pistol,
+	Rifle
 };
 
 struct KEYBOARD_STATE

@@ -2,9 +2,8 @@
 #include "IScene.h"
 
 class Ground;
-//class PlayerTemp;
 class PlayerAni;
-class Pistol;
+class Gun;
 class Bullet;
 class SampleUIButtonListner;
 
@@ -12,9 +11,9 @@ class SceneShotting : public IScene
 {
 private:
 	Ground*           m_pGround;
-	//PlayerTemp*       m_pPlayerTemp;
 	PlayerAni*        m_pPlayerAni;
-	Pistol*           m_pPistol;
+	Gun*              m_pPistol;
+	Gun*              m_pRifle;
 	vector<Bullet*>   m_vecPBullet;
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z 기준선
@@ -25,7 +24,6 @@ public:
 	SceneShotting();
 	~SceneShotting();
 
-	// IScene을(를) 통해 상속됨
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;

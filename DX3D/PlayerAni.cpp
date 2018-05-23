@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PlayerAni.h"
 #include "PlayerParts.h"
-#include "Pistol.h"
+#include "Gun.h"
 #include "Bullet.h"
 #include "Collider.h"
 
@@ -15,7 +15,7 @@ enum enumParts
 };
 
 PlayerAni::PlayerAni()
-    : m_pPistol(nullptr)
+    : m_pGun(nullptr)
 	, m_pCollisionListner(nullptr)
 	, m_pBoxCollider(nullptr)
 {
@@ -106,8 +106,8 @@ void PlayerAni::Update()
 	ShowInventoryForDebug();
 
 	//총알 개수 디버그용
-	if (m_pPistol)
-		m_pPistol->ShowBulletNumForDebug();
+	if (m_pGun)
+		m_pGun->ShowBulletNumForDebug();
 
 	/* TM = prevM^(-1) * currM */
 	m_pBoxCollider->Update(prevM * currM);
@@ -320,6 +320,13 @@ void PlayerAni::PutItemInInventory(Item* item)
 	item->SetItemState(ITEM_STATE::InInventory);
 	m_mapInventory[item->GetItemTag()].push_back(item);
 }
+
+void PlayerAni::PutGuns(Gun * gun)
+{
+	gun->SetItemState(ITEM_STATE::InInventory);
+	m_mapGuns[gun->GetGunTag()] = gun;
+}
+
 void PlayerAni::ShowInventoryForDebug()
 {
 	Debug->AddText("<Inventory>");
@@ -333,8 +340,8 @@ void PlayerAni::ShowInventoryForDebug()
 		auto itemTag = item.first;
 		switch (itemTag)
 		{
-		case ITEM_TAG::Pistol:
-			Debug->AddText("- Pistol: ");
+		case ITEM_TAG::Gun:
+			Debug->AddText("- Gun: ");
 			Debug->AddText(item.second.size());
 			Debug->EndLine();
 
@@ -425,9 +432,9 @@ void PlayerAni::KeyMove()
 	}
 
 	/* 총 장착시 총 위치 업데이트 */
-	if (m_pPistol)
+	if (m_pGun)
 	{
-		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 1.f, m_pos.z + 2.f)); //플레이어보다 살짝 위, 살짝 앞
+		m_pGun->SetPosition(D3DXVECTOR3(m_pos.x + 1.5f, m_pos.y + 5.f, m_pos.z + 2.f)); //플레이어보다 살짝 위, 살짝 앞
 	}
 }
 
@@ -436,17 +443,71 @@ void PlayerAni::KeyMount()
 	/* 무기 장착 */
 	if (g_pKeyManager->IsOnceKeyDown('1'))
 	{
-		if (m_pPistol == nullptr) //아무것도 장착되어있지 않을 때
+		if (m_pGun == nullptr) //아무것도 장착되어있지 않을 때
 		{
-			for (auto item : m_mapInventory) //인벤토리에서 총 찾아 가장 앞에 있는 총 겟또
+			for (auto gun : m_mapGuns)
 			{
-				auto itemTag = item.first;
-				if (itemTag == ITEM_TAG::Pistol)
+				if (gun.first == GUN_TAG::Pistol)
+				{
+						DrawGunInOut();
+						m_pGun = static_cast<Gun*>(gun.second);
+						m_pGun->SetItemState(ITEM_STATE::Mounting); //장착중
+						std::cout << "권총 장착 완료" << std::endl;
+						break; //총한개만 찾지롱
+				}
+			}
+		}
+		else if(m_pGun && m_pGun->GetGunTag() != GUN_TAG::Pistol) //장착이 되어있으면서, 권총이 아닐 때
+		{
+			DrawGunInOut();
+			m_pGun->SetItemState(ITEM_STATE::InInventory); //장착해제중
+			m_pGun = nullptr;
+			std::cout << "기존 무기 장착 해제" << std::endl;
+
+			for (auto gun : m_mapGuns)
+			{
+				if (gun.first == GUN_TAG::Pistol)
 				{
 					DrawGunInOut();
-					m_pPistol = static_cast<Pistol*>(item.second.front());
-					m_pPistol->SetItemState(ITEM_STATE::Mounting); //장착중
-					std::cout << "장착 완료" << std::endl;
+					m_pGun = static_cast<Gun*>(gun.second);
+					m_pGun->SetItemState(ITEM_STATE::Mounting); //장착중
+					std::cout << "권총 장착 완료" << std::endl;
+					break; //총한개만 찾지롱
+				}
+			}
+		}
+	} //if (g_pKeyManager->IsOnceKeyDown('1'))
+	else if (g_pKeyManager->IsOnceKeyDown('2'))
+	{
+		if (m_pGun == nullptr) //아무것도 장착되어있지 않을 때
+		{
+			for (auto gun : m_mapGuns)
+			{
+				if (gun.first == GUN_TAG::Rifle)
+				{
+					DrawGunInOut();
+					m_pGun = static_cast<Gun*>(gun.second);
+					m_pGun->SetItemState(ITEM_STATE::Mounting); //장착중
+					std::cout << "소총 장착 완료" << std::endl;
+					break; //총한개만 찾지롱
+				}
+			}
+		}
+		else if (m_pGun && m_pGun->GetGunTag() != GUN_TAG::Rifle) //장착이 되어있으면서, 소총이 아닐 때
+		{
+			DrawGunInOut();
+			m_pGun->SetItemState(ITEM_STATE::InInventory); //장착해제중
+			m_pGun = nullptr;
+			std::cout << "기존 무기 장착 해제" << std::endl;
+
+			for (auto gun : m_mapGuns)
+			{
+				if (gun.first == GUN_TAG::Rifle)
+				{
+					DrawGunInOut();
+					m_pGun = static_cast<Gun*>(gun.second);
+					m_pGun->SetItemState(ITEM_STATE::Mounting); //장착중
+					std::cout << "소총 장착 완료" << std::endl;
 					break; //총한개만 찾지롱
 				}
 			}
@@ -459,11 +520,11 @@ void PlayerAni::KeyUnmount()
 	/* 무기 장착 해제 */
 	if (g_pKeyManager->IsOnceKeyDown('X'))
 	{
-		if (m_pPistol)
+		if (m_pGun)
 		{
 			DrawGunInOut();
-			m_pPistol->SetItemState(ITEM_STATE::InInventory); //장착해제중
-			m_pPistol = nullptr;
+			m_pGun->SetItemState(ITEM_STATE::InInventory); //장착해제중
+			m_pGun = nullptr;
 			std::cout << "장착 해제" << std::endl;
 		}
 	}
@@ -475,14 +536,14 @@ void PlayerAni::KeyLoad()
 	/* 총알 장전 */
 	if (g_pKeyManager->IsOnceKeyDown('R'))
 	{
-		if (m_pPistol) //장착하고 있는 총이 있으면
+		if (m_pGun) //장착하고 있는 총이 있으면
 		{
 			//총알 찾기
 			for (auto& item : m_mapInventory)
 			{
 				if (item.first == ITEM_TAG::Bullet)
 				{
-					int need = m_pPistol->GetNeedBullet(); //장전에 필요한 총알 수
+					int need = m_pGun->GetNeedBullet(); //장전에 필요한 총알 수
 					auto& bullets = item.second;
 					for (int i = 0; i < need; ++i)
 					{
@@ -490,14 +551,14 @@ void PlayerAni::KeyLoad()
 						{
 							auto bullet = bullets.back();
 							bullet->SetItemState(ITEM_STATE::Mounting);
-							m_pPistol->Load(static_cast<Bullet*>(bullet));
+							m_pGun->Load(static_cast<Bullet*>(bullet));
 							bullets.pop_back();
 							std::cout << "장전완료" << std::endl;
 						}
 					}
 				}//if ITEM_TAG::Bullet
 			}//for m_mapInventory
-		}//if m_pPistol
+		}//if m_pGun
 		else //m_pPistpol == nullptr
 		{
 			std::cout << "총을 장착하고 장전해줘~!" << std::endl;
@@ -510,10 +571,10 @@ void PlayerAni::KeyFire()
 	/* 총쏘기 RETRUN */ //TODO: 마우스 왼쪽 버튼으로 바꿔야함!!
 	if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
 	{
-		if (m_pPistol) //총이 장착되어있을 때
+		if (m_pGun) //총이 장착되어있을 때
 		{
-			m_pPistol->Fire();
-			if (m_pPistol->GetBulletNum() > 0)
+			m_pGun->Fire();
+			if (m_pGun->GetBulletNum() > 0)
 				std::cout << "빵야빵야~!" << std::endl;
 			else
 				std::cout << "총알이 없따 ㅠㅠㅠㅠ" << std::endl;

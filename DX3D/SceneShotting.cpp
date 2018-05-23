@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "SceneShotting.h"
 #include "Ground.h"
-//#include "PlayerTemp.h"
 #include "PlayerAni.h"
-#include "Pistol.h"
+#include "Gun.h"
 #include "Bullet.h"
 #include "SampleCollidable.h"
 #include "SkyBox.h"
@@ -17,9 +16,9 @@
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
-	//, m_pPlayerAniTemp(nullptr)
 	, m_pPlayerAni(nullptr)
     , m_pPistol(nullptr)
+	, m_pRifle(nullptr)
     , m_pSampleUIButtonListner(nullptr)
 {
 }
@@ -56,19 +55,20 @@ void SceneShotting::Init()
 	m_pGround->Init();
 	AddSimpleDisplayObj(m_pGround);
 
-	//임시플레이어
-	//m_pPlayerAniTemp = new PlayerTemp();
-	//m_pPlayerAniTemp->Init();
-	//AddSimpleDisplayObj(m_pPlayerAniTemp);
+	//플레이어
 	m_pPlayerAni = new PlayerAni;
 	m_pPlayerAni->Init();
 	AddSimpleDisplayObj(m_pPlayerAni);
 
-
 	//권총
-	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	m_pPistol = new Gun(GUN_TAG::Pistol, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
 	AddSimpleDisplayObj(m_pPistol);
+	
+	//소총
+	m_pRifle = new Gun(GUN_TAG::Rifle, 10, 0.4f, 5.f, 1.2f, -D3DXToRadian(90));
+	m_pRifle->Init();
+	AddSimpleDisplayObj(m_pRifle);
 
 	//총알 10개 생성
 	m_vecPBullet.reserve(10);
@@ -81,9 +81,9 @@ void SceneShotting::Init()
 	}
 
 	//총이랑 총알먹기 //포인터에 대한 소유권을 명확히 해야한다
-	//m_pPlayerAniTemp->PutItemInInventory(m_pPistol);
-	m_pPlayerAni->PutItemInInventory(m_pPistol);
-	m_pPistol = nullptr;
+	m_pPlayerAni->PutGuns(m_pPistol); m_pPistol = nullptr;
+	m_pPlayerAni->PutGuns(m_pRifle); m_pRifle = nullptr;
+	
 	for (auto bullet : m_vecPBullet)
 	{ 
 		//m_pPlayerAniTemp->PutItemInInventory(bullet);

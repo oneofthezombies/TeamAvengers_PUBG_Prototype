@@ -5,7 +5,7 @@
 #include "ICollisionListner.h"
 
 class PlayerParts;
-class Pistol;
+class Gun;
 class Bullet;
 class BoxCollider;
 
@@ -52,11 +52,12 @@ private:
 
 	/* 우리 추가 */
 	//TODO: multimap으로 변경할 것
+	Gun*            m_pGun;      //장착중인 총
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
-	Pistol*         m_pPistol;     //장착중인 총
+	map<GUN_TAG, Gun*>           m_mapGuns;
 
-	BoxCollider*			   m_pBoxCollider;
-	PlayerAniCollisionListner* m_pCollisionListner;
+	BoxCollider*			     m_pBoxCollider;
+	PlayerAniCollisionListner*   m_pCollisionListner;
 
 public:
     PlayerAni();
@@ -86,6 +87,7 @@ public:
 	/* 우리 추가 */
 	size_t GetInventorySize() { return m_mapInventory.size(); }
 	void PutItemInInventory(Item* item);
+	void PutGuns(Gun* gun);
 	void ShowInventoryForDebug();
 
 	/* 키 입력 관련 함수로 분리*/

@@ -145,12 +145,6 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>1. Scene\SceneShotting</Filter>
     </ClCompile>
-    <ClCompile Include="Pistol.cpp">
-      <Filter>1. Scene\SceneShotting</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerTemp.cpp">
-      <Filter>1. Scene\SceneShotting</Filter>
-    </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>1. Scene\SceneShotting</Filter>
     </ClCompile>
@@ -217,11 +211,18 @@
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IMap.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
-    <ClCompile Include="PlayerAni.cpp" />
-    <ClCompile Include="PlayerParts.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
+    <ClCompile Include="IDisplayObject.cpp" />
+    <ClCompile Include="PlayerAni.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParts.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -383,12 +384,6 @@
     <ClInclude Include="Bullet.h">
       <Filter>1. Scene\SceneShotting</Filter>
     </ClInclude>
-    <ClInclude Include="Pistol.h">
-      <Filter>1. Scene\SceneShotting</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerTemp.h">
-      <Filter>1. Scene\SceneShotting</Filter>
-    </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>1. Scene\SceneShotting</Filter>
     </ClInclude>
@@ -457,9 +452,16 @@
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="ICamera.h" />
-    <ClInclude Include="PlayerAni.h" />
-    <ClInclude Include="PlayerParts.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
+    <ClInclude Include="PlayerParts.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAni.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="Gun.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

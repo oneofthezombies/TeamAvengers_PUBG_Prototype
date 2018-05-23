@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "Pistol.h"
+#include "Gun.h"
 #include "Bullet.h"
-#include "IScene.h"
 
-Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
-	: Item(ITEM_TAG::Pistol, "Pistol", "I am a Pistol")
+Gun::Gun(GUN_TAG gunTag, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
+	: Item(ITEM_TAG::Gun, "Gun", "I am a Gun")
+	, m_gunTag(gunTag)
 	, m_maxBullet(bulletNum)
 	, m_bulletFireCoolTime(bulletFireCoolTime) //0.4f
 	, m_velocity(velocity) //5.f;
@@ -14,12 +14,12 @@ Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scal
 {
 }
 
-Pistol::~Pistol()
+Gun::~Gun()
 {
 	SAFE_RELEASE(m_pGunMesh);
 }
 
-void Pistol::Init()
+void Gun::Init()
 {
 	m_pos = D3DXVECTOR3(0.f, 4.f, -9 * 2.f);        //일단 하드코딩으로 위치 박음
 
@@ -31,7 +31,7 @@ void Pistol::Init()
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 }
 
-void Pistol::Update()
+void Gun::Update()
 {
 	float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
 
@@ -44,7 +44,7 @@ void Pistol::Update()
 	m_matWorld = m_matS * m_matRotY * m_matT;
 }
 
-void Pistol::Render()
+void Gun::Render()
 {
 	if (m_state == ITEM_STATE::Mounting)
 	{
@@ -60,7 +60,7 @@ void Pistol::Render()
 	}
 }
 
-void Pistol::ShowBulletNumForDebug()
+void Gun::ShowBulletNumForDebug()
 {
 	Debug->EndLine();
 	Debug->AddText("BulletNum: ");
@@ -68,7 +68,7 @@ void Pistol::ShowBulletNumForDebug()
 	Debug->EndLine();
 }
 
-void Pistol::Fire()
+void Gun::Fire()
 {
 	if (m_bulletFireCoolDown <= 0.f)
 	{
@@ -85,7 +85,7 @@ void Pistol::Fire()
 	}
 }
 
-void Pistol::Load(Bullet* bullet)
+void Gun::Load(Bullet* bullet)
 {	
 	m_vecPBullet.emplace_back(bullet);
 }

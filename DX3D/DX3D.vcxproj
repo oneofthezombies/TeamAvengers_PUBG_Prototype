@@ -182,7 +182,7 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="Pistol.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeightMap.h" />
     <ClInclude Include="Hexagon.h" />
@@ -210,7 +210,6 @@
     <ClInclude Include="Picking.h" />
     <ClInclude Include="PlayerAni.h" />
     <ClInclude Include="PlayerParts.h" />
-    <ClInclude Include="PlayerTemp.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SampleUI.h" />
@@ -271,7 +270,7 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Pistol.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="HeightMap.cpp" />
     <ClCompile Include="Hexagon.cpp" />
@@ -296,7 +295,6 @@
     <ClCompile Include="Picking.cpp" />
     <ClCompile Include="PlayerAni.cpp" />
     <ClCompile Include="PlayerParts.cpp" />
-    <ClCompile Include="PlayerTemp.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="SampleUI.cpp" />
     <ClCompile Include="SceneGrid.cpp" />
