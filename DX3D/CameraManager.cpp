@@ -67,14 +67,6 @@ void CameraManager::Init()
 
 void CameraManager::Destroy()
 {
-    //이부분을 어떻게 없애는지 질문 
-    //일단 temp
-
-    //SetCurrentCamera("FirstPersonCamera");
-    //SAFE_RELEASE(m_pCurrentCamera);
-    //SetCurrentCamera("ThirdPersonCamera");
-    //SAFE_RELEASE(m_pCurrentCamera);
-
     for (auto& c : m_mapList)
     {
         SAFE_RELEASE(c.second);
@@ -84,34 +76,22 @@ void CameraManager::Destroy()
 void CameraManager::Update()
 {
     const float dt = g_pTimeManager->GetDeltaTime();
-    //잠시잠깐 keboard 전 사용
-    if (GetAsyncKeyState('V') & 0x0001)
-    {
-        isVkeyPressed = true;
-    }
-    if (isVkeyPressed)
+
+    if (g_pKeyManager->IsOnceKeyDown('V'))
     {
         if (m_pCurrentCamera->m_cameraState == CameraState::THIRDPERSON)
         {
             g_pCameraManager->SetCurrentCamera(CameraState::TP2FP);
-            isVkeyPressed = false;   
         }
         else
         {
             g_pCameraManager->SetCurrentCamera(CameraState::FP2TP);
-            isVkeyPressed = false;
         }
     }
-    if (GetAsyncKeyState('A') & 0x0001)
-    {
-        g_pCameraManager->SetCurrentCamera(CameraState::KYUNCHAK);
-    }
-
-
     SAFE_UPDATE(m_pCurrentCamera);
 }
 
-void CameraManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    SAFE_WNDPROC(m_pCurrentCamera);
-}
+//void CameraManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+//{
+//    SAFE_WNDPROC(m_pCurrentCamera);
+//}

@@ -31,21 +31,19 @@ public://protected 으로 바꾸자
     D3DXVECTOR3		m_up;
     D3DXMATRIXA16	m_matView;
     D3DXMATRIXA16	m_matProj;
+
     float           m_basePosX;
     float			m_basePosY;
     float			m_distance;
+
     float			m_rotX;
     float			m_rotY;
 
     float           m_fovY;
     float           m_aspect;
 
-    bool			m_isLbuttonDown;
-    bool            m_isLbuttonPressed;
-    bool            m_isLbuttonUp;
-    bool			m_isRbuttonDown;
-    bool            m_isALTbuttonDown;
     POINT			m_ptPrevMouse;
+    POINT           m_ptContainer;
     //D3DXVECTOR3*	m_pTarget;
 
     //vector<D3DXVECTOR3> m_vecProjVert;
@@ -57,7 +55,7 @@ public:
     virtual ~ICamera() {}
     virtual void Init();
     virtual void Update();
-    virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    //virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     //void SetTarget(D3DXVECTOR3* pTarget) { m_pTarget = pTarget; }
     
     //functions needed for backspace currling

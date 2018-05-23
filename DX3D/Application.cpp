@@ -13,6 +13,7 @@ Application::~Application()
 void Application::Init()
 {
 	g_pDeviceManager->Init();
+    g_pKeyManager->Init();
 	//g_pCamera->Init();
     g_pCameraManager->Init();
 	g_pSceneManager->Init();
@@ -34,6 +35,7 @@ void Application::Update()
 {
 	Debug->InitText();
 	g_pTimeManager->Update();
+    g_pKeyManager->Update();
 	g_pKeyboardManager->Update();
 	g_pSceneManager->Update();
 	//g_pCamera->Update();
@@ -62,6 +64,6 @@ void Application::Render()
 void Application::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	g_pSceneManager->WndProc(hWnd, message, wParam, lParam);
-	g_pCameraManager->WndProc(hWnd, message, wParam, lParam);
+	//g_pCameraManager->WndProc(hWnd, message, wParam, lParam);
     //g_pCamera->WndProc(hWnd, message, wParam, lParam);
 }

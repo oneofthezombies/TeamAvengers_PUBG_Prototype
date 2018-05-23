@@ -23,7 +23,34 @@ void ThirdPersonCamera::Init()
 
 void ThirdPersonCamera::Update()
 {
+    const float dt = g_pTimeManager->GetDeltaTime();
+    
+    //ALTkey를 누르면 주변을 볼 수 있는 기능
+    if (g_pKeyManager->IsStayKeyDown(VK_MENU))
+    {
+        POINT currPoint;
+        m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
+        currPoint = g_pKeyManager->GetCurrentMousePos();
+        POINT diff;
+        diff.x = currPoint.x - m_ptPrevMouse.x;
+        diff.y = currPoint.y - m_ptPrevMouse.y;
+        const float factorX = 0.1f;
+        const float factorY = 0.1f;
+        m_rotX += diff.y * factorX * dt;
+        m_rotY += diff.x * factorY * dt;
+    }
+    else//alt를 누르지 않게 되면 rotation 초기화
+    {
+        m_rotX = 0;
+        m_rotY = 0;
+    }
 
+    //견착하는 부분
+    if (g_pKeyManager->IsOnceKeyDown(VK_RBUTTON))
+    {
+        g_pCameraManager->SetCurrentCamera(CameraState::KYUNCHAK);
+        return;
+    }
     ICamera::Update();
 }
 
@@ -92,6 +119,7 @@ CameraKyunChak::CameraKyunChak()
     :ThirdPersonCamera()
     ,m_vel(0.0f)
 {
+    m_cameraState = CameraState::KYUNCHAK;
 }
 
 CameraKyunChak::~CameraKyunChak()
@@ -101,13 +129,13 @@ CameraKyunChak::~CameraKyunChak()
 void CameraKyunChak::Init()
 {
     ThirdPersonCamera::Init();
-    m_isLbuttonPressed = true;//잠시
 }
 
 void CameraKyunChak::Update()
 {
     const auto dt = g_pTimeManager->GetDeltaTime();
-    if (m_isLbuttonPressed)
+
+    if (g_pKeyManager->IsStayKeyDown(VK_RBUTTON))
     {
         if (m_distance >= TP_DISTANCE - 5.0f)
         {
@@ -120,16 +148,18 @@ void CameraKyunChak::Update()
     {
         m_vel -= dt * 5.0f;
         m_distance += m_vel * dt;
-        m_basePosY += m_vel * dt;
-        if (m_distance <= TP_DISTANCE-0.1f)
-        {
-            g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
-        }
+        m_basePosY += m_vel * dt*0.5f;
+        //if (m_distance <= TP_DISTANCE - 0.1f)
+        //{
+        //    g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
+        //}
     }
-    if (GetAsyncKeyState('S') & 0x0001)
-    {
-        m_isLbuttonPressed = false;
-    }
+    
+
+
+        
+
+
 
     ThirdPersonCamera::Update();
 }

@@ -12,7 +12,6 @@ class CameraManager
 private:
     ICamera * m_pCurrentCamera;
     map<int, ICamera*> m_mapList;
-    bool isVkeyPressed = false;
 
 public:
     //이렇게 까지 할 필요가 없을까? 단지 First와 Third만 사용할 것이기 때문에?
@@ -30,6 +29,6 @@ public:
     void Destroy();
     void Update();
 
-    void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    //void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 
