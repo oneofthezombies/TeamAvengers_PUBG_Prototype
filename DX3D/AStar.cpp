@@ -5,7 +5,6 @@
 #include "Heap.h"
 AStar::AStar()
 {
-    
 }
 
 
