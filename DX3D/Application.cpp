@@ -38,6 +38,7 @@ void Application::Update()
 {
 	Debug->InitText();
 	g_pTimeManager->Update();
+    g_pKeyManager->Update();
 	g_pKeyboardManager->Update();
 	g_pSceneManager->Update();
     g_pCollisionManager->Update();

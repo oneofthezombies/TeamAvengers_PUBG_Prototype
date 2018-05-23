@@ -21,13 +21,6 @@ private:
     int                             m_UIObjectInstanceID;
     bool                            m_bIsDrawBorder;
 
-    POINT m_prevMousePos;
-    POINT m_currMousePos;
-    bool  m_prevIsPushedMouseButtonLeft;
-    bool  m_currIsPushedMouseButtonLeft;
-    bool  m_prevIsPushedMouseButtonRight;
-    bool  m_currIsPushedMouseButtonRight;
-
     UIManager();
     virtual ~UIManager();
 
@@ -47,13 +40,6 @@ public:
     const LPD3DXSPRITE GetSprite() const;
     void SetIsDrawBorder(const bool val);
     bool IsDrawBorder() const;
-
-    const POINT& GetCurrentMousePos() const;
-    const POINT& GetPreviousMousePos() const;
-    bool IsPushedMouseButtonLeft() const;
-    bool GetPreviousIsPushedMouseButtonLeft() const;
-    bool IsPushedMouseButtonRight() const;
-    bool GetPreviousIsPushedMouseButtonRight() const;
 
     friend SingletonBase<UIManager>;
 };

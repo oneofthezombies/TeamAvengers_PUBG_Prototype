@@ -78,6 +78,9 @@ using std::enable_if_t;
 #include <functional>
 using std::hash;
 
+#include <bitset>
+using std::bitset;
+
 #include <d3dx9.h>
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")

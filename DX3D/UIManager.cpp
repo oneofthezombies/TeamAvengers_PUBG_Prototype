@@ -35,15 +35,6 @@ void UIManager::Destroy()
 
 void UIManager::Update()
 {
-    m_prevMousePos = m_currMousePos;
-    GetCursorPos(&m_currMousePos);
-    ScreenToClient(g_hWnd, &m_currMousePos);
-
-    m_prevIsPushedMouseButtonLeft = m_currIsPushedMouseButtonLeft;
-    m_currIsPushedMouseButtonLeft = GetKeyState(VK_LBUTTON) & 0x8000;
-    m_prevIsPushedMouseButtonRight = m_currIsPushedMouseButtonRight;
-    m_currIsPushedMouseButtonRight = GetKeyState(VK_RBUTTON) & 0x8000;
-
     RECT rect;
     GetClientRect(g_hWnd, &rect);
     const int width = rect.right - rect.left;
@@ -141,34 +132,4 @@ void UIManager::SetIsDrawBorder(const bool val)
 bool UIManager::IsDrawBorder() const
 {
     return m_bIsDrawBorder;
-}
-
-const POINT& UIManager::GetCurrentMousePos() const
-{
-    return m_currMousePos;
-}
-
-const POINT& UIManager::GetPreviousMousePos() const
-{
-    return m_prevMousePos;
-}
-
-bool UIManager::IsPushedMouseButtonLeft() const
-{
-    return m_currIsPushedMouseButtonLeft;
-}
-
-bool UIManager::GetPreviousIsPushedMouseButtonLeft() const
-{
-    return m_prevIsPushedMouseButtonLeft;
-}
-
-bool UIManager::IsPushedMouseButtonRight() const
-{
-    return m_currIsPushedMouseButtonRight;
-}
-
-bool UIManager::GetPreviousIsPushedMouseButtonRight() const
-{
-    return m_prevIsPushedMouseButtonRight;
 }

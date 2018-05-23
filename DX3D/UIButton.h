@@ -19,6 +19,7 @@ private:
     int                        m_KeyToRespond;
     bool                       m_bPrevIsMouseOn;
     bool                       m_bCurrIsMouseOn;
+    bool                       m_bIsClicked;
     vector<LPDIRECT3DTEXTURE9> m_vecTexture;
 
     void UpdateOnMouseEnterExit();

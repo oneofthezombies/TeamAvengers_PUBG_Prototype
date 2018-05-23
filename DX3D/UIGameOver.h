@@ -9,6 +9,7 @@ class UIGameOver
     : public UIImage
 {
 private:
+    std::wstring temp;
     GoToLobbyButtonListner* m_pGoToLobbyButtonListner;
 
 public:

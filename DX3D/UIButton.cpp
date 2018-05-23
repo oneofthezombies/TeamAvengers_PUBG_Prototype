@@ -8,6 +8,9 @@ UIButton::UIButton()
     , m_state(State::kIdle)
     , m_KeyToRespond(VK_LBUTTON)
     , m_pIUIButtonOnMouseListner(nullptr)
+    , m_bPrevIsMouseOn(false)
+    , m_bCurrIsMouseOn(false)
+    , m_bIsClicked(false)
 {
     m_vecTexture.resize(m_kNumState, nullptr);
 }
@@ -81,7 +84,7 @@ void UIButton::UpdateOnMouseEnterExit()
     if (!m_pIUIButtonOnMouseListner) return;
 
     m_bPrevIsMouseOn = m_bCurrIsMouseOn;
-    m_bCurrIsMouseOn = PtInRect(&m_rect, g_pUIManager->GetCurrentMousePos());
+    m_bCurrIsMouseOn = PtInRect(&m_rect, g_pKeyManager->GetCurrentMousePos());
 
     if (!m_bPrevIsMouseOn && m_bCurrIsMouseOn)
         m_pIUIButtonOnMouseListner->OnMouseEnter();
@@ -90,10 +93,15 @@ void UIButton::UpdateOnMouseEnterExit()
         m_pIUIButtonOnMouseListner->OnMouseExit();
 }
 
+/*
+
+TODO : OnMouseDrag() 다시해야함. 밖에서 누르고 들어와도 켜짐
+
+*/
 void UIButton::UpdateOnMouseDownUpDrag()
 {
-    const auto uiMgr = g_pUIManager;
-    if (!uiMgr) return;
+    const auto keyMgr = g_pKeyManager;
+    if (!keyMgr) return;
 
     switch (m_state)
     {
@@ -109,7 +117,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
         {
             if (m_KeyToRespond == VK_LBUTTON)
             {
-                if (uiMgr->IsPushedMouseButtonLeft())
+                if (keyMgr->IsKeyDownMouseL())
                 {
                     m_state = State::kSelect;
 
@@ -119,7 +127,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
             }
             else if (m_KeyToRespond == VK_RBUTTON)
             {
-                if (uiMgr->IsPushedMouseButtonRight())
+                if (keyMgr->IsKeyDownMouseR())
                 {
                     m_state = State::kSelect;
 
@@ -137,7 +145,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
         {
             if (m_KeyToRespond == VK_LBUTTON)
             {
-                if (uiMgr->IsPushedMouseButtonLeft())
+                if (keyMgr->IsKeyDownMouseL())
                 {
                     if (m_bCurrIsMouseOn)
                         if (m_pIUIButtonOnMouseListner)
@@ -149,7 +157,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
                     {
                         m_state = State::kMouseOver;
 
-                        if (uiMgr->GetPreviousIsPushedMouseButtonLeft())
+                        if (keyMgr->GetPrevIsKeyDownMouseL())
                             if (m_pIUIButtonOnMouseListner)
                                 m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
                     }
@@ -161,7 +169,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
             }
             else if (m_KeyToRespond == VK_RBUTTON)
             {
-                if (uiMgr->IsPushedMouseButtonRight())
+                if (keyMgr->IsKeyDownMouseR())
                 {
                     if (m_bCurrIsMouseOn)
                         if (m_pIUIButtonOnMouseListner)
@@ -173,7 +181,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
                     {
                         m_state = State::kMouseOver;
 
-                        if (uiMgr->GetPreviousIsPushedMouseButtonRight())
+                        if (keyMgr->GetPrevIsKeyDownMouseR())
                             if (m_pIUIButtonOnMouseListner)
                                 m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
                     }
