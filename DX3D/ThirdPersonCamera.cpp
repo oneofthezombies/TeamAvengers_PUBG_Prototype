@@ -80,7 +80,7 @@ void CameraFPToTP::Update()
     const auto dt = g_pTimeManager->GetDeltaTime();
     m_vel -= dt * 5.0f;
     m_distance += m_vel * dt;
-    if (m_distance>= TP_DISTANCE-0.1f)
+    if (m_distance>= TP_DISTANCE-0.01f)
         g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
     
     ThirdPersonCamera::Update();
@@ -109,13 +109,26 @@ void CameraKyunChak::Update()
     const auto dt = g_pTimeManager->GetDeltaTime();
     if (m_isLbuttonPressed)
     {
-        m_vel += dt * 5.0f;
-        m_distance -= m_vel * dt;
-
+        if (m_distance >= TP_DISTANCE - 5.0f)
+        {
+            m_vel += dt * 5.0f;
+            m_distance -= m_vel * dt;
+            m_basePosY -= m_vel * dt *0.5f;
+        }
     }
     else
     {
-
+        m_vel -= dt * 5.0f;
+        m_distance += m_vel * dt;
+        m_basePosY += m_vel * dt;
+        if (m_distance <= TP_DISTANCE-0.1f)
+        {
+            g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
+        }
+    }
+    if (GetAsyncKeyState('S') & 0x0001)
+    {
+        m_isLbuttonPressed = false;
     }
 
     ThirdPersonCamera::Update();

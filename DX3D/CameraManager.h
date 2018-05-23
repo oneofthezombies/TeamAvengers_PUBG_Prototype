@@ -2,7 +2,7 @@
 
 #define g_pCameraManager CameraManager::GetInstance()
 #define g_pCurrentCamera CameraManager::GetInstance()->GetCurrentCamera()
-#define CameraChangeSpeed 6.0f
+//#define CameraChangeSpeed 6.0f
 class ICamera;
 
 class CameraManager
