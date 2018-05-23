@@ -23,9 +23,9 @@ void SceneManager::Init()
 	m_vecScene.push_back(new SceneTest());
 
 	//SetCurrentScene(SCENE_GRID);
-	//SetCurrentScene(SCENE_OBJMAP);
+	SetCurrentScene(SCENE_OBJMAP);
 	//SetCurrentScene(SCENE_HEIGHTMAP);
-	SetCurrentScene(SCENE_TEST);
+	//SetCurrentScene(SCENE_TEST);
 }
 
 void SceneManager::Destroy()

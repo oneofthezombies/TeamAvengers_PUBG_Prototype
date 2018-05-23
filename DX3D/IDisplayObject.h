@@ -24,5 +24,7 @@ public:
 	void			SetPosition(D3DXVECTOR3* pos) { m_pos = *pos; }
 	D3DXVECTOR3		GetRotation() { return m_rot; }
 	D3DXMATRIXA16	GetWorldMatrix() { return m_matWorld; }
+    ///////추가한 부분
+    const vector<IDisplayObject*>& GetChildVec() { return m_vecPChild; }
 };
 

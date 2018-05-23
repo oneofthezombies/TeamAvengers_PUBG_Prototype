@@ -40,9 +40,9 @@ void IUnitObject::UpdateKeyboardState()
 	if (m_isJumping == false) 
 		m_isJumping = m_keyState.bJump;
 
-	//Debug->AddText("m_isJumping : ");
-	//Debug->AddText(m_isJumping);
-	//Debug->EndLine();
+	Debug->AddText("m_isJumping : ");
+	Debug->AddText(m_isJumping);
+	Debug->EndLine();
 
 	m_deltaPos.z = m_keyState.deltaPos.z;
 	m_deltaRot.y = m_keyState.deltaRot.y;

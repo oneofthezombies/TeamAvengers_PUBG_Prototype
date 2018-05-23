@@ -3,12 +3,13 @@
 #include "ObjMap.h"
 #include "Cubeman.h"
 #include "AseCharacter.h"
+#include "PlayerAni.h"
 
 SceneObjMap::SceneObjMap()
 {
 	m_pObjMap = NULL;
-	m_pCubeman = NULL;
-	m_pAseCharacter = NULL;
+	m_pPlayerAni = NULL;
+	//m_pAseCharacter = NULL;
 }
 
 
@@ -21,10 +22,10 @@ void SceneObjMap::Init()
 {
 	m_pObjMap = new ObjMap; m_pObjMap->Init(); 
 	AddSimpleDisplayObj(m_pObjMap);
-	//m_pCubeman = new Cubeman; m_pCubeman->Init();
-	AddSimpleDisplayObj(m_pCubeman);
-	m_pAseCharacter = new AseCharacter; m_pAseCharacter->Init();
-	AddSimpleDisplayObj(m_pAseCharacter);
+    m_pPlayerAni = new PlayerAni; m_pPlayerAni->Init();
+	AddSimpleDisplayObj(m_pPlayerAni);
+	//m_pAseCharacter = new AseCharacter; m_pAseCharacter->Init();
+	//AddSimpleDisplayObj(m_pAseCharacter);
 	
 	D3DXVECTOR3 dir(1.0f, -1.0f, 1.0f);
 	D3DXVec3Normalize(&dir, &dir);

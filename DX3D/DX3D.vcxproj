@@ -23,13 +23,13 @@
     <ProjectGuid>{D9781ED6-A279-4E67-8978-13E5C99922B1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DX3D</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -185,12 +185,15 @@
     <ClInclude Include="IUIObject.h" />
     <ClInclude Include="IUnitObject.h" />
     <ClInclude Include="KeyboardManager.h" />
+    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="ObjManager.h" />
     <ClInclude Include="ObjMap.h" />
     <ClInclude Include="ParticleTest.h" />
     <ClInclude Include="Picking.h" />
+    <ClInclude Include="PlayerAni.h" />
+    <ClInclude Include="PlayerParts.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SampleUI.h" />
@@ -242,12 +245,15 @@
     <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="ObjManager.cpp" />
     <ClCompile Include="ObjMap.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
     <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="PlayerAni.cpp" />
+    <ClCompile Include="PlayerParts.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="SampleUI.cpp" />
     <ClCompile Include="SceneGrid.cpp" />

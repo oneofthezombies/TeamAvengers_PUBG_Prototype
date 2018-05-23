@@ -125,7 +125,7 @@ void AStar::FindPath(D3DXVECTOR3 startPos, D3DXVECTOR3 destPos, OUT vector<int>&
 	m_vecNode[startNodeIdx]->SetValue(STATE_OPEN, g, h, f, startNodeIdx);
 	//m_pOpenNodeList.push_back(m_vecNode[startNodeIdx]);//현재 open list에 하나가 있다. 이제 목적지까지 넣어서 사용
 	m_pOpenNodeHeap->Insert(m_vecNode[startNodeIdx]);
-	//목적지 노드가 닫힘 사李 될 때까지 출발지 노드부터 확장해 나간다
+	//목적지 노드가 닫힘 사 될 때까지 출발지 노드부터 확장해 나간다
 	//확장을 완료한 노드는 닫힘 상태로 만든다
 	while (m_vecNode[destNodeIdx]->m_nodeState != STATE_CLOSE)
 	{

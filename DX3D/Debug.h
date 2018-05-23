@@ -4,7 +4,7 @@
 
 class DebugManager
 {
-	SINGLETON(DebugManager);
+	SINGLETON(DebugManager)
 private:
 	LPD3DXFONT			m_pFont;
 	char				m_str[1024];

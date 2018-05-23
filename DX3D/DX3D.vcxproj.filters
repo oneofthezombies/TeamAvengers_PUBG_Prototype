@@ -198,6 +198,9 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="ParticleTest.h" />
+    <ClInclude Include="PlayerAni.h" />
+    <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="PlayerParts.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceManager.cpp">
@@ -333,6 +336,9 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="SceneTest.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
+    <ClCompile Include="PlayerAni.cpp" />
+    <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="PlayerParts.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc">
