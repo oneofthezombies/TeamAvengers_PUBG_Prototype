@@ -42,7 +42,7 @@ void KeyboardManager::UpdateMoving()
 	if (GetKeyState('W') & 0x8000)
 	{
 		//m_pTargetPos->z = 1;
-		m_pKeyState->deltaPos.z = 1;
+ 		m_pKeyState->deltaPos.z = 1;
 	}
 	else if (GetKeyState('S') & 0x8000)
 	{

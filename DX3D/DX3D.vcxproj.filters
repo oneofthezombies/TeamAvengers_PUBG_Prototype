@@ -213,6 +213,15 @@
       <Filter>Sample</Filter>
     </ClCompile>
     <ClCompile Include="ICollisionListner.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="FirstPersonCamera.cpp" />
+    <ClCompile Include="ICamera.cpp" />
+    <ClCompile Include="IMap.cpp" />
+    <ClCompile Include="IUIObject.cpp" />
+    <ClCompile Include="IDisplayObject.cpp" />
+    <ClCompile Include="PlayerAni.cpp" />
+    <ClCompile Include="PlayerParts.cpp" />
+    <ClCompile Include="ThirdPersonCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -445,6 +454,12 @@
       <Filter>Sample</Filter>
     </ClInclude>
     <ClInclude Include="ICollisionListner.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="FirstPersonCamera.h" />
+    <ClInclude Include="ICamera.h" />
+    <ClInclude Include="PlayerAni.h" />
+    <ClInclude Include="PlayerParts.h" />
+    <ClInclude Include="ThirdPersonCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

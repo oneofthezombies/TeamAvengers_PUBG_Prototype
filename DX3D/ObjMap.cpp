@@ -28,7 +28,7 @@ void ObjMap::Init()
 	loader.Load("resources/obj", "map.obj", &matWorld, m_vecDrawingGroup);
 	//loader.Load("resources/obj", "map_surface.obj", &matWorld, m_vecDrawingGroup);
 
-	m_pMeshMap = loader.LoadMesh("resources/obj", "map.obj", &matWorld, m_vecMtlTex);
+	//m_pMeshMap = loader.LoadMesh("resources/obj", "map.obj", &matWorld, m_vecMtlTex);
 
 	loader.LoadSurface("resources/obj/map_surface.obj",
 		&matWorld, m_vecVertex);

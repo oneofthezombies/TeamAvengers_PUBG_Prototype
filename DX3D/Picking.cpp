@@ -45,8 +45,8 @@ void Picking::Render()
 	
 	for (auto p : m_vecBoundary)
 	{
-		if (!g_pCamera->CheckSphere(p))
-			continue;
+		//if (!g_pCamera->CheckSphere(p))
+		//	continue;
 		if (p->isPicked == true)
 		{
 			g_pDevice->SetMaterial(&DXUtil::RED_MTRL);

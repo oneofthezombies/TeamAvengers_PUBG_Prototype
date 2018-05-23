@@ -30,17 +30,17 @@ SceneGrid::~SceneGrid()
 
 void SceneGrid::Init()
 {
-	//m_pColorCube = new ColorCube(); m_pColorCube->Init();
+	m_pColorCube = new ColorCube(); m_pColorCube->Init();
 	m_pGrid = new Grid(); m_pGrid->Init();
-	//m_pCubeman = new Cubeman(); m_pCubeman->Init();
+	m_pCubeman = new Cubeman(); m_pCubeman->Init();
 	//m_pWalls = new Walls(); m_pWalls->Init();
-	m_pActionCube = new ActionCube(); m_pActionCube->Init();
-	m_pHexagon = new Hexagon(); m_pHexagon->Init();
+	//m_pActionCube = new ActionCube(); m_pActionCube->Init();
+	//m_pHexagon = new Hexagon(); m_pHexagon->Init();
 }
 
 void SceneGrid::Update()
 {
-	SAFE_UPDATE(m_pColorCube);
+	//SAFE_UPDATE(m_pColorCube);
 	SAFE_UPDATE(m_pCubeman);
 	SAFE_UPDATE(m_pActionCube);
 }

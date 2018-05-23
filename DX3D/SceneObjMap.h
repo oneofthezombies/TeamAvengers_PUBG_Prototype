@@ -4,13 +4,14 @@
 class ObjMap;
 class Cubeman;
 class AseCharacter;
+class PlayerAni;
 
 class SceneObjMap : public IScene
 {
 private:
 	ObjMap *		m_pObjMap;
-	Cubeman *		m_pCubeman;
-	AseCharacter*	m_pAseCharacter;
+    PlayerAni *		m_pPlayerAni;
+	//AseCharacter*	m_pAseCharacter;
 
 public:
 	SceneObjMap();

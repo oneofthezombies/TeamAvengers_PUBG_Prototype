@@ -31,6 +31,10 @@ void ColorCube::Init()
 
 	m_pVB->GetDesc(&m_VBDesc);
 	m_pIB->GetDesc(&m_IBDesc);
+
+    D3DXMATRIXA16 matT;
+    D3DXMatrixTranslation(&matT, 0, 2, 10);
+    m_matWorld = matT;
 }
 
 void ColorCube::Update()

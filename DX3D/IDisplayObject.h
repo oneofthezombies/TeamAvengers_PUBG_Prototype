@@ -26,8 +26,16 @@ public:
     D3DXVECTOR3		     GetRotation() const;
     const D3DXMATRIXA16& GetWorldMatrix() const;
 
+	D3DXVECTOR3		GetPosition() { return m_pos; }
+	void			SetPosition(D3DXVECTOR3* pos) { m_pos = *pos; }
+	D3DXVECTOR3		GetRotation() { return m_rot; }
+	D3DXMATRIXA16	GetWorldMatrix() { return m_matWorld; }
+    ///////�߰��� �κ�
+    const vector<IDisplayObject*>& GetChildVec() { return m_vecPChild; }
+
     void UpdateChildren();
     void RenderChildren();
     void ReleaseChildren();
+
 };
 

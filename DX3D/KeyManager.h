@@ -1,25 +1,25 @@
 #pragma once
 #define g_pKeyManager KeyManager::GetInstance()
 #define KEYMAX 256
-#include <bitset>
 
 class KeyManager
 {
 private:
-	std::bitset<KEYMAX> m_keyUp;
-	std::bitset<KEYMAX> m_keyDown;
+	bitset<KEYMAX> m_keyUp;
+	bitset<KEYMAX> m_keyDown;
 
     POINT m_prevMousePos;
     POINT m_currMousePos;
-    static const int m_kMouseKeySize = 2;
-    bitset<m_kMouseKeySize> m_mouseKeyDown;
-    bitset<m_kMouseKeySize> m_prevMouseKeyDown;
+    bool m_bIsKeyDownMouseL;
+    bool m_bIsKeyDownMouseR;
+    bool m_bPrevIsKeyDownMouseL;
+    bool m_bPrevIsKeyDownMouseR;
 
 	KeyManager();
 	~KeyManager();
 
 public:
-	//½Ì±ÛÅæ
+	//ì‹±ê¸€í†¤
 	static KeyManager* GetInstance()
 	{
 		static KeyManager instance;
@@ -30,15 +30,15 @@ public:
     void Update();
 	void Destroy();
 
-	bool IsOnceKeyDown(int key); //Å°¸¦ ÇÑ¹ø¸¸ ´­·¶´ÂÁö
-	bool IsOnceKeyUp(int key);   //Å°¸¦ ÇÑ¹ø ´­·¶´Ù°¡ ¶Ã´ÂÁö
-	bool IsStayKeyDown(int key); //Å°°¡ °è¼Ó ´­·ÁÁ® ÀÖ´ÂÁö
-	bool IsToggleKey(int key);   //Åä±ÛÅ°(Ä¸½º¶ô, ³Ñ¹ö¶ô)°¡ On»óÅÂÀÎÁö
+	bool IsOnceKeyDown(int key); //í‚¤ë¥¼ í•œë²ˆë§Œ ëˆŒë €ëŠ”ì§€
+	bool IsOnceKeyUp(int key);   //í‚¤ë¥¼ í•œë²ˆ ëˆŒë €ë‹¤ê°€ ë—ëŠ”ì§€
+	bool IsStayKeyDown(int key); //í‚¤ê°€ ê³„ì† ëˆŒë ¤ì ¸ ìˆëŠ”ì§€
+	bool IsToggleKey(int key);   //í† ê¸€í‚¤(ìº¡ìŠ¤ë½, ë„˜ë²„ë½)ê°€ Onìƒíƒœì¸ì§€
 
     const POINT& GetCurrentMousePos() const;
     const POINT& GetPreviousMousePos() const;
-    bool IsKeyDownMouseL() const;
-    bool IsKeyDownMouseR() const;
     bool GetPrevIsKeyDownMouseL() const;
     bool GetPrevIsKeyDownMouseR() const;
+    bool IsKeyDownMouseL() const;
+    bool IsKeyDownMouseR() const;
 };
