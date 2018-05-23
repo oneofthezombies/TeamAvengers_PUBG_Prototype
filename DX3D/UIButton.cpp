@@ -95,7 +95,7 @@ void UIButton::UpdateOnMouseEnterExit()
 
 /*
 
-TODO : OnMouseDrag() 다시해야함. 밖에서 누르고 들어와도 켜짐
+TODO : 클릭 인식 뭐같음 수정해야 함
 
 */
 void UIButton::UpdateOnMouseDownUpDrag()
@@ -124,6 +124,10 @@ void UIButton::UpdateOnMouseDownUpDrag()
                     if (m_pIUIButtonOnMouseListner)
                         m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
                 }
+                else
+                {
+                    m_state = State::kIdle;
+                }
             }
             else if (m_KeyToRespond == VK_RBUTTON)
             {
@@ -133,6 +137,10 @@ void UIButton::UpdateOnMouseDownUpDrag()
 
                     if (m_pIUIButtonOnMouseListner)
                         m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
+                }
+                else
+                {
+                    m_state = State::kIdle;
                 }
             }
             else
@@ -145,9 +153,9 @@ void UIButton::UpdateOnMouseDownUpDrag()
         {
             if (m_KeyToRespond == VK_LBUTTON)
             {
-                if (keyMgr->IsKeyDownMouseL())
+                if (keyMgr->IsKeyDownMouseL() && keyMgr->GetPrevIsKeyDownMouseL())
                 {
-                    if (m_bCurrIsMouseOn)
+                    if (m_bCurrIsMouseOn && m_bPrevIsMouseOn)
                         if (m_pIUIButtonOnMouseListner)
                             m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
                 }
@@ -169,9 +177,9 @@ void UIButton::UpdateOnMouseDownUpDrag()
             }
             else if (m_KeyToRespond == VK_RBUTTON)
             {
-                if (keyMgr->IsKeyDownMouseR())
+                if (keyMgr->IsKeyDownMouseR() && keyMgr->GetPrevIsKeyDownMouseR())
                 {
-                    if (m_bCurrIsMouseOn)
+                    if (m_bCurrIsMouseOn && m_bPrevIsMouseOn)
                         if (m_pIUIButtonOnMouseListner)
                             m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
                 }

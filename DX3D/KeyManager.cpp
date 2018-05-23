@@ -26,9 +26,10 @@ void KeyManager::Update()
     GetCursorPos(&m_currMousePos);
     ScreenToClient(g_hWnd, &m_currMousePos);
 
-    m_prevMouseKeyDown = m_mouseKeyDown;
-    m_mouseKeyDown[0] = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
-    m_mouseKeyDown[1] = GetAsyncKeyState(VK_RBUTTON) & 0x8000;
+    m_bPrevIsKeyDownMouseL = m_bIsKeyDownMouseL;
+    m_bPrevIsKeyDownMouseR = m_bIsKeyDownMouseR;
+    m_bIsKeyDownMouseL = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+    m_bIsKeyDownMouseR = GetAsyncKeyState(VK_RBUTTON) & 0x8000;
 }
 
 void KeyManager::Destroy()
@@ -102,22 +103,22 @@ const POINT& KeyManager::GetPreviousMousePos() const
     return m_prevMousePos;
 }
 
-bool KeyManager::IsKeyDownMouseL() const
-{
-    return m_mouseKeyDown[0];
-}
-
 bool KeyManager::GetPrevIsKeyDownMouseL() const
 {
-    return m_prevMouseKeyDown[0];
-}
-
-bool KeyManager::IsKeyDownMouseR() const
-{
-    return m_mouseKeyDown[1];
+    return m_bPrevIsKeyDownMouseL;
 }
 
 bool KeyManager::GetPrevIsKeyDownMouseR() const
 {
-    return m_prevMouseKeyDown[1];
+    return m_bPrevIsKeyDownMouseR;
+}
+
+bool KeyManager::IsKeyDownMouseL() const
+{
+    return m_bIsKeyDownMouseL;
+}
+
+bool KeyManager::IsKeyDownMouseR() const
+{
+    return m_bIsKeyDownMouseR;
 }
