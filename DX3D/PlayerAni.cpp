@@ -37,7 +37,7 @@ PlayerAni::PlayerAni()
 
 PlayerAni::~PlayerAni()
 {
-    m_pRootParts->ReleaseAll();
+    //m_pRootParts->ReleaseAll();
 }
 
 void PlayerAni::Init()
@@ -269,7 +269,7 @@ void PlayerAni::CreateParts(PlayerParts *& pParts, IDisplayObject * pParent, D3D
     pParts->Init(&mat, vecUV);
     pParts->SetPosition(&pos);
     pParts->SetPartTag(tag);
-    pParent->AddChild(pParts);
+    pParent->AddChild(*pParts);
 
 }
 
