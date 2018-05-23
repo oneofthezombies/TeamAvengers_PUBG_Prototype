@@ -23,7 +23,7 @@
     <ProjectGuid>{D9781ED6-A279-4E67-8978-13E5C99922B1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>DX3D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -205,6 +205,8 @@
     <ClInclude Include="ObjMap.h" />
     <ClInclude Include="ParticleTest.h" />
     <ClInclude Include="Picking.h" />
+    <ClInclude Include="PlayerAni.h" />
+    <ClInclude Include="PlayerParts.h" />
     <ClInclude Include="PlayerTemp.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Resource.h" />
@@ -283,6 +285,8 @@
     <ClCompile Include="ObjMap.cpp" />
     <ClCompile Include="ParticleTest.cpp" />
     <ClCompile Include="Picking.cpp" />
+    <ClCompile Include="PlayerAni.cpp" />
+    <ClCompile Include="PlayerParts.cpp" />
     <ClCompile Include="PlayerTemp.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="SampleUI.cpp" />
