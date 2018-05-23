@@ -25,10 +25,10 @@ void SceneManager::Init()
 	m_vecScene.push_back(new SceneShotting());
 
 	//SetCurrentScene(SCENE_GRID);
-	//SetCurrentScene(SCENE_OBJMAP);
+	SetCurrentScene(SCENE_OBJMAP);
 	//SetCurrentScene(SCENE_HEIGHTMAP);
 	//SetCurrentScene(SCENE_TEST);
-	SetCurrentScene(SCENE_SHOTTING);
+	//SetCurrentScene(SCENE_SHOTTING);
 }
 
 void SceneManager::Destroy()
