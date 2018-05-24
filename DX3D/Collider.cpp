@@ -7,6 +7,7 @@ ColliderBase::ColliderBase(BaseObject& owner, const Type type)
     , m_type(type)
     , m_color(D3DCOLOR_XRGB(0, 255, 0))
     , m_pListner(nullptr)
+    , m_tag(CollisionTag::kIdle)
 {
     g_pCollisionManager->AddColliderBase(*this);
 }
@@ -43,6 +44,16 @@ void ColliderBase::SetListner(ICollisionListner& listner)
 ICollisionListner* ColliderBase::GetListner() const
 {
     return m_pListner;
+}
+
+void ColliderBase::SetTag(const CollisionTag tag)
+{
+    m_tag = tag;
+}
+
+CollisionTag ColliderBase::GetTag() const
+{
+    return m_tag;
 }
 
 SphereCollider::SphereCollider(BaseObject& owner)

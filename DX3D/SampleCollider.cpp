@@ -47,9 +47,10 @@ void SampleColliderOwner1::Init()
     m_pBoxCollider = SetComponent<BoxCollider>();
     m_pBoxCollider->SetListner(*m_pCollisionListner);
     m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
+    m_pBoxCollider->SetTag(CollisionTag::kFoo);
 
     D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, 7.0f, 0.0f, 0.0f);
+    D3DXMatrixTranslation(&m, 7.0f, 0.0f, 5.0f);
     m_pBoxCollider->Update(m);
 }
 
@@ -66,9 +67,7 @@ void SampleColliderOwner1::Update()
     D3DXMatrixTranslation(&m, 0.0f, 0.0f, trZ);
     m_pBoxCollider->Update(m);
 
-    Debug->AddText("! ");
-    Debug->AddText(m_pos);
-    Debug->EndLine();
+    Debug->AddText("SampleColliderOwner move key : 'O', 'P'\n");
 }
 
 void SampleColliderOwner1::Render()
@@ -120,9 +119,10 @@ void SampleColliderOwner2::Init()
     m_pBoxCollider = SetComponent<BoxCollider>();
     m_pBoxCollider->SetListner(*m_pCollisionListner);
     m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
+    m_pBoxCollider->SetTag(CollisionTag::kBar);
 
     D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, 7.0f, 0.0f, 2.0f);
+    D3DXMatrixTranslation(&m, 7.0f, 0.0f, 7.0f);
     m_pBoxCollider->Update(m);
 }
 

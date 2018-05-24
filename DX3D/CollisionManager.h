@@ -4,6 +4,13 @@
 
 #define g_pCollisionManager CollisionManager::GetInstance()
 
+enum class CollisionTag
+{
+    kIdle,
+    kFoo,
+    kBar,
+};
+
 class ColliderBase;
 class BoxCollider;
 class SphereCollider;
@@ -23,6 +30,7 @@ private:
 
     unordered_set<ColliderBase*>                                        m_usetColliderBases;
     unordered_set<pair<ColliderBase*, ColliderBase*>, HashColliderBase> m_usetPrevCollisions;
+    unordered_map<CollisionTag, deque<CollisionTag>>                    m_umapCollisionRelations;
     bool m_bIsRender;
 
     CollisionManager();
@@ -39,6 +47,11 @@ private:
     // no impl
     bool HasCollision(const SphereCollider& lhs, const SphereCollider& rhs);
 
+    void NotifyCollision();
+    void NotifyCollision(const vector<ColliderBase*>& perpetrators, const vector<ColliderBase*>& victims);
+    void NotifyCollision(ColliderBase* perpetrator, ColliderBase* victim);
+    void FindCollidersWithTag(vector<ColliderBase*>& OutColliders, const CollisionTag tag);
+
 public:
     void Init();
     void Destroy();
@@ -47,9 +60,10 @@ public:
 
     void AddColliderBase(ColliderBase& val);
     void RemoveColliderBase(ColliderBase& val);
-    void NotifyCollisionAboutColliderBases();
 
     void SetIsRender(const bool val);
+
+    void RegisterCollisionRelation(const CollisionTag perpetrator, const CollisionTag victim);
 
     friend SingletonBase<CollisionManager>;
 };

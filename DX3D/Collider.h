@@ -1,5 +1,6 @@
 #pragma once
 #include "ComponentBase.h"
+#include "CollisionManager.h"
 
 class BaseObject;
 class ICollisionListner;
@@ -18,6 +19,7 @@ public:
 private:
     ICollisionListner* m_pListner;
     Type               m_type;
+    CollisionTag       m_tag;
 
 protected:
     D3DXVECTOR3 m_vCenter;
@@ -32,8 +34,12 @@ public:
     Type GetType() const;
     void SetColor(const D3DCOLOR color);
     D3DXVECTOR3 GetCenter() const;
-    void SetListner(ICollisionListner& listner);
+    
+    void               SetListner(ICollisionListner& listner);
     ICollisionListner* GetListner() const;
+
+    void         SetTag(const CollisionTag tag);
+    CollisionTag GetTag() const;
 };
 
 class SphereCollider : public ColliderBase

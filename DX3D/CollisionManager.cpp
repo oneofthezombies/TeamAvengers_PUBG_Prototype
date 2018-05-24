@@ -235,7 +235,7 @@ void CollisionManager::Destroy()
 
 void CollisionManager::Update()
 {
-    NotifyCollisionAboutColliderBases();
+    NotifyCollision();
 }
 
 void CollisionManager::Render()
@@ -260,200 +260,208 @@ void CollisionManager::RemoveColliderBase(ColliderBase& val)
     m_usetColliderBases.erase(&val);
 }
 
-void CollisionManager::NotifyCollisionAboutColliderBases()
+void CollisionManager::NotifyCollision()
 {
-    if (m_usetColliderBases.size() < 2) return;
+    vector<ColliderBase*> perpetrators;
+    vector<ColliderBase*> victims;
 
-    for (auto i1 = m_usetColliderBases.begin(); i1 != prev(m_usetColliderBases.end()); ++i1)
+    for (auto& pvs : m_umapCollisionRelations)
     {
-        ColliderBase* c1 = *i1;
-        if (!c1) continue;
+        const auto& perpetratorType = pvs.first;
+        const auto& victimTypes = pvs.second;
 
-        for (auto i2 = next(i1); i2 != m_usetColliderBases.end(); ++i2)
+        FindCollidersWithTag(perpetrators, perpetratorType);
+
+        for (auto& victimType : victimTypes)
         {
-            ColliderBase* c2 = *i2;
-            if (!c2) continue;
+            FindCollidersWithTag(victims, victimType);
 
-            const ColliderBase::Type t1 = c1->GetType();
-            const ColliderBase::Type t2 = c2->GetType();
+            NotifyCollision(perpetrators, victims);
+        }
+    }
+}
 
-            if (t1 == ColliderBase::Type::kBox &&
-                t2 == ColliderBase::Type::kBox)
+void CollisionManager::FindCollidersWithTag(vector<ColliderBase*>& OutColliders, const CollisionTag tag)
+{
+    OutColliders.resize(0);
+
+    for (auto& c : m_usetColliderBases)
+        if (c->GetTag() == tag)
+            OutColliders.emplace_back(c);
+}
+
+void CollisionManager::NotifyCollision(const vector<ColliderBase*>& perpetrators, const vector<ColliderBase*>& victims)
+{
+    for (auto& perpetrator : perpetrators)
+    {
+        if (!perpetrator) continue;
+
+        for (auto& victim : victims)
+        {
+            if (!victim) continue;
+            if (perpetrator == victim) continue;
+
+            NotifyCollision(perpetrator, victim);
+        }
+    }
+}
+
+void CollisionManager::NotifyCollision(ColliderBase* perpetrator, ColliderBase* victim)
+{
+    const ColliderBase::Type t1 = perpetrator->GetType();
+    const ColliderBase::Type t2 = victim->GetType();
+
+    if (t1 == ColliderBase::Type::kBox &&
+        t2 == ColliderBase::Type::kBox)
+    {
+        BoxCollider* b1 = static_cast<BoxCollider*>(perpetrator);
+        BoxCollider* b2 = static_cast<BoxCollider*>(victim);
+
+        const auto search = m_usetPrevCollisions.find(make_pair(b1, b2));
+        if (HasCollision(*b1, *b2))
+        {
+            if (search == m_usetPrevCollisions.end())
             {
-                BoxCollider* b1 = static_cast<BoxCollider*>(c1);
-                BoxCollider* b2 = static_cast<BoxCollider*>(c2);
+                m_usetPrevCollisions.emplace(make_pair(b1, b2));
 
-                const auto search = m_usetPrevCollisions.find(make_pair(b1, b2));
-                if (HasCollision(*b1, *b2))
-                {
-                    if (search == m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.emplace(make_pair(b1, b2));
-
-                        if (ICollisionListner* l1 = b1->GetListner())
-                            l1->OnCollisionEnter(*b2);
-
-                        if (ICollisionListner* l2 = b2->GetListner())
-                            l2->OnCollisionEnter(*b1);
-                    }
-                    else
-                    {
-                        if (ICollisionListner* l1 = b1->GetListner())
-                            l1->OnCollisionStay(*b2);
-
-                        if (ICollisionListner* l2 = b2->GetListner())
-                            l2->OnCollisionStay(*b1);
-                    }
-                }
-                else
-                {
-                    if (search != m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.erase(search);
-
-                        if (ICollisionListner* l1 = b1->GetListner())
-                            l1->OnCollisionExit(*b2);
-
-                        if (ICollisionListner* l2 = b2->GetListner())
-                            l2->OnCollisionExit(*b1);
-                    }
-                }
-            }
-            else if (t1 == ColliderBase::Type::kBox &&
-                     t2 == ColliderBase::Type::kSphere)
-            {
-                BoxCollider* b1 = static_cast<BoxCollider*>(c1);
-                SphereCollider* s2 = static_cast<SphereCollider*>(c2);
-
-                const auto search = m_usetPrevCollisions.find(make_pair(b1, s2));
-                if (HasCollision(*b1, *s2))
-                {
-                    if (search == m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.emplace(make_pair(b1, s2));
-
-                        if (ICollisionListner* l1 = b1->GetListner())
-                            l1->OnCollisionEnter(*s2);
-
-                        if (ICollisionListner* l2 = s2->GetListner())
-                            l2->OnCollisionEnter(*b1);
-                    }
-                    else
-                    {
-                        if (ICollisionListner* l1 = b1->GetListner())
-                            l1->OnCollisionStay(*s2);
-
-                        if (ICollisionListner* l2 = s2->GetListner())
-                            l2->OnCollisionStay(*b1);
-                    }
-                }
-                else
-                {
-                    if (search != m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.erase(search);
-
-                        if (ICollisionListner* l1 = b1->GetListner())
-                            l1->OnCollisionExit(*s2);
-
-                        if (ICollisionListner* l2 = s2->GetListner())
-                            l2->OnCollisionExit(*b1);
-                    }
-                }
-            }
-            else if (t1 == ColliderBase::Type::kSphere &&
-                     t2 == ColliderBase::Type::kBox)
-            {
-                SphereCollider* s1 = static_cast<SphereCollider*>(c1);
-                BoxCollider* b2 = static_cast<BoxCollider*>(c2);
-
-                const auto search = m_usetPrevCollisions.find(make_pair(s1, b2));
-                if (HasCollision(*s1, *b2))
-                {
-                    if (search == m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.emplace(make_pair(s1, b2));
-
-                        if (ICollisionListner* l1 = s1->GetListner())
-                            l1->OnCollisionEnter(*b2);
-
-                        if (ICollisionListner* l2 = b2->GetListner())
-                            l2->OnCollisionEnter(*s1);
-                    }
-                    else
-                    {
-                        if (ICollisionListner* l1 = s1->GetListner())
-                            l1->OnCollisionStay(*b2);
-
-                        if (ICollisionListner* l2 = b2->GetListner())
-                            l2->OnCollisionStay(*s1);
-                    }
-                }
-                else
-                {
-                    if (search != m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.erase(search);
-
-                        if (ICollisionListner* l1 = s1->GetListner())
-                            l1->OnCollisionExit(*b2);
-
-                        if (ICollisionListner* l2 = b2->GetListner())
-                            l2->OnCollisionExit(*s1);
-                    }
-                }
-            }
-            else if (t1 == ColliderBase::Type::kSphere &&
-                     t2 == ColliderBase::Type::kSphere)
-            {
-                SphereCollider* s1 = static_cast<SphereCollider*>(c1);
-                SphereCollider* s2 = static_cast<SphereCollider*>(c2);
-
-                const auto search = m_usetPrevCollisions.find(make_pair(s1, s2));
-                if (HasCollision(*s1, *s2))
-                {
-                    if (search == m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.emplace(make_pair(s1, s2));
-
-                        if (ICollisionListner* l1 = s1->GetListner())
-                            l1->OnCollisionEnter(*s2);
-
-                        if (ICollisionListner* l2 = s2->GetListner())
-                            l2->OnCollisionEnter(*s1);
-                    }
-                    else
-                    {
-                        if (ICollisionListner* l1 = s1->GetListner())
-                            l1->OnCollisionStay(*s2);
-
-                        if (ICollisionListner* l2 = s2->GetListner())
-                            l2->OnCollisionStay(*s1);
-                    }
-                }
-                else
-                {
-                    if (search != m_usetPrevCollisions.end())
-                    {
-                        m_usetPrevCollisions.erase(search);
-
-                        if (ICollisionListner* l1 = s1->GetListner())
-                            l1->OnCollisionExit(*s2);
-
-                        if (ICollisionListner* l2 = s2->GetListner())
-                            l2->OnCollisionExit(*s1);
-                    }
-                }
+                if (ICollisionListner* l2 = b2->GetListner())
+                    l2->OnCollisionEnter(*b1);
             }
             else
             {
-                // something error
+                if (ICollisionListner* l2 = b2->GetListner())
+                    l2->OnCollisionStay(*b1);
             }
         }
+        else
+        {
+            if (search != m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.erase(search);
+
+                if (ICollisionListner* l2 = b2->GetListner())
+                    l2->OnCollisionExit(*b1);
+            }
+        }
+    }
+    else if (t1 == ColliderBase::Type::kBox &&
+             t2 == ColliderBase::Type::kSphere)
+    {
+        BoxCollider* b1 = static_cast<BoxCollider*>(perpetrator);
+        SphereCollider* s2 = static_cast<SphereCollider*>(victim);
+
+        const auto search = m_usetPrevCollisions.find(make_pair(b1, s2));
+        if (HasCollision(*b1, *s2))
+        {
+            if (search == m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.emplace(make_pair(b1, s2));
+
+                if (ICollisionListner* l2 = s2->GetListner())
+                    l2->OnCollisionEnter(*b1);
+            }
+            else
+            {
+                if (ICollisionListner* l2 = s2->GetListner())
+                    l2->OnCollisionStay(*b1);
+            }
+        }
+        else
+        {
+            if (search != m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.erase(search);
+
+                if (ICollisionListner* l2 = s2->GetListner())
+                    l2->OnCollisionExit(*b1);
+            }
+        }
+    }
+    else if (t1 == ColliderBase::Type::kSphere &&
+             t2 == ColliderBase::Type::kBox)
+    {
+        SphereCollider* s1 = static_cast<SphereCollider*>(perpetrator);
+        BoxCollider* b2 = static_cast<BoxCollider*>(victim);
+
+        const auto search = m_usetPrevCollisions.find(make_pair(s1, b2));
+        if (HasCollision(*s1, *b2))
+        {
+            if (search == m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.emplace(make_pair(s1, b2));
+
+                if (ICollisionListner* l2 = b2->GetListner())
+                    l2->OnCollisionEnter(*s1);
+            }
+            else
+            {
+                if (ICollisionListner* l2 = b2->GetListner())
+                    l2->OnCollisionStay(*s1);
+            }
+        }
+        else
+        {
+            if (search != m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.erase(search);
+
+                if (ICollisionListner* l1 = s1->GetListner())
+                    l1->OnCollisionExit(*b2);
+
+                if (ICollisionListner* l2 = b2->GetListner())
+                    l2->OnCollisionExit(*s1);
+            }
+        }
+    }
+    else if (t1 == ColliderBase::Type::kSphere &&
+             t2 == ColliderBase::Type::kSphere)
+    {
+        SphereCollider* s1 = static_cast<SphereCollider*>(perpetrator);
+        SphereCollider* s2 = static_cast<SphereCollider*>(victim);
+
+        const auto search = m_usetPrevCollisions.find(make_pair(s1, s2));
+        if (HasCollision(*s1, *s2))
+        {
+            if (search == m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.emplace(make_pair(s1, s2));
+
+                if (ICollisionListner* l2 = s2->GetListner())
+                    l2->OnCollisionEnter(*s1);
+            }
+            else
+            {
+                if (ICollisionListner* l2 = s2->GetListner())
+                    l2->OnCollisionStay(*s1);
+            }
+        }
+        else
+        {
+            if (search != m_usetPrevCollisions.end())
+            {
+                m_usetPrevCollisions.erase(search);
+
+                if (ICollisionListner* l2 = s2->GetListner())
+                    l2->OnCollisionExit(*s1);
+            }
+        }
+    }
+    else
+    {
+        // something error
     }
 }
 
 void CollisionManager::SetIsRender(const bool val)
 {
     m_bIsRender = val;
+}
+
+void CollisionManager::RegisterCollisionRelation(const CollisionTag perpetrator, const CollisionTag victim)
+{
+    auto& victims = m_umapCollisionRelations[perpetrator];
+    for (auto& ct : victims)
+        if (ct == victim) return;
+
+    m_umapCollisionRelations[perpetrator].emplace_back(victim);
 }

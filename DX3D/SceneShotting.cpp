@@ -55,35 +55,35 @@ void SceneShotting::Init()
 	m_pGround->Init();
 	AddSimpleDisplayObj(m_pGround);
 
-	m_pPlayerAni = new PlayerAni;
-	m_pPlayerAni->Init();
-	AddSimpleDisplayObj(m_pPlayerAni);
+	//m_pPlayerAni = new PlayerAni;
+	//m_pPlayerAni->Init();
+	//AddSimpleDisplayObj(m_pPlayerAni);
 
-	//±ÇÃÑ
-	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
-	m_pPistol->Init();
-	AddSimpleDisplayObj(m_pPistol);
+	////±ÇÃÑ
+	//m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	//m_pPistol->Init();
+	//AddSimpleDisplayObj(m_pPistol);
 
-	//ÃÑ¾Ë 10°³ »ý¼º
-	m_vecPBullet.reserve(10);
-	for (int i = 0; i < 10; ++i)
-	{
-		Bullet* bullet = new Bullet(0.08f, 10.f);
-		bullet->Init();
-		m_vecPBullet.push_back(bullet);
-		AddSimpleDisplayObj(bullet);
-	}
+	////ÃÑ¾Ë 10°³ »ý¼º
+	//m_vecPBullet.reserve(10);
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	Bullet* bullet = new Bullet(0.08f, 10.f);
+	//	bullet->Init();
+	//	m_vecPBullet.push_back(bullet);
+	//	AddSimpleDisplayObj(bullet);
+	//}
 
-	//ÃÑÀÌ¶û ÃÑ¾Ë¸Ô±â //Æ÷ÀÎÅÍ¿¡ ´ëÇÑ ¼ÒÀ¯±ÇÀ» ¸íÈ®È÷ ÇØ¾ßÇÑ´Ù
-	//m_pPlayerAniTemp->PutItemInInventory(m_pPistol);
-	m_pPlayerAni->PutItemInInventory(m_pPistol);
-	m_pPistol = nullptr;
-	for (auto bullet : m_vecPBullet)
-	{ 
-		//m_pPlayerAniTemp->PutItemInInventory(bullet);
-		m_pPlayerAni->PutItemInInventory(bullet);
-	}
-	m_vecPBullet.clear();
+	////ÃÑÀÌ¶û ÃÑ¾Ë¸Ô±â //Æ÷ÀÎÅÍ¿¡ ´ëÇÑ ¼ÒÀ¯±ÇÀ» ¸íÈ®È÷ ÇØ¾ßÇÑ´Ù
+	////m_pPlayerAniTemp->PutItemInInventory(m_pPistol);
+	//m_pPlayerAni->PutItemInInventory(m_pPistol);
+	//m_pPistol = nullptr;
+	//for (auto bullet : m_vecPBullet)
+	//{ 
+	//	//m_pPlayerAniTemp->PutItemInInventory(bullet);
+	//	m_pPlayerAni->PutItemInInventory(bullet);
+	//}
+	//m_vecPBullet.clear();
 
     UIButton* sampleUIB = new UIButton;
     sampleUIB->Init();
@@ -93,10 +93,10 @@ void SceneShotting::Init()
     m_pSampleUIButtonListner->SetUIButton(*sampleUIB);
     g_pUIManager->RegisterUIObject(*sampleUIB);
 
-    Cubeman* cm = new Cubeman;
-    cm->Init();
-    cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
-    AddSimpleDisplayObj(cm);
+    //Cubeman* cm = new Cubeman;
+    //cm->Init();
+    //cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
+    //AddSimpleDisplayObj(cm);
 
     SampleColliderOwner1* sco1 = new SampleColliderOwner1;
     sco1->Init();
@@ -105,6 +105,8 @@ void SceneShotting::Init()
     SampleColliderOwner2* sco2 = new SampleColliderOwner2;
     sco2->Init();
     AddSimpleDisplayObj(sco2);
+
+    g_pCollisionManager->RegisterCollisionRelation(CollisionTag::kFoo, CollisionTag::kBar);
 }
 
 void SceneShotting::Update()
