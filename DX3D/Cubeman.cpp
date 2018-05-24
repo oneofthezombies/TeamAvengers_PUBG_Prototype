@@ -104,7 +104,8 @@ void Cubeman::UpdatePosition()
 	{
 		m_currMoveSpeedRate = 0.7f;
 		targetPos = m_pos + m_forward * m_deltaPos.z
-			* m_moveSpeed * m_currMoveSpeedRate;
+			* m_moveSpeed * m_currMoveSpeedRate ;
+
 
 		targetPos.y += m_jumpPower - m_currGravity;
 		m_currGravity += m_gravity;

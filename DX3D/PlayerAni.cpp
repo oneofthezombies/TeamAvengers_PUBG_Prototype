@@ -44,11 +44,16 @@ PlayerAni::~PlayerAni()
 
 void PlayerAni::Init()
 {
-	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f); //½ÃÀÛ À§Ä¡ ¹Ú±â
+	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f); //ì‹œì‘ ìœ„ì¹˜ ë°•ê¸°
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
-    g_pCameraManager->SetTarget(m_pos, m_pos);
+    //D3DXMATRIXA16 m;
+    //D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
+    //D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
+    //D3DXVec3Normalize(&m_dir, &m_dir);
+
+    g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
 
 	/* collider init */
@@ -61,26 +66,52 @@ void PlayerAni::Init()
 	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);
 	m_pBoxCollider->Update(m);
 	/* end collider init */
+
+    GetClientRect(g_hWnd, &m_RC);   //ë§ˆìš°ìŠ¤ ì¢Œí‘œ ì´ˆê¸°í™”ë¥¼ ìœ„í•œ apií™”ë©´ ë°›ì•„ì˜¤ê¸°
+    ShowCursor(false);              //ë§ˆìš°ìŠ¤ ì»¤ì„œ ë³´ì´ê¸° ì•ˆë³´ì´ê¸°
 }
 
 void PlayerAni::Update()
 {
-	KeyMove();    //ÀÌµ¿
-	KeyMount();   //ÀåÂø
-	KeyUnmount(); //ÀåÂøÇØÁ¦
-	KeyLoad();    //ÃÑ ÀåÀü
-	KeyFire();    //ÃÑ ½î±â
+	KeyMove();    //ì´ë™
+	KeyMount();   //ì¥ì°©
+	KeyUnmount(); //ì¥ì°©í•´ì œ
+	KeyLoad();    //ì´ ì¥ì „
+	KeyFire();    //ì´ ì˜ê¸°
 
 
-	//¶Ù°í °È±â
+	//ë›°ê³  ê±·ê¸°
 	RunAndWalk();
+
+    const float dt = g_pTimeManager->GetDeltaTime();
+    POINT currPoint;
+    POINT m_ptPrevMouse;
+    m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
+    currPoint = g_pKeyManager->GetCurrentMousePos();
+    //////// ë§ˆìš°ìŠ¤ ì»¤ì„œ ì´ˆê¸°í™”
+    if (currPoint.x < 0)
+    {
+        SetCursorPos(m_RC.right, currPoint.y);
+    }
+    if (currPoint.x >= m_RC.right)
+    {
+        SetCursorPos(0, currPoint.y);
+    }
+    ////////
+    POINT diff;
+    diff.x = currPoint.x - m_ptPrevMouse.x;
+    diff.y = currPoint.y - m_ptPrevMouse.y;
+    const float factorX = 0.3f;
+    const float factorY = 0.3f;
+    m_rot.x += diff.y * factorX * dt;
+    m_rot.y += diff.x * factorY * dt;
 
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
     {
         m_isJumping = true;
     }
 
-	//Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç Å×½ºÆ®¿ë
+	//ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜ í…ŒìŠ¤íŠ¸ìš©
     if (g_pKeyManager->IsOnceKeyDown('G'))
     {
         DiedAni();
@@ -94,14 +125,19 @@ void PlayerAni::Update()
 	D3DXMATRIXA16 currM = m_matWorld;
 	D3DXMatrixInverse(&prevM, nullptr, &prevM);
 
+    D3DXMATRIXA16 m;
+    D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
+    D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
+    D3DXVec3Normalize(&m_dir, &m_dir);
+
     m_pRootParts->SetMovingState(m_isMoving);
     m_pRootParts->Update();
 
-	/* µğ¹ö±× */
-	//ÀÎº¥Åä¸® µğ¹ö±×¿ë
+	/* ë””ë²„ê·¸ */
+	//ì¸ë²¤í† ë¦¬ ë””ë²„ê·¸ìš©
 	ShowInventoryForDebug();
 
-	//ÃÑ¾Ë °³¼ö µğ¹ö±×¿ë
+	//ì´ì•Œ ê°œìˆ˜ ë””ë²„ê·¸ìš©
 	if (m_pPistol)
 		m_pPistol->ShowBulletNumForDebug();
 
@@ -125,6 +161,10 @@ void PlayerAni::UpdatePosition()
         D3DXMatrixRotationY(&matRotY, m_rot.y);
         D3DXVec3TransformNormal(&m_forward,
             &D3DXVECTOR3(0, 0, 1), &matRotY);
+
+        D3DXMatrixRotationY(&matRotY, m_rot.y);
+        D3DXVec3TransformNormal(&m_right,
+            &D3DXVECTOR3(1, 0, 0), &matRotY);
     }
     else
     {
@@ -142,7 +182,8 @@ void PlayerAni::UpdatePosition()
     if (m_isJumping == true)
     {
         m_currMoveSpeedRate = 0.7f;
-        targetPos = m_pos + m_forward * m_deltaPos.z * m_moveSpeed * m_currMoveSpeedRate;
+        targetPos = m_pos + m_forward * m_deltaPos.z * m_moveSpeed * m_currMoveSpeedRate
+            + m_right * m_deltaPos.x*m_moveSpeed *m_currMoveSpeedRate;
 
         targetPos.y += m_jumpPower - m_currGravity;
         m_currGravity += m_gravity;
@@ -177,7 +218,8 @@ void PlayerAni::UpdatePosition()
     else //m_isJumping == false
     {
         targetPos = m_pos + m_forward * m_deltaPos.z
-            * m_moveSpeed * m_currMoveSpeedRate;
+            * m_moveSpeed * m_currMoveSpeedRate
+            + m_right * m_deltaPos.x*m_moveSpeed *m_currMoveSpeedRate;
 
         if (g_pCurrentMap != NULL)
         {
@@ -202,6 +244,7 @@ void PlayerAni::UpdatePosition()
     }
 
     D3DXMATRIXA16 matT;
+    //m_pos.x += m_deltaPos.x * m_moveSpeed;
     D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
     m_matWorld = matRotY * matT;
 
@@ -215,27 +258,27 @@ void PlayerAni::UpdatePosition()
 void PlayerAni::CreateAllParts()
 {
     PlayerParts* pParts;
-    //¸öÅë
+    //ëª¸í†µ
     m_pRootParts = new PlayerParts();
     CreateParts(m_pRootParts, this, D3DXVECTOR3(0.0f, 3.0f, 0.0f),
         D3DXVECTOR3(1.0f, 1.0f, 0.5f), D3DXVECTOR3(0, 0, 0), uvBody, tEmpty);
-    //¸Ó¸®
+    //ë¨¸ë¦¬
     pParts = new PlayerParts();
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(0.0f, 1.6f, 0.0f),
         D3DXVECTOR3(0.8f, 0.8f, 0.8f), D3DXVECTOR3(0, 0, 0), uvHead, tEmpty);
-    //¿ŞÆÈ
+    //ì™¼íŒ”
     pParts = new PlayerParts(0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(-1.5f, 1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvLArm, tEmpty);
-    //¿À¸¥ÆÈ
+    //ì˜¤ë¥¸íŒ”
     pParts = new PlayerParts(-0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(1.5f, 1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvRArm, tEmpty);
-    //¿Ş´Ù¸®
+    //ì™¼ë‹¤ë¦¬
     pParts = new PlayerParts(-0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(-0.5f, -1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvLLeg, tEmpty);
-    //¿À¸¥´Ù¸®
+    //ì˜¤ë¥¸ë‹¤ë¦¬
     pParts = new PlayerParts(0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(0.5f, -1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvRLeg, tEmpty);
@@ -310,7 +353,7 @@ void PlayerAni::DiedAni()
     }
 }
 
-/* ¿ì¸® Ãß°¡ */
+/* ìš°ë¦¬ ì¶”ê°€ */
 void PlayerAni::PutItemInInventory(Item* item)
 {
 	item->SetItemState(ITEM_STATE::InInventory);
@@ -379,37 +422,40 @@ void PlayerAni::ShowInventoryForDebug()
 }
 
 
-/* Å° ÀÔ·Â °ü·Ã ÇÔ¼ö·Î ºĞ¸® */
+/* í‚¤ ì…ë ¥ ê´€ë ¨ í•¨ìˆ˜ë¡œ ë¶„ë¦¬ */
 void PlayerAni::KeyMove()
 {
 	//float deltaTime = g_pTimeManager->GetDeltaTime();
 	//float distance = deltaTime * m_velocity;
 
-	/* ÀÌµ¿ ASDW */ // ¸Ê ±¸¿ª ¾È¿¡ ÀÖÀ» ¶§¸¸ ¿òÁ÷ÀÎ´Ù 
-	if (g_pKeyManager->IsStayKeyDown('A')) //¿ŞÂÊ
+	/* ì´ë™ ASDW */ // ë§µ êµ¬ì—­ ì•ˆì— ìˆì„ ë•Œë§Œ ì›€ì§ì¸ë‹¤ 
+	if (g_pKeyManager->IsStayKeyDown('A')) //ì™¼ìª½
 	{
 		//if (m_pos.x - distance >= -5.f)
 		//	m_pos.x -= distance;
-		m_deltaRot = D3DXVECTOR3(0, -1, 0);
+		//m_deltaRot = D3DXVECTOR3(0, -1, 0);
+        m_deltaPos.x = -1;
 	}
-	else if (g_pKeyManager->IsStayKeyDown('D')) //¿À¸¥ÂÊ
+	else if (g_pKeyManager->IsStayKeyDown('D')) //ì˜¤ë¥¸ìª½
 	{
 		//if (m_pos.x + distance <= 5.f)
 		//	m_pos.x += distance;
-		m_deltaRot = D3DXVECTOR3(0,  1, 0);
-	}
+		//m_deltaRot = D3DXVECTOR3(0,  1, 0);
+        m_deltaPos.x = 1;
+    }
 	else
 	{
-		m_deltaRot = D3DXVECTOR3(0, 0, 0);
-	}
+		//m_deltaRot = D3DXVECTOR3(0, 0, 0);
+        m_deltaPos.x = 0;
+    }
 
-	if (g_pKeyManager->IsStayKeyDown('W')) //À§ÂÊ
+	if (g_pKeyManager->IsStayKeyDown('W')) //ìœ„ìª½
 	{
 		//if (m_pos.z + distance <= 20.f)
 		//	m_pos.z += distance;
 		m_deltaPos.z = 1;
 	}
-	else if (g_pKeyManager->IsStayKeyDown('S')) //¾Æ·¡ÂÊ
+	else if (g_pKeyManager->IsStayKeyDown('S')) //ì•„ë˜ìª½
 	{
 		//if (m_pos.z - distance >= -20.f)
 		//	m_pos.z -= distance;
@@ -420,30 +466,31 @@ void PlayerAni::KeyMove()
 		m_deltaPos.z = 0;
 	}
 
-	/* ÃÑ ÀåÂø½Ã ÃÑ À§Ä¡ ¾÷µ¥ÀÌÆ® */
+	/* ì´ ì¥ì°©ì‹œ ì´ ìœ„ì¹˜ ì—…ë°ì´íŠ¸ */
 	if (m_pPistol)
 	{
-		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 1.f, m_pos.z + 2.f)); //ÇÃ·¹ÀÌ¾îº¸´Ù »ìÂ¦ À§, »ìÂ¦ ¾Õ
+		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x + m_forward.x*2.3f +m_right.x*1.3f , m_pos.y + 4.f, m_pos.z + m_forward.z * 2.3f + m_right.z*1.3f)); //í”Œë ˆì´ì–´ë³´ë‹¤ ì‚´ì§ ìœ„, ì‚´ì§ ì•
+        m_pPistol->SyncRot(m_rot.y);
 	}
 }
 
 void PlayerAni::KeyMount()
 {
-	/* ¹«±â ÀåÂø */
+	/* ë¬´ê¸° ì¥ì°© */
 	if (g_pKeyManager->IsOnceKeyDown('1'))
 	{
-		if (m_pPistol == nullptr) //¾Æ¹«°Íµµ ÀåÂøµÇ¾îÀÖÁö ¾ÊÀ» ¶§
+		if (m_pPistol == nullptr) //ì•„ë¬´ê²ƒë„ ì¥ì°©ë˜ì–´ìˆì§€ ì•Šì„ ë•Œ
 		{
-			for (auto item : m_mapInventory) //ÀÎº¥Åä¸®¿¡¼­ ÃÑ Ã£¾Æ °¡Àå ¾Õ¿¡ ÀÖ´Â ÃÑ °Ù¶Ç
+			for (auto item : m_mapInventory) //ì¸ë²¤í† ë¦¬ì—ì„œ ì´ ì°¾ì•„ ê°€ì¥ ì•ì— ìˆëŠ” ì´ ê²Ÿë˜
 			{
 				auto itemTag = item.first;
 				if (itemTag == ITEM_TAG::Pistol)
 				{
 					DrawGunInOut();
 					m_pPistol = static_cast<Pistol*>(item.second.front());
-					m_pPistol->SetItemState(ITEM_STATE::Mounting); //ÀåÂøÁß
-					std::cout << "ÀåÂø ¿Ï·á" << std::endl;
-					break; //ÃÑÇÑ°³¸¸ Ã£Áö·Õ
+					m_pPistol->SetItemState(ITEM_STATE::Mounting); //ì¥ì°©ì¤‘
+					std::cout << "ì¥ì°© ì™„ë£Œ" << std::endl;
+					break; //ì´í•œê°œë§Œ ì°¾ì§€ë¡±
 				}
 			}
 		}
@@ -452,15 +499,15 @@ void PlayerAni::KeyMount()
 
 void PlayerAni::KeyUnmount()
 {
-	/* ¹«±â ÀåÂø ÇØÁ¦ */
+	/* ë¬´ê¸° ì¥ì°© í•´ì œ */
 	if (g_pKeyManager->IsOnceKeyDown('X'))
 	{
 		if (m_pPistol)
 		{
 			DrawGunInOut();
-			m_pPistol->SetItemState(ITEM_STATE::InInventory); //ÀåÂøÇØÁ¦Áß
+			m_pPistol->SetItemState(ITEM_STATE::InInventory); //ì¥ì°©í•´ì œì¤‘
 			m_pPistol = nullptr;
-			std::cout << "ÀåÂø ÇØÁ¦" << std::endl;
+			std::cout << "ì¥ì°© í•´ì œ" << std::endl;
 		}
 	}
 
@@ -468,17 +515,17 @@ void PlayerAni::KeyUnmount()
 
 void PlayerAni::KeyLoad()
 {
-	/* ÃÑ¾Ë ÀåÀü */
+	/* ì´ì•Œ ì¥ì „ */
 	if (g_pKeyManager->IsOnceKeyDown('R'))
 	{
-		if (m_pPistol) //ÀåÂøÇÏ°í ÀÖ´Â ÃÑÀÌ ÀÖÀ¸¸é
+		if (m_pPistol) //ì¥ì°©í•˜ê³  ìˆëŠ” ì´ì´ ìˆìœ¼ë©´
 		{
-			//ÃÑ¾Ë Ã£±â
+			//ì´ì•Œ ì°¾ê¸°
 			for (auto& item : m_mapInventory)
 			{
 				if (item.first == ITEM_TAG::Bullet)
 				{
-					int need = m_pPistol->GetNeedBullet(); //ÀåÀü¿¡ ÇÊ¿äÇÑ ÃÑ¾Ë ¼ö
+					int need = m_pPistol->GetNeedBullet(); //ì¥ì „ì— í•„ìš”í•œ ì´ì•Œ ìˆ˜
 					auto& bullets = item.second;
 					for (int i = 0; i < need; ++i)
 					{
@@ -488,7 +535,7 @@ void PlayerAni::KeyLoad()
 							bullet->SetItemState(ITEM_STATE::Mounting);
 							m_pPistol->Load(static_cast<Bullet*>(bullet));
 							bullets.pop_back();
-							std::cout << "ÀåÀü¿Ï·á" << std::endl;
+							std::cout << "ì¥ì „ì™„ë£Œ" << std::endl;
 						}
 					}
 				}//if ITEM_TAG::Bullet
@@ -496,27 +543,27 @@ void PlayerAni::KeyLoad()
 		}//if m_pPistol
 		else //m_pPistpol == nullptr
 		{
-			std::cout << "ÃÑÀ» ÀåÂøÇÏ°í ÀåÀüÇØÁà~!" << std::endl;
+			std::cout << "ì´ì„ ì¥ì°©í•˜ê³  ì¥ì „í•´ì¤˜~!" << std::endl;
 		}
 	}
 }
 
 void PlayerAni::KeyFire()
 {
-	/* ÃÑ½î±â RETRUN */ //TODO: ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À¸·Î ¹Ù²ã¾ßÇÔ!!
+	/* ì´ì˜ê¸° RETRUN */ //TODO: ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ìœ¼ë¡œ ë°”ê¿”ì•¼í•¨!!
 	if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
 	{
-		if (m_pPistol) //ÃÑÀÌ ÀåÂøµÇ¾îÀÖÀ» ¶§
+		if (m_pPistol) //ì´ì´ ì¥ì°©ë˜ì–´ìˆì„ ë•Œ
 		{
 			m_pPistol->Fire();
 			if (m_pPistol->GetBulletNum() > 0)
-				std::cout << "»§¾ß»§¾ß~!" << std::endl;
+				std::cout << "ë¹µì•¼ë¹µì•¼~!" << std::endl;
 			else
-				std::cout << "ÃÑ¾ËÀÌ ¾øµû ¤Ğ¤Ğ¤Ğ¤Ğ" << std::endl;
+				std::cout << "ì´ì•Œì´ ì—†ë”° ã… ã… ã… ã… " << std::endl;
 		}
 		else
 		{
-			std::cout << "ÃÑÀ» ÀåÂøÇØÁà!" << std::endl;
+			std::cout << "ì´ì„ ì¥ì°©í•´ì¤˜!" << std::endl;
 		}
 	}
 }

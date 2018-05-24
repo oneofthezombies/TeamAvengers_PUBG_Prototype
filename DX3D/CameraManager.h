@@ -31,10 +31,8 @@ public:
     void Init();    
     void Destroy();
     void Update();
-
-    //void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     void SetTarget(D3DXVECTOR3& pos, D3DXVECTOR3& dir);
     D3DXVECTOR3* GetTargetPos() const;
-    D3DXVECTOR3* GetTargetDir() const;
+    D3DXVECTOR3* GetTargetRot() const;
 };
 

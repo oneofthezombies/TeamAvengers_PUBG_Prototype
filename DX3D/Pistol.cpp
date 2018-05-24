@@ -39,6 +39,8 @@ void Pistol::Update()
 	m_bulletFireCoolDown -= deltaTime;
 	if (m_bulletFireCoolDown <= 0.f) m_bulletFireCoolDown = 0.f;
 
+    D3DXMatrixRotationY(&m_matRotY, m_rotY);
+
 	//변환행렬
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 	m_matWorld = m_matS * m_matRotY * m_matT;
@@ -88,4 +90,9 @@ void Pistol::Fire()
 void Pistol::Load(Bullet* bullet)
 {	
 	m_vecPBullet.emplace_back(bullet);
+}
+
+void Pistol::SyncRot(float rotY)
+{
+    m_rotY = rotY - D3DXToRadian(90);
 }

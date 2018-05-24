@@ -43,9 +43,11 @@ public://protected 으로 바꾸자
     float           m_aspect;
 
     POINT			m_ptPrevMouse;
-    POINT           m_ptContainer;
 
+    bool            m_isALTbuttonStay;
 
+    D3DXVECTOR3*    m_pTargetPos;//캐릭터 Position을 갖고오기 위함
+    D3DXVECTOR3*    m_pTargetRot;//캐릭터 Rotation을 갖고오기 위함
 
     //vector<D3DXVECTOR3> m_vecProjVert;
     //vector<D3DXVECTOR3> m_vecWorldVert;
@@ -66,6 +68,5 @@ public:
     //void SetSixPlane();
     //bool CheckSphere(BoundingSphere* sphere);
 
-    void UpdateEye();
 };
 
