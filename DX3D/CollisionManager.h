@@ -9,6 +9,8 @@ enum class CollisionTag
     kIdle,
     kFoo,
     kBar,
+    kBullet,
+    kEnemy
 };
 
 class ColliderBase;

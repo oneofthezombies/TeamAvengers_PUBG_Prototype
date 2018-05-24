@@ -39,6 +39,7 @@ void Bullet::Update()
             m_pBoxCollider->SetListner(*m_pCollisionListner);
             m_pBoxCollider->Init(D3DXVECTOR3(-0.2f, -0.2f, -0.4f), D3DXVECTOR3(0.2f, 0.2f, 0.4f));
             m_pBoxCollider->Move(GetPosition());
+            m_pBoxCollider->SetTag(CollisionTag::kBullet);
         }
 
 		m_pos.z += deltaTime * m_velocity; //이동거리 = 속력 * 경과시간, 즉 기존의 위치에 이동거리를 더해주어 앞으로 나아가게한다

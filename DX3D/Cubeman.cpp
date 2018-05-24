@@ -44,6 +44,7 @@ void Cubeman::Init()
     m_pBoxCollider->SetListner(*m_pCollisionListner);
     m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
     m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 20.0f));
+    m_pBoxCollider->SetTag(CollisionTag::kEnemy);
 
     m_rot.y += D3DX_PI;
 }
