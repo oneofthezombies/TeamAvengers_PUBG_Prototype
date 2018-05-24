@@ -25,3 +25,4 @@ public:
 	void ShowMessageBox();
 };
 
+ostream& operator<<(ostream& os, const D3DXVECTOR3& val);

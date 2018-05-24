@@ -90,3 +90,9 @@ void DebugManager::ShowMessageBox()
 	MessageBox(NULL, m_str, _T("DEBUG"), MB_OK);
 #endif 
 }
+
+ostream& operator<<(ostream& os, const D3DXVECTOR3& val)
+{
+    os << "[ " << val.x << ", " << val.y << ", " << val.z << " ]";
+    return os;
+}

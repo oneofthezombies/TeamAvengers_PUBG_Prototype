@@ -10,13 +10,16 @@ enum class CollisionTag
     kFoo,
     kBar,
     kBullet,
-    kEnemy
+    kEnemy,
+    kItem,
+    kPlayer,
+    kItemPicker,
 };
 
 class ColliderBase;
 class BoxCollider;
 class SphereCollider;
-class ICollisionListner;
+class ICollisionListener;
 
 class CollisionManager
     : public SingletonBase<CollisionManager>
@@ -38,6 +41,7 @@ private:
     CollisionManager();
     virtual ~CollisionManager() = default;
 
+    bool HasCollision(ColliderBase& lhs, ColliderBase& rhs);
     bool HasCollision(const BoxCollider& lhs, const BoxCollider& rhs);
 
     // no impl
@@ -65,7 +69,8 @@ public:
 
     void SetIsRender(const bool val);
 
-    void RegisterCollisionRelation(const CollisionTag perpetrator, const CollisionTag victim);
+    void SubscribeCollisionEvent(const CollisionTag perpetrator, const CollisionTag victim);
+    void GetCollideds(vector<ColliderBase*>& OutCollideds, ColliderBase& perpetrator, const CollisionTag victim);
 
     friend SingletonBase<CollisionManager>;
 };

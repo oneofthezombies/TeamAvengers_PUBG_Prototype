@@ -6,7 +6,7 @@ ColliderBase::ColliderBase(BaseObject& owner, const Type type)
     , m_vCenter(0.0f, 0.0f, 0.0f)
     , m_type(type)
     , m_color(D3DCOLOR_XRGB(0, 255, 0))
-    , m_pListner(nullptr)
+    , m_pListener(nullptr)
     , m_tag(CollisionTag::kIdle)
 {
     g_pCollisionManager->AddColliderBase(*this);
@@ -36,14 +36,14 @@ D3DXVECTOR3 ColliderBase::GetCenter() const
     return m_vCenter;
 }
 
-void ColliderBase::SetListner(ICollisionListner& listner)
+void ColliderBase::SetListener(ICollisionListener& Listener)
 {
-    m_pListner = &listner;
+    m_pListener = &Listener;
 }
 
-ICollisionListner* ColliderBase::GetListner() const
+ICollisionListener* ColliderBase::GetListener() const
 {
-    return m_pListner;
+    return m_pListener;
 }
 
 void ColliderBase::SetTag(const CollisionTag tag)
@@ -132,6 +132,13 @@ void BoxCollider::Move(const D3DXVECTOR3& val)
     Update(m);
 }
 
+void BoxCollider::MoveTo(const D3DXVECTOR3& val)
+{
+    D3DXMATRIXA16 m;
+    D3DXMatrixTranslation(&m, val.x - m_mTransform._41, val.y - m_mTransform._42, val.z - m_mTransform._43);
+    Update(m);
+}
+
 D3DXVECTOR3 BoxCollider::GetExtent() const
 {
     return m_vExtent;
@@ -142,11 +149,11 @@ const D3DXMATRIXA16& BoxCollider::GetTransform() const
     return m_mTransform;
 }
 
-ICollisionListner::ICollisionListner(BaseObject& owner)
+ICollisionListener::ICollisionListener(BaseObject& owner)
     : ComponentBase(owner)
 {
 }
 
-ICollisionListner::~ICollisionListner()
+ICollisionListener::~ICollisionListener()
 {
 }

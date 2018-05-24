@@ -33,17 +33,23 @@ void Pistol::Init()
 
 void Pistol::Update()
 {
-	float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
+    if (m_state != ITEM_STATE::Dropped)
+    {
+        float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
 
-	//총알 발사 쿨타임
-	m_bulletFireCoolDown -= deltaTime;
-	if (m_bulletFireCoolDown <= 0.f) m_bulletFireCoolDown = 0.f;
+                                                          //총알 발사 쿨타임
+        m_bulletFireCoolDown -= deltaTime;
+        if (m_bulletFireCoolDown <= 0.f) m_bulletFireCoolDown = 0.f;
 
-    D3DXMatrixRotationY(&m_matRotY, m_rotY);
 
-	//변환행렬
-	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
-	m_matWorld = m_matS * m_matRotY * m_matT;
+        D3DXMatrixRotationY(&m_matRotY, m_rotY);
+
+        //변환행렬
+        D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
+        m_matWorld = m_matS * m_matRotY * m_matT;
+    }
+
+    Item::Update();
 }
 
 void Pistol::Render()
@@ -51,15 +57,19 @@ void Pistol::Render()
 	if (m_state == ITEM_STATE::Mounting)
 	{
 		const auto dv = g_pDevice;
-		dv->SetRenderState(D3DRS_LIGHTING, false);
 		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
+        dv->SetRenderState(D3DRS_LIGHTING, true);
 		dv->SetTransform(D3DTS_WORLD, &m_matWorld);
+        dv->SetMaterial(&DXUtil::BLUE_MTRL);
 		m_pGunMesh->DrawSubset(0);
 
-		dv->SetRenderState(D3DRS_LIGHTING, true);
 		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	}
+    else if (m_state == ITEM_STATE::Dropped)
+    {
+        Item::Render();
+    }
 }
 
 void Pistol::ShowBulletNumForDebug()

@@ -11,7 +11,6 @@ Bullet::Bullet(float scale, float velocity)
 	, m_pBulletMesh(nullptr)
 	, m_isDie(false)
     , m_pBoxCollider(nullptr)
-    , m_pCollisionListner(nullptr)
 {
 }
 
@@ -28,15 +27,13 @@ void Bullet::Init()
 
 void Bullet::Update()
 {
-	float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
+	const float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
 
 	if (m_isFire)
 	{
         if (!m_pBoxCollider)
         {
-            m_pCollisionListner = SetComponent<BulletCollisionListner>();
             m_pBoxCollider = SetComponent<BoxCollider>();
-            m_pBoxCollider->SetListner(*m_pCollisionListner);
             m_pBoxCollider->Init(D3DXVECTOR3(-0.2f, -0.2f, -0.4f), D3DXVECTOR3(0.2f, 0.2f, 0.4f));
             m_pBoxCollider->Move(GetPosition());
             m_pBoxCollider->SetTag(CollisionTag::kBullet);
@@ -52,23 +49,32 @@ void Bullet::Update()
 			D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 		else                  //경계구역 밖이면 총알 죽임
 			g_pCurrentScene->Destroy(this);
-	}
 
-	//변환행렬
-	m_matWorld = m_matS * m_matT;
+        //변환행렬
+        m_matWorld = m_matS * m_matT;
+	}
+    else
+    {
+        Item::Update();
+    }
 }
 
 void Bullet::Render()
 {
 	const auto dv = g_pDevice;
-	dv->SetRenderState(D3DRS_LIGHTING, false);
+	//dv->SetRenderState(D3DRS_LIGHTING, false);
 	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
 	if (m_isFire) //발사된 총알만 그려주기
 	{
 		dv->SetTransform(D3DTS_WORLD, &m_matWorld);
+        dv->SetMaterial(&DXUtil::YELLOW_MTRL);
 		m_pBulletMesh->DrawSubset(0);
 	}
+    else
+    {
+        Item::Render();
+    }
 
 	dv->SetRenderState(D3DRS_LIGHTING, true);
 	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -81,21 +87,4 @@ bool Bullet::IsInBorderArea()
 	else
 		m_isDie = true;
 	return false;
-}
-
-BulletCollisionListner::BulletCollisionListner(BaseObject& owner)
-    : ICollisionListner(owner)
-{
-}
-
-void BulletCollisionListner::OnCollisionEnter(const ColliderBase& other)
-{
-}
-
-void BulletCollisionListner::OnCollisionExit(const ColliderBase& other)
-{
-}
-
-void BulletCollisionListner::OnCollisionStay(const ColliderBase& other)
-{
 }

@@ -2,37 +2,37 @@
 #include "SampleCollider.h"
 #include "Collider.h"
 
-SampleCollisionListner1::SampleCollisionListner1(BaseObject& owner)
-    : ICollisionListner(owner)
+SampleCollisionListener1::SampleCollisionListener1(BaseObject& owner)
+    : ICollisionListener(owner)
 {
 }
 
-SampleCollisionListner1::~SampleCollisionListner1()
+SampleCollisionListener1::~SampleCollisionListener1()
 {
 }
 
-void SampleCollisionListner1::OnCollisionEnter(const ColliderBase& other)
+void SampleCollisionListener1::OnCollisionEnter(const ColliderBase& other)
 {
     static_cast<SampleColliderOwner1*>(GetOwner())->m_pBoxCollider->SetColor(D3DCOLOR_XRGB(255, 0, 0));
 
-    cout << "SampleCollisionListner1::OnCollisionEnter()\n";
+    cout << "SampleCollisionListener1::OnCollisionEnter()\n";
 }
 
-void SampleCollisionListner1::OnCollisionExit(const ColliderBase& other)
+void SampleCollisionListener1::OnCollisionExit(const ColliderBase& other)
 {
     static_cast<SampleColliderOwner1*>(GetOwner())->m_pBoxCollider->SetColor(D3DCOLOR_XRGB(0, 255, 0));
 
-    cout << "SampleCollisionListner1::OnCollisionExit()\n";
+    cout << "SampleCollisionListener1::OnCollisionExit()\n";
 }
 
-void SampleCollisionListner1::OnCollisionStay(const ColliderBase& other)
+void SampleCollisionListener1::OnCollisionStay(const ColliderBase& other)
 {
-    Debug->AddText("SampleCollisionListner1::OnCollisionStay()\n");
+    Debug->AddText("SampleCollisionListener1::OnCollisionStay()\n");
 }
 
 SampleColliderOwner1::SampleColliderOwner1()
     : m_pBoxCollider(nullptr)
-    , m_pCollisionListner(nullptr)
+    , m_pCollisionListener(nullptr)
 {
 }
 
@@ -42,10 +42,10 @@ SampleColliderOwner1::~SampleColliderOwner1()
 
 void SampleColliderOwner1::Init()
 {
-    m_pCollisionListner = SetComponent<SampleCollisionListner1>();
+    m_pCollisionListener = SetComponent<SampleCollisionListener1>();
     
     m_pBoxCollider = SetComponent<BoxCollider>();
-    m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
     m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
     m_pBoxCollider->SetTag(CollisionTag::kFoo);
 
@@ -74,37 +74,37 @@ void SampleColliderOwner1::Render()
 {
 }
 
-SampleCollisionListner2::SampleCollisionListner2(BaseObject& owner)
-    : ICollisionListner(owner)
+SampleCollisionListener2::SampleCollisionListener2(BaseObject& owner)
+    : ICollisionListener(owner)
 {
 }
 
-SampleCollisionListner2::~SampleCollisionListner2()
+SampleCollisionListener2::~SampleCollisionListener2()
 {
 }
 
-void SampleCollisionListner2::OnCollisionEnter(const ColliderBase& other)
+void SampleCollisionListener2::OnCollisionEnter(const ColliderBase& other)
 {
     static_cast<SampleColliderOwner2*>(GetOwner())->m_pBoxCollider->SetColor(D3DCOLOR_XRGB(255, 0, 0));
 
-    cout << "SampleCollisionListner2::OnCollisionEnter()\n";
+    cout << "SampleCollisionListener2::OnCollisionEnter()\n";
 }
 
-void SampleCollisionListner2::OnCollisionExit(const ColliderBase& other)
+void SampleCollisionListener2::OnCollisionExit(const ColliderBase& other)
 {
     static_cast<SampleColliderOwner2*>(GetOwner())->m_pBoxCollider->SetColor(D3DCOLOR_XRGB(0, 255, 0));
 
-    cout << "SampleCollisionListner2::OnCollisionExit()\n";
+    cout << "SampleCollisionListener2::OnCollisionExit()\n";
 }
 
-void SampleCollisionListner2::OnCollisionStay(const ColliderBase& other)
+void SampleCollisionListener2::OnCollisionStay(const ColliderBase& other)
 {
-    Debug->AddText("SampleCollisionListner2::OnCollisionStay()\n");
+    Debug->AddText("SampleCollisionListener2::OnCollisionStay()\n");
 }
 
 SampleColliderOwner2::SampleColliderOwner2()
     : m_pBoxCollider(nullptr)
-    , m_pCollisionListner(nullptr)
+    , m_pCollisionListener(nullptr)
 {
 }
 
@@ -114,10 +114,10 @@ SampleColliderOwner2::~SampleColliderOwner2()
 
 void SampleColliderOwner2::Init()
 {
-    m_pCollisionListner = SetComponent<SampleCollisionListner2>();
+    m_pCollisionListener = SetComponent<SampleCollisionListener2>();
 
     m_pBoxCollider = SetComponent<BoxCollider>();
-    m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
     m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
     m_pBoxCollider->SetTag(CollisionTag::kBar);
 

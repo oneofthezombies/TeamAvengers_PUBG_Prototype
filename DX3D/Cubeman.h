@@ -3,7 +3,7 @@
 #include "Collider.h"
 
 class CubemanParts;
-class CubemanCollisionListner;
+class CubemanCollisionListener;
 
 class Cubeman : public IDisplayObject
 {
@@ -28,7 +28,7 @@ private:
 	float			m_maxStepHeight;
 
     BoxCollider* m_pBoxCollider;
-    CubemanCollisionListner* m_pCollisionListner;
+    CubemanCollisionListener* m_pCollisionListener;
 
 public:
 	Cubeman();
@@ -99,11 +99,11 @@ public:
 	};
 };
 
-class CubemanCollisionListner : public ICollisionListner
+class CubemanCollisionListener : public ICollisionListener
 {
 public:
-    CubemanCollisionListner(BaseObject& owner);
-    virtual ~CubemanCollisionListner() = default;
+    CubemanCollisionListener(BaseObject& owner);
+    virtual ~CubemanCollisionListener() = default;
 
     virtual void OnCollisionEnter(const ColliderBase& other) override;
     virtual void OnCollisionExit(const ColliderBase& other) override;

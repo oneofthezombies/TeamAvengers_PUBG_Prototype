@@ -4,6 +4,8 @@
 #include "Pistol.h"
 #include "Bullet.h"
 #include "Collider.h"
+#include "ItemPicker.h"
+#include "UIInventory.h"
 
 enum enumParts
 {
@@ -17,7 +19,10 @@ enum enumParts
 PlayerAni::PlayerAni()
     : m_pPistol(nullptr)
     , m_pBoxCollider(nullptr)
-    , m_pCollisionListner(nullptr)
+    , m_pCollisionListener(nullptr)
+    , m_pItemPicker(nullptr)
+    , m_pUIInventory(nullptr)
+    , m_pPicked(nullptr)
 {
     m_pRootParts = NULL;
 
@@ -40,6 +45,7 @@ PlayerAni::PlayerAni()
 
 PlayerAni::~PlayerAni()
 {
+    SAFE_RELEASE(m_pItemPicker);
 }
 
 void PlayerAni::Init()
@@ -48,68 +54,35 @@ void PlayerAni::Init()
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
-    //D3DXMATRIXA16 m;
-    //D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
-    //D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
-    //D3DXVec3Normalize(&m_dir, &m_dir);
-
     g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
 
 	/* collider init */
-    m_pCollisionListner = SetComponent<PlayerAniCollisionListner>();
+    m_pCollisionListener = SetComponent<PlayerAniCollisionListener>();
 
     m_pBoxCollider = SetComponent<BoxCollider>();
-    m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
 	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-	D3DXMATRIXA16 m;
-	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);
-	m_pBoxCollider->Update(m);
-	/* end collider init */
+    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
+    /* end collider init */
 
-    GetClientRect(g_hWnd, &m_RC);   //마우스 좌표 초기화를 위한 api화면 받아오기
-    ShowCursor(false);              //마우스 커서 보이기 안보이기
+    //ShowCursor(false);              //마우스 커서 보이기 안보이기
 }
 
 void PlayerAni::Update()
 {
 	KeyMove();    //이동
-	KeyMount();   //장착
-	KeyUnmount(); //장착해제
-	KeyLoad();    //총 장전
-	KeyFire();    //총 쏘기
 
+    if (!IsShowingInventory())
+    {
+        KeyMount();   //장착
+        KeyUnmount(); //장착해제
+        KeyLoad();    //총 장전
+        KeyFire();    //총 쏘기
+        RunAndWalk(); //뛰고 걷기
+        UpdateRotation(); // 마우스 움직인다. 방향 바뀐다.
+    }
 
-	//뛰고 걷기
-	RunAndWalk();
-
-    const float dt = g_pTimeManager->GetDeltaTime();
-    POINT currPoint;
-    POINT m_ptPrevMouse;
-    m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
-    currPoint = g_pKeyManager->GetCurrentMousePos();
-    //////// 마우스 커서 초기화
-    if (currPoint.x < 0)
-    {
-        SetCursorPos(m_RC.right, currPoint.y);
-    }
-    if (currPoint.x >= m_RC.right)
-    {
-        SetCursorPos(0, currPoint.y);
-    }
-    ////////
-    //이렇게 하는것이 맞는지 아니면 thirdperson의 bool값을 받아와서 하는 것이 좋을지
-    if(!g_pKeyManager->IsStayKeyDown(VK_MENU))
-    {
-        POINT diff;
-        diff.x = currPoint.x - m_ptPrevMouse.x;
-        diff.y = currPoint.y - m_ptPrevMouse.y;
-        const float factorX = 0.3f;
-        const float factorY = 0.3f;
-        m_rot.x += diff.y * factorX * dt;
-        m_rot.y += diff.x * factorY * dt;
-    }
-    
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
     {
         m_isJumping = true;
@@ -129,7 +102,7 @@ void PlayerAni::Update()
 	D3DXMATRIXA16 currM = m_matWorld;
 	D3DXMatrixInverse(&prevM, nullptr, &prevM);
 
-    D3DXMATRIXA16 m;
+    D3DXMATRIXA16 m, tm;
     D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
     D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
     D3DXVec3Normalize(&m_dir, &m_dir);
@@ -142,11 +115,16 @@ void PlayerAni::Update()
 	ShowInventoryForDebug();
 
 	//총알 개수 디버그용
-	if (m_pPistol)
-		m_pPistol->ShowBulletNumForDebug();
+    if (m_pPistol)
+    {
+        m_pPistol->ShowBulletNumForDebug();
+    }
 
 	/* TM = prevM^(-1) * currM */
+    tm = prevM * currM;
 	m_pBoxCollider->Update(prevM * currM);
+
+    ShowInventory(tm);
 }
 
 void PlayerAni::Render()
@@ -295,10 +273,9 @@ void PlayerAni::CreateParts(PlayerParts *& pParts, IDisplayObject * pParent, D3D
     D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
     mat = matS * matT;
     pParts->Init(&mat, vecUV);
-    pParts->SetPosition(&pos);
+    pParts->SetPosition(pos);
     pParts->SetPartTag(tag);
     pParent->AddChild(*pParts);
-
 }
 
 void PlayerAni::DrawGunInOut()
@@ -554,8 +531,7 @@ void PlayerAni::KeyLoad()
 
 void PlayerAni::KeyFire()
 {
-	/* 총쏘기 RETRUN */ //TODO: 마우스 왼쪽 버튼으로 바꿔야함!!
-	if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
+	if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
 	{
 		if (m_pPistol) //총이 장착되어있을 때
 		{
@@ -572,19 +548,83 @@ void PlayerAni::KeyFire()
 	}
 }
 
-PlayerAniCollisionListner::PlayerAniCollisionListner(BaseObject & owner)
-	: ICollisionListner(owner)
+void PlayerAni::UpdateRotation()
+{
+    const float dt = g_pTimeManager->GetDeltaTime();
+
+    POINT mouse;
+    GetCursorPos(&mouse);
+    ScreenToClient(g_hWnd, &mouse);
+
+    POINT diff;
+    diff.x = mouse.x - 1280 / 2;
+    diff.y = mouse.y - 720 / 2;
+    const float factorX = 0.3f;
+    const float factorY = 0.3f;
+    m_rot.x += diff.y * factorX * dt;
+    m_rot.y += diff.x * factorY * dt;
+
+    POINT center;
+    center.x = 1280 / 2;
+    center.y = 720 / 2;
+    ClientToScreen(g_hWnd, &center);
+    SetCursorPos(center.x, center.y);
+}
+
+void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
+{
+    if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
+    {
+        if (m_pItemPicker)
+        {
+            SAFE_RELEASE(m_pItemPicker);
+            g_pUIManager->Destroy(*m_pUIInventory);
+            m_pUIInventory = nullptr;
+
+            POINT center;
+            center.x = 1280 / 2;
+            center.y = 720 / 2;
+            ClientToScreen(g_hWnd, &center);
+            SetCursorPos(center.x, center.y);
+        }
+        else
+        {
+            m_pItemPicker = ItemPicker::Create(*this, m_pos, m_rot);
+            m_pUIInventory = UIInventory::Create();
+            m_pUIInventory->AttachToObject(*this);
+        }
+    }
+
+    if (m_pItemPicker && m_pUIInventory)
+    {
+        vector<Item*> pickables;
+        m_pItemPicker->Update(pickables, transform);
+        m_pUIInventory->Update(m_pPicked, m_mapInventory, pickables);
+    }
+}
+
+bool PlayerAni::IsShowingInventory()
+{
+    return m_pItemPicker || m_pUIInventory;
+}
+
+void PlayerAni::Pick(Item& item)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionEnter(const ColliderBase & other)
+PlayerAniCollisionListener::PlayerAniCollisionListener(BaseObject& owner)
+	: ICollisionListener(owner)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionExit(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionStay(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionExit(const ColliderBase& other)
+{
+}
+
+void PlayerAniCollisionListener::OnCollisionStay(const ColliderBase& other)
 {
 }

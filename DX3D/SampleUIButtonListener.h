@@ -2,7 +2,7 @@
 
 #include "UIButton.h"
 
-class SampleUIButtonListner : public IUIButtonOnMouseListner
+class SampleUIButtonListener : public IUIButtonOnMouseListener
 {
 public:
     virtual void OnMouseEnter() override;
