@@ -14,7 +14,8 @@ private:
 	PlayerAni*        m_pPlayerAni;
 	Gun*              m_pPistol;
 	Gun*              m_pRifle;
-	vector<Bullet*>   m_vecPBullet;
+	vector<Bullet*>   m_vecPBulletForPistol; //±«√—øÎ √—¿œ
+	vector<Bullet*>   m_vecPBulletForRifle;  //º“√—øÎ √—æÀ
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±‚¡ÿº±
 

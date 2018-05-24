@@ -402,6 +402,17 @@ void PlayerAni::ShowInventoryForDebug()
 					break;
 				} //swtich ItemState
 				Debug->EndLine();
+
+				switch (static_cast<Bullet*>(i)->GetBulletFor())
+				{
+				case GUN_TAG::Pistol:
+					Debug->AddText("Pistol");
+					break;
+				case GUN_TAG::Rifle:
+					Debug->AddText("Rifle");
+					break;
+				}
+				Debug->EndLine();
 			} // for item.second()
 			break;
 		} //switch itemTag
@@ -496,17 +507,39 @@ void PlayerAni::KeyLoad()
 			{
 				int need = m_pGun->GetNeedBullet(); //장전에 필요한 총알 수
 				auto& bullets = item.second;
+				vector<Bullet*> vecSpecificBullets; //특정 총알 리스트를 만든다
+				for (auto bullet : bullets)
+				{
+					auto pBullet = static_cast<Bullet*>(bullet);
+					if (pBullet->GetBulletFor() == m_pGun->GetGunTag())
+						vecSpecificBullets.emplace_back(pBullet);
+				}
+
 				for (int i = 0; i < need; ++i)
 				{
-					if (bullets.empty() == false)
+					if(vecSpecificBullets.empty() == false) //특정 총알 리스트에 대해 진행
 					{
-						auto bullet = bullets.back();
-						bullet->SetItemState(ITEM_STATE::Mounting);
-						m_pGun->Load(static_cast<Bullet*>(bullet));
-						bullets.pop_back();
-						std::cout << "장전완료" << std::endl;
+						auto pLastBullet = static_cast<Bullet*>(vecSpecificBullets.back());
+						if(pLastBullet->IsBulletForThisGun(m_pGun->GetGunTag()))
+						{
+							pLastBullet->SetItemState(ITEM_STATE::Mounting);
+							m_pGun->Load(pLastBullet);
+							for (auto it = bullets.begin(); it != bullets.end(); )
+							{
+								if (*it == static_cast<Item*>(vecSpecificBullets.back()))
+									it = bullets.erase(it);
+								else
+									++it;
+							}
+							vecSpecificBullets.pop_back();
+							std::cout << "장전완료" << std::endl;
+						}
+						else
+						{
+							std::cout << "총에 맞지않는 총알입니다" << std::endl;
+						}
 					}
-				}
+				}//for need
 			}//if ITEM_TAG::Bullet
 		}//for m_mapInventory
 	}//if m_pGun

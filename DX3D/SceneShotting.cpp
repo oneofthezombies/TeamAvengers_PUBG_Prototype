@@ -30,12 +30,12 @@ SceneShotting::~SceneShotting()
 
 void SceneShotting::Init()
 {
-    SkyBox* skyBox = new SkyBox;
-    D3DXMATRIXA16 m;
-    const float scale = 50.0f;
-    D3DXMatrixScaling(&m, scale, scale, scale);
-    skyBox->Init(m);
-    AddSimpleDisplayObj(skyBox);
+	SkyBox* skyBox = new SkyBox;
+	D3DXMATRIXA16 m;
+	const float scale = 50.0f;
+	D3DXMatrixScaling(&m, scale, scale, scale);
+	skyBox->Init(m);
+	AddSimpleDisplayObj(skyBox);
 
 	//x, y, z ±âÁØ¼±
 	D3DCOLOR c;
@@ -64,19 +64,28 @@ void SceneShotting::Init()
 	m_pPistol = new Gun(GUN_TAG::Pistol, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
 	AddSimpleDisplayObj(m_pPistol);
-	
+
 	//¼ÒÃÑ
 	m_pRifle = new Gun(GUN_TAG::Rifle, 10, 0.4f, 5.f, 1.2f, -D3DXToRadian(90));
 	m_pRifle->Init();
 	AddSimpleDisplayObj(m_pRifle);
 
-	//ÃÑ¾Ë 10°³ »ý¼º
-	m_vecPBullet.reserve(10);
-	for (int i = 0; i < 10; ++i)
+	//±ÇÃÑ¿ë ÃÑ¾Ë 5°³ »ý¼º
+	m_vecPBulletForPistol.reserve(5);
+	for (int i = 0; i < 5; ++i)
 	{
-		Bullet* bullet = new Bullet(0.08f, 10.f);
+		Bullet* bullet = new Bullet(GUN_TAG::Pistol, 0.08f, 10.f);
 		bullet->Init();
-		m_vecPBullet.push_back(bullet);
+		m_vecPBulletForPistol.push_back(bullet);
+		AddSimpleDisplayObj(bullet);
+	}
+	//¼ÒÃÑ¿ë ÃÑ¾Ë 5°³ »ý¼º
+	m_vecPBulletForRifle.reserve(5);
+	for (int i = 0; i < 5; ++i)
+	{
+		Bullet* bullet = new Bullet(GUN_TAG::Rifle, 0.05f, 15.f);
+		bullet->Init();
+		m_vecPBulletForRifle.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
 
@@ -84,12 +93,18 @@ void SceneShotting::Init()
 	m_pPlayerAni->PutGuns(m_pPistol); m_pPistol = nullptr;
 	m_pPlayerAni->PutGuns(m_pRifle); m_pRifle = nullptr;
 	
-	for (auto bullet : m_vecPBullet)
+	for (auto& bullet : m_vecPBulletForPistol)
 	{ 
-		//m_pPlayerAniTemp->PutItemInInventory(bullet);
 		m_pPlayerAni->PutItemInInventory(bullet);
 	}
-	m_vecPBullet.clear();
+	m_vecPBulletForPistol.clear();
+
+	for (auto& bullet : m_vecPBulletForRifle)
+	{
+		m_pPlayerAni->PutItemInInventory(bullet);
+	}
+	m_vecPBulletForRifle.clear();
+
 
     CollidableItemBox* cib = new CollidableItemBox;
     cib->Init();
