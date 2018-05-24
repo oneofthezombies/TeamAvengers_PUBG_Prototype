@@ -79,6 +79,7 @@ void CameraManager::Update()
 {
     const float dt = g_pTimeManager->GetDeltaTime();
 
+    //V¸¦ ´­·¶À»¶§ 3ÀÎÄªÀÌ¸é 1ÀÎÄªÀ¸·Î, 1ÀÎÄªÀÌ¸é 3ÀÎÄªÀ¸·Î
     if (g_pKeyManager->IsOnceKeyDown('V'))
     {
         if (m_pCurrentCamera->m_cameraState == CameraState::THIRDPERSON)
@@ -91,12 +92,10 @@ void CameraManager::Update()
         }
     }
     SAFE_UPDATE(m_pCurrentCamera);
+    Debug->AddText("CurrentCameraState : ");
+    Debug->AddText(m_pCurrentCamera->m_cameraState);
+    Debug->EndLine();
 }
-
-//void CameraManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-//{
-//    SAFE_WNDPROC(m_pCurrentCamera);
-//}
 
 void CameraManager::SetTarget(D3DXVECTOR3& pos, D3DXVECTOR3& dir)
 {
@@ -109,7 +108,7 @@ D3DXVECTOR3* CameraManager::GetTargetPos() const
     return m_pTargetPos;
 }
 
-D3DXVECTOR3* CameraManager::GetTargetDir() const
+D3DXVECTOR3* CameraManager::GetTargetRot() const
 {
     return m_pTargetDir;
 }

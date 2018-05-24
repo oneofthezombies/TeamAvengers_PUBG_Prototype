@@ -26,7 +26,8 @@ void ThirdPersonCamera::Update()
     const float dt = g_pTimeManager->GetDeltaTime();
     
     //ALTkey를 누르면 주변을 볼 수 있는 기능
-    if (g_pKeyManager->IsStayKeyDown(VK_MENU))
+    m_isALTbuttonStay = g_pKeyManager->IsStayKeyDown(VK_MENU);//Alt기능을 Icamera update에 한번더 쓰기 때문에 이렇게 넣었습니다.
+    if (m_isALTbuttonStay)
     {
         POINT currPoint;
         m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
@@ -39,17 +40,16 @@ void ThirdPersonCamera::Update()
         m_rotX += diff.y * factorX * dt;
         m_rotY += diff.x * factorY * dt;
     }
-    else//alt를 누르지 않게 되면 rotation 초기화
+    else//alt를 누르지 않게 되면 캐릭터가 바라보고 있는 rotation 으로 초기화
     {
-        m_rotX = 0;
-        m_rotY = 0;
+        m_rotX = m_pTargetRot->x;
+        m_rotY = m_pTargetRot->y;
     }
 
-    //견착하는 부분
+    //견착하는 부분은 3인칭에서만 있기에
     if (g_pKeyManager->IsOnceKeyDown(VK_RBUTTON))
     {
         g_pCameraManager->SetCurrentCamera(CameraState::KYUNCHAK);
-        return;
     }
     ICamera::Update();
 }
@@ -134,33 +134,38 @@ void CameraKyunChak::Init()
 void CameraKyunChak::Update()
 {
     const auto dt = g_pTimeManager->GetDeltaTime();
-
+    const float factor = 5.0f;
     if (g_pKeyManager->IsStayKeyDown(VK_RBUTTON))
     {
-        if (m_distance >= TP_DISTANCE - 5.0f)
+        if (m_distance >= TP_DISTANCE - factor)
         {
-            m_vel += dt * 5.0f;
+            m_vel += dt * factor;
             m_distance -= m_vel * dt;
-            m_basePosY -= m_vel * dt *0.5f;
+            m_basePosY -= m_vel * dt * 0.5f;
         }
     }
     else
     {
-        m_vel -= dt * 5.0f;
-        m_distance += m_vel * dt;
-        m_basePosY += m_vel * dt*0.5f;
-        //if (m_distance <= TP_DISTANCE - 0.1f)
-        //{
-        //    g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
-        //}
+        if (m_distance <= TP_DISTANCE - 0.15f)
+        {
+            m_vel -= dt * factor;
+            m_distance += m_vel * dt;
+            m_basePosY += m_vel * dt * 0.5f;
+        }
+        else
+        {
+            g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
+            m_distance = TP_DISTANCE;
+            m_basePosY = TP_BASEPOSY;
+        }
     }
-    
-
-
-        
-
-
-
+    Debug->AddText("m_vel : ");
+    Debug->AddText(m_vel);
+    Debug->AddText("   m_distance : ");
+    Debug->AddText(m_distance);
+    Debug->AddText("   m_basePosY : ");
+    Debug->AddText(m_basePosY);
+    Debug->EndLine();
     ThirdPersonCamera::Update();
 }
 
