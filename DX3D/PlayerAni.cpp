@@ -65,6 +65,9 @@ void PlayerAni::Init()
 	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);
 	m_pBoxCollider->Update(m);
 	/* end collider init */
+
+    GetClientRect(g_hWnd, &m_RC);   //마우스 좌표 초기화를 위한 api화면 받아오기
+    ShowCursor(false);              //마우스 커서 보이기 안보이기
 }
 
 void PlayerAni::Update()
@@ -78,6 +81,29 @@ void PlayerAni::Update()
 
 	//뛰고 걷기
 	RunAndWalk();
+
+    const float dt = g_pTimeManager->GetDeltaTime();
+    POINT currPoint;
+    POINT m_ptPrevMouse;
+    m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
+    currPoint = g_pKeyManager->GetCurrentMousePos();
+    //////// 마우스 커서 초기화
+    if (currPoint.x < 0)
+    {
+        SetCursorPos(m_RC.right, currPoint.y);
+    }
+    if (currPoint.x >= m_RC.right)
+    {
+        SetCursorPos(0, currPoint.y);
+    }
+    ////////
+    POINT diff;
+    diff.x = currPoint.x - m_ptPrevMouse.x;
+    diff.y = currPoint.y - m_ptPrevMouse.y;
+    const float factorX = 0.3f;
+    const float factorY = 0.3f;
+    m_rot.x += diff.y * factorX * dt;
+    m_rot.y += diff.x * factorY * dt;
 
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
     {
@@ -129,6 +155,10 @@ void PlayerAni::UpdatePosition()
         D3DXMatrixRotationY(&matRotY, m_rot.y);
         D3DXVec3TransformNormal(&m_forward,
             &D3DXVECTOR3(0, 0, 1), &matRotY);
+
+        D3DXMatrixRotationY(&matRotY, m_rot.y);
+        D3DXVec3TransformNormal(&m_right,
+            &D3DXVECTOR3(1, 0, 0), &matRotY);
     }
     else
     {
@@ -146,7 +176,8 @@ void PlayerAni::UpdatePosition()
     if (m_isJumping == true)
     {
         m_currMoveSpeedRate = 0.7f;
-        targetPos = m_pos + m_forward * m_deltaPos.z * m_moveSpeed * m_currMoveSpeedRate;
+        targetPos = m_pos + m_forward * m_deltaPos.z * m_moveSpeed * m_currMoveSpeedRate
+            + m_right * m_deltaPos.x*m_moveSpeed *m_currMoveSpeedRate;
 
         targetPos.y += m_jumpPower - m_currGravity;
         m_currGravity += m_gravity;
@@ -181,7 +212,8 @@ void PlayerAni::UpdatePosition()
     else //m_isJumping == false
     {
         targetPos = m_pos + m_forward * m_deltaPos.z
-            * m_moveSpeed * m_currMoveSpeedRate;
+            * m_moveSpeed * m_currMoveSpeedRate
+            + m_right * m_deltaPos.x*m_moveSpeed *m_currMoveSpeedRate;
 
         if (g_pCurrentMap != NULL)
         {
@@ -206,6 +238,7 @@ void PlayerAni::UpdatePosition()
     }
 
     D3DXMATRIXA16 matT;
+    //m_pos.x += m_deltaPos.x * m_moveSpeed;
     D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
     m_matWorld = matRotY * matT;
 
@@ -394,18 +427,21 @@ void PlayerAni::KeyMove()
 	{
 		//if (m_pos.x - distance >= -5.f)
 		//	m_pos.x -= distance;
-		m_deltaRot = D3DXVECTOR3(0, -1, 0);
+		//m_deltaRot = D3DXVECTOR3(0, -1, 0);
+        m_deltaPos.x = -1;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('D')) //오른쪽
 	{
 		//if (m_pos.x + distance <= 5.f)
 		//	m_pos.x += distance;
-		m_deltaRot = D3DXVECTOR3(0,  1, 0);
-	}
+		//m_deltaRot = D3DXVECTOR3(0,  1, 0);
+        m_deltaPos.x = 1;
+    }
 	else
 	{
-		m_deltaRot = D3DXVECTOR3(0, 0, 0);
-	}
+		//m_deltaRot = D3DXVECTOR3(0, 0, 0);
+        m_deltaPos.x = 0;
+    }
 
 	if (g_pKeyManager->IsStayKeyDown('W')) //위쪽
 	{
@@ -427,7 +463,8 @@ void PlayerAni::KeyMove()
 	/* 총 장착시 총 위치 업데이트 */
 	if (m_pPistol)
 	{
-		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 1.f, m_pos.z + 2.f)); //플레이어보다 살짝 위, 살짝 앞
+		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x + m_forward.x*2.3f +m_right.x*1.3f , m_pos.y + 4.f, m_pos.z + m_forward.z * 2.3f + m_right.z*1.3f)); //플레이어보다 살짝 위, 살짝 앞
+        m_pPistol->SyncRot(m_rot.y);
 	}
 }
 
