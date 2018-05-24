@@ -9,7 +9,7 @@ ThirdPersonCamera::ThirdPersonCamera()
     m_distance = TP_DISTANCE;
     m_basePosX = TP_BASEPOSX;
     m_basePosY = TP_BASEPOSY;
-    m_fovY = D3DX_PI / 3.0f;    //60Degrees SS
+    m_fovY = D3DX_PI *(80.0f / 180.0f);    //80 Degrees TP sight
 }
 
 ThirdPersonCamera::~ThirdPersonCamera()
@@ -79,14 +79,18 @@ void CameraTPToFP::Init()
 {
     m_distance = TP_DISTANCE;
     m_vel = 0.0f;
+    //m_fovY = D3DX_PI * (80.0f / 180.0f);    //80 Degrees TP sight
     ThirdPersonCamera::Init();
 }
 
 void CameraTPToFP::Update()
 {
     const auto dt = g_pTimeManager->GetDeltaTime();
-    m_vel += dt*5.0f;
+    m_vel += dt * 5.0f;
     m_distance -= m_vel * dt;
+    //m_fovY-= m_vel * dt*0.3f;
+    //D3DXMatrixPerspectiveFovLH(&m_matProj, m_fovY, m_aspect, 1, 1000);
+    //g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
     if(m_distance <= TP_DISTANCE-1.0f)
         g_pCameraManager->SetCurrentCamera(CameraState::FIRSTPERSON);
     ThirdPersonCamera::Update();
@@ -106,6 +110,7 @@ void CameraFPToTP::Init()
 {
     m_distance = TP_DISTANCE-1.0f;
     m_vel = 4.0f;
+    //m_fovY = ?;    //Unknown sight
     ThirdPersonCamera::Init();
 }
 
@@ -114,9 +119,11 @@ void CameraFPToTP::Update()
     const auto dt = g_pTimeManager->GetDeltaTime();
     m_vel -= dt * 5.0f;
     m_distance += m_vel * dt;
+    //m_fovY += m_vel * dt*0.3f;
+    //D3DXMatrixPerspectiveFovLH(&m_matProj, m_fovY, m_aspect, 1, 1000);
+    //g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
     if (m_distance>= TP_DISTANCE-0.01f)
         g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
-    
     ThirdPersonCamera::Update();
 }
 
@@ -135,6 +142,8 @@ CameraKyunChak::~CameraKyunChak()
 
 void CameraKyunChak::Init()
 {
+    m_distance = TP_DISTANCE;
+    m_basePosY = TP_BASEPOSY;
     ThirdPersonCamera::Init();
 }
 
@@ -142,36 +151,54 @@ void CameraKyunChak::Update()
 {
     const auto dt = g_pTimeManager->GetDeltaTime();
     const float factor = 5.0f;
-    if (g_pKeyManager->IsStayKeyDown(VK_RBUTTON))
+    bool bR_buttonStay = g_pKeyManager->IsStayKeyDown(VK_RBUTTON);
+    bool bR_buttonUp = g_pKeyManager->IsOnceKeyUp(VK_RBUTTON);
+    
+    if (bR_buttonStay)//R_button이 눌릴때 까지만
     {
-        if (m_distance >= TP_DISTANCE - factor)
+        if (m_distance >= TP_DISTANCE - factor)//견착모드
         {
             m_vel += dt * factor;
             m_distance -= m_vel * dt;
             m_basePosY -= m_vel * dt * 0.5f;
         }
     }
-    else
+    else//R_button이 때어졌을때
     {
-        if (m_distance <= TP_DISTANCE - 0.15f)
+        //bR_buttonUp true, distance가 약간 작을때/ 즉 (우측 클릭을 잠깐 눌렸을때)(조준으로 넘어감)
+        if (bR_buttonUp&&m_distance >= TP_DISTANCE-1.0f)
         {
-            m_vel -= dt * factor;
-            m_distance += m_vel * dt;
-            m_basePosY += m_vel * dt * 0.5f;
+            //!!! 앞으로 이곳에서 캐릭터가 들고 있는 아이템에 따라(2배율,4배율 no 배율 등) 바꾸어 주는 코드를 만들어야 한다.
+            //g_pCameraManager->SetCurrentCamera(CameraState::FIRSTPERSON);
+            //g_pCameraManager->SetCurrentCamera(CameraState::SCOPE2X);
+            g_pCameraManager->SetCurrentCamera(CameraState::SCOPE4X);
         }
-        else
+        else//아닌경우 계속 줄여주다가 끝에 다달게 되면 TP로 바꿈
         {
-            g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
-            m_distance = TP_DISTANCE;
-            m_basePosY = TP_BASEPOSY;
+            if (m_distance <= TP_DISTANCE - 0.15f)
+            {
+                m_vel -= dt * factor;
+                m_distance += m_vel * dt;
+                m_basePosY += m_vel * dt * 0.5f;
+            }
+            else
+            {
+                g_pCameraManager->SetCurrentCamera(CameraState::THIRDPERSON);
+            }
         }
+
     }
-    Debug->AddText("m_vel : ");
-    Debug->AddText(m_vel);
+    //if (temp2)
+    //{
+    //    g_pCameraManager->SetCurrentCamera(CameraState::FIRSTPERSON);
+    //}
+
+    //Debug->AddText("m_vel : ");
+    //Debug->AddText(m_vel);
     Debug->AddText("   m_distance : ");
     Debug->AddText(m_distance);
-    Debug->AddText("   m_basePosY : ");
-    Debug->AddText(m_basePosY);
+    //Debug->AddText("   m_basePosY : ");
+    //Debug->AddText(m_basePosY);
     Debug->EndLine();
     ThirdPersonCamera::Update();
 }

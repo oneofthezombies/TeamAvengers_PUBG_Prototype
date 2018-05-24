@@ -29,10 +29,8 @@ void ICamera::Init()
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
 
-    D3DXMatrixPerspectiveFovLH(&m_matProj,m_fovY,m_aspect, 1, 1000);
+    D3DXMatrixPerspectiveFovLH(&m_matProj, m_fovY, m_aspect, 1, 1000);
     g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
-
-
 }
 
 void ICamera::Update()
@@ -68,7 +66,6 @@ void ICamera::Update()
     matWorld = matWorld * matR * matT;
     D3DXVec3TransformCoord(&m_eye, &m_eye, &matWorld);
     D3DXVec3TransformCoord(&m_lookAt, &m_lookAt, &matWorld);
-
 
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
