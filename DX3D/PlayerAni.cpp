@@ -102,14 +102,18 @@ void PlayerAni::Update()
         SetCursorPos(0, currPoint.y);
     }
     ////////
-    POINT diff;
-    diff.x = currPoint.x - m_ptPrevMouse.x;
-    diff.y = currPoint.y - m_ptPrevMouse.y;
-    const float factorX = 0.3f;
-    const float factorY = 0.3f;
-    m_rot.x += diff.y * factorX * dt;
-    m_rot.y += diff.x * factorY * dt;
-
+    //이렇게 하는것이 맞는지 아니면 thirdperson의 bool값을 받아와서 하는 것이 좋을지
+    if(!g_pKeyManager->IsStayKeyDown(VK_MENU))
+    {
+        POINT diff;
+        diff.x = currPoint.x - m_ptPrevMouse.x;
+        diff.y = currPoint.y - m_ptPrevMouse.y;
+        const float factorX = 0.3f;
+        const float factorY = 0.3f;
+        m_rot.x += diff.y * factorX * dt;
+        m_rot.y += diff.x * factorY * dt;
+    }
+    
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
     {
         m_isJumping = true;

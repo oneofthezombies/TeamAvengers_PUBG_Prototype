@@ -1,9 +1,9 @@
 #pragma once
 #include "BaseObject.h"
 
-#define FP_DISTANCE -1.0f
+#define FP_DISTANCE 0.0f
 #define FP_BASEPOSX 0.0f
-#define FP_BASEPOSY 3.0f
+#define FP_BASEPOSY 5.0f
 
 #define TP_DISTANCE 10.0f
 #define TP_BASEPOSX 2.0f
@@ -17,7 +17,9 @@ namespace CameraState
         THIRDPERSON = 3,
         TP2FP,
         FP2TP,
-        KYUNCHAK
+        KYUNCHAK,
+        SCOPE2X,
+        SCOPE4X
     };
 }
 
