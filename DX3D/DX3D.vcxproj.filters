@@ -67,12 +67,6 @@
     <ClCompile Include="Hexagon.cpp">
       <Filter>2. Object</Filter>
     </ClCompile>
-    <ClCompile Include="ICollidable.cpp">
-      <Filter>Common Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="IDisplayObject.cpp">
-      <Filter>Common Interface</Filter>
-    </ClCompile>
     <ClCompile Include="IScene.cpp">
       <Filter>Common Interface</Filter>
     </ClCompile>
@@ -108,9 +102,6 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Utilitiy</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleCollidable.cpp">
-      <Filter>Sample</Filter>
     </ClCompile>
     <ClCompile Include="SampleUI.cpp">
       <Filter>Sample</Filter>
@@ -208,20 +199,30 @@
     <ClCompile Include="UIInteractionMessage.cpp">
       <Filter>2. Object\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="SampleCollider.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
-    <ClCompile Include="ICollisionListner.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="ICamera.cpp" />
-    <ClCompile Include="IMap.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
-    <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="PlayerAni.cpp" />
     <ClCompile Include="PlayerParts.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IMap.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentBase.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IDisplayObject.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IDisplayObject.cpp">
+      <Filter>Common Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -290,12 +291,6 @@
     <ClInclude Include="Hexagon.h">
       <Filter>2. Object</Filter>
     </ClInclude>
-    <ClInclude Include="ICollidable.h">
-      <Filter>Common Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="IDisplayObject.h">
-      <Filter>Common Interface</Filter>
-    </ClInclude>
     <ClInclude Include="IMap.h">
       <Filter>Common Interface</Filter>
     </ClInclude>
@@ -338,9 +333,6 @@
     <ClInclude Include="Ray.h">
       <Filter>Utilitiy</Filter>
     </ClInclude>
-    <ClInclude Include="SampleCollidable.h">
-      <Filter>Sample</Filter>
-    </ClInclude>
     <ClInclude Include="SampleUI.h">
       <Filter>Sample</Filter>
     </ClInclude>
@@ -363,9 +355,6 @@
       <Filter>2. Object</Filter>
     </ClInclude>
     <ClInclude Include="DX3D.h">
-      <Filter>Main&amp;PCH</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>Main&amp;PCH</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -449,17 +438,24 @@
     <ClInclude Include="UIInteractionMessage.h">
       <Filter>2. Object\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="SampleCollider.h">
-      <Filter>Sample</Filter>
-    </ClInclude>
-    <ClInclude Include="ICollisionListner.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="PlayerAni.h" />
     <ClInclude Include="PlayerParts.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
+    <ClInclude Include="Collider.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentBase.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IDisplayObject.h">
+      <Filter>Common Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleCollider.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

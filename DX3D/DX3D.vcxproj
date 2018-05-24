@@ -165,7 +165,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Collider.h" />
-    <ClInclude Include="ICollisionListner.h" />
+    <ClInclude Include="ComponentBase.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
@@ -181,6 +181,7 @@
     <ClInclude Include="GlobalDefinition.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Pistol.h" />
     <ClInclude Include="Heap.h" />
@@ -189,15 +190,12 @@
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IActionObject.h" />
     <ClInclude Include="ICamera.h" />
-    <ClInclude Include="ICollidable.h" />
-    <ClInclude Include="IDisplayObject.h" />
     <ClInclude Include="IMap.h" />
     <ClInclude Include="SampleCollider.h" />
     <ClInclude Include="SampleUIButtonListner.h" />
     <ClInclude Include="UIInteractionMessage.h" />
     <ClInclude Include="UIInventory.h" />
     <ClInclude Include="IScene.h" />
-    <ClInclude Include="SampleCollidable.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="IUnitObject.h" />
     <ClInclude Include="KeyboardManager.h" />
@@ -222,7 +220,6 @@
     <ClInclude Include="SceneTest.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
@@ -250,7 +247,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="ICollisionListner.cpp" />
+    <ClCompile Include="ComponentBase.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
@@ -263,6 +260,7 @@
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="SampleCollider.cpp" />
     <ClCompile Include="SampleUIButtonListner.cpp" />
     <ClCompile Include="UIGameOver.cpp" />
@@ -278,11 +276,7 @@
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="IActionObject.cpp" />
     <ClCompile Include="ICamera.cpp" />
-    <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="IMap.cpp" />
-    <ClCompile Include="ICollidable.cpp" />
-    <ClCompile Include="IDisplayObject.cpp" />
-    <ClCompile Include="SampleCollidable.cpp" />
     <ClCompile Include="UIInteractionMessage.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />

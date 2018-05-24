@@ -5,7 +5,6 @@
 #include "PlayerAni.h"
 #include "Pistol.h"
 #include "Bullet.h"
-#include "SampleCollidable.h"
 #include "SkyBox.h"
 #include "UIButton.h"
 #include "UIGameOver.h"
@@ -56,14 +55,9 @@ void SceneShotting::Init()
 	m_pGround->Init();
 	AddSimpleDisplayObj(m_pGround);
 
-	//임시플레이어
-	//m_pPlayerAniTemp = new PlayerTemp();
-	//m_pPlayerAniTemp->Init();
-	//AddSimpleDisplayObj(m_pPlayerAniTemp);
 	m_pPlayerAni = new PlayerAni;
 	m_pPlayerAni->Init();
 	AddSimpleDisplayObj(m_pPlayerAni);
-
 
 	//권총
 	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
@@ -90,10 +84,6 @@ void SceneShotting::Init()
 		m_pPlayerAni->PutItemInInventory(bullet);
 	}
 	m_vecPBullet.clear();
-
-    CollidableItemBox* cib = new CollidableItemBox;
-    cib->Init();
-    AddSimpleDisplayObj(cib);
 
     UIButton* sampleUIB = new UIButton;
     sampleUIB->Init();
@@ -133,7 +123,6 @@ void SceneShotting::Update()
 void SceneShotting::Render()
 {
 	OnRenderIScene();
-
 
 	//x, y, z 기준선 그리기 
 	D3DXMATRIXA16 matI;

@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "Collider.h"
 
-ColliderBase::ColliderBase(Type type)
-    : m_vCenter(0.0f, 0.0f, 0.0f)
+ColliderBase::ColliderBase(BaseObject& owner, const Type type)
+    : ComponentBase(owner)
+    , m_vCenter(0.0f, 0.0f, 0.0f)
     , m_type(type)
     , m_color(D3DCOLOR_XRGB(0, 255, 0))
-    , m_pOwner(nullptr)
     , m_pListner(nullptr)
 {
     g_pCollisionManager->AddColliderBase(*this);
@@ -14,11 +14,6 @@ ColliderBase::ColliderBase(Type type)
 ColliderBase::~ColliderBase()
 {
     g_pCollisionManager->RemoveColliderBase(*this);
-}
-
-void ColliderBase::SetOwner(BaseObject& owner)
-{
-    m_pOwner = &owner;
 }
 
 void ColliderBase::Render()
@@ -40,11 +35,6 @@ D3DXVECTOR3 ColliderBase::GetCenter() const
     return m_vCenter;
 }
 
-BaseObject* ColliderBase::GetOwner() const
-{
-    return m_pOwner;
-}
-
 void ColliderBase::SetListner(ICollisionListner& listner)
 {
     m_pListner = &listner;
@@ -55,15 +45,9 @@ ICollisionListner* ColliderBase::GetListner() const
     return m_pListner;
 }
 
-SphereCollider::SphereCollider()
-    : ColliderBase(ColliderBase::Type::kSphere)
-{
-}
-
 SphereCollider::SphereCollider(BaseObject& owner)
-    : ColliderBase(ColliderBase::Type::kSphere)
+    : ColliderBase(owner, ColliderBase::Type::kSphere)
 {
-    SetOwner(owner);
 }
 
 void SphereCollider::Init(const float radius)
@@ -78,8 +62,8 @@ void SphereCollider::Render()
 {
 }
 
-BoxCollider::BoxCollider()
-    : ColliderBase(ColliderBase::Type::kBox)
+BoxCollider::BoxCollider(BaseObject& owner)
+    : ColliderBase(owner, ColliderBase::Type::kBox)
     , m_vExtent(0.0f, 0.0f, 0.0f)
     , m_mTransform(0.0f, 0.0f, 0.0f, 0.0f,
                    0.0f, 0.0f, 0.0f, 0.0f,
@@ -88,10 +72,8 @@ BoxCollider::BoxCollider()
 {
 }
 
-BoxCollider::BoxCollider(BaseObject& owner)
-    : ColliderBase(ColliderBase::Type::kBox)
+BoxCollider::~BoxCollider()
 {
-    SetOwner(owner);
 }
 
 void BoxCollider::Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max)
@@ -132,6 +114,13 @@ void BoxCollider::Render()
     dv->DrawIndexedPrimitiveUP(D3DPT_LINELIST, 0, vertices.size(), indices.size() / 2, indices.data(), D3DFMT_INDEX16, vertices.data(), sizeof VERTEX_PC);
 }
 
+void BoxCollider::Move(const D3DXVECTOR3& val)
+{
+    D3DXMATRIXA16 m;
+    D3DXMatrixTranslation(&m, val.x, val.y, val.z);
+    Update(m);
+}
+
 D3DXVECTOR3 BoxCollider::GetExtent() const
 {
     return m_vExtent;
@@ -140,4 +129,13 @@ D3DXVECTOR3 BoxCollider::GetExtent() const
 const D3DXMATRIXA16& BoxCollider::GetTransform() const
 {
     return m_mTransform;
+}
+
+ICollisionListner::ICollisionListner(BaseObject& owner)
+    : ComponentBase(owner)
+{
+}
+
+ICollisionListner::~ICollisionListner()
+{
 }

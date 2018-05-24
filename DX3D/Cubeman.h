@@ -1,9 +1,11 @@
 #pragma once
-#include "ICollidable.h"
+#include "IDisplayObject.h"
+#include "Collider.h"
 
 class CubemanParts;
+class CubemanCollisionListner;
 
-class Cubeman : public ICollidable
+class Cubeman : public IDisplayObject
 {
 private:
 	CubemanParts *	m_pRootParts;
@@ -24,6 +26,9 @@ private:
 	float			m_currGravity;
 
 	float			m_maxStepHeight;
+
+    BoxCollider* m_pBoxCollider;
+    CubemanCollisionListner* m_pCollisionListner;
 
 public:
 	Cubeman();
@@ -92,8 +97,15 @@ public:
 	{ 8, 20, 8, 16, 4, 16, 4, 20 },		// ╩С
 	{ 12, 16, 12, 20, 8, 20, 8, 16 }	// го
 	};
-
-    // Inherited via ICollidable
-    virtual void OnCollision(ICollidable & other) override;
 };
 
+class CubemanCollisionListner : public ICollisionListner
+{
+public:
+    CubemanCollisionListner(BaseObject& owner);
+    virtual ~CubemanCollisionListner() = default;
+
+    virtual void OnCollisionEnter(const ColliderBase& other) override;
+    virtual void OnCollisionExit(const ColliderBase& other) override;
+    virtual void OnCollisionStay(const ColliderBase& other) override;
+};

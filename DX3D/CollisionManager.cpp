@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "CollisionManager.h"
-#include "ICollidable.h"
 #include "Collider.h"
-#include "ICollisionListner.h"
 
 CollisionManager::CollisionManager()
     : m_bIsRender(true)
@@ -237,7 +235,6 @@ void CollisionManager::Destroy()
 
 void CollisionManager::Update()
 {
-    NotifyCollisionAboutICollidables();
     NotifyCollisionAboutColliderBases();
 }
 
@@ -246,29 +243,11 @@ void CollisionManager::Render()
     if (!m_bIsRender) return;
 
     g_pDevice->SetRenderState(D3DRS_LIGHTING, false);
-    
-    for (auto& c : m_usetICollidable)
-    {
-        ColliderBase* collider = c->GetCollider();
-        if (!collider) continue;
 
-        collider->Render();
-    }
-
-    for (auto& c : m_usetColliderBases)
+    for (auto c : m_usetColliderBases)
         SAFE_RENDER(c);
 
     g_pDevice->SetRenderState(D3DRS_LIGHTING, true);
-}
-
-void CollisionManager::AddICollidable(ICollidable& val)
-{
-    m_usetICollidable.emplace(&val);
-}
-
-void CollisionManager::RemoveICollidable(ICollidable& val)
-{
-    m_usetICollidable.erase(&val);
 }
 
 void CollisionManager::AddColliderBase(ColliderBase& val)
@@ -464,82 +443,6 @@ void CollisionManager::NotifyCollisionAboutColliderBases()
                         if (ICollisionListner* l2 = s2->GetListner())
                             l2->OnCollisionExit(*s1);
                     }
-                }
-            }
-            else
-            {
-                // something error
-            }
-        }
-    }
-}
-
-void CollisionManager::NotifyCollisionAboutICollidables()
-{
-    if (m_usetICollidable.size() < 2) return;
-
-    for (auto it1 = m_usetICollidable.begin(); it1 != prev(m_usetICollidable.end()); ++it1)
-    {
-        ICollidable* o1 = *it1;
-        if (!o1) continue;
-
-        ColliderBase* c1 = o1->GetCollider();
-        if (!c1) continue;
-
-        for (auto it2 = next(it1); it2 != m_usetICollidable.end(); ++it2)
-        {
-            ICollidable* o2 = *it2;
-            if (!o2) continue;
-
-            ColliderBase* c2 = o2->GetCollider();
-            if (!c2) continue;
-
-            if (c1->GetType() == ColliderBase::Type::kBox &&
-                c2->GetType() == ColliderBase::Type::kBox)
-            {
-                const BoxCollider* a = static_cast<BoxCollider*>(c1);
-                const BoxCollider* b = static_cast<BoxCollider*>(c2);
-
-                if (HasCollision(*a, *b))
-                {
-                    o1->OnCollision(*o2);
-                    o2->OnCollision(*o1);
-                }
-            }
-            else if (c1->GetType() == ColliderBase::Type::kBox &&
-                     c2->GetType() == ColliderBase::Type::kSphere)
-            {
-                const BoxCollider* a = static_cast<BoxCollider*>(c1);
-                const SphereCollider* b = static_cast<SphereCollider*>(c2);
-
-                if (HasCollision(*a, *b))
-                {
-                    o1->OnCollision(*o2);
-                    o2->OnCollision(*o1);
-                }
-            }
-            else if (c1->GetType() == ColliderBase::Type::kSphere &&
-                     c2->GetType() == ColliderBase::Type::kBox)
-            {
-                const SphereCollider* a = static_cast<SphereCollider*>(c1);
-                const BoxCollider* b = static_cast<BoxCollider*>(c2);
-
-                if (HasCollision(*a, *b))
-                {
-                    o1->OnCollision(*o2);
-                    o2->OnCollision(*o1);
-                }
-            }
-            else if (c1->GetType() == ColliderBase::Type::kSphere &&
-                     c2->GetType() == ColliderBase::Type::kSphere)
-            {
-                const SphereCollider* a = static_cast<SphereCollider*>(c1);
-                const SphereCollider* b = static_cast<SphereCollider*>(c2);
-
-                if (HasCollision(*a, *b))
-                {
-                    o1->OnCollision(*o2);
-                    o2->OnCollision(*o1);
                 }
             }
             else

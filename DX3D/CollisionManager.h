@@ -4,7 +4,6 @@
 
 #define g_pCollisionManager CollisionManager::GetInstance()
 
-class ICollidable;
 class ColliderBase;
 class BoxCollider;
 class SphereCollider;
@@ -21,8 +20,6 @@ private:
             return hash<ColliderBase*>{}(p.first) ^ hash<ColliderBase*>{}(p.second);
         }
     };
-
-    unordered_set<ICollidable*>                                         m_usetICollidable;
 
     unordered_set<ColliderBase*>                                        m_usetColliderBases;
     unordered_set<pair<ColliderBase*, ColliderBase*>, HashColliderBase> m_usetPrevCollisions;
@@ -47,10 +44,6 @@ public:
     void Destroy();
     void Update();
     void Render();
-
-    void AddICollidable(ICollidable& val);
-    void RemoveICollidable(ICollidable& val);
-    void NotifyCollisionAboutICollidables();
 
     void AddColliderBase(ColliderBase& val);
     void RemoveColliderBase(ColliderBase& val);
