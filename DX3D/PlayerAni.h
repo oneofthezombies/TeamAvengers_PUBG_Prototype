@@ -8,23 +8,24 @@ class PlayerParts;
 class Pistol;
 class Bullet;
 class BoxCollider;
+class ItemPicker;
+class UIInventory;
 
-class PlayerAniCollisionListner : public ICollisionListner
+class PlayerAniCollisionListener : public ICollisionListener
 {
 public:
-	PlayerAniCollisionListner(BaseObject& owner);
-	virtual ~PlayerAniCollisionListner() = default;
+	PlayerAniCollisionListener(BaseObject& owner);
+	virtual ~PlayerAniCollisionListener() = default;
 
 	virtual void OnCollisionEnter(const ColliderBase & other) override;
 	virtual void OnCollisionExit(const ColliderBase & other) override;
 	virtual void OnCollisionStay(const ColliderBase & other) override;
 };
 
-
 class PlayerAni : public IDisplayObject
 {
 private:
-    PlayerParts *   m_pRootParts;
+    PlayerParts*    m_pRootParts;
     bool			m_isTurnedOnLight;
 
     D3DXVECTOR3		m_deltaPos;
@@ -34,7 +35,6 @@ private:
     D3DXVECTOR3		m_test1;
     D3DXVECTOR3     m_dir;
     D3DXVECTOR3		m_right;
-
 
     bool			m_isMoving;
     float			m_moveSpeed;
@@ -51,15 +51,18 @@ private:
     ////승훈 추가
     bool            m_isRunnig;
     bool            m_isLive;
-    RECT            m_RC;
 
 	/* 우리 추가 */
 	//TODO: multimap으로 변경할 것
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
 	Pistol*         m_pPistol;     //장착중인 총
 
-    BoxCollider* m_pBoxCollider;
-    PlayerAniCollisionListner* m_pCollisionListner;
+    BoxCollider*                m_pBoxCollider;
+    PlayerAniCollisionListener* m_pCollisionListener;
+
+    ItemPicker*  m_pItemPicker;
+    UIInventory* m_pUIInventory;
+    Item*        m_pPicked;
 
 public:
     PlayerAni();
@@ -91,12 +94,18 @@ public:
 	void PutItemInInventory(Item* item);
 	void ShowInventoryForDebug();
 
+    void ShowInventory(const D3DXMATRIXA16& transform);
+    bool IsShowingInventory();
+    void Pick(Item& item);
+
 	/* 키 입력 관련 함수로 분리*/
 	void KeyMove();    //이동
 	void KeyMount();   //장착
 	void KeyUnmount(); //장착해제
 	void KeyLoad();    //총 장전
 	void KeyFire();    //총 쏘기
+    void UpdateRotation();
+
 
 public:
     vector<vector<int>> uvBody = {

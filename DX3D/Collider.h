@@ -3,7 +3,7 @@
 #include "CollisionManager.h"
 
 class BaseObject;
-class ICollisionListner;
+class ICollisionListener;
 
 class ColliderBase : public ComponentBase
 {
@@ -17,7 +17,7 @@ public:
     };
 
 private:
-    ICollisionListner* m_pListner;
+    ICollisionListener* m_pListener;
     Type               m_type;
     CollisionTag       m_tag;
 
@@ -35,8 +35,8 @@ public:
     void SetColor(const D3DCOLOR color);
     D3DXVECTOR3 GetCenter() const;
     
-    void               SetListner(ICollisionListner& listner);
-    ICollisionListner* GetListner() const;
+    void               SetListener(ICollisionListener& Listener);
+    ICollisionListener* GetListener() const;
 
     void         SetTag(const CollisionTag tag);
     CollisionTag GetTag() const;
@@ -76,18 +76,19 @@ public:
     virtual void Render() override;
 
     void Move(const D3DXVECTOR3& val);
+    void MoveTo(const D3DXVECTOR3& val);
 
     D3DXVECTOR3 GetExtent() const;
     const D3DXMATRIXA16& GetTransform() const;
 };
 
-class ICollisionListner : public ComponentBase
+class ICollisionListener : public ComponentBase
 {
 protected:
-    ICollisionListner(BaseObject& owner);
+    ICollisionListener(BaseObject& owner);
 
 public:
-    virtual ~ICollisionListner();
+    virtual ~ICollisionListener();
 
     virtual void OnCollisionEnter(const ColliderBase& other) = 0;
     virtual void OnCollisionExit(const ColliderBase& other) = 0;

@@ -193,9 +193,6 @@
     <ClCompile Include="DrawingGroup.cpp">
       <Filter>Utilitiy</Filter>
     </ClCompile>
-    <ClCompile Include="SampleUIButtonListner.cpp">
-      <Filter>Sample</Filter>
-    </ClCompile>
     <ClCompile Include="UIInteractionMessage.cpp">
       <Filter>2. Object\UI</Filter>
     </ClCompile>
@@ -205,7 +202,6 @@
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="ICamera.cpp" />
-    <ClCompile Include="PlayerAni.cpp" />
     <ClCompile Include="PlayerParts.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
     <ClCompile Include="Collider.cpp">
@@ -223,6 +219,16 @@
     <ClCompile Include="IDisplayObject.cpp">
       <Filter>Common Interface</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAni.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleUIButtonListener.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemPicker.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="UIInventory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -432,16 +438,12 @@
     <ClInclude Include="DrawingGroup.h">
       <Filter>Utilitiy</Filter>
     </ClInclude>
-    <ClInclude Include="SampleUIButtonListner.h">
-      <Filter>Sample</Filter>
-    </ClInclude>
     <ClInclude Include="UIInteractionMessage.h">
       <Filter>2. Object\UI</Filter>
     </ClInclude>
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="ICamera.h" />
-    <ClInclude Include="PlayerAni.h" />
     <ClInclude Include="PlayerParts.h" />
     <ClInclude Include="ThirdPersonCamera.h" />
     <ClInclude Include="Collider.h">
@@ -455,6 +457,18 @@
     </ClInclude>
     <ClInclude Include="SampleCollider.h">
       <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAni.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleUIButtonListener.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemPicker.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Main&amp;PCH</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

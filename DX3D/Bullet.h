@@ -3,7 +3,7 @@
 #include "Collider.h"
 
 class BulletCollider;
-class BulletCollisionListner;
+class BulletCollisionListener;
 
 class Bullet : public Item
 {
@@ -20,7 +20,6 @@ private:
 	D3DXMATRIXA16 m_matT;
 
     BoxCollider* m_pBoxCollider;
-    BulletCollisionListner* m_pCollisionListner;
 
 public:
 	Bullet(float scale, float velocity);
@@ -36,15 +35,4 @@ public:
 	bool  GetIsDie() const { return m_isDie; }
 
 	bool IsInBorderArea(); //경계구역 안에 있는지 체크
-};
-
-class BulletCollisionListner : public ICollisionListner
-{
-public:
-    BulletCollisionListner(BaseObject& owner);
-    virtual ~BulletCollisionListner() = default;
-
-    virtual void OnCollisionEnter(const ColliderBase& other) override;
-    virtual void OnCollisionExit(const ColliderBase& other) override;
-    virtual void OnCollisionStay(const ColliderBase& other) override;
 };

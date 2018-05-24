@@ -42,8 +42,15 @@ void ThirdPersonCamera::Update()
     }
     else//alt를 누르지 않게 되면 캐릭터가 바라보고 있는 rotation 으로 초기화
     {
-        m_rotX = m_pTargetRot->x;
-        m_rotY = m_pTargetRot->y;
+        if (m_pTargetRot)
+        {
+            m_rotX = m_pTargetRot->x;
+            m_rotY = m_pTargetRot->y;
+        }
+        else
+        {
+            m_rotX = m_rotY = 0.0f;
+        }
     }
 
     //견착하는 부분은 3인칭에서만 있기에

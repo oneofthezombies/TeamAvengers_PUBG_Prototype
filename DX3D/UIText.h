@@ -5,7 +5,8 @@ class UIText : public UIObject
 {
 private:
     LPD3DXFONT m_pFont;
-    LPCTSTR	   m_text;
+    string	   m_textString;
+    LPCTSTR    m_text;
     DWORD	   m_drawTextFormat;
 
 public:
@@ -16,6 +17,7 @@ public:
 
     void SetFont(const LPD3DXFONT val);
     void SetText(const LPCTSTR val);
+    void SetText(const string& val);
     void SetDrawTextFormat(const DWORD val);
 };
 

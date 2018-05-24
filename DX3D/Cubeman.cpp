@@ -9,7 +9,7 @@
 Cubeman::Cubeman()
     : IDisplayObject()
     , m_pBoxCollider(nullptr)
-    , m_pCollisionListner(nullptr)
+    , m_pCollisionListener(nullptr)
 {
 	m_pRootParts = NULL;
 
@@ -39,9 +39,9 @@ void Cubeman::Init()
 
 	CreateAllParts();
 
-    m_pCollisionListner = SetComponent<CubemanCollisionListner>();
+    m_pCollisionListener = SetComponent<CubemanCollisionListener>();
     m_pBoxCollider = SetComponent<BoxCollider>();
-    m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
     m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
     m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 20.0f));
     m_pBoxCollider->SetTag(CollisionTag::kEnemy);
@@ -220,27 +220,35 @@ void Cubeman::CreateParts(CubemanParts *& pParts,
 	pParent->AddChild(*pParts);
 }
 
-CubemanCollisionListner::CubemanCollisionListner(BaseObject& owner)
-    : ICollisionListner(owner)
+CubemanCollisionListener::CubemanCollisionListener(BaseObject& owner)
+    : ICollisionListener(owner)
 {
 }
 
-void CubemanCollisionListner::OnCollisionEnter(const ColliderBase& other)
+void CubemanCollisionListener::OnCollisionEnter(const ColliderBase& other)
 {
-    auto a = static_cast<IDisplayObject*>(GetOwner());
-    g_pCurrentScene->Destroy(a, 1.0f);
-    auto b = static_cast<IDisplayObject*>(other.GetOwner());
-    g_pCurrentScene->Destroy(b, 1.0f);
+    switch (other.GetTag())
+    {
+    case CollisionTag::kBullet:
+        {
+            auto a = static_cast<IDisplayObject*>(GetOwner());
+            g_pCurrentScene->Destroy(a);
 
-    UIGameOver* uigo = new UIGameOver;
-    uigo->Init();
-    g_pUIManager->RegisterUIObject(*uigo);
+            auto b = static_cast<IDisplayObject*>(other.GetOwner());
+            g_pCurrentScene->Destroy(b);
+
+            UIGameOver* uigo = new UIGameOver;
+            uigo->Init();
+            g_pUIManager->RegisterUIObject(*uigo);
+        }
+        break;
+    }
 }
 
-void CubemanCollisionListner::OnCollisionExit(const ColliderBase& other)
+void CubemanCollisionListener::OnCollisionExit(const ColliderBase& other)
 {
 }
 
-void CubemanCollisionListner::OnCollisionStay(const ColliderBase& other)
+void CubemanCollisionListener::OnCollisionStay(const ColliderBase& other)
 {
 }

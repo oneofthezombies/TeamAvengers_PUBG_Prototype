@@ -191,8 +191,10 @@
     <ClInclude Include="IActionObject.h" />
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="IMap.h" />
+    <ClInclude Include="ItemPicker.h" />
     <ClInclude Include="SampleCollider.h" />
-    <ClInclude Include="SampleUIButtonListner.h" />
+    <ClInclude Include="SampleUIButtonListener.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="UIInteractionMessage.h" />
     <ClInclude Include="UIInventory.h" />
     <ClInclude Include="IScene.h" />
@@ -261,8 +263,9 @@
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
+    <ClCompile Include="ItemPicker.cpp" />
     <ClCompile Include="SampleCollider.cpp" />
-    <ClCompile Include="SampleUIButtonListner.cpp" />
+    <ClCompile Include="SampleUIButtonListener.cpp" />
     <ClCompile Include="UIGameOver.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -278,6 +281,7 @@
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IMap.cpp" />
     <ClCompile Include="UIInteractionMessage.cpp" />
+    <ClCompile Include="UIInventory.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="IUnitObject.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />

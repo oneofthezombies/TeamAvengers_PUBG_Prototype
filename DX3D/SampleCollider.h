@@ -5,25 +5,25 @@
 
 class BoxCollider;
 
-class  SampleCollisionListner1 : public ICollisionListner
+class  SampleCollisionListener1 : public ICollisionListener
 {
 public:
-    SampleCollisionListner1(BaseObject& owner);
-    virtual ~SampleCollisionListner1();
+    SampleCollisionListener1(BaseObject& owner);
+    virtual ~SampleCollisionListener1();
 
-    // Inherited via CollisionListner
+    // Inherited via CollisionListener
     virtual void OnCollisionEnter(const ColliderBase& other) override;
     virtual void OnCollisionExit(const ColliderBase& other) override;
     virtual void OnCollisionStay(const ColliderBase& other) override;
 };
 
-class SampleCollisionListner2 : public ICollisionListner
+class SampleCollisionListener2 : public ICollisionListener
 {
 public:
-    SampleCollisionListner2(BaseObject& owner);
-    virtual ~SampleCollisionListner2();
+    SampleCollisionListener2(BaseObject& owner);
+    virtual ~SampleCollisionListener2();
 
-    // Inherited via CollisionListner
+    // Inherited via CollisionListener
     virtual void OnCollisionEnter(const ColliderBase& other) override;
     virtual void OnCollisionExit(const ColliderBase& other) override;
     virtual void OnCollisionStay(const ColliderBase& other) override;
@@ -33,7 +33,7 @@ class SampleColliderOwner1 : public IDisplayObject
 {
 public:
     BoxCollider*             m_pBoxCollider;
-    SampleCollisionListner1* m_pCollisionListner;
+    SampleCollisionListener1* m_pCollisionListener;
 
 public:
     SampleColliderOwner1();
@@ -49,7 +49,7 @@ class SampleColliderOwner2 : public IDisplayObject
 {
 public:
     BoxCollider*             m_pBoxCollider;
-    SampleCollisionListner2* m_pCollisionListner;
+    SampleCollisionListener2* m_pCollisionListener;
 
 public:
     SampleColliderOwner2();

@@ -6,20 +6,21 @@
 
 UIGameOver::UIGameOver()
     : UIImage()
-    , m_pGoToLobbyButtonListner(nullptr)
+    , m_pGoToLobbyButtonListener(nullptr)
 {
 }
 
 UIGameOver::~UIGameOver()
 {
-    SAFE_DELETE(m_pGoToLobbyButtonListner);
+    SAFE_DELETE(m_pGoToLobbyButtonListener);
 }
 
 void UIGameOver::Init()
 {
+    g_pUIManager->RegisterUIObject(*this);
+
     SetTexture("resources/images/black_1280_720_70.png");
     SetSize(D3DXVECTOR2(1280.0f, 720.f));
-    g_pUIManager->RegisterUIObject(*this);
 
     UIText* nickname = new UIText;
     nickname->SetFont(g_pFontManager->GetFont(Font::kGameOverNickname));
@@ -61,9 +62,9 @@ void UIGameOver::Init()
     goToLobby->SetSize(D3DXVECTOR2(200.0f, 80.0f));
     goToLobby->SetPosition(D3DXVECTOR3(1280.0f - 300.0f, 720.0f - 150.0f, 0.0f));
     AddChild(*goToLobby);
-    m_pGoToLobbyButtonListner = new GoToLobbyButtonListner;
-    m_pGoToLobbyButtonListner->SetUIButton(*goToLobby);
-    m_pGoToLobbyButtonListner->SetHandle(*this);
+    m_pGoToLobbyButtonListener = new GoToLobbyButtonListener;
+    m_pGoToLobbyButtonListener->SetUIButton(*goToLobby);
+    m_pGoToLobbyButtonListener->SetHandle(*this);
 
     UIText* goToLobbyText = new UIText;
     goToLobbyText->SetFont(g_pFontManager->GetFont(Font::kGameOverGoToLobby));
@@ -74,28 +75,28 @@ void UIGameOver::Init()
     goToLobby->AddChild(*goToLobbyText);
 }
 
-void GoToLobbyButtonListner::OnMouseEnter()
+void GoToLobbyButtonListener::OnMouseEnter()
 {
 }
 
-void GoToLobbyButtonListner::OnMouseExit()
+void GoToLobbyButtonListener::OnMouseExit()
 {
 }
 
-void GoToLobbyButtonListner::OnMouseDown(const int key)
+void GoToLobbyButtonListener::OnMouseDown(const int key)
 {
     g_pUIManager->Destroy(*m_pHandle);
 }
 
-void GoToLobbyButtonListner::OnMouseUp(const int key)
+void GoToLobbyButtonListener::OnMouseUp(const int key)
 {
 }
 
-void GoToLobbyButtonListner::OnMouseDrag(const int key)
+void GoToLobbyButtonListener::OnMouseDrag(const int key)
 {
 }
 
-void GoToLobbyButtonListner::SetHandle(UIObject& val)
+void GoToLobbyButtonListener::SetHandle(UIObject& val)
 {
     m_pHandle = &val;
 }
