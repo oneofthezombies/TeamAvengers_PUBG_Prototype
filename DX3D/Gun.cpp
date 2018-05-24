@@ -68,6 +68,22 @@ void Gun::ShowBulletNumForDebug()
 	Debug->EndLine();
 }
 
+string Gun::GunTagToStrForDebug(GUN_TAG gunTag)
+{
+	switch (gunTag)
+	{
+	case GUN_TAG::Pistol:
+		return "Pistol";
+		break;
+	case GUN_TAG::Rifle:
+		return "Rifle";
+		break;
+	default:
+		return "?";
+		break;
+	}
+}
+
 void Gun::Fire()
 {
 	if (m_bulletFireCoolDown <= 0.f)

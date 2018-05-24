@@ -86,16 +86,18 @@ public:
 
 	/* 우리 추가 */
 	size_t GetInventorySize() { return m_mapInventory.size(); }
+	size_t GetGunsNum() { return m_mapGuns.size(); }
 	void PutItemInInventory(Item* item);
 	void PutGuns(Gun* gun);
 	void ShowInventoryForDebug();
 
 	/* 키 입력 관련 함수로 분리*/
 	void KeyMove();    //이동
-	void KeyMount();   //장착
+	void KeyMount(GUN_TAG gunTag);   //장착
 	void KeyUnmount(); //장착해제
 	void KeyLoad();    //총 장전
 	void KeyFire();    //총 쏘기
+	void KeyChangeGun(GUN_TAG gunTag); //무기바꾸기
 
 public:
     vector<vector<int>> uvBody = {

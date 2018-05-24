@@ -1,7 +1,6 @@
 #pragma once
 #include "Item.h"
 
-/* ±«√— */
 class Bullet;
 class Gun : public Item
 {
@@ -36,6 +35,7 @@ public:
 	int GetNeedBullet() { return m_maxBullet - GetBulletNum(); }
 
 	GUN_TAG GetGunTag() { return m_gunTag; }
+	string GunTagToStrForDebug(GUN_TAG gunTag);
 
 	void Fire(); //√—ΩÓ±‚
 	void Load(Bullet* bullet); //¿Â¿¸
