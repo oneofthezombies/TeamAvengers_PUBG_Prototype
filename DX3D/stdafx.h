@@ -117,3 +117,5 @@ extern HWND g_hWnd;
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console") 
 #endif
 #define D3DX_DEBUG
+
+
