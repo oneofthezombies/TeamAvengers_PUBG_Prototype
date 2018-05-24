@@ -217,11 +217,11 @@
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="ICamera.cpp" />
     <ClCompile Include="IMap.cpp" />
-    <ClCompile Include="IUIObject.cpp" />
     <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="PlayerAni.cpp" />
     <ClCompile Include="PlayerParts.cpp" />
     <ClCompile Include="ThirdPersonCamera.cpp" />
+    <ClCompile Include="IDisplayObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">

@@ -30,7 +30,7 @@ private:
     D3DXVECTOR3		m_deltaPos;
     D3DXVECTOR3		m_deltaRot;
     D3DXVECTOR3		m_forward;
-    D3DXVECTOR3		m_test1;
+    D3DXVECTOR3		m_right;
 
 
     bool			m_isMoving;
@@ -45,10 +45,10 @@ private:
 
     float			m_maxStepHeight;
 
-    ////추가
+    ////승훈 추가
     bool            m_isRunnig;
     bool            m_isLive;
-    POINT           premousef;
+    RECT            m_RC;
 
 	/* 우리 추가 */
 	//TODO: multimap으로 변경할 것
