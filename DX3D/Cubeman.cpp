@@ -7,6 +7,9 @@
 #include "Collider.h"
 
 Cubeman::Cubeman()
+    : IDisplayObject()
+    , m_pBoxCollider(nullptr)
+    , m_pCollisionListner(nullptr)
 {
 	m_pRootParts = NULL;
 
@@ -36,11 +39,11 @@ void Cubeman::Init()
 
 	CreateAllParts();
 
-    SetCollider(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-    BoxCollider* bc = static_cast<BoxCollider*>(GetCollider());
-    D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, 0.0f, 3.0f, 20.0f);
-    bc->Update(m);
+    m_pCollisionListner = SetComponent<CubemanCollisionListner>();
+    m_pBoxCollider = SetComponent<BoxCollider>();
+    m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
+    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 20.0f));
 
     m_rot.y += D3DX_PI;
 }
@@ -74,7 +77,7 @@ void Cubeman::Update()
 
     D3DXMATRIXA16 m;
     D3DXMatrixTranslation(&m, 0.0f, 0.0f, currZ - prevZ);
-    static_cast<BoxCollider*>(GetCollider())->Update(m);
+    m_pBoxCollider->Update(m);
 }
 
 void Cubeman::Render()
@@ -216,13 +219,27 @@ void Cubeman::CreateParts(CubemanParts *& pParts,
 	pParent->AddChild(*pParts);
 }
 
-void Cubeman::OnCollision(ICollidable& other)
+CubemanCollisionListner::CubemanCollisionListner(BaseObject& owner)
+    : ICollisionListner(owner)
 {
-    g_pCurrentScene->Destroy(this);
-    BulletCollider* bc = static_cast<BulletCollider*>(&other);
-    g_pCurrentScene->Destroy(bc->bullet);
+}
+
+void CubemanCollisionListner::OnCollisionEnter(const ColliderBase& other)
+{
+    auto a = static_cast<IDisplayObject*>(GetOwner());
+    g_pCurrentScene->Destroy(a, 1.0f);
+    auto b = static_cast<IDisplayObject*>(other.GetOwner());
+    g_pCurrentScene->Destroy(b, 1.0f);
 
     UIGameOver* uigo = new UIGameOver;
     uigo->Init();
     g_pUIManager->RegisterUIObject(*uigo);
+}
+
+void CubemanCollisionListner::OnCollisionExit(const ColliderBase& other)
+{
+}
+
+void CubemanCollisionListner::OnCollisionStay(const ColliderBase& other)
+{
 }

@@ -1,9 +1,11 @@
 #pragma once
+#include "ComponentBase.h"
+#include "CollisionManager.h"
 
 class BaseObject;
 class ICollisionListner;
 
-class ColliderBase
+class ColliderBase : public ComponentBase
 {
 public:
     enum Type
@@ -15,16 +17,15 @@ public:
     };
 
 private:
-    BaseObject*       m_pOwner;
     ICollisionListner* m_pListner;
-    Type              m_type;
+    Type               m_type;
+    CollisionTag       m_tag;
 
 protected:
     D3DXVECTOR3 m_vCenter;
     D3DCOLOR    m_color;
 
-    ColliderBase(Type type);
-    void SetOwner(BaseObject& owner);
+    ColliderBase(BaseObject& owner, const Type type);
 
 public:
     virtual ~ColliderBase();
@@ -33,9 +34,12 @@ public:
     Type GetType() const;
     void SetColor(const D3DCOLOR color);
     D3DXVECTOR3 GetCenter() const;
-    BaseObject* GetOwner() const;
-    void SetListner(ICollisionListner& listner);
+    
+    void               SetListner(ICollisionListner& listner);
     ICollisionListner* GetListner() const;
+
+    void         SetTag(const CollisionTag tag);
+    CollisionTag GetTag() const;
 };
 
 class SphereCollider : public ColliderBase
@@ -44,7 +48,6 @@ private:
     float m_radius;
 
 public:
-    SphereCollider();
     SphereCollider(BaseObject& owner);
     virtual ~SphereCollider() = default;
 
@@ -65,15 +68,28 @@ private:
     D3DXMATRIXA16 m_mTransform;
 
 public:
-    BoxCollider();
     BoxCollider(BaseObject& owner);
-    virtual ~BoxCollider() = default;
+    virtual ~BoxCollider();
 
     void Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max);
     void Update(const D3DXMATRIXA16& transform);
     virtual void Render() override;
 
+    void Move(const D3DXVECTOR3& val);
+
     D3DXVECTOR3 GetExtent() const;
     const D3DXMATRIXA16& GetTransform() const;
 };
 
+class ICollisionListner : public ComponentBase
+{
+protected:
+    ICollisionListner(BaseObject& owner);
+
+public:
+    virtual ~ICollisionListner();
+
+    virtual void OnCollisionEnter(const ColliderBase& other) = 0;
+    virtual void OnCollisionExit(const ColliderBase& other) = 0;
+    virtual void OnCollisionStay(const ColliderBase& other) = 0;
+};

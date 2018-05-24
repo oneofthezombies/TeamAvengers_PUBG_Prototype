@@ -2,7 +2,7 @@
 #include "IDisplayObject.h"
 #include "PlayerParts.h"
 #include "Item.h"
-#include "ICollisionListner.h"
+#include "Collider.h"
 
 class PlayerParts;
 class Pistol;
@@ -58,8 +58,8 @@ private:
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
 	Pistol*         m_pPistol;     //장착중인 총
 
-	BoxCollider*			   m_pBoxCollider;
-	PlayerAniCollisionListner* m_pCollisionListner;
+    BoxCollider* m_pBoxCollider;
+    PlayerAniCollisionListner* m_pCollisionListner;
 
 public:
     PlayerAni();

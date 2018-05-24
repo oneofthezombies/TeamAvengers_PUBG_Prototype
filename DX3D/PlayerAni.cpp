@@ -16,8 +16,8 @@ enum enumParts
 
 PlayerAni::PlayerAni()
     : m_pPistol(nullptr)
-	, m_pCollisionListner(nullptr)
-	, m_pBoxCollider(nullptr)
+    , m_pBoxCollider(nullptr)
+    , m_pCollisionListner(nullptr)
 {
     m_pRootParts = NULL;
 
@@ -40,10 +40,6 @@ PlayerAni::PlayerAni()
 
 PlayerAni::~PlayerAni()
 {
-    //m_pRootParts->ReleaseAll();
-	
-	SAFE_DELETE(m_pBoxCollider);
-	SAFE_DELETE(m_pCollisionListner);
 }
 
 void PlayerAni::Init()
@@ -61,10 +57,10 @@ void PlayerAni::Init()
     CreateAllParts();
 
 	/* collider init */
-	m_pCollisionListner = new PlayerAniCollisionListner(*this);
-	
-	m_pBoxCollider = new BoxCollider(*this);
-	m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pCollisionListner = SetComponent<PlayerAniCollisionListner>();
+
+    m_pBoxCollider = SetComponent<BoxCollider>();
+    m_pBoxCollider->SetListner(*m_pCollisionListner);
 	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
 	D3DXMATRIXA16 m;
 	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);

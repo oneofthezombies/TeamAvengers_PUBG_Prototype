@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "IDisplayObject.h"
 
-
 IDisplayObject::IDisplayObject()
     : BaseObject()
     , m_pParent(nullptr)

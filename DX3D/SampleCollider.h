@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ICollisionListner.h"
+#include "Collider.h"
 #include "IDisplayObject.h"
 
 class BoxCollider;

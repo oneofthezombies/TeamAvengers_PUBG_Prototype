@@ -1,8 +1,9 @@
 #pragma once
 #include "Item.h"
-#include "ICollidable.h"
+#include "Collider.h"
 
 class BulletCollider;
+class BulletCollisionListner;
 
 class Bullet : public Item
 {
@@ -18,7 +19,8 @@ private:
 	D3DXMATRIXA16 m_matS;
 	D3DXMATRIXA16 m_matT;
 
-    BulletCollider* m_pBulletCollider;
+    BoxCollider* m_pBoxCollider;
+    BulletCollisionListner* m_pCollisionListner;
 
 public:
 	Bullet(float scale, float velocity);
@@ -36,15 +38,13 @@ public:
 	bool IsInBorderArea(); //경계구역 안에 있는지 체크
 };
 
-class BulletCollider : public ICollidable
+class BulletCollisionListner : public ICollisionListner
 {
-private: 
-    BoxCollider* bc;
-
 public:
-    Bullet* bullet;
+    BulletCollisionListner(BaseObject& owner);
+    virtual ~BulletCollisionListner() = default;
 
-    void Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max, const D3DXVECTOR3& pos);
-    void Update(const D3DXMATRIXA16& transform);
-    virtual void OnCollision(ICollidable & other) override;
+    virtual void OnCollisionEnter(const ColliderBase& other) override;
+    virtual void OnCollisionExit(const ColliderBase& other) override;
+    virtual void OnCollisionStay(const ColliderBase& other) override;
 };

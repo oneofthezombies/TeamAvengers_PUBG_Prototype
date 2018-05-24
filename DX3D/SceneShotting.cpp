@@ -5,7 +5,6 @@
 #include "PlayerAni.h"
 #include "Pistol.h"
 #include "Bullet.h"
-#include "SampleCollidable.h"
 #include "SkyBox.h"
 #include "UIButton.h"
 #include "UIGameOver.h"
@@ -56,44 +55,35 @@ void SceneShotting::Init()
 	m_pGround->Init();
 	AddSimpleDisplayObj(m_pGround);
 
-	//임시플레이어
-	//m_pPlayerAniTemp = new PlayerTemp();
-	//m_pPlayerAniTemp->Init();
-	//AddSimpleDisplayObj(m_pPlayerAniTemp);
-	m_pPlayerAni = new PlayerAni;
-	m_pPlayerAni->Init();
-	AddSimpleDisplayObj(m_pPlayerAni);
+	//m_pPlayerAni = new PlayerAni;
+	//m_pPlayerAni->Init();
+	//AddSimpleDisplayObj(m_pPlayerAni);
 
+	////권총
+	//m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	//m_pPistol->Init();
+	//AddSimpleDisplayObj(m_pPistol);
 
-	//권총
-	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
-	m_pPistol->Init();
-	AddSimpleDisplayObj(m_pPistol);
+	////총알 10개 생성
+	//m_vecPBullet.reserve(10);
+	//for (int i = 0; i < 10; ++i)
+	//{
+	//	Bullet* bullet = new Bullet(0.08f, 10.f);
+	//	bullet->Init();
+	//	m_vecPBullet.push_back(bullet);
+	//	AddSimpleDisplayObj(bullet);
+	//}
 
-	//총알 10개 생성
-	m_vecPBullet.reserve(10);
-	for (int i = 0; i < 10; ++i)
-	{
-		Bullet* bullet = new Bullet(0.08f, 10.f);
-		bullet->Init();
-		m_vecPBullet.push_back(bullet);
-		AddSimpleDisplayObj(bullet);
-	}
-
-	//총이랑 총알먹기 //포인터에 대한 소유권을 명확히 해야한다
-	//m_pPlayerAniTemp->PutItemInInventory(m_pPistol);
-	m_pPlayerAni->PutItemInInventory(m_pPistol);
-	m_pPistol = nullptr;
-	for (auto bullet : m_vecPBullet)
-	{ 
-		//m_pPlayerAniTemp->PutItemInInventory(bullet);
-		m_pPlayerAni->PutItemInInventory(bullet);
-	}
-	m_vecPBullet.clear();
-
-    CollidableItemBox* cib = new CollidableItemBox;
-    cib->Init();
-    AddSimpleDisplayObj(cib);
+	////총이랑 총알먹기 //포인터에 대한 소유권을 명확히 해야한다
+	////m_pPlayerAniTemp->PutItemInInventory(m_pPistol);
+	//m_pPlayerAni->PutItemInInventory(m_pPistol);
+	//m_pPistol = nullptr;
+	//for (auto bullet : m_vecPBullet)
+	//{ 
+	//	//m_pPlayerAniTemp->PutItemInInventory(bullet);
+	//	m_pPlayerAni->PutItemInInventory(bullet);
+	//}
+	//m_vecPBullet.clear();
 
     UIButton* sampleUIB = new UIButton;
     sampleUIB->Init();
@@ -103,10 +93,10 @@ void SceneShotting::Init()
     m_pSampleUIButtonListner->SetUIButton(*sampleUIB);
     g_pUIManager->RegisterUIObject(*sampleUIB);
 
-    Cubeman* cm = new Cubeman;
-    cm->Init();
-    cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
-    AddSimpleDisplayObj(cm);
+    //Cubeman* cm = new Cubeman;
+    //cm->Init();
+    //cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
+    //AddSimpleDisplayObj(cm);
 
     SampleColliderOwner1* sco1 = new SampleColliderOwner1;
     sco1->Init();
@@ -115,6 +105,8 @@ void SceneShotting::Init()
     SampleColliderOwner2* sco2 = new SampleColliderOwner2;
     sco2->Init();
     AddSimpleDisplayObj(sco2);
+
+    g_pCollisionManager->RegisterCollisionRelation(CollisionTag::kFoo, CollisionTag::kBar);
 }
 
 void SceneShotting::Update()
@@ -133,7 +125,6 @@ void SceneShotting::Update()
 void SceneShotting::Render()
 {
 	OnRenderIScene();
-
 
 	//x, y, z 기준선 그리기 
 	D3DXMATRIXA16 matI;

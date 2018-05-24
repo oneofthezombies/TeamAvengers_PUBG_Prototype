@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "BaseObject.h"
-
+#include "ComponentBase.h"
 
 BaseObject::BaseObject()
 	:m_refCount(1)
@@ -10,6 +10,9 @@ BaseObject::BaseObject()
 
 BaseObject::~BaseObject()
 {
+    for (auto& kv : m_umapComponents)
+        SAFE_DELETE(kv.second);
+
 	g_pObjMgr->RemoveObject(this);
 	assert(m_refCount <= 0 && "Release 를 이용해서 해제하세요.");
 }
