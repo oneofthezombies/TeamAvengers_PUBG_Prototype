@@ -610,9 +610,6 @@ void PlayerAni::UpdateGunInHandPosition()
             m_pos.z + m_forward.z * 2.3f + m_right.z * 1.3f));
 
         m_pGun->SyncRot(m_rot.y);
-
-        Debug->AddText(m_rot.y);
-        Debug->EndLine();
     }
 }
 
@@ -625,14 +622,19 @@ void PlayerAni::UpdateGunInEquipPosition()
             switch (gun.second->GetGunTag())
             {
             case GUN_TAG::Pistol:
-                gun.second->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 2.f, m_pos.z - 2.f));
+                gun.second->SetPosition(D3DXVECTOR3(
+                    m_pos.x + m_forward.x * -1.3f + m_right.x * -0.3f,
+                    m_pos.y + 3.f,
+                    m_pos.z + m_forward.z * -1.3f + m_right.z * -0.3f));
                 break;
             case GUN_TAG::Rifle:
-                gun.second->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 3.5f, m_pos.z - 2.f));
+                gun.second->SetPosition(D3DXVECTOR3(
+                    m_pos.x + m_forward.x * -1.3f + m_right.x * 0.3f,
+                    m_pos.y + 4.f,
+                    m_pos.z + m_forward.z * -1.3f + m_right.z * 0.3f));
                 break;
             }
-            gun.second->SyncRot(m_rot.y);
-           
+            gun.second->SyncRot(m_rot.y + D3DXToRadian(90));
         }
     }
 }
