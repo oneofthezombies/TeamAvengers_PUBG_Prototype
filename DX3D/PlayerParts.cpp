@@ -33,7 +33,7 @@ void PlayerParts::Init(D3DXMATRIXA16* pMat, vector<vector<int>> &vecUV)
                 &vecVertex[i], pMat);
         }
     }
-    D3DXCreateTextureFromFile(g_pDevice, _T("resources/textures/naked.png"), &m_tex);
+    D3DXCreateTextureFromFile(g_pDevice, _T("resources/textures/girl.png"), &m_tex);
     //SetPCVertex(m_vecPCVertex, vecVertex);
     SetPTVertex(m_vecPTVertex, vecVertex, vecUV);
 }
