@@ -66,6 +66,21 @@ void Item::Render()
     }
 }
 
+ITEM_TAG Item::GetItemTag()
+{
+    return m_tag;
+}
+
+void Item::SetItemState(ITEM_STATE state)
+{
+    m_state = state;
+}
+
+ITEM_STATE Item::GetItemState()
+{
+    return m_state;
+}
+
 const string& Item::GetName() const
 {
     return m_name;

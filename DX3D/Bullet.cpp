@@ -94,6 +94,31 @@ void Bullet::Render()
 	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
+bool Bullet::GetIsFire() const
+{
+    return m_isFire;
+}
+
+void Bullet::SetIsFire(const bool isFire)
+{
+    m_isFire = isFire;
+}
+
+float Bullet::GetVelocity() const
+{
+    return m_velocity;
+}
+
+bool Bullet::GetIsDie() const
+{
+    return m_isDie;
+}
+
+GUN_TAG Bullet::GetBulletFor()
+{
+    return m_bulletFor;
+}
+
 bool Bullet::IsBulletForThisGun(GUN_TAG gunTag)
 {
 	cout << "bulletFor: " << static_cast<int>(m_bulletFor) << ", " << "gunTag:" << static_cast<int>(gunTag) << endl;

@@ -90,28 +90,24 @@ void Gun::Render()
     }
 }
 
-void Gun::ShowBulletNumForDebug()
+size_t Gun::GetBulletNum()
 {
-	Debug->EndLine();
-	Debug->AddText("BulletNum: ");
-	Debug->AddText(GetBulletNum());
-	Debug->EndLine();
+    return m_vecPBullet.size();
 }
 
-string Gun::GunTagToStrForDebug(GUN_TAG gunTag)
+int Gun::GetNeedBullet()
 {
-	switch (gunTag)
-	{
-	case GUN_TAG::Pistol:
-		return "Pistol";
-		break;
-	case GUN_TAG::Rifle:
-		return "Rifle";
-		break;
-	default:
-		return "?";
-		break;
-	}
+    return m_maxBullet - GetBulletNum();
+}
+
+GUN_TAG Gun::GetGunTag()
+{
+    return m_gunTag;
+}
+
+bool Gun::GetCanChangeBurstMode()
+{
+    return  m_canChangeBurstMode;
 }
 
 void Gun::Fire()
@@ -140,4 +136,28 @@ void Gun::Load(Bullet* bullet)
 void Gun::SyncRot(float rotY)
 {
     m_rotY = rotY - D3DXToRadian(90);
+}
+
+void Gun::ShowBulletNumForDebug()
+{
+    Debug->EndLine();
+    Debug->AddText("BulletNum: ");
+    Debug->AddText(GetBulletNum());
+    Debug->EndLine();
+}
+
+string Gun::GunTagToStrForDebug(GUN_TAG gunTag)
+{
+    switch (gunTag)
+    {
+    case GUN_TAG::Pistol:
+        return "Pistol";
+        break;
+    case GUN_TAG::Rifle:
+        return "Rifle";
+        break;
+    default:
+        return "?";
+        break;
+    }
 }

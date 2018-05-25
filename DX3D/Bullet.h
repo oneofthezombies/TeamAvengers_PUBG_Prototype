@@ -30,11 +30,11 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	bool  GetIsFire() const { return m_isFire; }
-	void  SetIsFire(const bool isFire){ m_isFire = isFire; }
-	float GetVelocity() const { return m_velocity; }
-	bool  GetIsDie() const { return m_isDie; }
-	GUN_TAG  GetBulletFor() { return m_bulletFor; }
+    bool  GetIsFire() const;
+    void  SetIsFire(const bool isFire);
+    float GetVelocity() const;
+    bool  GetIsDie() const;
+    GUN_TAG  GetBulletFor();
 	bool IsBulletForThisGun(GUN_TAG gunTag);
 
 	bool IsInBorderArea(); //경계구역 안에 있는지 체크

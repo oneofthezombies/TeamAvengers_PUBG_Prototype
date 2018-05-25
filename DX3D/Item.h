@@ -20,10 +20,9 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	ITEM_TAG GetItemTag() { return m_tag; }
-    void SetItemState(ITEM_STATE state) { m_state = state; }
-	ITEM_STATE GetItemState() { return m_state; }
-
+    ITEM_TAG GetItemTag();
+    void SetItemState(ITEM_STATE state);
+    ITEM_STATE GetItemState();
     const string& GetName() const;
 
     const D3DMATERIAL9& GetMaterialByItemTag();

@@ -13,11 +13,11 @@ private:
 	const int        m_bulletFireCoolTime; 
 	int              m_bulletFireCoolDown; //총알 발사는 지정된 쿨타임 시간이 지나야 다시 발사가능
 
-    bool             m_canChangeBurstMode;            //연발이 가능한 총인지
+    bool             m_canChangeBurstMode; //연발이 가능한 총인지
 
 	const float      m_velocity;           //이동을 위한 속력
 	const float      m_scale;
-	float      m_rotY;
+	float            m_rotY;
 	//D3DXVECTOR3    m_pos;                //IDisplayObject에 있음
 	
 	D3DXMATRIXA16    m_matS;
@@ -32,17 +32,17 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	size_t GetBulletNum() { return m_vecPBullet.size(); }
-	void ShowBulletNumForDebug();
-	int GetNeedBullet() { return m_maxBullet - GetBulletNum(); }
-
-	GUN_TAG GetGunTag() { return m_gunTag; }
-	string GunTagToStrForDebug(GUN_TAG gunTag);
-
-	bool GetCanChangeBurstMode() { return  m_canChangeBurstMode; }
+    size_t GetBulletNum();
+    int GetNeedBullet();
+    GUN_TAG GetGunTag();
+    bool GetCanChangeBurstMode();
 
 	void Fire(); //총쏘기
 	void Load(Bullet* bullet); //장전
     void SyncRot(float rotY);   //캐릭터 위치에 맞게 고정. (해당 주전자 로컬좌표 때문에 -D3DXToRadian(90)해줌)
+
+    /* 디버그 */
+    void ShowBulletNumForDebug();
+    string GunTagToStrForDebug(GUN_TAG gunTag);
 };
 

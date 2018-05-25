@@ -402,101 +402,6 @@ void PlayerAni::PutGunInEquip(Gun* gun)
     UpdateGunInEquipPosition();
 }
 
-void PlayerAni::ShowInventoryForDebug()
-{
-    Debug->AddText("<Guns list>");
-    Debug->EndLine();
-	for (auto item : m_mapGuns)
-	{
-		auto itemTag = item.first;
-		switch (itemTag)
-		{
-		case GUN_TAG::Pistol:
-			Debug->AddText("- Pistol, ");
-            ShowItemStateForDebug(item.second->GetItemState());
-			Debug->EndLine();
-			break;
-		case GUN_TAG::Rifle:
-			Debug->AddText("- Rifle, ");
-            ShowItemStateForDebug(item.second->GetItemState());
-			Debug->EndLine();
-			break;
-		} 
-	} //for m_mapGuns
-
-    Debug->EndLine();
-    Debug->AddText("<Inventory>");
-    Debug->EndLine();
-    Debug->AddText("the number of Items: ");
-    Debug->AddText(GetInventorySize() + GetGunsNum());
-    Debug->EndLine();
-	for (auto item : m_mapInventory)
-	{
-		auto itemTag = item.first;
-		switch (itemTag)
-		{
-		case ITEM_TAG::Bullet:
-			Debug->AddText("- Bullet: ");
-			Debug->AddText(item.second.size());
-			Debug->EndLine();
-
-			for (auto i : item.second)
-			{
-                switch (static_cast<Bullet*>(i)->GetBulletFor())
-                {
-                case GUN_TAG::Pistol:
-                    Debug->AddText("for Pistol, ");
-                    break;
-                case GUN_TAG::Rifle:
-                    Debug->AddText("for Rifle, ");
-                    break;
-                }
-                ShowItemStateForDebug(i->GetItemState());
-                Debug->EndLine();
-			} // for item.second()
-			break;
-		} //switch itemTag
-	} //for m_mapInventory
-}
-
-void PlayerAni::ShowFireModeForDebug()
-{
-    Debug->EndLine();
-    Debug->AddText("<Fire Mode>");
-    switch (m_fireMode)
-    {
-    case FIRE_MODE::SingleShot:
-        Debug->AddText("Single Mode");
-        Debug->EndLine();
-        break;
-
-    case FIRE_MODE::Burst:
-        Debug->AddText("Burst Mode");
-        Debug->EndLine();
-        break;
-    
-    }
-}
-
-void PlayerAni::ShowItemStateForDebug(ITEM_STATE itemState)
-{
-    switch (itemState)
-    {
-    case ITEM_STATE::Dropped:
-        Debug->AddText("Dropped");
-        break;
-    case ITEM_STATE::InInventory:
-        Debug->AddText("InInventory");
-        break;
-    case ITEM_STATE::Equipped:
-        Debug->AddText("Equipped");
-        break;
-    case ITEM_STATE::InHand:
-        Debug->AddText("In Hand");
-        break;
-    } //swtich ItemState
-}
-
 void PlayerAni::KeyMove()
 {
 	if (g_pKeyManager->IsStayKeyDown('A'))
@@ -803,4 +708,100 @@ void PlayerAniCollisionListener::OnCollisionExit(const ColliderBase& other)
 
 void PlayerAniCollisionListener::OnCollisionStay(const ColliderBase& other)
 {
+}
+
+/* 디버그용 */
+void PlayerAni::ShowInventoryForDebug()
+{
+    Debug->AddText("<Guns list>");
+    Debug->EndLine();
+    for (auto item : m_mapGuns)
+    {
+        auto itemTag = item.first;
+        switch (itemTag)
+        {
+        case GUN_TAG::Pistol:
+            Debug->AddText("- Pistol, ");
+            ShowItemStateForDebug(item.second->GetItemState());
+            Debug->EndLine();
+            break;
+        case GUN_TAG::Rifle:
+            Debug->AddText("- Rifle, ");
+            ShowItemStateForDebug(item.second->GetItemState());
+            Debug->EndLine();
+            break;
+        }
+    } //for m_mapGuns
+
+    Debug->EndLine();
+    Debug->AddText("<Inventory>");
+    Debug->EndLine();
+    Debug->AddText("the number of Items: ");
+    Debug->AddText(GetInventorySize() + GetGunsNum());
+    Debug->EndLine();
+    for (auto item : m_mapInventory)
+    {
+        auto itemTag = item.first;
+        switch (itemTag)
+        {
+        case ITEM_TAG::Bullet:
+            Debug->AddText("- Bullet: ");
+            Debug->AddText(item.second.size());
+            Debug->EndLine();
+
+            for (auto i : item.second)
+            {
+                switch (static_cast<Bullet*>(i)->GetBulletFor())
+                {
+                case GUN_TAG::Pistol:
+                    Debug->AddText("for Pistol, ");
+                    break;
+                case GUN_TAG::Rifle:
+                    Debug->AddText("for Rifle, ");
+                    break;
+                }
+                ShowItemStateForDebug(i->GetItemState());
+                Debug->EndLine();
+            } // for item.second()
+            break;
+        } //switch itemTag
+    } //for m_mapInventory
+}
+
+void PlayerAni::ShowFireModeForDebug()
+{
+    Debug->EndLine();
+    Debug->AddText("<Fire Mode>");
+    switch (m_fireMode)
+    {
+    case FIRE_MODE::SingleShot:
+        Debug->AddText("Single Mode");
+        Debug->EndLine();
+        break;
+
+    case FIRE_MODE::Burst:
+        Debug->AddText("Burst Mode");
+        Debug->EndLine();
+        break;
+
+    }
+}
+
+void PlayerAni::ShowItemStateForDebug(ITEM_STATE itemState)
+{
+    switch (itemState)
+    {
+    case ITEM_STATE::Dropped:
+        Debug->AddText("Dropped");
+        break;
+    case ITEM_STATE::InInventory:
+        Debug->AddText("InInventory");
+        break;
+    case ITEM_STATE::Equipped:
+        Debug->AddText("Equipped");
+        break;
+    case ITEM_STATE::InHand:
+        Debug->AddText("In Hand");
+        break;
+    } //swtich ItemState
 }

@@ -88,11 +88,6 @@ public:
 	void PutItemInInventory(Item* item);
 	void PutGunInEquip(Gun* gun);
 
-    /* For Debug */
-	void ShowInventoryForDebug();
-    void ShowFireModeForDebug();
-    void ShowItemStateForDebug(ITEM_STATE itemState);
-
 	/* For Key Input*/
 	void KeyMove();
 	void KeyInHand(GUN_TAG gunTag);
@@ -109,6 +104,11 @@ public:
     void ShowInventory(const D3DXMATRIXA16& transform);
     bool IsShowingInventory();
     void Pick(Item& item);
+
+    /* For Debug */
+    void ShowInventoryForDebug();
+    void ShowFireModeForDebug();
+    void ShowItemStateForDebug(ITEM_STATE itemState);
 
 public:
     vector<vector<int>> uvBody = {
