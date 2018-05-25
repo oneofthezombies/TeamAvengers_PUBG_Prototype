@@ -47,6 +47,8 @@ void Gun::Init()
 
 void Gun::Update()
 {
+    Item::Update();
+
     if (m_state != ITEM_STATE::Dropped)
     {
         float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
@@ -59,8 +61,6 @@ void Gun::Update()
         D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
         m_matWorld = m_matS * m_matRotY * m_matT;
     }
-
-    Item::Update();
 }
 
 void Gun::Render()
