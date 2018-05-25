@@ -34,5 +34,18 @@ public:
     void SetTarget(D3DXVECTOR3& pos, D3DXVECTOR3& dir);
     D3DXVECTOR3* GetTargetPos() const;
     D3DXVECTOR3* GetTargetRot() const;
+    
+    //JH---------------
+public:
+    vector<D3DXVECTOR3> m_vecVertex_sample;
+    void SetWall(vector<D3DXVECTOR3> vecVertex_sample)
+    {
+        m_vecVertex_sample = vecVertex_sample;
+    }
+    vector<D3DXVECTOR3> GetWall()
+    {
+        return m_vecVertex_sample;
+    }
+    //------------------
 };
 

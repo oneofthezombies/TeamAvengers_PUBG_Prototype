@@ -22,6 +22,15 @@ private:
     SampleUIButtonListner* m_pSampleUIButtonListner;
 
 public:
+    //¿·Ω√ test sample    //JH---------
+    vector<VERTEX_PC> vecVertex_sample;
+    vector<VERTEX_PC>& GetWallVertex()
+    {
+        return vecVertex_sample;
+    }
+    //---------------
+
+public:
 	SceneShotting();
 	~SceneShotting();
 

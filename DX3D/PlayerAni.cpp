@@ -72,7 +72,7 @@ void PlayerAni::Init()
 	/* end collider init */
 
     GetClientRect(g_hWnd, &m_RC);   //마우스 좌표 초기화를 위한 api화면 받아오기
-    ShowCursor(false);              //마우스 커서 보이기 안보이기
+    ShowCursor(true);              //마우스 커서 보이기 안보이기
 }
 
 void PlayerAni::Update()

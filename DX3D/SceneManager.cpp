@@ -18,10 +18,10 @@ SceneManager::~SceneManager()
 
 void SceneManager::Init()
 {
-	m_vecScene.push_back(new SceneGrid());
-	m_vecScene.push_back(new SceneObjMap());
-	m_vecScene.push_back(new SceneHeightmap());
-	m_vecScene.push_back(new SceneTest());
+	//m_vecScene.push_back(new SceneGrid());
+	//m_vecScene.push_back(new SceneObjMap());
+	//m_vecScene.push_back(new SceneHeightmap());
+	//m_vecScene.push_back(new SceneTest());
 	m_vecScene.push_back(new SceneShotting());
 
 	//SetCurrentScene(SCENE_GRID);
@@ -41,6 +41,8 @@ void SceneManager::Destroy()
 
 void SceneManager::Update()
 {
+    //JH
+
 	SAFE_UPDATE(m_pCurrScene);
 }
 
