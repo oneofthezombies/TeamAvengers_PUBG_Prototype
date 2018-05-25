@@ -100,6 +100,7 @@ public:
 	void KeyLoad();    //총 장전
 	void KeyFire();    //총 쏘기
 	void KeyChangeGun(GUN_TAG gunTag); //무기바꾸기
+    void KeyChangeFireMode(); //단, 연발 모드변경
 
 public:
     vector<vector<int>> uvBody = {

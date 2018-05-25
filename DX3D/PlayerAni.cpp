@@ -85,18 +85,7 @@ void PlayerAni::Update()
 		KeyLoad();
 	//총 모드 변경(단발 <-> 연발) B
 	if (g_pKeyManager->IsOnceKeyDown('B'))
-	{
-        if (m_pGun)
-        {
-            if (m_fireMode == FIRE_MODE::SingleShot)
-            {
-                if(m_pGun->GetCanChangeBurstMode())
-                    m_fireMode = FIRE_MODE::Burst;
-            }
-            else if (m_fireMode == FIRE_MODE::Burst)
-                m_fireMode = FIRE_MODE::SingleShot;
-        }
-	}
+        KeyChangeFireMode();
 	//총 쏘기(단발) 마우스 왼쪽버튼
 	if (m_fireMode == FIRE_MODE::SingleShot)
 	{
@@ -116,10 +105,7 @@ void PlayerAni::Update()
             else //m_pGun->GetCanChangeBurstMode() == false //연발이 지원되지 않는 총이라면
             {
                 if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                {
-                    cout << "Not supported Burst. So, Use SingleShot." << endl;
                     KeyFire();
-                }
             }
         }
 	}
@@ -639,6 +625,20 @@ void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
 		KeyUnmount(); 
 		KeyMount(gunTag);
 	}
+}
+
+void PlayerAni::KeyChangeFireMode()
+{
+    if (m_pGun)
+    {
+        if (m_fireMode == FIRE_MODE::SingleShot)
+        {
+            if (m_pGun->GetCanChangeBurstMode())
+                m_fireMode = FIRE_MODE::Burst;
+        }
+        else if (m_fireMode == FIRE_MODE::Burst)
+            m_fireMode = FIRE_MODE::SingleShot;
+    }
 }
 
 /* 충돌 관련 */
