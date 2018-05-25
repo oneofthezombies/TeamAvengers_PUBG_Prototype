@@ -1,9 +1,9 @@
 #pragma once
 #include "BaseObject.h"
 
-#define FP_DISTANCE -1.0f
+#define FP_DISTANCE 0.0f
 #define FP_BASEPOSX 0.0f
-#define FP_BASEPOSY 3.0f
+#define FP_BASEPOSY 5.0f
 
 #define TP_DISTANCE 10.0f
 #define TP_BASEPOSX 2.0f
@@ -17,7 +17,9 @@ namespace CameraState
         THIRDPERSON = 3,
         TP2FP,
         FP2TP,
-        KYUNCHAK
+        KYUNCHAK,
+        SCOPE2X,
+        SCOPE4X
     };
 }
 
@@ -43,9 +45,11 @@ public://protected 으로 바꾸자
     float           m_aspect;
 
     POINT			m_ptPrevMouse;
-    POINT           m_ptContainer;
 
+    bool            m_isALTbuttonStay;
 
+    D3DXVECTOR3*    m_pTargetPos;//캐릭터 Position을 갖고오기 위함
+    D3DXVECTOR3*    m_pTargetRot;//캐릭터 Rotation을 갖고오기 위함
 
     //vector<D3DXVECTOR3> m_vecProjVert;
     //vector<D3DXVECTOR3> m_vecWorldVert;
@@ -66,6 +70,6 @@ public:
     //void SetSixPlane();
     //bool CheckSphere(BoundingSphere* sphere);
 
-    void UpdateEye();
+    CameraState::CameraState GetState() const;
 };
 

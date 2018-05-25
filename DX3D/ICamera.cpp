@@ -4,64 +4,76 @@
 ICamera::ICamera()
     : m_rotX(0.0f)
     , m_rotY(0.0f)
+    , m_isALTbuttonStay(false)
+    , m_pTargetPos(nullptr)
+    , m_pTargetRot(nullptr)
 {
     RECT rc;
     GetClientRect(g_hWnd, &rc);
     m_aspect = rc.right / (float)rc.bottom;
+    m_up = D3DXVECTOR3(0, 1, 0);
 }
 
 void ICamera::Init()
 {
     m_eye = D3DXVECTOR3(m_basePosX, m_basePosY, -m_distance);
+    m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y, m_eye.z+1);
 
-    D3DXVECTOR3* pTargetDir;
-    UpdateEye();
-
-    m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y, m_eye.z + 1);
-    m_up = D3DXVECTOR3(0, 1, 0);
+    //캐릭터로부터 pos와 rot 받아옴
+    m_pTargetPos = g_pCameraManager->GetTargetPos();
+    m_pTargetRot = g_pCameraManager->GetTargetRot();
+    //if (!m_pTargetPos || !m_pTargetRot)
+    //    Debug->ShowMessageBox();
 
     //m_ptPrevMouse;
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
 
-    D3DXMatrixPerspectiveFovLH(&m_matProj,m_fovY,m_aspect, 1, 1000);
+    D3DXMatrixPerspectiveFovLH(&m_matProj, m_fovY, m_aspect, 1, 1000);
     g_pDevice->SetTransform(D3DTS_PROJECTION, &m_matProj);
 }
 
 void ICamera::Update()
 {
-    Debug->AddText(m_distance);
-    Debug->AddText(m_basePosX);
-    Debug->AddText(m_basePosY);
-    Debug->EndLine();
+    D3DXMATRIXA16 matWorld,matR, matT;
+    D3DXMatrixIdentity(&matWorld);
 
-        
-    //if (GetAsyncKeyState('C') & 0x0001)
-    //    m_fovY -= 0.01f;//m_aspect
-    //if (GetAsyncKeyState('X') & 0x0001)
-    //    m_fovY += 0.01f;//m_aspect
+    m_pTargetPos = g_pCameraManager->GetTargetPos();
+    m_pTargetRot = g_pCameraManager->GetTargetRot();
+    //if(!m_pTargetPos||!m_pTargetRot)
+    //    Debug->ShowMessageBox();
 
     m_eye = D3DXVECTOR3(m_basePosX, m_basePosY, -m_distance);
-    UpdateEye();
+    m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y, m_eye.z + 1);
 
-    //Player가 움직여도 계속 앞을 보게 하려면 1
-    m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y-0.1, m_eye.z + 1);
+    if (!m_isALTbuttonStay) //Alt가 눌리지 않았으면
+    {
+        if (m_pTargetRot)
+            //여기는 캐릭터에서 받은 m_pos 와 m_rot을 갖고와서 계산
+            D3DXMatrixRotationYawPitchRoll(&matR, m_pTargetRot->y, m_pTargetRot->x, 0.0f/*pTargetRot->z*/);
+        else
+            D3DXMatrixRotationYawPitchRoll(&matR, 0.0f, 0.0f, 0.0f/*pTargetRot->z*/);
+    }
+    else//ALT가 눌렸더라면
+        //카메라에서 받은 rotX rotY 값 + 캐릭터에서 받은 m_pos
+        D3DXMatrixRotationYawPitchRoll(&matR, m_rotY, m_rotX, 0.0f);
+    
+    if (m_pTargetPos)
+        D3DXMatrixTranslation(&matT, m_pTargetPos->x, m_pTargetPos->y, m_pTargetPos->z);
+    else
+        D3DXMatrixIdentity(&matT);
 
-    D3DXMATRIXA16 matRot;
-    D3DXMatrixRotationYawPitchRoll(&matRot, m_rotY, m_rotX, 0.0f);
-
-    D3DXVec3TransformCoord(&m_eye, &m_eye, &matRot);
-    //Player가 움직여도 계속 앞을 보게 하려면 2
-    D3DXVec3TransformCoord(&m_lookAt, &m_lookAt, &matRot);
+    matWorld = matWorld * matR * matT;
+    D3DXVec3TransformCoord(&m_eye, &m_eye, &matWorld);
+    D3DXVec3TransformCoord(&m_lookAt, &m_lookAt, &matWorld);
 
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);
 
 }
 
-void ICamera::UpdateEye()
+CameraState::CameraState ICamera::GetState() const
 {
-    if (D3DXVECTOR3* pTargetPos = g_pCameraManager->GetTargetPos())
-        m_eye += *pTargetPos;
+    return m_cameraState;
 }
 

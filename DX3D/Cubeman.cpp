@@ -7,6 +7,9 @@
 #include "Collider.h"
 
 Cubeman::Cubeman()
+    : IDisplayObject()
+    , m_pBoxCollider(nullptr)
+    , m_pCollisionListener(nullptr)
 {
 	m_pRootParts = NULL;
 
@@ -36,11 +39,12 @@ void Cubeman::Init()
 
 	CreateAllParts();
 
-    SetCollider(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-    BoxCollider* bc = static_cast<BoxCollider*>(GetCollider());
-    D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, 0.0f, 3.0f, 20.0f);
-    bc->Update(m);
+    m_pCollisionListener = SetComponent<CubemanCollisionListener>();
+    m_pBoxCollider = SetComponent<BoxCollider>();
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
+    m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
+    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 20.0f));
+    m_pBoxCollider->SetTag(CollisionTag::kEnemy);
 
     m_rot.y += D3DX_PI;
 }
@@ -74,7 +78,7 @@ void Cubeman::Update()
 
     D3DXMATRIXA16 m;
     D3DXMatrixTranslation(&m, 0.0f, 0.0f, currZ - prevZ);
-    static_cast<BoxCollider*>(GetCollider())->Update(m);
+    m_pBoxCollider->Update(m);
 }
 
 void Cubeman::Render()
@@ -101,7 +105,8 @@ void Cubeman::UpdatePosition()
 	{
 		m_currMoveSpeedRate = 0.7f;
 		targetPos = m_pos + m_forward * m_deltaPos.z
-			* m_moveSpeed * m_currMoveSpeedRate;
+			* m_moveSpeed * m_currMoveSpeedRate ;
+
 
 		targetPos.y += m_jumpPower - m_currGravity;
 		m_currGravity += m_gravity;
@@ -215,13 +220,35 @@ void Cubeman::CreateParts(CubemanParts *& pParts,
 	pParent->AddChild(*pParts);
 }
 
-void Cubeman::OnCollision(ICollidable& other)
+CubemanCollisionListener::CubemanCollisionListener(BaseObject& owner)
+    : ICollisionListener(owner)
 {
-    g_pCurrentScene->Destroy(this);
-    BulletCollider* bc = static_cast<BulletCollider*>(&other);
-    g_pCurrentScene->Destroy(bc->bullet);
+}
 
-    UIGameOver* uigo = new UIGameOver;
-    uigo->Init();
-    g_pUIManager->RegisterUIObject(*uigo);
+void CubemanCollisionListener::OnCollisionEnter(const ColliderBase& other)
+{
+    switch (other.GetTag())
+    {
+    case CollisionTag::kBullet:
+        {
+            auto a = static_cast<IDisplayObject*>(GetOwner());
+            g_pCurrentScene->Destroy(a);
+
+            auto b = static_cast<IDisplayObject*>(other.GetOwner());
+            g_pCurrentScene->Destroy(b);
+
+            UIGameOver* uigo = new UIGameOver;
+            uigo->Init();
+            g_pUIManager->RegisterUIObject(*uigo);
+        }
+        break;
+    }
+}
+
+void CubemanCollisionListener::OnCollisionExit(const ColliderBase& other)
+{
+}
+
+void CubemanCollisionListener::OnCollisionStay(const ColliderBase& other)
+{
 }

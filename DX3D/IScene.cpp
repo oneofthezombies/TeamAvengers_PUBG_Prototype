@@ -35,6 +35,7 @@ void IScene::UpdateToDeleteIDisplayObjects()
         {
             m_usetIDisplayObjects.erase(p);
             SAFE_RELEASE(p);
+            SAFE_DELETE(p);
             it = m_umapToDeleteIDisplayObjects.erase(it);
         }
     }

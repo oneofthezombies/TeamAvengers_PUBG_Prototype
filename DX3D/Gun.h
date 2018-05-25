@@ -17,7 +17,7 @@ private:
 
 	const float      m_velocity;           //이동을 위한 속력
 	const float      m_scale;
-	const float      m_rotY;
+	float      m_rotY;
 	//D3DXVECTOR3    m_pos;                //IDisplayObject에 있음
 	
 	D3DXMATRIXA16    m_matS;
@@ -43,5 +43,6 @@ public:
 
 	void Fire(); //총쏘기
 	void Load(Bullet* bullet); //장전
+    void SyncRot(float rotY);   //캐릭터 위치에 맞게 고정. (해당 주전자 로컬좌표 때문에 -D3DXToRadian(90)해줌)
 };
 

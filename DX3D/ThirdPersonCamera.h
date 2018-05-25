@@ -22,7 +22,7 @@ public:
     CameraTPToFP();
     virtual ~CameraTPToFP();
 
-    // Inherited via ICamera
+    // Inherited via ThirdPersonCamera
     virtual void Init() override;
     virtual void Update() override;
 };
@@ -38,7 +38,7 @@ public:
     CameraFPToTP();
     virtual ~CameraFPToTP();
 
-    // Inherited via ICamera
+    // Inherited via ThirdPersonCamera
     virtual void Init() override;
     virtual void Update() override;
 };
@@ -54,7 +54,7 @@ public:
     CameraKyunChak();
     virtual ~CameraKyunChak();
 
-
+    // Inherited via ThirdPersonCamera
     virtual void Init() override;
     virtual void Update() override;
 };

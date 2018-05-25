@@ -3,14 +3,14 @@
 #include "UIImage.h"
 #include "UIButton.h"
 
-class GoToLobbyButtonListner;
+class GoToLobbyButtonListener;
 
 class UIGameOver 
     : public UIImage
 {
 private:
     std::wstring temp;
-    GoToLobbyButtonListner* m_pGoToLobbyButtonListner;
+    GoToLobbyButtonListener* m_pGoToLobbyButtonListener;
 
 public:
     UIGameOver();
@@ -19,7 +19,7 @@ public:
     virtual void Init() override;
 };
 
-class GoToLobbyButtonListner : public IUIButtonOnMouseListner
+class GoToLobbyButtonListener : public IUIButtonOnMouseListener
 {
     UIObject* m_pHandle;
 

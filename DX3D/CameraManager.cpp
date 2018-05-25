@@ -20,28 +20,26 @@ CameraManager::~CameraManager()
 void CameraManager::SetCurrentCamera(int cameraState)
 {
     m_pCurrentCamera = m_mapList[cameraState];
-    
-    //이거 가장 자식의 init하고 싶은데 어떻게 해야 합니까?
-    //m_pCurrentCamera->Init(); 
-    //일단 switch 문으로 해결
-    switch (m_pCurrentCamera->m_cameraState)
-    {
-    case CameraState::FIRSTPERSON:
-        static_cast<FirstPersonCamera*>(m_pCurrentCamera)->Init();
-        break;
-    case CameraState::THIRDPERSON :
-        static_cast<ThirdPersonCamera*>(m_pCurrentCamera)->Init();
-        break;
-    case CameraState::FP2TP :
-        static_cast<CameraFPToTP*>(m_pCurrentCamera)->Init();
-        break;
-    case CameraState::TP2FP :
-        static_cast<CameraTPToFP*>(m_pCurrentCamera)->Init();
-        break;
-    case CameraState::KYUNCHAK:
-        static_cast<CameraKyunChak*>(m_pCurrentCamera)->Init();
-        break;
-    }
+    m_pCurrentCamera->Init(); 
+    ////일단 switch 문으로 해결
+    //switch (m_pCurrentCamera->m_cameraState)
+    //{
+    //case CameraState::FIRSTPERSON:
+    //    static_cast<FirstPersonCamera*>(m_pCurrentCamera)->Init();
+    //    break;
+    //case CameraState::THIRDPERSON :
+    //    static_cast<ThirdPersonCamera*>(m_pCurrentCamera)->Init();
+    //    break;
+    //case CameraState::FP2TP :
+    //    static_cast<CameraFPToTP*>(m_pCurrentCamera)->Init();
+    //    break;
+    //case CameraState::TP2FP :
+    //    static_cast<CameraTPToFP*>(m_pCurrentCamera)->Init();
+    //    break;
+    //case CameraState::KYUNCHAK:
+    //    static_cast<CameraKyunChak*>(m_pCurrentCamera)->Init();
+    //    break;
+    //}
     
 }
 
@@ -60,8 +58,15 @@ void CameraManager::Init()
     tempContainer = new CameraTPToFP();
     AddCamera(CameraState::TP2FP, tempContainer);
 
+    //견착
     tempContainer = new CameraKyunChak();
     AddCamera(CameraState::KYUNCHAK, tempContainer);
+
+    //2배율 4배율 스코프
+    tempContainer = new Camera2xScope();
+    AddCamera(CameraState::SCOPE2X, tempContainer);
+    tempContainer = new Camera4xScope();
+    AddCamera(CameraState::SCOPE4X, tempContainer);
 
     //currCamera 설정 + init()
     SetCurrentCamera(CameraState::THIRDPERSON);
@@ -79,6 +84,7 @@ void CameraManager::Update()
 {
     const float dt = g_pTimeManager->GetDeltaTime();
 
+    //V를 눌렀을때 3인칭이면 1인칭으로, 1인칭이면 3인칭으로
     if (g_pKeyManager->IsOnceKeyDown('V'))
     {
         if (m_pCurrentCamera->m_cameraState == CameraState::THIRDPERSON)
@@ -91,12 +97,10 @@ void CameraManager::Update()
         }
     }
     SAFE_UPDATE(m_pCurrentCamera);
+    Debug->AddText("CurrentCameraState : ");
+    Debug->AddText(m_pCurrentCamera->m_cameraState);
+    Debug->EndLine();
 }
-
-//void CameraManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-//{
-//    SAFE_WNDPROC(m_pCurrentCamera);
-//}
 
 void CameraManager::SetTarget(D3DXVECTOR3& pos, D3DXVECTOR3& dir)
 {
@@ -109,7 +113,7 @@ D3DXVECTOR3* CameraManager::GetTargetPos() const
     return m_pTargetPos;
 }
 
-D3DXVECTOR3* CameraManager::GetTargetDir() const
+D3DXVECTOR3* CameraManager::GetTargetRot() const
 {
     return m_pTargetDir;
 }

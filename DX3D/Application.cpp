@@ -14,8 +14,8 @@ void Application::Init()
     g_pDeviceManager->Init();
     g_pKeyManager->Init();
     g_pUIManager->Init();
-    g_pCameraManager->Init();
     g_pSceneManager->Init();
+    g_pCameraManager->Init();
     g_pCollisionManager->Init();
 }
 

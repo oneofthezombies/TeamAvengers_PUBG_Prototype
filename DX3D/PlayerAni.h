@@ -2,36 +2,40 @@
 #include "IDisplayObject.h"
 #include "PlayerParts.h"
 #include "Item.h"
-#include "ICollisionListner.h"
+#include "Collider.h"
 
 class PlayerParts;
-class Gun;
+class Pistol;
 class Bullet;
 class BoxCollider;
+class ItemPicker;
+class UIInventory;
 
-class PlayerAniCollisionListner : public ICollisionListner
+class PlayerAniCollisionListener : public ICollisionListener
 {
 public:
-	PlayerAniCollisionListner(BaseObject& owner);
-	virtual ~PlayerAniCollisionListner() = default;
+	PlayerAniCollisionListener(BaseObject& owner);
+	virtual ~PlayerAniCollisionListener() = default;
 
 	virtual void OnCollisionEnter(const ColliderBase & other) override;
 	virtual void OnCollisionExit(const ColliderBase & other) override;
 	virtual void OnCollisionStay(const ColliderBase & other) override;
 };
 
-
 class PlayerAni : public IDisplayObject
 {
 private:
-    PlayerParts *   m_pRootParts;
+    PlayerParts*    m_pRootParts;
     bool			m_isTurnedOnLight;
 
     D3DXVECTOR3		m_deltaPos;
     D3DXVECTOR3		m_deltaRot;
     D3DXVECTOR3		m_forward;
-    D3DXVECTOR3		m_test1;
 
+    D3DXVECTOR3		m_test1;
+    D3DXVECTOR3     m_dir;
+    D3DXVECTOR3		m_right;
+    D3DXVECTOR3     m_vRotForAlt;
 
     bool			m_isMoving;
     float			m_moveSpeed;
@@ -45,26 +49,27 @@ private:
 
     float			m_maxStepHeight;
 
-    ////Ãß°¡
+    ////ìŠ¹í›ˆ ì¶”ê°€
     bool            m_isRunnig;
     bool            m_isLive;
-    POINT           premousef;
 
-	/* ¿ì¸® Ãß°¡ */
-	//TODO: multimapÀ¸·Î º¯°æÇÒ °Í
-    FIRE_MODE       m_fireMode;      //´Ü¹ß ¿¬¹ß
-	Gun*            m_pGun;          //ÀåÂøÁßÀÎ ÃÑ
+	/* ìš°ë¦¬ ì¶”ê°€ */
+	//TODO: multimapìœ¼ë¡œ ë³€ê²½í•  ê²ƒ
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
-	map<GUN_TAG, Gun*>           m_mapGuns;
+	Pistol*         m_pPistol;     //ì¥ì°©ì¤‘ì¸ ì´
 
-	BoxCollider*			     m_pBoxCollider;
-	PlayerAniCollisionListner*   m_pCollisionListner;
+    BoxCollider*                m_pBoxCollider;
+    PlayerAniCollisionListener* m_pCollisionListener;
+
+    ItemPicker*  m_pItemPicker;
+    UIInventory* m_pUIInventory;
+    Item*        m_pPicked;
 
 public:
     PlayerAni();
     ~PlayerAni();
 
-    // IDisplayObjectÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+    // IDisplayObjectì„(ë¥¼) í†µí•´ ìƒì†ë¨
     virtual void Init() override;
     virtual void Update() override;
     virtual void Render() override;
@@ -74,8 +79,8 @@ public:
     void CreateParts(PlayerParts* &pParts, IDisplayObject* pParent, D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 trans,
                      vector<vector<int>> &vecUV,  PartTag tag);
     
-    //Çàµ¿º° ÇÔ¼ö
-    void DrawGunInOut();        //ÃÑ ²¨³»°í ³Ö±â
+    //í–‰ë™ë³„ í•¨ìˆ˜
+    void DrawGunInOut();        //ì´ êº¼ë‚´ê³  ë„£ê¸°
     void RunAndWalk();
     void DiedAni();
 
@@ -85,76 +90,77 @@ public:
         return static_cast<PlayerParts*>(m_pRootParts->GetChildVec()[index]);
     }
 
-	/* ¿ì¸® Ãß°¡ */
+	/* ìš°ë¦¬ ì¶”ê°€ */
 	size_t GetInventorySize() { return m_mapInventory.size(); }
-	size_t GetGunsNum() { return m_mapGuns.size(); }
 	void PutItemInInventory(Item* item);
-	void PutGuns(Gun* gun);
 	void ShowInventoryForDebug();
-    void ShowFireModeForDebug();
 
-	/* Å° ÀÔ·Â °ü·Ã ÇÔ¼ö·Î ºĞ¸®*/
-	void KeyMove();    //ÀÌµ¿
-	void KeyMount(GUN_TAG gunTag); //ÀåÂø
-	void KeyUnmount(); //ÀåÂøÇØÁ¦
-	void KeyLoad();    //ÃÑ ÀåÀü
-	void KeyFire();    //ÃÑ ½î±â
-	void KeyChangeGun(GUN_TAG gunTag); //¹«±â¹Ù²Ù±â
-    void KeyChangeFireMode(); //´Ü, ¿¬¹ß ¸ğµåº¯°æ
+    void ShowInventory(const D3DXMATRIXA16& transform);
+    bool IsShowingInventory();
+    void Pick(Item& item);
+
+	/* í‚¤ ì…ë ¥ ê´€ë ¨ í•¨ìˆ˜ë¡œ ë¶„ë¦¬*/
+	void KeyMove();    //ì´ë™
+	void KeyMount();   //ì¥ì°©
+	void KeyUnmount(); //ì¥ì°©í•´ì œ
+	void KeyLoad();    //ì´ ì¥ì „
+	void KeyFire();    //ì´ ì˜ê¸°
+    void UpdateRotation();
+
 
 public:
     vector<vector<int>> uvBody = {
-    { 32, 32, 32, 20, 40, 20, 40, 32 },	// ÈÄ
-    { 20, 32, 20, 20, 28, 20, 28, 32 },	// Àü
-    { 28, 32, 28, 20, 32, 20, 32, 32 },	// ÁÂ
-    { 16, 32, 16, 20, 20, 20, 20, 32 },	// ¿ì
-    { 20, 20, 20, 16, 28, 16, 28, 20 },	// »ó
-    { 28, 16, 28, 20, 36, 20, 36, 16 }	// ÇÏ
+    { 32, 32, 32, 20, 40, 20, 40, 32 },	// í›„
+    { 20, 32, 20, 20, 28, 20, 28, 32 },	// ì „
+    { 28, 32, 28, 20, 32, 20, 32, 32 },	// ì¢Œ
+    { 16, 32, 16, 20, 20, 20, 20, 32 },	// ìš°
+    { 20, 20, 20, 16, 28, 16, 28, 20 },	// ìƒ
+    { 28, 16, 28, 20, 36, 20, 36, 16 }	// í•˜
     };
 
     vector<vector<int>> uvHead = {
-    { 24, 16, 24, 8, 32, 8, 32, 16 },	// ÈÄ
-    { 8, 16, 8, 8, 16, 8, 16, 16 },		// Àü
-    { 16, 16, 16, 8, 24, 8, 24, 16 },	// ÁÂ
-    { 0, 16, 0, 8, 8, 8, 8, 16 },		// ¿ì
-    { 8, 8, 8, 0, 16, 0, 16, 8 },		// »ó
-    { 16, 0, 16, 8, 24, 8, 24, 0 }		// ÇÏ
+    { 24, 16, 24, 8, 32, 8, 32, 16 },	// í›„
+    { 8, 16, 8, 8, 16, 8, 16, 16 },		// ì „
+    { 16, 16, 16, 8, 24, 8, 24, 16 },	// ì¢Œ
+    { 0, 16, 0, 8, 8, 8, 8, 16 },		// ìš°
+    { 8, 8, 8, 0, 16, 0, 16, 8 },		// ìƒ
+    { 16, 0, 16, 8, 24, 8, 24, 0 }		// í•˜
     };
 
     vector<vector<int>> uvLArm = {
-    { 44, 32, 44, 20, 48, 20, 48, 32 },	// ÈÄ
-    { 52, 32, 52, 20, 56, 20, 56, 32 },	// Àü
-    { 40, 32, 40, 20, 44, 20, 44, 32 },	// ÁÂ
-    { 48, 32, 48, 20, 52, 20, 52, 32 },	// ¿ì
-    { 44, 20, 44, 16, 48, 16, 48, 20 },	// »ó
-    { 48, 16, 48, 20, 52, 20, 52, 16 }	// ÇÏ
+    { 44, 32, 44, 20, 48, 20, 48, 32 },	// í›„
+    { 52, 32, 52, 20, 56, 20, 56, 32 },	// ì „
+    { 40, 32, 40, 20, 44, 20, 44, 32 },	// ì¢Œ
+    { 48, 32, 48, 20, 52, 20, 52, 32 },	// ìš°
+    { 44, 20, 44, 16, 48, 16, 48, 20 },	// ìƒ
+    { 48, 16, 48, 20, 52, 20, 52, 16 }	// í•˜
     };
 
     vector<vector<int>> uvRArm = {
-    { 48, 32, 48, 20, 44, 20, 44, 32 },	// ÈÄ
-    { 56, 32, 56, 20, 52, 20, 52, 32 },	// Àü
-    { 48, 32, 48, 20, 52, 20, 52, 32 },	// ÁÂ
-    { 40, 32, 40, 20, 44, 20, 44, 32 },	// ¿ì
-    { 48, 20, 48, 16, 44, 16, 44, 20 },	// »ó
-    { 52, 16, 52, 20, 48, 20, 48, 16 }	// ÇÏ
+    { 48, 32, 48, 20, 44, 20, 44, 32 },	// í›„
+    { 56, 32, 56, 20, 52, 20, 52, 32 },	// ì „
+    { 48, 32, 48, 20, 52, 20, 52, 32 },	// ì¢Œ
+    { 40, 32, 40, 20, 44, 20, 44, 32 },	// ìš°
+    { 48, 20, 48, 16, 44, 16, 44, 20 },	// ìƒ
+    { 52, 16, 52, 20, 48, 20, 48, 16 }	// í•˜
     };
 
     vector<vector<int>> uvLLeg = {
-    { 12, 32, 12, 20, 16, 20, 16, 32 },	// ÈÄ
-    { 4, 32, 4, 20, 8, 20, 8, 32 },		// Àü
-    { 8, 32, 8, 20, 12, 20, 12, 32 },	// ÁÂ
-    { 0, 32, 0, 20, 4, 20, 4, 32 },		// ¿ì
-    { 4, 20, 4, 16, 8, 16, 8, 20 },		// »ó
-    { 8, 16, 8, 20, 12, 20, 12, 16 }	// ÇÏ
+    { 12, 32, 12, 20, 16, 20, 16, 32 },	// í›„
+    { 4, 32, 4, 20, 8, 20, 8, 32 },		// ì „
+    { 8, 32, 8, 20, 12, 20, 12, 32 },	// ì¢Œ
+    { 0, 32, 0, 20, 4, 20, 4, 32 },		// ìš°
+    { 4, 20, 4, 16, 8, 16, 8, 20 },		// ìƒ
+    { 8, 16, 8, 20, 12, 20, 12, 16 }	// í•˜
     };
 
     vector<vector<int>> uvRLeg = {
-    { 16, 32, 16, 20, 12, 20, 12, 32 },	// ÈÄ
-    { 8, 32, 8, 20, 4, 20, 4, 32 },		// Àü
-    { 4, 32, 4, 20, 0, 20, 0, 32 },		// ÁÂ
-    { 12, 32, 12, 20, 8, 20, 8, 32 },	// ¿ì
-    { 8, 20, 8, 16, 4, 16, 4, 20 },		// »ó
-    { 12, 16, 12, 20, 8, 20, 8, 16 }	// ÇÏ
+    { 16, 32, 16, 20, 12, 20, 12, 32 },	// í›„
+    { 8, 32, 8, 20, 4, 20, 4, 32 },		// ì „
+    { 4, 32, 4, 20, 0, 20, 0, 32 },		// ì¢Œ
+    { 12, 32, 12, 20, 8, 20, 8, 32 },	// ìš°
+    { 8, 20, 8, 16, 4, 16, 4, 20 },		// ìƒ
+    { 12, 16, 12, 20, 8, 20, 8, 16 }	// í•˜
     };
 };
 

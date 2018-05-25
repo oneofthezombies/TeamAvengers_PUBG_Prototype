@@ -5,7 +5,8 @@ class Ground;
 class PlayerAni;
 class Gun;
 class Bullet;
-class SampleUIButtonListner;
+class SampleUIButtonListener;
+class Item;
 
 class SceneShotting : public IScene
 {
@@ -19,7 +20,7 @@ private:
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±‚¡ÿº±
 
-    SampleUIButtonListner* m_pSampleUIButtonListner;
+    SampleUIButtonListener* m_pSampleUIButtonListener;
 
 public:
 	SceneShotting();
@@ -29,5 +30,16 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 	virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
+
+    void InitSkyBox();
+    void InitLight();
+    void InitAxises();
+    void InitGroundGrid();
+    void InitPlayer();
+    void InitSamples();
+
+    void RenderAxises();
+
+    void RemoveItemPointer(Item& val);
 };
 

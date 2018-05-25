@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "PlayerAni.h"
 #include "PlayerParts.h"
-#include "Gun.h"
+#include "Pistol.h"
 #include "Bullet.h"
 #include "Collider.h"
+#include "ItemPicker.h"
+#include "UIInventory.h"
 
 enum enumParts
 {
@@ -15,10 +17,13 @@ enum enumParts
 };
 
 PlayerAni::PlayerAni()
-    : m_fireMode(FIRE_MODE::SingleShot) //Ã³À½Àº ´Ü¹ß¸ğµå
-	, m_pGun(nullptr)
-	, m_pCollisionListner(nullptr)
-	, m_pBoxCollider(nullptr)
+    : m_pPistol(nullptr)
+    , m_pBoxCollider(nullptr)
+    , m_pCollisionListener(nullptr)
+    , m_pItemPicker(nullptr)
+    , m_pUIInventory(nullptr)
+    , m_pPicked(nullptr)
+    , m_vRotForAlt()
 {
     m_pRootParts = NULL;
 
@@ -41,106 +46,86 @@ PlayerAni::PlayerAni()
 
 PlayerAni::~PlayerAni()
 {
-    //m_pRootParts->ReleaseAll();
-	
-	SAFE_DELETE(m_pBoxCollider);
-	SAFE_DELETE(m_pCollisionListner);
+    SAFE_RELEASE(m_pItemPicker);
 }
 
 void PlayerAni::Init()
 {
-	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f); //½ÃÀÛ À§Ä¡ ¹Ú±â
+	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f); //ì‹œì‘ ìœ„ì¹˜ ë°•ê¸°
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
-    g_pCameraManager->SetTarget(m_pos, m_pos);
+    g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
 
 	/* collider init */
-	m_pCollisionListner = new PlayerAniCollisionListner(*this);
-	
-	m_pBoxCollider = new BoxCollider(*this);
-	m_pBoxCollider->SetListner(*m_pCollisionListner);
+    m_pCollisionListener = SetComponent<PlayerAniCollisionListener>();
+
+    m_pBoxCollider = SetComponent<BoxCollider>();
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
 	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-	D3DXMATRIXA16 m;
-	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);
-	m_pBoxCollider->Update(m);
-	/* end collider init */
+    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
+    /* end collider init */
+
+    //ShowCursor(false);              //ë§ˆìš°ìŠ¤ ì»¤ì„œ ë³´ì´ê¸° ì•ˆë³´ì´ê¸°
 }
 
 void PlayerAni::Update()
 {
-	//ÀÌµ¿ ASDW
-	KeyMove();	
-    //ÀåÂø 1, 2
-	if (g_pKeyManager->IsOnceKeyDown('1'))
-		KeyChangeGun(GUN_TAG::Pistol);
-	else if (g_pKeyManager->IsOnceKeyDown('2'))
-		KeyChangeGun(GUN_TAG::Rifle);
-	//ÀåÂøÇØÁ¦ X
-	if (g_pKeyManager->IsOnceKeyDown('X'))
-		KeyUnmount();
-	//ÃÑ ÀåÀü R
-	if (g_pKeyManager->IsOnceKeyDown('R'))
-		KeyLoad();
-	//ÃÑ ¸ğµå º¯°æ(´Ü¹ß <-> ¿¬¹ß) B
-	if (g_pKeyManager->IsOnceKeyDown('B'))
-        KeyChangeFireMode();
-	//ÃÑ ½î±â(´Ü¹ß) ¸¶¿ì½º ¿ŞÂÊ¹öÆ°
-	if (m_fireMode == FIRE_MODE::SingleShot)
-	{
-		if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-			KeyFire();
-	}
-	//ÃÑ ½î±â(¿¬¹ß)
-	else if(m_fireMode == FIRE_MODE::Burst)
-	{
-        if (m_pGun)
-        {
-            if (m_pGun->GetCanChangeBurstMode())             //¿¬¹ßÀÌ Áö¿øµÇ´Â ÃÑÀÌ¶ó¸é
-            {
-                if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
-                    KeyFire();
-            }
-            else //m_pGun->GetCanChangeBurstMode() == false //¿¬¹ßÀÌ Áö¿øµÇÁö ¾Ê´Â ÃÑÀÌ¶ó¸é
-            {
-                if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                    KeyFire();
-            }
-        }
-	}
+	KeyMove();    //ì´ë™
 
-	//Á¡ÇÁ Space
+    if (!IsShowingInventory())
+    {
+        KeyMount();   //ì¥ì°©
+        KeyUnmount(); //ì¥ì°©í•´ì œ
+        KeyLoad();    //ì´ ì¥ì „
+        KeyFire();    //ì´ ì˜ê¸°
+        RunAndWalk(); //ë›°ê³  ê±·ê¸°
+        UpdateRotation(); // ë§ˆìš°ìŠ¤ ì›€ì§ì¸ë‹¤. ë°©í–¥ ë°”ë€ë‹¤.
+    }
+
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
+    {
         m_isJumping = true;
-	//Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç Å×½ºÆ®¿ë G
-    if (g_pKeyManager->IsOnceKeyDown('G'))
-        DiedAni();
-	//¶Ù°í °È±â LShift
-	RunAndWalk();
+    }
 
+	//ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜ í…ŒìŠ¤íŠ¸ìš©
+    if (g_pKeyManager->IsOnceKeyDown('G'))
+    {
+        DiedAni();
+    }
+    
 	D3DXMATRIXA16 prevM = m_matWorld;
     if (m_isLive)
+    {
         UpdatePosition();
+    }
 	D3DXMATRIXA16 currM = m_matWorld;
 	D3DXMatrixInverse(&prevM, nullptr, &prevM);
+
+    D3DXMATRIXA16 m, tm;
+    D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
+    D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
+    D3DXVec3Normalize(&m_dir, &m_dir);
 
     m_pRootParts->SetMovingState(m_isMoving);
     m_pRootParts->Update();
 
-	/* TM = prevM^(-1) * currM */
-	m_pBoxCollider->Update(prevM * currM);
-
-	/* µğ¹ö±× */
-    //¹ß»ç¸ğµå µğ¹ö±×¿ë
-    ShowFireModeForDebug();
-
-	//ÀÎº¥Åä¸® µğ¹ö±×¿ë
+	/* ë””ë²„ê·¸ */
+	//ì¸ë²¤í† ë¦¬ ë””ë²„ê·¸ìš©
 	ShowInventoryForDebug();
 
-	//ÃÑ¾Ë °³¼ö µğ¹ö±×¿ë
-	if (m_pGun)
-		m_pGun->ShowBulletNumForDebug();
+	//ì´ì•Œ ê°œìˆ˜ ë””ë²„ê·¸ìš©
+    if (m_pPistol)
+    {
+        m_pPistol->ShowBulletNumForDebug();
+    }
+
+	/* TM = prevM^(-1) * currM */
+    tm = prevM * currM;
+	m_pBoxCollider->Update(prevM * currM);
+
+    ShowInventory(tm);
 }
 
 void PlayerAni::Render()
@@ -157,13 +142,20 @@ void PlayerAni::UpdatePosition()
     if (m_isLive)
     {
         D3DXMatrixRotationY(&matRotY, m_rot.y);
-        D3DXVec3TransformNormal(&m_forward, &D3DXVECTOR3(0, 0, 1), &matRotY);
+        D3DXVec3TransformNormal(&m_forward,
+            &D3DXVECTOR3(0, 0, 1), &matRotY);
+
+        D3DXMatrixRotationY(&matRotY, m_rot.y);
+        D3DXVec3TransformNormal(&m_right,
+            &D3DXVECTOR3(1, 0, 0), &matRotY);
     }
     else
     {
         D3DXMatrixRotationX(&matRotY, m_rot.x);
-        D3DXVec3TransformNormal(&m_forward, &D3DXVECTOR3(0, 0, 1), &matRotY);
+        D3DXVec3TransformNormal(&m_forward,
+            &D3DXVECTOR3(0, 0, 1), &matRotY);
     }
+
 
     D3DXVECTOR3 targetPos;
     float basePosY = 0;
@@ -173,7 +165,8 @@ void PlayerAni::UpdatePosition()
     if (m_isJumping == true)
     {
         m_currMoveSpeedRate = 0.7f;
-        targetPos = m_pos + m_forward * m_deltaPos.z * m_moveSpeed * m_currMoveSpeedRate;
+        targetPos = m_pos + m_forward * m_deltaPos.z * m_moveSpeed * m_currMoveSpeedRate
+            + m_right * m_deltaPos.x*m_moveSpeed *m_currMoveSpeedRate;
 
         targetPos.y += m_jumpPower - m_currGravity;
         m_currGravity += m_gravity;
@@ -208,7 +201,8 @@ void PlayerAni::UpdatePosition()
     else //m_isJumping == false
     {
         targetPos = m_pos + m_forward * m_deltaPos.z
-            * m_moveSpeed * m_currMoveSpeedRate;
+            * m_moveSpeed * m_currMoveSpeedRate
+            + m_right * m_deltaPos.x*m_moveSpeed *m_currMoveSpeedRate;
 
         if (g_pCurrentMap != NULL)
         {
@@ -233,6 +227,7 @@ void PlayerAni::UpdatePosition()
     }
 
     D3DXMATRIXA16 matT;
+    //m_pos.x += m_deltaPos.x * m_moveSpeed;
     D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
     m_matWorld = matRotY * matT;
 
@@ -246,27 +241,27 @@ void PlayerAni::UpdatePosition()
 void PlayerAni::CreateAllParts()
 {
     PlayerParts* pParts;
-    //¸öÅë
+    //ëª¸í†µ
     m_pRootParts = new PlayerParts();
     CreateParts(m_pRootParts, this, D3DXVECTOR3(0.0f, 3.0f, 0.0f),
         D3DXVECTOR3(1.0f, 1.0f, 0.5f), D3DXVECTOR3(0, 0, 0), uvBody, tEmpty);
-    //¸Ó¸®
+    //ë¨¸ë¦¬
     pParts = new PlayerParts();
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(0.0f, 1.6f, 0.0f),
         D3DXVECTOR3(0.8f, 0.8f, 0.8f), D3DXVECTOR3(0, 0, 0), uvHead, tEmpty);
-    //¿ŞÆÈ
+    //ì™¼íŒ”
     pParts = new PlayerParts(0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(-1.5f, 1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvLArm, tEmpty);
-    //¿À¸¥ÆÈ
+    //ì˜¤ë¥¸íŒ”
     pParts = new PlayerParts(-0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(1.5f, 1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvRArm, tEmpty);
-    //¿Ş´Ù¸®
+    //ì™¼ë‹¤ë¦¬
     pParts = new PlayerParts(-0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(-0.5f, -1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvLLeg, tEmpty);
-    //¿À¸¥´Ù¸®
+    //ì˜¤ë¥¸ë‹¤ë¦¬
     pParts = new PlayerParts(0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(0.5f, -1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvRLeg, tEmpty);
@@ -279,7 +274,7 @@ void PlayerAni::CreateParts(PlayerParts *& pParts, IDisplayObject * pParent, D3D
     D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
     mat = matS * matT;
     pParts->Init(&mat, vecUV);
-    pParts->SetPosition(&pos);
+    pParts->SetPosition(pos);
     pParts->SetPartTag(tag);
     pParent->AddChild(*pParts);
 }
@@ -340,76 +335,48 @@ void PlayerAni::DiedAni()
     }
 }
 
-/* ¿ì¸® Ãß°¡ */
+/* ìš°ë¦¬ ì¶”ê°€ */
 void PlayerAni::PutItemInInventory(Item* item)
 {
 	item->SetItemState(ITEM_STATE::InInventory);
 	m_mapInventory[item->GetItemTag()].push_back(item);
 }
-
-void PlayerAni::PutGuns(Gun * gun)
-{
-	gun->SetItemState(ITEM_STATE::InInventory);
-	m_mapGuns[gun->GetGunTag()] = gun;
-}
-
 void PlayerAni::ShowInventoryForDebug()
 {
 	Debug->AddText("<Inventory>");
 	Debug->EndLine();
 	Debug->AddText("the number of Items: ");
-	Debug->AddText(GetInventorySize() + GetGunsNum());
+	Debug->AddText(GetInventorySize());
 	Debug->EndLine();
-
-	for (auto item : m_mapGuns)
-	{
-		auto itemTag = item.first;
-		switch (itemTag)
-		{
-		case GUN_TAG::Pistol:
-			Debug->AddText("- Pistol: ");
-			Debug->EndLine();
-
-			switch (item.second->GetItemState())
-			{
-			case ITEM_STATE::Dropped:
-				Debug->AddText("Dropped");
-				break;
-			case ITEM_STATE::InInventory:
-				Debug->AddText("InInventory");
-				break;
-			case ITEM_STATE::Mounting:
-				Debug->AddText("Mounting");
-				break;
-			} //swtich ItemState
-			Debug->EndLine();
-			break;
-		case GUN_TAG::Rifle:
-			Debug->AddText("- Rifle: ");
-			Debug->EndLine();
-
-			switch (item.second->GetItemState())
-			{
-			case ITEM_STATE::Dropped:
-				Debug->AddText("Dropped");
-				break;
-			case ITEM_STATE::InInventory:
-				Debug->AddText("InInventory");
-				break;
-			case ITEM_STATE::Mounting:
-				Debug->AddText("Mounting");
-				break;
-			} //swtich ItemState
-			Debug->EndLine();
-			break;
-		} 
-	} //for m_mapGuns
 
 	for (auto item : m_mapInventory)
 	{
 		auto itemTag = item.first;
 		switch (itemTag)
 		{
+		case ITEM_TAG::Pistol:
+			Debug->AddText("- Pistol: ");
+			Debug->AddText(item.second.size());
+			Debug->EndLine();
+
+			for (auto i : item.second)
+			{
+				switch (i->GetItemState())
+				{
+				case ITEM_STATE::Dropped:
+					Debug->AddText("Dropped");
+					break;
+				case ITEM_STATE::InInventory:
+					Debug->AddText("InInventory");
+					break;
+				case ITEM_STATE::Mounting:
+					Debug->AddText("Mounting");
+					break;
+				} //swtich ItemState
+				Debug->EndLine();
+			} // for item.second()
+
+			break;
 		case ITEM_TAG::Bullet:
 			Debug->AddText("- Bullet: ");
 			Debug->AddText(item.second.size());
@@ -430,73 +397,47 @@ void PlayerAni::ShowInventoryForDebug()
 					break;
 				} //swtich ItemState
 				Debug->EndLine();
-
-				switch (static_cast<Bullet*>(i)->GetBulletFor())
-				{
-				case GUN_TAG::Pistol:
-					Debug->AddText("Pistol");
-					break;
-				case GUN_TAG::Rifle:
-					Debug->AddText("Rifle");
-					break;
-				}
-				Debug->EndLine();
 			} // for item.second()
 			break;
 		} //switch itemTag
 	} //for m_mapInventory
 }
 
-void PlayerAni::ShowFireModeForDebug()
-{
-    Debug->EndLine();
-    Debug->AddText("<Fire Mode>");
-    switch (m_fireMode)
-    {
-    case FIRE_MODE::SingleShot:
-        Debug->AddText("Single Mode");
-        Debug->EndLine();
-        break;
 
-    case FIRE_MODE::Burst:
-        Debug->AddText("Burst Mode");
-        Debug->EndLine();
-        break;
-    
-    }
-}
-
-/* Å° ÀÔ·Â °ü·Ã ÇÔ¼ö·Î ºĞ¸® */
+/* í‚¤ ì…ë ¥ ê´€ë ¨ í•¨ìˆ˜ë¡œ ë¶„ë¦¬ */
 void PlayerAni::KeyMove()
 {
 	//float deltaTime = g_pTimeManager->GetDeltaTime();
 	//float distance = deltaTime * m_velocity;
 
-	/* ÀÌµ¿ ASDW */ // ¸Ê ±¸¿ª ¾È¿¡ ÀÖÀ» ¶§¸¸ ¿òÁ÷ÀÎ´Ù 
-	if (g_pKeyManager->IsStayKeyDown('A')) //¿ŞÂÊ
+	/* ì´ë™ ASDW */ // ë§µ êµ¬ì—­ ì•ˆì— ìˆì„ ë•Œë§Œ ì›€ì§ì¸ë‹¤ 
+	if (g_pKeyManager->IsStayKeyDown('A')) //ì™¼ìª½
 	{
 		//if (m_pos.x - distance >= -5.f)
 		//	m_pos.x -= distance;
-		m_deltaRot = D3DXVECTOR3(0, -1, 0);
+		//m_deltaRot = D3DXVECTOR3(0, -1, 0);
+        m_deltaPos.x = -1;
 	}
-	else if (g_pKeyManager->IsStayKeyDown('D')) //¿À¸¥ÂÊ
+	else if (g_pKeyManager->IsStayKeyDown('D')) //ì˜¤ë¥¸ìª½
 	{
 		//if (m_pos.x + distance <= 5.f)
 		//	m_pos.x += distance;
-		m_deltaRot = D3DXVECTOR3(0,  1, 0);
-	}
+		//m_deltaRot = D3DXVECTOR3(0,  1, 0);
+        m_deltaPos.x = 1;
+    }
 	else
 	{
-		m_deltaRot = D3DXVECTOR3(0, 0, 0);
-	}
+		//m_deltaRot = D3DXVECTOR3(0, 0, 0);
+        m_deltaPos.x = 0;
+    }
 
-	if (g_pKeyManager->IsStayKeyDown('W')) //À§ÂÊ
+	if (g_pKeyManager->IsStayKeyDown('W')) //ìœ„ìª½
 	{
 		//if (m_pos.z + distance <= 20.f)
 		//	m_pos.z += distance;
 		m_deltaPos.z = 1;
 	}
-	else if (g_pKeyManager->IsStayKeyDown('S')) //¾Æ·¡ÂÊ
+	else if (g_pKeyManager->IsStayKeyDown('S')) //ì•„ë˜ìª½
 	{
 		//if (m_pos.z - distance >= -20.f)
 		//	m_pos.z -= distance;
@@ -507,154 +448,202 @@ void PlayerAni::KeyMove()
 		m_deltaPos.z = 0;
 	}
 
-	/* ÃÑ ÀåÂø½Ã ÃÑ À§Ä¡ ¾÷µ¥ÀÌÆ® */
-	if (m_pGun)
+	/* ì´ ì¥ì°©ì‹œ ì´ ìœ„ì¹˜ ì—…ë°ì´íŠ¸ */
+	if (m_pPistol)
 	{
-		m_pGun->SetPosition(D3DXVECTOR3(m_pos.x + 1.5f, m_pos.y + 5.f, m_pos.z + 2.f)); //ÇÃ·¹ÀÌ¾îº¸´Ù »ìÂ¦ À§, »ìÂ¦ ¾Õ
+		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x + m_forward.x*2.3f +m_right.x*1.3f , m_pos.y + 4.f, m_pos.z + m_forward.z * 2.3f + m_right.z*1.3f)); //í”Œë ˆì´ì–´ë³´ë‹¤ ì‚´ì§ ìœ„, ì‚´ì§ ì•
+        m_pPistol->SyncRot(m_rot.y);
 	}
 }
 
-void PlayerAni::KeyMount(GUN_TAG gunTag)
+void PlayerAni::KeyMount()
 {
-	/* ¹«±â ÀåÂø */
-	for (auto gun : m_mapGuns)
+	/* ë¬´ê¸° ì¥ì°© */
+	if (g_pKeyManager->IsOnceKeyDown('1'))
 	{
-		if (gun.first == gunTag)
+		if (m_pPistol == nullptr) //ì•„ë¬´ê²ƒë„ ì¥ì°©ë˜ì–´ìˆì§€ ì•Šì„ ë•Œ
 		{
-			DrawGunInOut();
-			m_pGun = static_cast<Gun*>(gun.second);
-			m_pGun->SetItemState(ITEM_STATE::Mounting); //ÀåÂøÁß
-			cout << m_pGun->GunTagToStrForDebug(gunTag) << " OK, Mount." << endl;
-			break; //ÃÑÇÑ°³¸¸ Ã£Áö·Õ
+			for (auto item : m_mapInventory) //ì¸ë²¤í† ë¦¬ì—ì„œ ì´ ì°¾ì•„ ê°€ì¥ ì•ì— ìˆëŠ” ì´ ê²Ÿë˜
+			{
+				auto itemTag = item.first;
+				if (itemTag == ITEM_TAG::Pistol)
+				{
+					DrawGunInOut();
+					m_pPistol = static_cast<Pistol*>(item.second.front());
+					m_pPistol->SetItemState(ITEM_STATE::Mounting); //ì¥ì°©ì¤‘
+					std::cout << "ì¥ì°© ì™„ë£Œ" << std::endl;
+					break; //ì´í•œê°œë§Œ ì°¾ì§€ë¡±
+				}
+			}
 		}
 	}
 }
 
 void PlayerAni::KeyUnmount()
 {
-	/* ¹«±â ÀåÂø ÇØÁ¦ */
-	if (m_pGun)
+	/* ë¬´ê¸° ì¥ì°© í•´ì œ */
+	if (g_pKeyManager->IsOnceKeyDown('X'))
 	{
-		DrawGunInOut();
-		m_pGun->SetItemState(ITEM_STATE::InInventory); //ÀåÂøÇØÁ¦Áß
-		m_pGun = nullptr;
-		cout << "Ok, Unmount." << endl;
+		if (m_pPistol)
+		{
+			DrawGunInOut();
+			m_pPistol->SetItemState(ITEM_STATE::InInventory); //ì¥ì°©í•´ì œì¤‘
+			m_pPistol = nullptr;
+			std::cout << "ì¥ì°© í•´ì œ" << std::endl;
+		}
 	}
+
 }
 
 void PlayerAni::KeyLoad()
 {
-	/* ÃÑ¾Ë ÀåÀü */
-	if (m_pGun) //ÀåÂøÇÏ°í ÀÖ´Â ÃÑÀÌ ÀÖÀ¸¸é
+	/* ì´ì•Œ ì¥ì „ */
+	if (g_pKeyManager->IsOnceKeyDown('R'))
 	{
-		//ÃÑ¾Ë Ã£±â
-		for (auto& item : m_mapInventory)
+		if (m_pPistol) //ì¥ì°©í•˜ê³  ìˆëŠ” ì´ì´ ìˆìœ¼ë©´
 		{
-			if (item.first == ITEM_TAG::Bullet)
+			//ì´ì•Œ ì°¾ê¸°
+			for (auto& item : m_mapInventory)
 			{
-				int need = m_pGun->GetNeedBullet(); //ÀåÀü¿¡ ÇÊ¿äÇÑ ÃÑ¾Ë ¼ö
-				auto& bullets = item.second;
-				vector<Bullet*> vecSpecificBullets; //Æ¯Á¤ ÃÑ¾Ë ¸®½ºÆ®¸¦ ¸¸µç´Ù
-				for (auto bullet : bullets)
+				if (item.first == ITEM_TAG::Bullet)
 				{
-					auto pBullet = static_cast<Bullet*>(bullet);
-					if (pBullet->GetBulletFor() == m_pGun->GetGunTag())
-						vecSpecificBullets.emplace_back(pBullet);
-				}
-
-				for (int i = 0; i < need; ++i)
-				{
-					if(vecSpecificBullets.empty() == false) //Æ¯Á¤ ÃÑ¾Ë ¸®½ºÆ®¿¡ ´ëÇØ ÁøÇà
+					int need = m_pPistol->GetNeedBullet(); //ì¥ì „ì— í•„ìš”í•œ ì´ì•Œ ìˆ˜
+					auto& bullets = item.second;
+					for (int i = 0; i < need; ++i)
 					{
-						auto pLastBullet = static_cast<Bullet*>(vecSpecificBullets.back());
-						if(pLastBullet->IsBulletForThisGun(m_pGun->GetGunTag()))
+						if (bullets.empty() == false)
 						{
-							pLastBullet->SetItemState(ITEM_STATE::Mounting);
-							m_pGun->Load(pLastBullet);
-							for (auto it = bullets.begin(); it != bullets.end(); )
-							{
-								if (*it == static_cast<Item*>(vecSpecificBullets.back()))
-									it = bullets.erase(it);
-								else
-									++it;
-							}
-							vecSpecificBullets.pop_back();
-							cout << "Ok, Load." << endl;
-						}
-						else
-						{
-							cout << "This Bullet can't be used for this Gun." << endl;
+							auto bullet = bullets.back();
+							bullet->SetItemState(ITEM_STATE::Mounting);
+							m_pPistol->Load(static_cast<Bullet*>(bullet));
+							bullets.pop_back();
+							std::cout << "ì¥ì „ì™„ë£Œ" << std::endl;
 						}
 					}
-				}//for need
-			}//if ITEM_TAG::Bullet
-		}//for m_mapInventory
-	}//if m_pGun
-	else //m_pPistpol == nullptr
-	{
-		cout << "Plz, Load after mounting gun." << endl;
+				}//if ITEM_TAG::Bullet
+			}//for m_mapInventory
+		}//if m_pPistol
+		else //m_pPistpol == nullptr
+		{
+			std::cout << "ì´ì„ ì¥ì°©í•˜ê³  ì¥ì „í•´ì¤˜~!" << std::endl;
+		}
 	}
 }
 
 void PlayerAni::KeyFire()
 {
-    if (m_pGun) //ÃÑÀÌ ÀåÂøµÇ¾îÀÖÀ» ¶§
-    {
-		if (m_pGun->GetBulletNum() > 0)
+	if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
+	{
+		if (m_pPistol) //ì´ì´ ì¥ì°©ë˜ì–´ìˆì„ ë•Œ
 		{
-			m_pGun->Fire();
+			m_pPistol->Fire();
+			if (m_pPistol->GetBulletNum() > 0)
+				std::cout << "ë¹µì•¼ë¹µì•¼~!" << std::endl;
+			else
+				std::cout << "ì´ì•Œì´ ì—†ë”° ã… ã… ã… ã… " << std::endl;
 		}
 		else
-			cout << "No Bullet!!" << endl;
-	}
-	else
-	{
-		cout << "Plz, Mount Gun." << endl;
+		{
+			std::cout << "ì´ì„ ì¥ì°©í•´ì¤˜!" << std::endl;
+		}
 	}
 }
 
-void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
+void PlayerAni::UpdateRotation()
 {
-	if (m_pGun == nullptr) //¾Æ¹«°Íµµ ÀåÂøµÇ¾îÀÖÁö ¾ÊÀ» ¶§
-	{
-		KeyMount(gunTag);
-	}
-	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //ÀåÂøÀÌ µÇ¾îÀÖÀ¸¸é¼­, ÀÌ¹Ì ÀåÂøÇÏ°í ÀÖ´Â ÃÑÀÌ ¾Æ´Ò ¶§
-	{
-		//ÀåÂø ÇØÁ¦ ÈÄ ÀåÂø
-		KeyUnmount(); 
-		KeyMount(gunTag);
-	}
-}
+    const float dt = g_pTimeManager->GetDeltaTime();
 
-void PlayerAni::KeyChangeFireMode()
-{
-    if (m_pGun)
+    POINT mouse;
+    GetCursorPos(&mouse);
+    ScreenToClient(g_hWnd, &mouse);
+
+    POINT diff;
+    diff.x = mouse.x - 1280 / 2;
+    diff.y = mouse.y - 720 / 2;
+    const float factorX = 0.3f;
+    const float factorY = 0.3f;
+
+    if (g_pKeyManager->IsOnceKeyDown(VK_MENU))
     {
-        if (m_fireMode == FIRE_MODE::SingleShot)
+        m_vRotForAlt = m_rot;
+    }
+
+    if (g_pKeyManager->IsStayKeyDown(VK_MENU) &&
+        g_pCurrentCamera->GetState() == CameraState::THIRDPERSON)
+    {
+        m_vRotForAlt.x += diff.y * factorX * dt;
+        m_vRotForAlt.y += diff.x * factorY * dt;
+        g_pCameraManager->SetTarget(m_pos, m_vRotForAlt);
+
+    }
+    else
+    {
+        m_rot.x += diff.y * factorX * dt;
+        m_rot.y += diff.x * factorY * dt;
+        g_pCameraManager->SetTarget(m_pos, m_rot);
+    }
+
+    POINT center;
+    center.x = 1280 / 2;
+    center.y = 720 / 2;
+    ClientToScreen(g_hWnd, &center);
+    SetCursorPos(center.x, center.y);
+}
+
+void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
+{
+    if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
+    {
+        if (m_pItemPicker)
         {
-            if (m_pGun->GetCanChangeBurstMode())
-                m_fireMode = FIRE_MODE::Burst;
+            SAFE_RELEASE(m_pItemPicker);
+            g_pUIManager->Destroy(*m_pUIInventory);
+            m_pUIInventory = nullptr;
+
+            POINT center;
+            center.x = 1280 / 2;
+            center.y = 720 / 2;
+            ClientToScreen(g_hWnd, &center);
+            SetCursorPos(center.x, center.y);
         }
-        else if (m_fireMode == FIRE_MODE::Burst)
-            m_fireMode = FIRE_MODE::SingleShot;
+        else
+        {
+            m_pItemPicker = ItemPicker::Create(*this, m_pos, m_rot);
+            m_pUIInventory = UIInventory::Create();
+            m_pUIInventory->AttachToObject(*this);
+        }
+    }
+
+    if (m_pItemPicker && m_pUIInventory)
+    {
+        vector<Item*> pickables;
+        m_pItemPicker->Update(pickables, transform);
+        m_pUIInventory->Update(m_pPicked, m_mapInventory, pickables);
     }
 }
 
-/* Ãæµ¹ °ü·Ã */
-PlayerAniCollisionListner::PlayerAniCollisionListner(BaseObject & owner)
-	: ICollisionListner(owner)
+bool PlayerAni::IsShowingInventory()
+{
+    return m_pItemPicker || m_pUIInventory;
+}
+
+void PlayerAni::Pick(Item& item)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionEnter(const ColliderBase & other)
+PlayerAniCollisionListener::PlayerAniCollisionListener(BaseObject& owner)
+	: ICollisionListener(owner)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionExit(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionStay(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionExit(const ColliderBase& other)
+{
+}
+
+void PlayerAniCollisionListener::OnCollisionStay(const ColliderBase& other)
 {
 }

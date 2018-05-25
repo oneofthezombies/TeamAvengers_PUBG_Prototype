@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "SceneShotting.h"
 #include "Ground.h"
+//#include "PlayerTemp.h"
 #include "PlayerAni.h"
-#include "Gun.h"
+#include "Pistol.h"
 #include "Bullet.h"
-#include "SampleCollidable.h"
 #include "SkyBox.h"
 #include "UIButton.h"
 #include "UIGameOver.h"
-#include "SampleUIButtonListner.h"
+#include "SampleUIButtonListener.h"
 #include "UIManager.h"
 #include "UIInteractionMessage.h"
 #include "Cubeman.h"
@@ -16,10 +16,10 @@
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
+	//, m_pPlayerAniTemp(nullptr)
 	, m_pPlayerAni(nullptr)
     , m_pPistol(nullptr)
-	, m_pRifle(nullptr)
-    , m_pSampleUIButtonListner(nullptr)
+    , m_pSampleUIButtonListener(nullptr)
 {
 }
 
@@ -30,106 +30,52 @@ SceneShotting::~SceneShotting()
 
 void SceneShotting::Init()
 {
-	SkyBox* skyBox = new SkyBox;
-	D3DXMATRIXA16 m;
-	const float scale = 50.0f;
-	D3DXMatrixScaling(&m, scale, scale, scale);
-	skyBox->Init(m);
-	AddSimpleDisplayObj(skyBox);
+    InitSkyBox();
+    InitLight();
 
-	//x, y, z 기준선
-	D3DCOLOR c;
-	float halfLength = 15.f;
-	c = D3DCOLOR_XRGB(255, 0, 0);
-	m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(-halfLength, 0.0f, 0.0f), c));
-	m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(halfLength, 0.0f, 0.0f), c));
-	c = D3DCOLOR_XRGB(0, 255, 0);
-	m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, -halfLength, 0.0f), c));
-	m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, halfLength, 0.0f), c));
-	c = D3DCOLOR_XRGB(0, 0, 255);
-	m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, 0.0f, -halfLength), c));
-	m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, 0.0f, halfLength), c));
+    //x, y, z 기준선
+    InitAxises();
 
 	//바닥
-	m_pGround = new Ground(6, 20, 2.f);
-	m_pGround->Init();
-	AddSimpleDisplayObj(m_pGround);
+    InitGroundGrid();
 
-	//플레이어
-	m_pPlayerAni = new PlayerAni;
-	m_pPlayerAni->Init();
-	AddSimpleDisplayObj(m_pPlayerAni);
+    InitPlayer();
 
 	//권총
-	m_pPistol = new Gun(GUN_TAG::Pistol, false, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
+    m_pPistol->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 15.0f));
 	AddSimpleDisplayObj(m_pPistol);
 
-	//소총
-	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 1.2f, -D3DXToRadian(90));
-	m_pRifle->Init();
-	AddSimpleDisplayObj(m_pRifle);
-
-	//권총용 총알 5개 생성
-	m_vecPBulletForPistol.reserve(5);
-	for (int i = 0; i < 5; ++i)
+	//총알 10개 생성
+	m_vecPBullet.reserve(10);
+	for (int i = 0; i < 10; ++i)
 	{
-		Bullet* bullet = new Bullet(GUN_TAG::Pistol, 0.08f, 10.f);
+		Bullet* bullet = new Bullet(0.08f, 10.f);
 		bullet->Init();
-		m_vecPBulletForPistol.push_back(bullet);
-		AddSimpleDisplayObj(bullet);
-	}
-	//소총용 총알 5개 생성
-	m_vecPBulletForRifle.reserve(5);
-	for (int i = 0; i < 5; ++i)
-	{
-		Bullet* bullet = new Bullet(GUN_TAG::Rifle, 0.05f, 15.f);
-		bullet->Init();
-		m_vecPBulletForRifle.push_back(bullet);
+        bullet->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 2.0f + static_cast<float>(i)));
+		m_vecPBullet.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
 
-	//총이랑 총알먹기 //포인터에 대한 소유권을 명확히 해야한다
-	m_pPlayerAni->PutGuns(m_pPistol); m_pPistol = nullptr;
-	m_pPlayerAni->PutGuns(m_pRifle); m_pRifle = nullptr;
-	
-	for (auto& bullet : m_vecPBulletForPistol)
-	{ 
-		m_pPlayerAni->PutItemInInventory(bullet);
-	}
-	m_vecPBulletForPistol.clear();
-
-	for (auto& bullet : m_vecPBulletForRifle)
-	{
-		m_pPlayerAni->PutItemInInventory(bullet);
-	}
-	m_vecPBulletForRifle.clear();
-
-
-    CollidableItemBox* cib = new CollidableItemBox;
-    cib->Init();
-    AddSimpleDisplayObj(cib);
-
-    UIButton* sampleUIB = new UIButton;
-    sampleUIB->Init();
-    sampleUIB->SetSize(D3DXVECTOR2(200.0f, 200.0f));
-    sampleUIB->SetText(g_pFontManager->GetFont(Font::kIdle), TEXT("Sample"));
-    m_pSampleUIButtonListner = new SampleUIButtonListner;
-    m_pSampleUIButtonListner->SetUIButton(*sampleUIB);
-    g_pUIManager->RegisterUIObject(*sampleUIB);
+	////총이랑 총알먹기 //포인터에 대한 소유권을 명확히 해야한다
+	//m_pPlayerAni->PutItemInInventory(m_pPistol);
+	//m_pPistol = nullptr;
+	//for (auto bullet : m_vecPBullet)
+	//{ 
+	//	m_pPlayerAni->PutItemInInventory(bullet);
+	//}
+	//m_vecPBullet.clear();
 
     Cubeman* cm = new Cubeman;
     cm->Init();
     cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
     AddSimpleDisplayObj(cm);
 
-    SampleColliderOwner1* sco1 = new SampleColliderOwner1;
-    sco1->Init();
-    AddSimpleDisplayObj(sco1);
+    //InitSamples();
 
-    SampleColliderOwner2* sco2 = new SampleColliderOwner2;
-    sco2->Init();
-    AddSimpleDisplayObj(sco2);
+    g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kFoo, CollisionTag::kBar);
+    g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kBullet, CollisionTag::kEnemy);
 }
 
 void SceneShotting::Update()
@@ -149,21 +95,109 @@ void SceneShotting::Render()
 {
 	OnRenderIScene();
 
-
 	//x, y, z 기준선 그리기 
-	D3DXMATRIXA16 matI;
-	D3DXMatrixIdentity(&matI);
-
-	const auto dv = g_pDevice;
-	dv->SetRenderState(D3DRS_LIGHTING, false);
-	
-	dv->SetTransform(D3DTS_WORLD, &matI);
-	dv->SetFVF(VERTEX_PC::FVF);
-	dv->DrawPrimitiveUP(D3DPT_LINELIST, m_vecBaseline.size() / 2, &m_vecBaseline[0], sizeof(VERTEX_PC));
-	
-	dv->SetRenderState(D3DRS_LIGHTING, true);
+    RenderAxises();
 }
 
 void SceneShotting::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+}
+
+void SceneShotting::InitSkyBox()
+{
+    SkyBox* skyBox = new SkyBox;
+    D3DXMATRIXA16 m;
+    const float scale = 100.0f;
+    D3DXMatrixScaling(&m, scale, scale, scale);
+    skyBox->Init(m);
+    AddSimpleDisplayObj(skyBox);
+}
+
+void SceneShotting::InitLight()
+{
+    D3DLIGHT9 light = DXUtil::InitDirectional(&D3DXVECTOR3(1.0f, -1.0f, 1.0f), &WHITE);
+    const auto dv = g_pDevice;
+    dv->SetLight(0, &light);
+    dv->LightEnable(0, true);
+}
+
+void SceneShotting::InitAxises()
+{
+    D3DCOLOR c;
+    float halfLength = 15.f;
+    c = D3DCOLOR_XRGB(255, 0, 0);
+    m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(-halfLength, 0.0f, 0.0f), c));
+    m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(halfLength, 0.0f, 0.0f), c));
+    c = D3DCOLOR_XRGB(0, 255, 0);
+    m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, -halfLength, 0.0f), c));
+    m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, halfLength, 0.0f), c));
+    c = D3DCOLOR_XRGB(0, 0, 255);
+    m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, 0.0f, -halfLength), c));
+    m_vecBaseline.push_back(VERTEX_PC(D3DXVECTOR3(0.0f, 0.0f, halfLength), c));
+}
+
+void SceneShotting::InitGroundGrid()
+{
+    m_pGround = new Ground(6, 20, 2.f);
+    m_pGround->Init();
+    AddSimpleDisplayObj(m_pGround);
+}
+
+void SceneShotting::InitPlayer()
+{
+    m_pPlayerAni = new PlayerAni;
+    m_pPlayerAni->Init();
+    AddSimpleDisplayObj(m_pPlayerAni);
+}
+
+void SceneShotting::InitSamples()
+{
+    UIButton* sampleUIB = new UIButton;
+    sampleUIB->Init();
+    sampleUIB->SetSize(D3DXVECTOR2(200.0f, 200.0f));
+    sampleUIB->SetText(g_pFontManager->GetFont(Font::kIdle), TEXT("Sample"));
+    m_pSampleUIButtonListener = new SampleUIButtonListener;
+    m_pSampleUIButtonListener->SetUIButton(*sampleUIB);
+    g_pUIManager->RegisterUIObject(*sampleUIB);
+
+    SampleColliderOwner1* sco1 = new SampleColliderOwner1;
+    sco1->Init();
+    AddSimpleDisplayObj(sco1);
+
+    SampleColliderOwner2* sco2 = new SampleColliderOwner2;
+    sco2->Init();
+    AddSimpleDisplayObj(sco2);
+}
+
+void SceneShotting::RenderAxises()
+{
+    D3DXMATRIXA16 matI;
+    D3DXMatrixIdentity(&matI);
+
+    const auto dv = g_pDevice;
+    dv->SetRenderState(D3DRS_LIGHTING, false);
+
+    dv->SetTransform(D3DTS_WORLD, &matI);
+    dv->SetFVF(VERTEX_PC::FVF);
+    dv->DrawPrimitiveUP(D3DPT_LINELIST, m_vecBaseline.size() / 2, &m_vecBaseline[0], sizeof(VERTEX_PC));
+
+    dv->SetRenderState(D3DRS_LIGHTING, true);
+}
+
+void SceneShotting::RemoveItemPointer(Item& val)
+{
+    if (m_pPistol == &val)
+    {
+        m_pPistol = nullptr;
+        return;
+    }
+
+    for (auto it = m_vecPBullet.begin(); it != m_vecPBullet.end(); ++it)
+    {
+        if (*it == &val)
+        {
+            m_vecPBullet.erase(it);
+            return;
+        }
+    }
 }

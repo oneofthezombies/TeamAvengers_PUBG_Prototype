@@ -1,7 +1,7 @@
 #pragma once
 #include "UIObject.h"
 
-class IUIButtonOnMouseListner;
+class IUIButtonOnMouseListener;
 
 class UIButton : public UIObject
 {
@@ -14,7 +14,7 @@ private:
 	};
     static const int m_kNumState = 3;
 
-    IUIButtonOnMouseListner*   m_pIUIButtonOnMouseListner;
+    IUIButtonOnMouseListener*   m_pIUIButtonOnMouseListener;
     State                      m_state;
     int                        m_KeyToRespond;
     bool                       m_bPrevIsMouseOn;
@@ -37,17 +37,17 @@ public:
 	void SetTexture(const string& idle, const string& mouseOver, const string& select);
 	void SetText(const LPD3DXFONT font, const LPCTSTR text);
     void SetKeyToRespond(const int key);
-    void SetIUIButtonOnMouseListner(IUIButtonOnMouseListner& val);
+    void SetIUIButtonOnMouseListener(IUIButtonOnMouseListener& val);
 };
 
-class IUIButtonOnMouseListner
+class IUIButtonOnMouseListener
 {
 private:
     UIButton* m_pUIButton;
 
 public:
-    IUIButtonOnMouseListner();
-    virtual ~IUIButtonOnMouseListner() = default;
+    IUIButtonOnMouseListener();
+    virtual ~IUIButtonOnMouseListener() = default;
 
     virtual void OnMouseEnter() = 0;
     virtual void OnMouseExit() = 0;

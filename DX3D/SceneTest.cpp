@@ -4,9 +4,7 @@
 #include "Grid.h"
 #include "ParticleTest.h"
 #include "SkyBox.h"
-#include "ICollidable.h"
 #include "UIText.h"
-#include "SampleCollidable.h"
 
 SceneTest::SceneTest()
 {

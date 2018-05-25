@@ -9,7 +9,7 @@
 
 class UIText;
 class UIImage;
-class SampleUIListner;
+class SampleUIListener;
 
 class UIManager : public SingletonBase<UIManager>
 {

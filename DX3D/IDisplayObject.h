@@ -15,23 +15,21 @@ public:
 	IDisplayObject();
 	virtual ~IDisplayObject();
 
+    virtual void Release() override;
+
 	virtual void Init() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
-    virtual void Release() override;
+
+    void UpdateTransform();
+
 	virtual void AddChild(IDisplayObject& val);
 
-    D3DXVECTOR3		     GetPosition() const;
     void			     SetPosition(const D3DXVECTOR3& pos);
+    D3DXVECTOR3		     GetPosition() const;
     D3DXVECTOR3		     GetRotation() const;
     const D3DXMATRIXA16& GetWorldMatrix() const;
-
-	D3DXVECTOR3		GetPosition() { return m_pos; }
-	void			SetPosition(D3DXVECTOR3* pos) { m_pos = *pos; }
-	D3DXVECTOR3		GetRotation() { return m_rot; }
-	D3DXMATRIXA16	GetWorldMatrix() { return m_matWorld; }
-    ///////�߰��� �κ�
-    const vector<IDisplayObject*>& GetChildVec() { return m_vecPChild; }
+    const vector<IDisplayObject*>& GetChildVec() const;
 
     void UpdateChildren();
     void RenderChildren();
