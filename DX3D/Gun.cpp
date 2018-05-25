@@ -2,9 +2,10 @@
 #include "Gun.h"
 #include "Bullet.h"
 
-Gun::Gun(GUN_TAG gunTag, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
+Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
 	: Item(ITEM_TAG::Gun, "Gun", "I am a Gun")
 	, m_gunTag(gunTag)
+	, m_canChangeBurstMode(canChangeBurstMode)
 	, m_maxBullet(bulletNum)
 	, m_bulletFireCoolTime(bulletFireCoolTime) //0.4f
 	, m_velocity(velocity) //5.f;
@@ -92,6 +93,7 @@ void Gun::Fire()
 
 		if (m_vecPBullet.empty() == false)        //총알이 있으면
 		{
+            cout << "Bang Bnag~!" << endl;
 			Bullet* bullet = m_vecPBullet.back(); //총알을 하나 꺼내고
 			m_vecPBullet.pop_back();              //벡터에서 지워줌 (실제 릴리즈는 현재씬의 Update에서)
 			bullet->SetIsFire(true);

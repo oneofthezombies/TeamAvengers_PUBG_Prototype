@@ -57,6 +57,12 @@ enum class GUN_TAG
 	Rifle
 };
 
+enum class FIRE_MODE
+{
+    SingleShot, //단발
+    Burst       //연발
+};
+
 struct KEYBOARD_STATE
 {
 	D3DXVECTOR3 deltaPos;

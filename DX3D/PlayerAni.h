@@ -52,7 +52,8 @@ private:
 
 	/* ¿ì¸® Ãß°¡ */
 	//TODO: multimapÀ¸·Î º¯°æÇÒ °Í
-	Gun*            m_pGun;      //ÀåÂøÁßÀÎ ÃÑ
+    FIRE_MODE       m_fireMode;      //´Ü¹ß ¿¬¹ß
+	Gun*            m_pGun;          //ÀåÂøÁßÀÎ ÃÑ
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
 	map<GUN_TAG, Gun*>           m_mapGuns;
 
@@ -90,10 +91,11 @@ public:
 	void PutItemInInventory(Item* item);
 	void PutGuns(Gun* gun);
 	void ShowInventoryForDebug();
+    void ShowFireModeForDebug();
 
 	/* Å° ÀÔ·Â °ü·Ã ÇÔ¼ö·Î ºÐ¸®*/
 	void KeyMove();    //ÀÌµ¿
-	void KeyMount(GUN_TAG gunTag);   //ÀåÂø
+	void KeyMount(GUN_TAG gunTag); //ÀåÂø
 	void KeyUnmount(); //ÀåÂøÇØÁ¦
 	void KeyLoad();    //ÃÑ ÀåÀü
 	void KeyFire();    //ÃÑ ½î±â

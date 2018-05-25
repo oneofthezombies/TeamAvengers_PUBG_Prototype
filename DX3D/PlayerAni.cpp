@@ -15,7 +15,8 @@ enum enumParts
 };
 
 PlayerAni::PlayerAni()
-    : m_pGun(nullptr)
+    : m_fireMode(FIRE_MODE::SingleShot) //처음은 단발모드
+	, m_pGun(nullptr)
 	, m_pCollisionListner(nullptr)
 	, m_pBoxCollider(nullptr)
 {
@@ -82,9 +83,47 @@ void PlayerAni::Update()
 	//총 장전 R
 	if (g_pKeyManager->IsOnceKeyDown('R'))
 		KeyLoad();
-	//총 쓰기 Enter
-	if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
-		KeyFire();
+	//총 모드 변경(단발 <-> 연발) B
+	if (g_pKeyManager->IsOnceKeyDown('B'))
+	{
+        if (m_pGun)
+        {
+            if (m_fireMode == FIRE_MODE::SingleShot)
+            {
+                if(m_pGun->GetCanChangeBurstMode())
+                    m_fireMode = FIRE_MODE::Burst;
+            }
+            else if (m_fireMode == FIRE_MODE::Burst)
+                m_fireMode = FIRE_MODE::SingleShot;
+        }
+	}
+	//총 쏘기(단발) 마우스 왼쪽버튼
+	if (m_fireMode == FIRE_MODE::SingleShot)
+	{
+		if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
+			KeyFire();
+	}
+	//총 쏘기(연발)
+	else if(m_fireMode == FIRE_MODE::Burst)
+	{
+        if (m_pGun)
+        {
+            if (m_pGun->GetCanChangeBurstMode())             //연발이 지원되는 총이라면
+            {
+                if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
+                    KeyFire();
+            }
+            else //m_pGun->GetCanChangeBurstMode() == false //연발이 지원되지 않는 총이라면
+            {
+                if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
+                {
+                    cout << "Not supported Burst. So, Use SingleShot." << endl;
+                    KeyFire();
+                }
+            }
+        }
+	}
+
 	//점프 Space
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
         m_isJumping = true;
@@ -107,6 +146,9 @@ void PlayerAni::Update()
 	m_pBoxCollider->Update(prevM * currM);
 
 	/* 디버그 */
+    //발사모드 디버그용
+    ShowFireModeForDebug();
+
 	//인벤토리 디버그용
 	ShowInventoryForDebug();
 
@@ -419,6 +461,25 @@ void PlayerAni::ShowInventoryForDebug()
 	} //for m_mapInventory
 }
 
+void PlayerAni::ShowFireModeForDebug()
+{
+    Debug->EndLine();
+    Debug->AddText("<Fire Mode>");
+    switch (m_fireMode)
+    {
+    case FIRE_MODE::SingleShot:
+        Debug->AddText("Single Mode");
+        Debug->EndLine();
+        break;
+
+    case FIRE_MODE::Burst:
+        Debug->AddText("Burst Mode");
+        Debug->EndLine();
+        break;
+    
+    }
+}
+
 /* 키 입력 관련 함수로 분리 */
 void PlayerAni::KeyMove()
 {
@@ -477,7 +538,7 @@ void PlayerAni::KeyMount(GUN_TAG gunTag)
 			DrawGunInOut();
 			m_pGun = static_cast<Gun*>(gun.second);
 			m_pGun->SetItemState(ITEM_STATE::Mounting); //장착중
-			std::cout << m_pGun->GunTagToStrForDebug(gunTag) << " 장착 완료" << std::endl;
+			cout << m_pGun->GunTagToStrForDebug(gunTag) << " OK, Mount." << endl;
 			break; //총한개만 찾지롱
 		}
 	}
@@ -491,7 +552,7 @@ void PlayerAni::KeyUnmount()
 		DrawGunInOut();
 		m_pGun->SetItemState(ITEM_STATE::InInventory); //장착해제중
 		m_pGun = nullptr;
-		std::cout << "장착 해제" << std::endl;
+		cout << "Ok, Unmount." << endl;
 	}
 }
 
@@ -532,11 +593,11 @@ void PlayerAni::KeyLoad()
 									++it;
 							}
 							vecSpecificBullets.pop_back();
-							std::cout << "장전완료" << std::endl;
+							cout << "Ok, Load." << endl;
 						}
 						else
 						{
-							std::cout << "총에 맞지않는 총알입니다" << std::endl;
+							cout << "This Bullet can't be used for this Gun." << endl;
 						}
 					}
 				}//for need
@@ -545,23 +606,24 @@ void PlayerAni::KeyLoad()
 	}//if m_pGun
 	else //m_pPistpol == nullptr
 	{
-		std::cout << "총을 장착하고 장전해줘~!" << std::endl;
+		cout << "Plz, Load after mounting gun." << endl;
 	}
 }
 
 void PlayerAni::KeyFire()
 {
-	if (m_pGun) //총이 장착되어있을 때
-	{
-		m_pGun->Fire();
+    if (m_pGun) //총이 장착되어있을 때
+    {
 		if (m_pGun->GetBulletNum() > 0)
-			std::cout << "빵야빵야~!" << std::endl;
+		{
+			m_pGun->Fire();
+		}
 		else
-			std::cout << "총알이 없따 ㅠㅠㅠㅠ" << std::endl;
+			cout << "No Bullet!!" << endl;
 	}
 	else
 	{
-		std::cout << "총을 장착해줘!" << std::endl;
+		cout << "Plz, Mount Gun." << endl;
 	}
 }
 

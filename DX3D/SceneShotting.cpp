@@ -61,12 +61,12 @@ void SceneShotting::Init()
 	AddSimpleDisplayObj(m_pPlayerAni);
 
 	//±ÇÃÑ
-	m_pPistol = new Gun(GUN_TAG::Pistol, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	m_pPistol = new Gun(GUN_TAG::Pistol, false, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
 	AddSimpleDisplayObj(m_pPistol);
 
 	//¼ÒÃÑ
-	m_pRifle = new Gun(GUN_TAG::Rifle, 10, 0.4f, 5.f, 1.2f, -D3DXToRadian(90));
+	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 1.2f, -D3DXToRadian(90));
 	m_pRifle->Init();
 	AddSimpleDisplayObj(m_pRifle);
 
