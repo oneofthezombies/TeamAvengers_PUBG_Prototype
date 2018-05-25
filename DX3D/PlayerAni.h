@@ -35,6 +35,7 @@ private:
     D3DXVECTOR3		m_test1;
     D3DXVECTOR3     m_dir;
     D3DXVECTOR3		m_right;
+    D3DXVECTOR3     m_vRotForAlt;
 
     bool			m_isMoving;
     float			m_moveSpeed;

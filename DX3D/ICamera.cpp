@@ -72,3 +72,8 @@ void ICamera::Update()
 
 }
 
+CameraState::CameraState ICamera::GetState() const
+{
+    return m_cameraState;
+}
+

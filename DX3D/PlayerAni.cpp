@@ -23,6 +23,7 @@ PlayerAni::PlayerAni()
     , m_pItemPicker(nullptr)
     , m_pUIInventory(nullptr)
     , m_pPicked(nullptr)
+    , m_vRotForAlt()
 {
     m_pRootParts = NULL;
 
@@ -561,8 +562,26 @@ void PlayerAni::UpdateRotation()
     diff.y = mouse.y - 720 / 2;
     const float factorX = 0.3f;
     const float factorY = 0.3f;
-    m_rot.x += diff.y * factorX * dt;
-    m_rot.y += diff.x * factorY * dt;
+
+    if (g_pKeyManager->IsOnceKeyDown(VK_MENU))
+    {
+        m_vRotForAlt = m_rot;
+    }
+
+    if (g_pKeyManager->IsStayKeyDown(VK_MENU) &&
+        g_pCurrentCamera->GetState() == CameraState::THIRDPERSON)
+    {
+        m_vRotForAlt.x += diff.y * factorX * dt;
+        m_vRotForAlt.y += diff.x * factorY * dt;
+        g_pCameraManager->SetTarget(m_pos, m_vRotForAlt);
+
+    }
+    else
+    {
+        m_rot.x += diff.y * factorX * dt;
+        m_rot.y += diff.x * factorY * dt;
+        g_pCameraManager->SetTarget(m_pos, m_rot);
+    }
 
     POINT center;
     center.x = 1280 / 2;
