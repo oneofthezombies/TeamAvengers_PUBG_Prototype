@@ -8,6 +8,7 @@ class BulletCollisionListener;
 class Bullet : public Item
 {
 private:
+	GUN_TAG       m_bulletFor;    //어느 총을 위한 총알인지
 	LPD3DXMESH    m_pBulletMesh;  //총알을 출력하기 위한 메쉬
 	bool          m_isFire;       //총알이 발사되었는지
 	bool          m_isDie;        //경계범위를 벗어나거나 어딘가 충돌할 때 죽음
@@ -22,7 +23,7 @@ private:
     BoxCollider* m_pBoxCollider;
 
 public:
-	Bullet(float scale, float velocity);
+	Bullet(GUN_TAG bulletFor, float scale, float velocity);
 	~Bullet();
 
 	virtual void Init() override;
@@ -33,6 +34,8 @@ public:
 	void  SetIsFire(const bool isFire){ m_isFire = isFire; }
 	float GetVelocity() const { return m_velocity; }
 	bool  GetIsDie() const { return m_isDie; }
+	GUN_TAG  GetBulletFor() { return m_bulletFor; }
+	bool IsBulletForThisGun(GUN_TAG gunTag);
 
 	bool IsInBorderArea(); //경계구역 안에 있는지 체크
 };

@@ -1,10 +1,11 @@
 #include "stdafx.h"
-#include "Pistol.h"
+#include "Gun.h"
 #include "Bullet.h"
-#include "IScene.h"
 
-Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
-	: Item(ITEM_TAG::Pistol, "Pistol", "I am a Pistol")
+Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
+	: Item(ITEM_TAG::Gun, "Gun", "I am a Gun")
+	, m_gunTag(gunTag)
+	, m_canChangeBurstMode(canChangeBurstMode)
 	, m_maxBullet(bulletNum)
 	, m_bulletFireCoolTime(bulletFireCoolTime) //0.4f
 	, m_velocity(velocity) //5.f;
@@ -12,14 +13,27 @@ Pistol::Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scal
 	, m_rotY(rotY)         //-D3DXToRadian(90)
 	, m_pGunMesh(nullptr)
 {
+    switch (gunTag)
+    {
+    case GUN_TAG::Pistol:
+        {
+            m_name = "Pistol";
+            break;
+        }
+    case GUN_TAG::Rifle:
+        {
+            m_name = "Rifle";
+            break;
+        }
+    }
 }
 
-Pistol::~Pistol()
+Gun::~Gun()
 {
 	SAFE_RELEASE(m_pGunMesh);
 }
 
-void Pistol::Init()
+void Gun::Init()
 {
 	m_pos = D3DXVECTOR3(0.f, 4.f, -9 * 2.f);        //일단 하드코딩으로 위치 박음
 
@@ -31,7 +45,7 @@ void Pistol::Init()
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
 }
 
-void Pistol::Update()
+void Gun::Update()
 {
     if (m_state != ITEM_STATE::Dropped)
     {
@@ -52,9 +66,10 @@ void Pistol::Update()
     Item::Update();
 }
 
-void Pistol::Render()
+void Gun::Render()
 {
-	if (m_state == ITEM_STATE::Mounting)
+	if (m_state == ITEM_STATE::Equipped &&
+        m_state == ITEM_STATE::Held)
 	{
 		const auto dv = g_pDevice;
 		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
@@ -72,7 +87,7 @@ void Pistol::Render()
     }
 }
 
-void Pistol::ShowBulletNumForDebug()
+void Gun::ShowBulletNumForDebug()
 {
 	Debug->EndLine();
 	Debug->AddText("BulletNum: ");
@@ -80,7 +95,23 @@ void Pistol::ShowBulletNumForDebug()
 	Debug->EndLine();
 }
 
-void Pistol::Fire()
+string Gun::GunTagToStrForDebug(GUN_TAG gunTag)
+{
+	switch (gunTag)
+	{
+	case GUN_TAG::Pistol:
+		return "Pistol";
+		break;
+	case GUN_TAG::Rifle:
+		return "Rifle";
+		break;
+	default:
+		return "?";
+		break;
+	}
+}
+
+void Gun::Fire()
 {
 	if (m_bulletFireCoolDown <= 0.f)
 	{
@@ -88,6 +119,7 @@ void Pistol::Fire()
 
 		if (m_vecPBullet.empty() == false)        //총알이 있으면
 		{
+            cout << "Bang Bnag~!" << endl;
 			Bullet* bullet = m_vecPBullet.back(); //총알을 하나 꺼내고
 			m_vecPBullet.pop_back();              //벡터에서 지워줌 (실제 릴리즈는 현재씬의 Update에서)
 			bullet->SetIsFire(true);
@@ -97,12 +129,12 @@ void Pistol::Fire()
 	}
 }
 
-void Pistol::Load(Bullet* bullet)
+void Gun::Load(Bullet* bullet)
 {	
 	m_vecPBullet.emplace_back(bullet);
 }
 
-void Pistol::SyncRot(float rotY)
+void Gun::SyncRot(float rotY)
 {
     m_rotY = rotY - D3DXToRadian(90);
 }

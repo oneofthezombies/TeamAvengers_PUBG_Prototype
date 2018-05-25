@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "SceneShotting.h"
 #include "Ground.h"
-//#include "PlayerTemp.h"
 #include "PlayerAni.h"
-#include "Pistol.h"
+#include "Gun.h"
 #include "Bullet.h"
 #include "SkyBox.h"
 #include "UIButton.h"
@@ -16,9 +15,9 @@
 
 SceneShotting::SceneShotting()
 	: m_pGround(nullptr)
-	//, m_pPlayerAniTemp(nullptr)
 	, m_pPlayerAni(nullptr)
     , m_pPistol(nullptr)
+	, m_pRifle(nullptr)
     , m_pSampleUIButtonListener(nullptr)
 {
 }
@@ -39,33 +38,41 @@ void SceneShotting::Init()
 	//¹Ù´Ú
     InitGroundGrid();
 
+	//ÇÃ·¹ÀÌ¾î
     InitPlayer();
 
 	//±ÇÃÑ
-	m_pPistol = new Pistol(10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
+	m_pPistol = new Gun(GUN_TAG::Pistol, false, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
     m_pPistol->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 15.0f));
 	AddSimpleDisplayObj(m_pPistol);
 
-	//ÃÑ¾Ë 10°³ »ý¼º
-	m_vecPBullet.reserve(10);
-	for (int i = 0; i < 10; ++i)
+	//¼ÒÃÑ
+	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 1.2f, -D3DXToRadian(90));
+	m_pRifle->Init();
+    m_pRifle->SetPosition(D3DXVECTOR3(3.0f, 0.0f, 15.0f));
+	AddSimpleDisplayObj(m_pRifle);
+
+	//±ÇÃÑ¿ë ÃÑ¾Ë 5°³ »ý¼º
+	m_vecPBulletForPistol.reserve(5);
+	for (int i = 0; i < 5; ++i)
 	{
-		Bullet* bullet = new Bullet(0.08f, 10.f);
+		Bullet* bullet = new Bullet(GUN_TAG::Pistol, 0.08f, 10.f);
 		bullet->Init();
         bullet->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 2.0f + static_cast<float>(i)));
-		m_vecPBullet.push_back(bullet);
+		m_vecPBulletForPistol.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
-
-	////ÃÑÀÌ¶û ÃÑ¾Ë¸Ô±â //Æ÷ÀÎÅÍ¿¡ ´ëÇÑ ¼ÒÀ¯±ÇÀ» ¸íÈ®È÷ ÇØ¾ßÇÑ´Ù
-	//m_pPlayerAni->PutItemInInventory(m_pPistol);
-	//m_pPistol = nullptr;
-	//for (auto bullet : m_vecPBullet)
-	//{ 
-	//	m_pPlayerAni->PutItemInInventory(bullet);
-	//}
-	//m_vecPBullet.clear();
+	//¼ÒÃÑ¿ë ÃÑ¾Ë 5°³ »ý¼º
+	m_vecPBulletForRifle.reserve(5);
+	for (int i = 0; i < 5; ++i)
+	{
+		Bullet* bullet = new Bullet(GUN_TAG::Rifle, 0.05f, 15.f);
+		bullet->Init();
+        bullet->SetPosition(D3DXVECTOR3(3.0f, 0.0f, 2.0f + static_cast<float>(i)));
+		m_vecPBulletForRifle.push_back(bullet);
+		AddSimpleDisplayObj(bullet);
+	}
 
     Cubeman* cm = new Cubeman;
     cm->Init();
@@ -192,11 +199,26 @@ void SceneShotting::RemoveItemPointer(Item& val)
         return;
     }
 
-    for (auto it = m_vecPBullet.begin(); it != m_vecPBullet.end(); ++it)
+    if (m_pRifle == &val)
+    {
+        m_pRifle = nullptr;
+        return;
+    }
+
+    for (auto it = m_vecPBulletForRifle.begin(); it != m_vecPBulletForRifle.end(); ++it)
     {
         if (*it == &val)
         {
-            m_vecPBullet.erase(it);
+            m_vecPBulletForRifle.erase(it);
+            return;
+        }
+    }
+
+    for (auto it = m_vecPBulletForPistol.begin(); it != m_vecPBulletForPistol.end(); ++it)
+    {
+        if (*it == &val)
+        {
+            m_vecPBulletForPistol.erase(it);
             return;
         }
     }

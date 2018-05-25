@@ -1,17 +1,19 @@
 #pragma once
 #include "Item.h"
 
-/* 권총 */
 class Bullet;
-class Pistol : public Item
+class Gun : public Item
 {
 private:
-	LPD3DXMESH       m_pGunMesh;            //총을 그려주기 위한 메쉬
+	GUN_TAG          m_gunTag;
+    LPD3DXMESH       m_pGunMesh;            //총을 그려주기 위한 메쉬
 	vector<Bullet*>  m_vecPBullet;          //총알 담을 벡터
 	const int        m_maxBullet;           //최대 장전 개수
 
 	const int        m_bulletFireCoolTime; 
 	int              m_bulletFireCoolDown; //총알 발사는 지정된 쿨타임 시간이 지나야 다시 발사가능
+
+    bool             m_canChangeBurstMode;            //연발이 가능한 총인지
 
 	const float      m_velocity;           //이동을 위한 속력
 	const float      m_scale;
@@ -23,8 +25,8 @@ private:
 	D3DXMATRIXA16    m_matT;
 
 public:
-	Pistol(int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
-	virtual ~Pistol();
+	Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
+	virtual ~Gun();
 
 	virtual void Init() override;
 	virtual void Update() override;
@@ -33,6 +35,11 @@ public:
 	size_t GetBulletNum() { return m_vecPBullet.size(); }
 	void ShowBulletNumForDebug();
 	int GetNeedBullet() { return m_maxBullet - GetBulletNum(); }
+
+	GUN_TAG GetGunTag() { return m_gunTag; }
+	string GunTagToStrForDebug(GUN_TAG gunTag);
+
+	bool GetCanChangeBurstMode() { return  m_canChangeBurstMode; }
 
 	void Fire(); //총쏘기
 	void Load(Bullet* bullet); //장전

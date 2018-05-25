@@ -2,9 +2,8 @@
 #include "IScene.h"
 
 class Ground;
-//class PlayerTemp;
 class PlayerAni;
-class Pistol;
+class Gun;
 class Bullet;
 class SampleUIButtonListener;
 class Item;
@@ -13,10 +12,11 @@ class SceneShotting : public IScene
 {
 private:
 	Ground*           m_pGround;
-	//PlayerTemp*       m_pPlayerTemp;
 	PlayerAni*        m_pPlayerAni;
-	Pistol*           m_pPistol;
-	vector<Bullet*>   m_vecPBullet;
+	Gun*              m_pPistol;
+	Gun*              m_pRifle;
+	vector<Bullet*>   m_vecPBulletForPistol; //±«√—øÎ √—¿œ
+	vector<Bullet*>   m_vecPBulletForRifle;  //º“√—øÎ √—æÀ
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±‚¡ÿº±
 
@@ -26,7 +26,6 @@ public:
 	SceneShotting();
 	~SceneShotting();
 
-	// IScene¿ª(∏¶) ≈Î«ÿ ªÛº”µ 
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;

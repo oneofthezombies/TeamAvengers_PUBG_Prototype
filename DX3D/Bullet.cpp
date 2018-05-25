@@ -3,8 +3,9 @@
 #include "IScene.h"
 #include "Collider.h"
 
-Bullet::Bullet(float scale, float velocity)
+Bullet::Bullet(GUN_TAG  bulletFor, float scale, float velocity)
 	: Item(ITEM_TAG::Bullet, "Bullet", "I am a Bullet")
+	, m_bulletFor(bulletFor)
 	, m_scale(scale)       //0.08f
 	, m_velocity(velocity) //10.f
 	, m_isFire(false)      //아직 발사되지 않았다
@@ -12,6 +13,19 @@ Bullet::Bullet(float scale, float velocity)
 	, m_isDie(false)
     , m_pBoxCollider(nullptr)
 {
+    switch (bulletFor)
+    {
+    case GUN_TAG::Pistol:
+        {
+            m_name = "Bullet (Pistol)";
+        }
+        break;
+    case GUN_TAG::Rifle:
+        {
+            m_name = "Bullet (Rifle)";
+        }
+        break;
+    }
 }
 
 Bullet::~Bullet()
@@ -78,6 +92,14 @@ void Bullet::Render()
 
 	dv->SetRenderState(D3DRS_LIGHTING, true);
 	dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+}
+
+bool Bullet::IsBulletForThisGun(GUN_TAG gunTag)
+{
+	cout << "bulletFor: " << static_cast<int>(m_bulletFor) << ", " << "gunTag:" << static_cast<int>(gunTag) << endl;
+	if (m_bulletFor == gunTag)
+		return true;
+	return false;
 }
 
 bool Bullet::IsInBorderArea()
