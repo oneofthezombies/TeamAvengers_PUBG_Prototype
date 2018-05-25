@@ -1,7 +1,13 @@
 #pragma once
 #include "ICamera.h"
+
+class Ray;
+
 class ThirdPersonCamera : public ICamera
 {
+private:
+    Ray* m_pCamBackCheckingRay;
+
 public:
     ThirdPersonCamera();
     virtual ~ThirdPersonCamera();
@@ -9,6 +15,9 @@ public:
     // Inherited via ICamera
     virtual void Init() override;
     virtual void Update() override;
+
+    void CamBackDistResizeing();
+
 };
 
 

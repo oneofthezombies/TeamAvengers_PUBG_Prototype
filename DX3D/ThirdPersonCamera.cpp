@@ -1,23 +1,28 @@
 #include "stdafx.h"
 #include "ThirdPersonCamera.h"
+#include "Ray.h"
 
 
 ThirdPersonCamera::ThirdPersonCamera()
     :ICamera()
+    , m_pCamBackCheckingRay(nullptr)
 {
     m_cameraState = CameraState::THIRDPERSON;
     m_distance = TP_DISTANCE;
     m_basePosX = TP_BASEPOSX;
     m_basePosY = TP_BASEPOSY;
     m_fovY = D3DX_PI *(80.0f / 180.0f);    //80 Degrees TP sight
+    m_pCamBackCheckingRay = new Ray();
 }
 
 ThirdPersonCamera::~ThirdPersonCamera()
 {
+    SAFE_DELETE(m_pCamBackCheckingRay);
 }
 
 void ThirdPersonCamera::Init()
 {
+    
     ICamera::Init();
 }
 
@@ -43,11 +48,42 @@ void ThirdPersonCamera::Update()
 
     //견착하는 부분은 3인칭에서만 있기에
     if (g_pKeyManager->IsOnceKeyDown(VK_RBUTTON))
-    {
         g_pCameraManager->SetCurrentCamera(CameraState::KYUNCHAK);
-    }
+
+    //Ray 카메라 ray를 뒤로 쏘아서 카메라 m_distance를 조정하는 부분
+    CamBackDistResizeing();
+
     ICamera::Update();
 }
+
+void ThirdPersonCamera::CamBackDistResizeing()
+{
+    D3DXVECTOR3 camBackDir = m_eye - m_lookAt;      //방향을 알아냄
+    D3DXVec3Normalize(&camBackDir, &camBackDir);    //단위화
+    //ray의 pos를 player의 distance와 같게, 쏘는 방향은 카메라 뒤쪽으로
+    m_pCamBackCheckingRay->SetRay(m_eyeRay, camBackDir);   
+
+    float ray2wallDist;//m_eyeRay 2(to) 벽까지의 거리
+    vector<D3DXVECTOR3> wall = g_pCameraManager->GetWall(); //벽의 정보를 갖고 있는 vector, 지금은 call by value 로 받고 있지만, 나중에는 reference로 받아서 성능을 빨리 하자
+    
+    m_distance = TP_DISTANCE; //Ray가 벽을 걸리지 않을 경우 distance 초기화
+    for (int i = 0; i < wall.size(); i+=3)
+    {
+        //ray가 벽에 걸리게 된다면
+        if (m_pCamBackCheckingRay->CalcIntersectTri(&wall[i], &ray2wallDist))
+        {
+            //이범위 안에 들어 올때만 distance값을 변경
+            if (4.0f <= ray2wallDist && ray2wallDist <= 11)
+            {
+                m_distance = ray2wallDist - 2.0f;
+                break; //for 문을 더 돌아서 낭비하지 않기
+            }
+        }
+    }
+
+}
+
+
 
 //--------------------------------------------
 
@@ -157,9 +193,9 @@ void CameraKyunChak::Update()
         if (bR_buttonUp&&m_distance >= TP_DISTANCE-1.0f)
         {
             //!!! 앞으로 이곳에서 캐릭터가 들고 있는 아이템에 따라(2배율,4배율 no 배율 등) 바꾸어 주는 코드를 만들어야 한다.
-            //g_pCameraManager->SetCurrentCamera(CameraState::FIRSTPERSON);
+            g_pCameraManager->SetCurrentCamera(CameraState::FIRSTPERSON);
             //g_pCameraManager->SetCurrentCamera(CameraState::SCOPE2X);
-            g_pCameraManager->SetCurrentCamera(CameraState::SCOPE4X);
+            //g_pCameraManager->SetCurrentCamera(CameraState::SCOPE4X);
         }
         else//아닌경우 계속 줄여주다가 끝에 다달게 되면 TP로 바꿈
         {
@@ -176,18 +212,7 @@ void CameraKyunChak::Update()
         }
 
     }
-    //if (temp2)
-    //{
-    //    g_pCameraManager->SetCurrentCamera(CameraState::FIRSTPERSON);
-    //}
 
-    //Debug->AddText("m_vel : ");
-    //Debug->AddText(m_vel);
-    Debug->AddText("   m_distance : ");
-    Debug->AddText(m_distance);
-    //Debug->AddText("   m_basePosY : ");
-    //Debug->AddText(m_basePosY);
-    Debug->EndLine();
     ThirdPersonCamera::Update();
 }
 

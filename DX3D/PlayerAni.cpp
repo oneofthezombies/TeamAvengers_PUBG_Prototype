@@ -17,7 +17,7 @@ enum enumParts
 };
 
 PlayerAni::PlayerAni()
-    : m_fireMode(FIRE_MODE::SingleShot) //Ã³À½Àº ´Ü¹ß¸ğµå
+    : m_fireMode(FIRE_MODE::SingleShot) //ì²˜ìŒì€ ë‹¨ë°œëª¨ë“œ
 	, m_pGun(nullptr)
 	, m_pBoxCollider(nullptr)
     , m_pCollisionListener(nullptr)
@@ -68,46 +68,47 @@ void PlayerAni::Init()
     m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
     /* end collider init */
 
-    //ShowCursor(false);              
+    GetClientRect(g_hWnd, &m_RC);   //ï§ÂˆÂšê³—ÂŠ é†«ÂŒÂ‘Âœ ç¥Âˆæ¹²ê³ Â™Â”ç‘œ ÂœÂ„Â•Âœ apiÂ™Â”ï§ è«›Â›Â•Â„Â˜ã…ºë¦°
+    ShowCursor(true);              //ï§ÂˆÂšê³—ÂŠ è€Œã…¼Â„Âœ è¹‚ëŒÂë‹¿ë¦° Â•Âˆè¹‚ëŒÂë‹¿ë¦°
 }
 
 void PlayerAni::Update()
 {   
-    //ÀÌµ¿ ASDW
+    //ì´ë™ ASDW
     KeyMove();
     if (!IsShowingInventory())
     {
-        //ÀåÂø 1, 2
+        //ì¥ì°© 1, 2
         if (g_pKeyManager->IsOnceKeyDown('1'))
             KeyChangeGun(GUN_TAG::Pistol);
         else if (g_pKeyManager->IsOnceKeyDown('2'))
             KeyChangeGun(GUN_TAG::Rifle);
-        //ÀåÂøÇØÁ¦ X
+        //ì¥ì°©í•´ì œ X
         if (g_pKeyManager->IsOnceKeyDown('X'))
             KeyOutHand();
-        //ÃÑ ÀåÀü R
+        //ì´ ì¥ì „ R
         if (g_pKeyManager->IsOnceKeyDown('R'))
             KeyLoad();
-        //ÃÑ ¸ğµå º¯°æ(´Ü¹ß <-> ¿¬¹ß) B
+        //ì´ ëª¨ë“œ ë³€ê²½(ë‹¨ë°œ <-> ì—°ë°œ) B
         if (g_pKeyManager->IsOnceKeyDown('B'))
             KeyChangeFireMode();
-        //ÃÑ ½î±â(´Ü¹ß) ¸¶¿ì½º ¿ŞÂÊ¹öÆ°
+        //ì´ ì˜ê¸°(ë‹¨ë°œ) ë§ˆìš°ìŠ¤ ì™¼ìª½ë²„íŠ¼
         if (m_fireMode == FIRE_MODE::SingleShot)
         {
             if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
                 KeyFire();
         }
-        //ÃÑ ½î±â(¿¬¹ß)
+        //ì´ ì˜ê¸°(ì—°ë°œ)
         else if (m_fireMode == FIRE_MODE::Burst)
         {
             if (m_pGun)
             {
-                if (m_pGun->GetCanChangeBurstMode())             //¿¬¹ßÀÌ Áö¿øµÇ´Â ÃÑÀÌ¶ó¸é
+                if (m_pGun->GetCanChangeBurstMode())             //ì—°ë°œì´ ì§€ì›ë˜ëŠ” ì´ì´ë¼ë©´
                 {
                     if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
                         KeyFire();
                 }
-                else //m_pGun->GetCanChangeBurstMode() == false //¿¬¹ßÀÌ Áö¿øµÇÁö ¾Ê´Â ÃÑÀÌ¶ó¸é
+                else //m_pGun->GetCanChangeBurstMode() == false //ì—°ë°œì´ ì§€ì›ë˜ì§€ ì•ŠëŠ” ì´ì´ë¼ë©´
                 {
                     if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
                         KeyFire();
@@ -115,17 +116,17 @@ void PlayerAni::Update()
             }
         }
 
-        //¶Ù°í °È±â LShift
+        //ë›°ê³  ê±·ê¸° LShift
         RunAndWalk(); 
 
         UpdateRotation();
     }
 
-	//Á¡ÇÁ Space
+	//ì í”„ Space
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
         m_isJumping = true;
 
-	//Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç Å×½ºÆ®¿ë G
+	//ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜ í…ŒìŠ¤íŠ¸ìš© G
     if (g_pKeyManager->IsOnceKeyDown('G'))
         DiedAni();
 
@@ -151,14 +152,14 @@ void PlayerAni::Update()
     UpdateGunInHandPosition();
     UpdateGunInEquipPosition();
 
-	/* µğ¹ö±× */
-    //¹ß»ç¸ğµå µğ¹ö±×¿ë
+	/* ë””ë²„ê·¸ */
+    //ë°œì‚¬ëª¨ë“œ ë””ë²„ê·¸ìš©
     ShowFireModeForDebug();
 
-	//ÀÎº¥Åä¸® µğ¹ö±×¿ë
+	//ì¸ë²¤í† ë¦¬ ë””ë²„ê·¸ìš©
 	ShowInventoryForDebug();
 
-	//ÃÑ¾Ë °³¼ö µğ¹ö±×¿ë
+	//ì´ì•Œ ê°œìˆ˜ ë””ë²„ê·¸ìš©
 	if (m_pGun)
 		m_pGun->ShowBulletNumForDebug();
 
@@ -433,27 +434,27 @@ void PlayerAni::KeyMove()
 
 void PlayerAni::KeyInHand(GUN_TAG gunTag)
 {
-	/* ¹«±â ÀåÂø */
+	/* ë¬´ê¸° ì¥ì°© */
 	for (auto gun : m_mapGuns)
 	{
 		if (gun.first == gunTag)
 		{
 			DrawGunInOut();
 			m_pGun = static_cast<Gun*>(gun.second);
-			m_pGun->SetItemState(ITEM_STATE::InHand); //ÀåÂøÁß
+			m_pGun->SetItemState(ITEM_STATE::InHand); //ì¥ì°©ì¤‘
 			cout << m_pGun->GunTagToStrForDebug(gunTag) << " OK, Mount." << endl;
-			break; //ÃÑÇÑ°³¸¸ Ã£Áö·Õ
+			break; //ì´í•œê°œë§Œ ì°¾ì§€ë¡±
 		}
 	}
 }
 
 void PlayerAni::KeyOutHand()
 {
-	/* ¹«±â ÀåÂø ÇØÁ¦ */
+	/* ë¬´ê¸° ì¥ì°© í•´ì œ */
 	if (m_pGun)
 	{
 		DrawGunInOut();
-		m_pGun->SetItemState(ITEM_STATE::Equipped); //ÀåÂøÇØÁ¦Áß
+		m_pGun->SetItemState(ITEM_STATE::Equipped); //ì¥ì°©í•´ì œì¤‘
 		m_pGun = nullptr;
 		cout << "Ok, Unmount." << endl;
 	}
@@ -461,17 +462,17 @@ void PlayerAni::KeyOutHand()
 
 void PlayerAni::KeyLoad()
 {
-	/* ÃÑ¾Ë ÀåÀü */
-	if (m_pGun) //ÀåÂøÇÏ°í ÀÖ´Â ÃÑÀÌ ÀÖÀ¸¸é
+	/* ì´ì•Œ ì¥ì „ */
+	if (m_pGun) //ì¥ì°©í•˜ê³  ìˆëŠ” ì´ì´ ìˆìœ¼ë©´
 	{
-		//ÃÑ¾Ë Ã£±â
+		//ì´ì•Œ ì°¾ê¸°
 		for (auto& item : m_mapInventory)
 		{
 			if (item.first == ITEM_TAG::Bullet)
 			{
-				int need = m_pGun->GetNeedBullet(); //ÀåÀü¿¡ ÇÊ¿äÇÑ ÃÑ¾Ë ¼ö
+				int need = m_pGun->GetNeedBullet(); //ì¥ì „ì— í•„ìš”í•œ ì´ì•Œ ìˆ˜
 				auto& bullets = item.second;
-				vector<Bullet*> vecSpecificBullets; //Æ¯Á¤ ÃÑ¾Ë ¸®½ºÆ®¸¦ ¸¸µç´Ù
+				vector<Bullet*> vecSpecificBullets; //íŠ¹ì • ì´ì•Œ ë¦¬ìŠ¤íŠ¸ë¥¼ ë§Œë“ ë‹¤
 				for (auto bullet : bullets)
 				{
 					auto pBullet = static_cast<Bullet*>(bullet);
@@ -481,7 +482,7 @@ void PlayerAni::KeyLoad()
 
 				for (int i = 0; i < need; ++i)
 				{
-					if(vecSpecificBullets.empty() == false) //Æ¯Á¤ ÃÑ¾Ë ¸®½ºÆ®¿¡ ´ëÇØ ÁøÇà
+					if(vecSpecificBullets.empty() == false) //íŠ¹ì • ì´ì•Œ ë¦¬ìŠ¤íŠ¸ì— ëŒ€í•´ ì§„í–‰
 					{
 						auto pLastBullet = static_cast<Bullet*>(vecSpecificBullets.back());
 						if(pLastBullet->IsBulletForThisGun(m_pGun->GetGunTag()))
@@ -515,7 +516,7 @@ void PlayerAni::KeyLoad()
 
 void PlayerAni::KeyFire()
 {
-    if (m_pGun) //ÃÑÀÌ ÀåÂøµÇ¾îÀÖÀ» ¶§
+    if (m_pGun) //ì´ì´ ì¥ì°©ë˜ì–´ìˆì„ ë•Œ
     {
 		if (m_pGun->GetBulletNum() > 0)
 		{
@@ -532,13 +533,13 @@ void PlayerAni::KeyFire()
 
 void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
 {
-	if (m_pGun == nullptr) //¾Æ¹«°Íµµ ÀåÂøµÇ¾îÀÖÁö ¾ÊÀ» ¶§
+	if (m_pGun == nullptr) //ì•„ë¬´ê²ƒë„ ì¥ì°©ë˜ì–´ìˆì§€ ì•Šì„ ë•Œ
 	{
 		KeyInHand(gunTag);
 	}
-	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //ÀåÂøÀÌ µÇ¾îÀÖÀ¸¸é¼­, ÀÌ¹Ì ÀåÂøÇÏ°í ÀÖ´Â ÃÑÀÌ ¾Æ´Ò ¶§
+	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //ì¥ì°©ì´ ë˜ì–´ìˆìœ¼ë©´ì„œ, ì´ë¯¸ ì¥ì°©í•˜ê³  ìˆëŠ” ì´ì´ ì•„ë‹ ë•Œ
 	{
-		//ÀåÂø ÇØÁ¦ ÈÄ ÀåÂø
+		//ì¥ì°© í•´ì œ í›„ ì¥ì°©
 		KeyOutHand(); 
 		KeyInHand(gunTag);
 	}
@@ -601,7 +602,7 @@ void PlayerAni::UpdateRotation()
 
 void PlayerAni::UpdateGunInHandPosition()
 {
-    /* ÃÑ ÀåÂø½Ã ÃÑ À§Ä¡ ¾÷µ¥ÀÌÆ® */
+    /* ì´ ì¥ì°©ì‹œ ì´ ìœ„ì¹˜ ì—…ë°ì´íŠ¸ */
     if (m_pGun)
     {
         m_pGun->SetPosition(D3DXVECTOR3(
@@ -712,7 +713,7 @@ void PlayerAniCollisionListener::OnCollisionStay(const ColliderBase& other)
 {
 }
 
-/* µğ¹ö±×¿ë */
+/* ë””ë²„ê·¸ìš© */
 void PlayerAni::ShowInventoryForDebug()
 {
     Debug->AddText("<Guns list>");

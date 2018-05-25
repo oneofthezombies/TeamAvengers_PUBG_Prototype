@@ -32,28 +32,28 @@ void SceneShotting::Init()
     InitSkyBox();
     InitLight();
 
-    //x, y, z ±‚¡ÿº±
+    //x, y, z Í∏∞Ï§ÄÏÑ†
     InitAxises();
 
-	//πŸ¥⁄
+	//Î∞îÎã•
     InitGroundGrid();
 
-	//«√∑π¿ÃæÓ
+	//ÌîåÎ†àÏù¥Ïñ¥
     InitPlayer();
 
-	//±«√—
+	//Í∂åÏ¥ù
 	m_pPistol = new Gun(GUN_TAG::Pistol, false, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
     m_pPistol->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 15.0f));
 	AddSimpleDisplayObj(m_pPistol);
 
-	//º“√—
+	//ÏÜåÏ¥ù
 	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pRifle->Init();
     m_pRifle->SetPosition(D3DXVECTOR3(3.0f, 0.0f, -15.0f));
 	AddSimpleDisplayObj(m_pRifle);
 
-	//±«√—øÎ √—æÀ 5∞≥ ª˝º∫
+	//Í∂åÏ¥ùÏö© Ï¥ùÏïå 5Í∞ú ÏÉùÏÑ±
 	m_vecPBulletForPistol.reserve(5);
 	for (int i = 0; i < 5; ++i)
 	{
@@ -63,7 +63,7 @@ void SceneShotting::Init()
 		m_vecPBulletForPistol.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
-	//º“√—øÎ √—æÀ 5∞≥ ª˝º∫
+	//ÏÜåÏ¥ùÏö© Ï¥ùÏïå 5Í∞ú ÏÉùÏÑ±
 	m_vecPBulletForRifle.reserve(5);
 	for (int i = 0; i < 5; ++i)
 	{
@@ -80,6 +80,42 @@ void SceneShotting::Init()
     AddSimpleDisplayObj(cm);
 
     //InitSamples();
+
+    //Ïû†Ïãú rayÎ•º test ÌïòÍ∏∞ ÏúÑÌïú vertex //JH
+    float factor = 15.0f;
+    vector<D3DXVECTOR3> wallArr;
+    wallArr.resize(18);
+    //Ï†ïÎ©¥
+    wallArr[0]=D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    wallArr[1]=D3DXVECTOR3(0.0f, factor, 0.0f);
+    wallArr[2]=D3DXVECTOR3(factor, 0.0f, 0.0f);
+    wallArr[3]=D3DXVECTOR3(factor, 0.0f, 0.0f);
+    wallArr[4]=D3DXVECTOR3(0.0f, factor, 0.0f);
+    wallArr[5]=D3DXVECTOR3(factor, factor, 0.0f);
+    //Ïò§Î•∏Ï™Ω Ìé∏
+    wallArr[6] = D3DXVECTOR3(factor, 0.0f, 0.0f);
+    wallArr[7] = D3DXVECTOR3(factor, factor, 0.0f);
+    wallArr[8] = D3DXVECTOR3(factor, 0.0f, -factor);
+    wallArr[9] = D3DXVECTOR3(factor, 0.0f, -factor);
+    wallArr[10] = D3DXVECTOR3(factor, factor, 0.0f);
+    wallArr[11] = D3DXVECTOR3(factor, factor, -factor);
+    //ÏúÑ Ìé∏
+    wallArr[12] = D3DXVECTOR3(0.0f, factor, 0.0f);
+    wallArr[13] = D3DXVECTOR3(0.0f, factor, -factor);
+    wallArr[14] = D3DXVECTOR3(factor, factor, 0.0f);
+    wallArr[15] = D3DXVECTOR3(factor, factor, 0.0f);
+    wallArr[16] = D3DXVECTOR3(0.0f, factor, -factor);
+    wallArr[17] = D3DXVECTOR3(factor, factor, -factor);
+
+    D3DXMATRIXA16 matT;
+    D3DXMatrixTranslation(&matT, 10.0f, 0.0f, 10.0f);
+    for (int i = 0; i < 18; i++)
+    {
+        D3DXVec3TransformCoord(&wallArr[i], &wallArr[i], &matT);
+        vecVertex_sample.push_back(VERTEX_PC(wallArr[i], D3DCOLOR_XRGB(0, 0, 255)));
+    }
+    g_pCameraManager->SetWall(wallArr);
+    //---------------
 
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kFoo, CollisionTag::kBar);
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kBullet, CollisionTag::kEnemy);
@@ -102,8 +138,23 @@ void SceneShotting::Render()
 {
 	OnRenderIScene();
 
-	//x, y, z ±‚¡ÿº± ±◊∏Æ±‚ 
+	//x, y, z Í∏∞Ï§ÄÏÑ† Í∑∏Î¶¨Í∏∞ 
+
+	D3DXMATRIXA16 matI;
+	D3DXMatrixIdentity(&matI);
+
+	const auto dv = g_pDevice;
+	dv->SetRenderState(D3DRS_LIGHTING, false);
+	
+	dv->SetTransform(D3DTS_WORLD, &matI);
+	dv->SetFVF(VERTEX_PC::FVF);
+	dv->DrawPrimitiveUP(D3DPT_LINELIST, m_vecBaseline.size() / 2, &m_vecBaseline[0], sizeof(VERTEX_PC));
+    //Ïû†Ïãú rayÎ•º test ÌïòÍ∏∞ ÏúÑÌïú vertex //JH
+    dv->DrawPrimitiveUP(D3DPT_TRIANGLELIST, vecVertex_sample.size() / 3, &vecVertex_sample[0], sizeof(VERTEX_PC));
+	dv->SetRenderState(D3DRS_LIGHTING, true);
+
     RenderAxises();
+
 }
 
 void SceneShotting::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

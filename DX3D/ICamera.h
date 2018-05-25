@@ -27,12 +27,13 @@ class ICamera : public BaseObject
 {
 public:
     CameraState::CameraState     m_cameraState;
-public://protected 으로 바꾸자
+protected:
     D3DXVECTOR3		m_eye;
     D3DXVECTOR3		m_lookAt;
     D3DXVECTOR3		m_up;
     D3DXMATRIXA16	m_matView;
     D3DXMATRIXA16	m_matProj;
+    D3DXVECTOR3		m_eyeRay;
 
     float           m_basePosX;
     float			m_basePosY;

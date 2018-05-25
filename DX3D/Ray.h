@@ -8,6 +8,12 @@ public:
 	Ray();
 	~Ray();
 
+    void SetRay(D3DXVECTOR3 pos, D3DXVECTOR3 dir)
+    {
+        m_pos = pos;
+        m_dir = dir;
+    }
+
 	static Ray RayAtViewSpace(int x, int y);
 	static Ray RayAtWorldSpace(int x, int y);
 
