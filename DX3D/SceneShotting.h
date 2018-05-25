@@ -2,24 +2,25 @@
 #include "IScene.h"
 
 class Ground;
-//class PlayerTemp;
 class PlayerAni;
-class Pistol;
+class Gun;
 class Bullet;
-class SampleUIButtonListner;
+class SampleUIButtonListener;
+class Item;
 
 class SceneShotting : public IScene
 {
 private:
 	Ground*           m_pGround;
-	//PlayerTemp*       m_pPlayerTemp;
 	PlayerAni*        m_pPlayerAni;
-	Pistol*           m_pPistol;
-	vector<Bullet*>   m_vecPBullet;
+	Gun*              m_pPistol;
+	Gun*              m_pRifle;
+	vector<Bullet*>   m_vecPBulletForPistol; //±«√—øÎ √—¿œ
+	vector<Bullet*>   m_vecPBulletForRifle;  //º“√—øÎ √—æÀ
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±‚¡ÿº±
 
-    SampleUIButtonListner* m_pSampleUIButtonListner;
+    SampleUIButtonListener* m_pSampleUIButtonListener;
 
 public:
     //¿·Ω√ test sample    //JH---------
@@ -34,10 +35,20 @@ public:
 	SceneShotting();
 	~SceneShotting();
 
-	// IScene¿ª(∏¶) ≈Î«ÿ ªÛº”µ 
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;
 	virtual void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
+
+    void InitSkyBox();
+    void InitLight();
+    void InitAxises();
+    void InitGroundGrid();
+    void InitPlayer();
+    void InitSamples();
+
+    void RenderAxises();
+
+    void RemoveItemPointer(Item& val);
 };
 

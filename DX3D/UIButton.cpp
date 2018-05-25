@@ -7,7 +7,7 @@ UIButton::UIButton()
     : UIObject()
     , m_state(State::kIdle)
     , m_KeyToRespond(VK_LBUTTON)
-    , m_pIUIButtonOnMouseListner(nullptr)
+    , m_pIUIButtonOnMouseListener(nullptr)
     , m_bPrevIsMouseOn(false)
     , m_bCurrIsMouseOn(false)
     , m_bIsClicked(false)
@@ -74,23 +74,23 @@ void UIButton::SetKeyToRespond(const int key)
     m_KeyToRespond = key;
 }
 
-void UIButton::SetIUIButtonOnMouseListner(IUIButtonOnMouseListner& val)
+void UIButton::SetIUIButtonOnMouseListener(IUIButtonOnMouseListener& val)
 {
-    m_pIUIButtonOnMouseListner = &val;
+    m_pIUIButtonOnMouseListener = &val;
 }
 
 void UIButton::UpdateOnMouseEnterExit()
 {
-    if (!m_pIUIButtonOnMouseListner) return;
+    if (!m_pIUIButtonOnMouseListener) return;
 
     m_bPrevIsMouseOn = m_bCurrIsMouseOn;
     m_bCurrIsMouseOn = PtInRect(&m_rect, g_pKeyManager->GetCurrentMousePos());
 
     if (!m_bPrevIsMouseOn && m_bCurrIsMouseOn)
-        m_pIUIButtonOnMouseListner->OnMouseEnter();
+        m_pIUIButtonOnMouseListener->OnMouseEnter();
 
     if (m_bPrevIsMouseOn && !m_bCurrIsMouseOn)
-        m_pIUIButtonOnMouseListner->OnMouseExit();
+        m_pIUIButtonOnMouseListener->OnMouseExit();
 }
 
 /*
@@ -121,8 +121,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                 {
                     m_state = State::kSelect;
 
-                    if (m_pIUIButtonOnMouseListner)
-                        m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
+                    if (m_pIUIButtonOnMouseListener)
+                        m_pIUIButtonOnMouseListener->OnMouseDown(m_KeyToRespond);
                 }
                 else
                 {
@@ -135,8 +135,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                 {
                     m_state = State::kSelect;
 
-                    if (m_pIUIButtonOnMouseListner)
-                        m_pIUIButtonOnMouseListner->OnMouseDown(m_KeyToRespond);
+                    if (m_pIUIButtonOnMouseListener)
+                        m_pIUIButtonOnMouseListener->OnMouseDown(m_KeyToRespond);
                 }
                 else
                 {
@@ -156,8 +156,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                 if (keyMgr->IsKeyDownMouseL() && keyMgr->GetPrevIsKeyDownMouseL())
                 {
                     if (m_bCurrIsMouseOn && m_bPrevIsMouseOn)
-                        if (m_pIUIButtonOnMouseListner)
-                            m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
+                        if (m_pIUIButtonOnMouseListener)
+                            m_pIUIButtonOnMouseListener->OnMouseDrag(m_KeyToRespond);
                 }
                 else
                 {
@@ -166,8 +166,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                         m_state = State::kMouseOver;
 
                         if (keyMgr->GetPrevIsKeyDownMouseL())
-                            if (m_pIUIButtonOnMouseListner)
-                                m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
+                            if (m_pIUIButtonOnMouseListener)
+                                m_pIUIButtonOnMouseListener->OnMouseUp(m_KeyToRespond);
                     }
                     else
                     {
@@ -180,8 +180,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                 if (keyMgr->IsKeyDownMouseR() && keyMgr->GetPrevIsKeyDownMouseR())
                 {
                     if (m_bCurrIsMouseOn && m_bPrevIsMouseOn)
-                        if (m_pIUIButtonOnMouseListner)
-                            m_pIUIButtonOnMouseListner->OnMouseDrag(m_KeyToRespond);
+                        if (m_pIUIButtonOnMouseListener)
+                            m_pIUIButtonOnMouseListener->OnMouseDrag(m_KeyToRespond);
                 }
                 else
                 {
@@ -190,8 +190,8 @@ void UIButton::UpdateOnMouseDownUpDrag()
                         m_state = State::kMouseOver;
 
                         if (keyMgr->GetPrevIsKeyDownMouseR())
-                            if (m_pIUIButtonOnMouseListner)
-                                m_pIUIButtonOnMouseListner->OnMouseUp(m_KeyToRespond);
+                            if (m_pIUIButtonOnMouseListener)
+                                m_pIUIButtonOnMouseListener->OnMouseUp(m_KeyToRespond);
                     }
                     else
                     {
@@ -213,18 +213,18 @@ void UIButton::UpdateOnMouseDownUpDrag()
     }
 }
 
-IUIButtonOnMouseListner::IUIButtonOnMouseListner()
+IUIButtonOnMouseListener::IUIButtonOnMouseListener()
     : m_pUIButton(nullptr)
 {
 }
 
-void IUIButtonOnMouseListner::SetUIButton(UIButton& val)
+void IUIButtonOnMouseListener::SetUIButton(UIButton& val)
 {
     m_pUIButton = &val;
-    m_pUIButton->SetIUIButtonOnMouseListner(*this);
+    m_pUIButton->SetIUIButtonOnMouseListener(*this);
 }
 
-UIButton* IUIButtonOnMouseListner::GetUIButton() const
+UIButton* IUIButtonOnMouseListener::GetUIButton() const
 {
     return m_pUIButton;
 }

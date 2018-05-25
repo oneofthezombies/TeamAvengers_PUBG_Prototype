@@ -1,16 +1,25 @@
 #include "stdafx.h"
 #include "IDisplayObject.h"
 
-
 IDisplayObject::IDisplayObject()
     : BaseObject()
     , m_pParent(nullptr)
+    , m_pos(0.0f, 0.0f, 0.0f)
+    , m_rot(0.0f, 0.0f, 0.0f)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
 
 IDisplayObject::~IDisplayObject()
 {
+}
+
+void IDisplayObject::UpdateTransform()
+{
+    D3DXMATRIXA16 r, t;
+    D3DXMatrixRotationYawPitchRoll(&r, m_rot.y, m_rot.x, m_rot.z);
+    D3DXMatrixTranslation(&t, m_pos.x, m_pos.y, m_pos.z);
+    m_matWorld = r * t;
 }
 
 void IDisplayObject::AddChild(IDisplayObject& val)
@@ -37,6 +46,11 @@ D3DXVECTOR3 IDisplayObject::GetRotation() const
 const D3DXMATRIXA16& IDisplayObject::GetWorldMatrix() const
 {
     return m_matWorld;
+}
+
+const vector<IDisplayObject*>& IDisplayObject::GetChildVec() const
+{
+    return m_vecPChild;
 }
 
 void IDisplayObject::Release()

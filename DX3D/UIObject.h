@@ -5,6 +5,7 @@ class UIObject
 private:
     D3DXVECTOR3 m_vPosition;
     int         m_instanceID;
+    BaseObject* m_pAttachedObject;
 
     void DrawBorder();
     void UpdateRect();
@@ -34,16 +35,23 @@ public:
     virtual void Update();
     virtual void Render();
 
+    void AddChild(UIObject& child);
     void ReleaseChildren();
+    void ClearChildren();
     void UpdateChildren();
     void RenderChildren();
 
     void SetInstanceID(const int val);
-    int GetInstanceID() const;
-    void AddChild(UIObject& child);
+    int  GetInstanceID() const;
+
     void SetPosition(const D3DXVECTOR3& val);
     void SetCenter(const D3DXVECTOR3& val);
-    void SetSize(const D3DXVECTOR2& val);
+
+    void               SetSize(const D3DXVECTOR2& val);
     const D3DXVECTOR2& GetSize() const;
+
     void SetColor(const D3DCOLOR& val);
+
+    void        AttachToObject(BaseObject& val);
+    BaseObject* GetAttachedObject() const;
 };

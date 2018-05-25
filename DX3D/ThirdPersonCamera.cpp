@@ -28,27 +28,22 @@ void ThirdPersonCamera::Init()
 
 void ThirdPersonCamera::Update()
 {
-    const float dt = g_pTimeManager->GetDeltaTime();
-    
     //ALTkey를 누르면 주변을 볼 수 있는 기능
     m_isALTbuttonStay = g_pKeyManager->IsStayKeyDown(VK_MENU);//Alt기능을 Icamera update에 한번더 쓰기 때문에 이렇게 넣었습니다.
-    if (m_isALTbuttonStay)
+    //if (m_isALTbuttonStay)
+    //{
+    //}
+    //else//alt를 누르지 않게 되면 캐릭터가 바라보고 있는 rotation 으로 초기화
     {
-        POINT currPoint;
-        m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
-        currPoint = g_pKeyManager->GetCurrentMousePos();
-        POINT diff;
-        diff.x = currPoint.x - m_ptPrevMouse.x;
-        diff.y = currPoint.y - m_ptPrevMouse.y;
-        const float factorX = 0.1f;
-        const float factorY = 0.1f;
-        m_rotX += diff.y * factorX * dt;
-        m_rotY += diff.x * factorY * dt;
-    }
-    else//alt를 누르지 않게 되면 캐릭터가 바라보고 있는 rotation 으로 초기화
-    {
-        m_rotX = m_pTargetRot->x;
-        m_rotY = m_pTargetRot->y;
+        if (m_pTargetRot)
+        {
+            m_rotX = m_pTargetRot->x;
+            m_rotY = m_pTargetRot->y;
+        }
+        else
+        {
+            m_rotX = m_rotY = 0.0f;
+        }
     }
 
     //견착하는 부분은 3인칭에서만 있기에

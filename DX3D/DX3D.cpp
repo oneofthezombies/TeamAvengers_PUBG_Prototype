@@ -103,8 +103,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   const int style = WS_OVERLAPPEDWINDOW;
-   const int left = 0;
+   const int style = WS_OVERLAPPED | WS_CAPTION | WS_DLGFRAME | WS_SYSMENU;
+   const int left = 500;
    const int top = 0;
    const int width = 1280;
    const int height = 720;

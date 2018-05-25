@@ -10,6 +10,7 @@ UIObject::UIObject()
     , m_vCenter()
     , m_vViewportPosition()
     , m_vSize()
+    , m_pAttachedObject(nullptr)
 {
 }
 
@@ -113,6 +114,16 @@ void UIObject::RenderChildren()
         SAFE_RENDER(c);
 }
 
+void UIObject::ClearChildren()
+{
+    ReleaseChildren();
+
+    for (auto& c : m_deqPChildren)
+        SAFE_DELETE(c);
+
+    m_deqPChildren.resize(0);
+}
+
 void UIObject::SetInstanceID(const int val)
 {
     m_instanceID = val;
@@ -157,6 +168,16 @@ const D3DXVECTOR2& UIObject::GetSize() const
 void UIObject::SetColor(const D3DCOLOR& val)
 {
     m_color = val;
+}
+
+void UIObject::AttachToObject(BaseObject& val)
+{
+    m_pAttachedObject = &val;
+}
+
+BaseObject* UIObject::GetAttachedObject() const
+{
+    return m_pAttachedObject;
 }
 
 //IUIObject* IUIObject::FindChildByUITag(int uiTag)

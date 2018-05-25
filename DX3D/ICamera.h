@@ -71,5 +71,6 @@ public:
     //void SetSixPlane();
     //bool CheckSphere(BoundingSphere* sphere);
 
+    CameraState::CameraState GetState() const;
 };
 

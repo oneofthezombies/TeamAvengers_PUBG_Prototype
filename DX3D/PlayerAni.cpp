@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "PlayerAni.h"
 #include "PlayerParts.h"
-#include "Pistol.h"
+#include "Gun.h"
 #include "Bullet.h"
 #include "Collider.h"
+#include "ItemPicker.h"
+#include "UIInventory.h"
 
 enum enumParts
 {
@@ -15,9 +17,14 @@ enum enumParts
 };
 
 PlayerAni::PlayerAni()
-    : m_pPistol(nullptr)
-	, m_pCollisionListner(nullptr)
+    : m_fireMode(FIRE_MODE::SingleShot) //처음은 단발모드
+	, m_pGun(nullptr)
 	, m_pBoxCollider(nullptr)
+    , m_pCollisionListener(nullptr)
+    , m_pItemPicker(nullptr)
+    , m_pUIInventory(nullptr)
+    , m_pPicked(nullptr)
+    , m_vRotForAlt()
 {
     m_pRootParts = NULL;
 
@@ -40,100 +47,96 @@ PlayerAni::PlayerAni()
 
 PlayerAni::~PlayerAni()
 {
-    //m_pRootParts->ReleaseAll();
-	
-	SAFE_DELETE(m_pBoxCollider);
-	SAFE_DELETE(m_pCollisionListner);
+    SAFE_RELEASE(m_pItemPicker);
 }
 
 void PlayerAni::Init()
 {
-	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f); //시작 위치 박기
+	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
-
-    //D3DXMATRIXA16 m;
-    //D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
-    //D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
-    //D3DXVec3Normalize(&m_dir, &m_dir);
 
     g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
 
 	/* collider init */
-	m_pCollisionListner = new PlayerAniCollisionListner(*this);
-	
-	m_pBoxCollider = new BoxCollider(*this);
-	m_pBoxCollider->SetListner(*m_pCollisionListner);
-	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-	D3DXMATRIXA16 m;
-	D3DXMatrixTranslation(&m, 0.0f, 3.0f, 0.0f);
-	m_pBoxCollider->Update(m);
-	/* end collider init */
+    m_pCollisionListener = SetComponent<PlayerAniCollisionListener>();
 
-    GetClientRect(g_hWnd, &m_RC);   //마우스 좌표 초기화를 위한 api화면 받아오기
-    ShowCursor(true);              //마우스 커서 보이기 안보이기
+    m_pBoxCollider = SetComponent<BoxCollider>();
+    m_pBoxCollider->SetListener(*m_pCollisionListener);
+	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
+    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
+    /* end collider init */
+
+    GetClientRect(g_hWnd, &m_RC);   //留곗 醫 珥湲고瑜  api硫 諛ㅺ린
+    ShowCursor(true);              //留곗 而ㅼ 蹂댁닿린 蹂댁닿린
 }
 
 void PlayerAni::Update()
-{
-	KeyMove();    //이동
-	KeyMount();   //장착
-	KeyUnmount(); //장착해제
-	KeyLoad();    //총 장전
-	KeyFire();    //총 쏘기
-
-
-	//뛰고 걷기
-	RunAndWalk();
-
-    const float dt = g_pTimeManager->GetDeltaTime();
-    POINT currPoint;
-    POINT m_ptPrevMouse;
-    m_ptPrevMouse = g_pKeyManager->GetPreviousMousePos();
-    currPoint = g_pKeyManager->GetCurrentMousePos();
-    //////// 마우스 커서 초기화
-    if (currPoint.x < 0)
+{   
+    //이동 ASDW
+    KeyMove();
+    if (!IsShowingInventory())
     {
-        SetCursorPos(m_RC.right, currPoint.y);
+        //장착 1, 2
+        if (g_pKeyManager->IsOnceKeyDown('1'))
+            KeyChangeGun(GUN_TAG::Pistol);
+        else if (g_pKeyManager->IsOnceKeyDown('2'))
+            KeyChangeGun(GUN_TAG::Rifle);
+        //장착해제 X
+        if (g_pKeyManager->IsOnceKeyDown('X'))
+            KeyOutHand();
+        //총 장전 R
+        if (g_pKeyManager->IsOnceKeyDown('R'))
+            KeyLoad();
+        //총 모드 변경(단발 <-> 연발) B
+        if (g_pKeyManager->IsOnceKeyDown('B'))
+            KeyChangeFireMode();
+        //총 쏘기(단발) 마우스 왼쪽버튼
+        if (m_fireMode == FIRE_MODE::SingleShot)
+        {
+            if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
+                KeyFire();
+        }
+        //총 쏘기(연발)
+        else if (m_fireMode == FIRE_MODE::Burst)
+        {
+            if (m_pGun)
+            {
+                if (m_pGun->GetCanChangeBurstMode())             //연발이 지원되는 총이라면
+                {
+                    if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
+                        KeyFire();
+                }
+                else //m_pGun->GetCanChangeBurstMode() == false //연발이 지원되지 않는 총이라면
+                {
+                    if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
+                        KeyFire();
+                }
+            }
+        }
+
+        //뛰고 걷기 LShift
+        RunAndWalk(); 
+
+        UpdateRotation();
     }
-    if (currPoint.x >= m_RC.right)
-    {
-        SetCursorPos(0, currPoint.y);
-    }
-    ////////
-    //이렇게 하는것이 맞는지 아니면 thirdperson의 bool값을 받아와서 하는 것이 좋을지
-    if(!g_pKeyManager->IsStayKeyDown(VK_MENU))
-    {
-        POINT diff;
-        diff.x = currPoint.x - m_ptPrevMouse.x;
-        diff.y = currPoint.y - m_ptPrevMouse.y;
-        const float factorX = 0.3f;
-        const float factorY = 0.3f;
-        m_rot.x += diff.y * factorX * dt;
-        m_rot.y += diff.x * factorY * dt;
-    }
-    
+
+	//점프 Space
     if(g_pKeyManager->IsOnceKeyDown(VK_SPACE))
-    {
         m_isJumping = true;
-    }
 
-	//죽는 애니메이션 테스트용
+	//죽는 애니메이션 테스트용 G
     if (g_pKeyManager->IsOnceKeyDown('G'))
-    {
         DiedAni();
-    }
-    
+
 	D3DXMATRIXA16 prevM = m_matWorld;
     if (m_isLive)
-    {
         UpdatePosition();
-    }
 	D3DXMATRIXA16 currM = m_matWorld;
 	D3DXMatrixInverse(&prevM, nullptr, &prevM);
 
-    D3DXMATRIXA16 m;
+    D3DXMATRIXA16 m, tm;
     D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
     D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
     D3DXVec3Normalize(&m_dir, &m_dir);
@@ -141,16 +144,26 @@ void PlayerAni::Update()
     m_pRootParts->SetMovingState(m_isMoving);
     m_pRootParts->Update();
 
+	/* TM = prevM^(-1) * currM */
+    tm = prevM * currM;
+	m_pBoxCollider->Update(tm);
+
+    // change position for Gun in hand
+    UpdateGunInHandPosition();
+    UpdateGunInEquipPosition();
+
 	/* 디버그 */
+    //발사모드 디버그용
+    ShowFireModeForDebug();
+
 	//인벤토리 디버그용
 	ShowInventoryForDebug();
 
 	//총알 개수 디버그용
-	if (m_pPistol)
-		m_pPistol->ShowBulletNumForDebug();
+	if (m_pGun)
+		m_pGun->ShowBulletNumForDebug();
 
-	/* TM = prevM^(-1) * currM */
-	m_pBoxCollider->Update(prevM * currM);
+    ShowInventory(tm);
 }
 
 void PlayerAni::Render()
@@ -167,20 +180,16 @@ void PlayerAni::UpdatePosition()
     if (m_isLive)
     {
         D3DXMatrixRotationY(&matRotY, m_rot.y);
-        D3DXVec3TransformNormal(&m_forward,
-            &D3DXVECTOR3(0, 0, 1), &matRotY);
+        D3DXVec3TransformNormal(&m_forward, &D3DXVECTOR3(0, 0, 1), &matRotY);
 
         D3DXMatrixRotationY(&matRotY, m_rot.y);
-        D3DXVec3TransformNormal(&m_right,
-            &D3DXVECTOR3(1, 0, 0), &matRotY);
+        D3DXVec3TransformNormal(&m_right, &D3DXVECTOR3(1, 0, 0), &matRotY);
     }
     else
     {
         D3DXMatrixRotationX(&matRotY, m_rot.x);
-        D3DXVec3TransformNormal(&m_forward,
-            &D3DXVECTOR3(0, 0, 1), &matRotY);
+        D3DXVec3TransformNormal(&m_forward, &D3DXVECTOR3(0, 0, 1), &matRotY);
     }
-
 
     D3DXVECTOR3 targetPos;
     float basePosY = 0;
@@ -266,27 +275,33 @@ void PlayerAni::UpdatePosition()
 void PlayerAni::CreateAllParts()
 {
     PlayerParts* pParts;
-    //몸통
+
+    // body
     m_pRootParts = new PlayerParts();
     CreateParts(m_pRootParts, this, D3DXVECTOR3(0.0f, 3.0f, 0.0f),
         D3DXVECTOR3(1.0f, 1.0f, 0.5f), D3DXVECTOR3(0, 0, 0), uvBody, tEmpty);
-    //머리
+
+    // head
     pParts = new PlayerParts();
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(0.0f, 1.6f, 0.0f),
         D3DXVECTOR3(0.8f, 0.8f, 0.8f), D3DXVECTOR3(0, 0, 0), uvHead, tEmpty);
-    //왼팔
+
+    // left arm
     pParts = new PlayerParts(0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(-1.5f, 1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvLArm, tEmpty);
-    //오른팔
+
+    // right arm
     pParts = new PlayerParts(-0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(1.5f, 1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvRArm, tEmpty);
-    //왼다리
+
+    // left leg
     pParts = new PlayerParts(-0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(-0.5f, -1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvLLeg, tEmpty);
-    //오른다리
+
+    // right leg
     pParts = new PlayerParts(0.1f);
     CreateParts(pParts, m_pRootParts, D3DXVECTOR3(0.5f, -1.0f, 0.0f),
         D3DXVECTOR3(0.5f, 1.0f, 0.5f), D3DXVECTOR3(0, -1.0f, 0), uvRLeg, tEmpty);
@@ -299,10 +314,9 @@ void PlayerAni::CreateParts(PlayerParts *& pParts, IDisplayObject * pParent, D3D
     D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
     mat = matS * matT;
     pParts->Init(&mat, vecUV);
-    pParts->SetPosition(&pos);
+    pParts->SetPosition(pos);
     pParts->SetPartTag(tag);
     pParent->AddChild(*pParts);
-
 }
 
 void PlayerAni::DrawGunInOut()
@@ -361,234 +375,436 @@ void PlayerAni::DiedAni()
     }
 }
 
-/* 우리 추가 */
+PlayerParts * PlayerAni::GetChild(int index)
+{
+    return static_cast<PlayerParts*>(m_pRootParts->GetChildVec()[index]);
+}
+
+size_t PlayerAni::GetInventorySize()
+{
+    return m_mapInventory.size();
+}
+
+size_t PlayerAni::GetGunsNum()
+{
+    return m_mapGuns.size();
+}
+
 void PlayerAni::PutItemInInventory(Item* item)
 {
 	item->SetItemState(ITEM_STATE::InInventory);
 	m_mapInventory[item->GetItemTag()].push_back(item);
 }
-void PlayerAni::ShowInventoryForDebug()
+
+void PlayerAni::PutGunInEquip(Gun* gun)
 {
-	Debug->AddText("<Inventory>");
-	Debug->EndLine();
-	Debug->AddText("the number of Items: ");
-	Debug->AddText(GetInventorySize());
-	Debug->EndLine();
-
-	for (auto item : m_mapInventory)
-	{
-		auto itemTag = item.first;
-		switch (itemTag)
-		{
-		case ITEM_TAG::Pistol:
-			Debug->AddText("- Pistol: ");
-			Debug->AddText(item.second.size());
-			Debug->EndLine();
-
-			for (auto i : item.second)
-			{
-				switch (i->GetItemState())
-				{
-				case ITEM_STATE::Dropped:
-					Debug->AddText("Dropped");
-					break;
-				case ITEM_STATE::InInventory:
-					Debug->AddText("InInventory");
-					break;
-				case ITEM_STATE::Mounting:
-					Debug->AddText("Mounting");
-					break;
-				} //swtich ItemState
-				Debug->EndLine();
-			} // for item.second()
-
-			break;
-		case ITEM_TAG::Bullet:
-			Debug->AddText("- Bullet: ");
-			Debug->AddText(item.second.size());
-			Debug->EndLine();
-
-			for (auto i : item.second)
-			{
-				switch (i->GetItemState())
-				{
-				case ITEM_STATE::Dropped:
-					Debug->AddText("Dropped");
-					break;
-				case ITEM_STATE::InInventory:
-					Debug->AddText("InInventory");
-					break;
-				case ITEM_STATE::Mounting:
-					Debug->AddText("Mounting");
-					break;
-				} //swtich ItemState
-				Debug->EndLine();
-			} // for item.second()
-			break;
-		} //switch itemTag
-	} //for m_mapInventory
+	gun->SetItemState(ITEM_STATE::Equipped);
+	m_mapGuns[gun->GetGunTag()] = gun;
+    UpdateGunInEquipPosition();
 }
 
-
-/* 키 입력 관련 함수로 분리 */
 void PlayerAni::KeyMove()
 {
-	//float deltaTime = g_pTimeManager->GetDeltaTime();
-	//float distance = deltaTime * m_velocity;
-
-	/* 이동 ASDW */ // 맵 구역 안에 있을 때만 움직인다 
-	if (g_pKeyManager->IsStayKeyDown('A')) //왼쪽
+	if (g_pKeyManager->IsStayKeyDown('A'))
 	{
-		//if (m_pos.x - distance >= -5.f)
-		//	m_pos.x -= distance;
-		//m_deltaRot = D3DXVECTOR3(0, -1, 0);
         m_deltaPos.x = -1;
 	}
-	else if (g_pKeyManager->IsStayKeyDown('D')) //오른쪽
+	else if (g_pKeyManager->IsStayKeyDown('D'))
 	{
-		//if (m_pos.x + distance <= 5.f)
-		//	m_pos.x += distance;
-		//m_deltaRot = D3DXVECTOR3(0,  1, 0);
         m_deltaPos.x = 1;
     }
 	else
 	{
-		//m_deltaRot = D3DXVECTOR3(0, 0, 0);
         m_deltaPos.x = 0;
     }
 
-	if (g_pKeyManager->IsStayKeyDown('W')) //위쪽
+	if (g_pKeyManager->IsStayKeyDown('W'))
 	{
-		//if (m_pos.z + distance <= 20.f)
-		//	m_pos.z += distance;
 		m_deltaPos.z = 1;
 	}
-	else if (g_pKeyManager->IsStayKeyDown('S')) //아래쪽
+	else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
-		//if (m_pos.z - distance >= -20.f)
-		//	m_pos.z -= distance;
 		m_deltaPos.z = -1;
 	}
 	else
 	{
 		m_deltaPos.z = 0;
 	}
-
-	/* 총 장착시 총 위치 업데이트 */
-	if (m_pPistol)
-	{
-		m_pPistol->SetPosition(D3DXVECTOR3(m_pos.x + m_forward.x*2.3f +m_right.x*1.3f , m_pos.y + 4.f, m_pos.z + m_forward.z * 2.3f + m_right.z*1.3f)); //플레이어보다 살짝 위, 살짝 앞
-        m_pPistol->SyncRot(m_rot.y);
-	}
 }
 
-void PlayerAni::KeyMount()
+void PlayerAni::KeyInHand(GUN_TAG gunTag)
 {
 	/* 무기 장착 */
-	if (g_pKeyManager->IsOnceKeyDown('1'))
+	for (auto gun : m_mapGuns)
 	{
-		if (m_pPistol == nullptr) //아무것도 장착되어있지 않을 때
+		if (gun.first == gunTag)
 		{
-			for (auto item : m_mapInventory) //인벤토리에서 총 찾아 가장 앞에 있는 총 겟또
-			{
-				auto itemTag = item.first;
-				if (itemTag == ITEM_TAG::Pistol)
-				{
-					DrawGunInOut();
-					m_pPistol = static_cast<Pistol*>(item.second.front());
-					m_pPistol->SetItemState(ITEM_STATE::Mounting); //장착중
-					std::cout << "장착 완료" << std::endl;
-					break; //총한개만 찾지롱
-				}
-			}
+			DrawGunInOut();
+			m_pGun = static_cast<Gun*>(gun.second);
+			m_pGun->SetItemState(ITEM_STATE::InHand); //장착중
+			cout << m_pGun->GunTagToStrForDebug(gunTag) << " OK, Mount." << endl;
+			break; //총한개만 찾지롱
 		}
 	}
 }
 
-void PlayerAni::KeyUnmount()
+void PlayerAni::KeyOutHand()
 {
 	/* 무기 장착 해제 */
-	if (g_pKeyManager->IsOnceKeyDown('X'))
+	if (m_pGun)
 	{
-		if (m_pPistol)
-		{
-			DrawGunInOut();
-			m_pPistol->SetItemState(ITEM_STATE::InInventory); //장착해제중
-			m_pPistol = nullptr;
-			std::cout << "장착 해제" << std::endl;
-		}
+		DrawGunInOut();
+		m_pGun->SetItemState(ITEM_STATE::Equipped); //장착해제중
+		m_pGun = nullptr;
+		cout << "Ok, Unmount." << endl;
 	}
-
 }
 
 void PlayerAni::KeyLoad()
 {
 	/* 총알 장전 */
-	if (g_pKeyManager->IsOnceKeyDown('R'))
+	if (m_pGun) //장착하고 있는 총이 있으면
 	{
-		if (m_pPistol) //장착하고 있는 총이 있으면
+		//총알 찾기
+		for (auto& item : m_mapInventory)
 		{
-			//총알 찾기
-			for (auto& item : m_mapInventory)
+			if (item.first == ITEM_TAG::Bullet)
 			{
-				if (item.first == ITEM_TAG::Bullet)
+				int need = m_pGun->GetNeedBullet(); //장전에 필요한 총알 수
+				auto& bullets = item.second;
+				vector<Bullet*> vecSpecificBullets; //특정 총알 리스트를 만든다
+				for (auto bullet : bullets)
 				{
-					int need = m_pPistol->GetNeedBullet(); //장전에 필요한 총알 수
-					auto& bullets = item.second;
-					for (int i = 0; i < need; ++i)
+					auto pBullet = static_cast<Bullet*>(bullet);
+					if (pBullet->GetBulletFor() == m_pGun->GetGunTag())
+						vecSpecificBullets.emplace_back(pBullet);
+				}
+
+				for (int i = 0; i < need; ++i)
+				{
+					if(vecSpecificBullets.empty() == false) //특정 총알 리스트에 대해 진행
 					{
-						if (bullets.empty() == false)
+						auto pLastBullet = static_cast<Bullet*>(vecSpecificBullets.back());
+						if(pLastBullet->IsBulletForThisGun(m_pGun->GetGunTag()))
 						{
-							auto bullet = bullets.back();
-							bullet->SetItemState(ITEM_STATE::Mounting);
-							m_pPistol->Load(static_cast<Bullet*>(bullet));
-							bullets.pop_back();
-							std::cout << "장전완료" << std::endl;
+							pLastBullet->SetItemState(ITEM_STATE::InHand);
+							m_pGun->Load(pLastBullet);
+							for (auto it = bullets.begin(); it != bullets.end(); )
+							{
+								if (*it == static_cast<Item*>(vecSpecificBullets.back()))
+									it = bullets.erase(it);
+								else
+									++it;
+							}
+							vecSpecificBullets.pop_back();
+							cout << "Ok, Load." << endl;
+						}
+						else
+						{
+							cout << "This Bullet can't be used for this Gun." << endl;
 						}
 					}
-				}//if ITEM_TAG::Bullet
-			}//for m_mapInventory
-		}//if m_pPistol
-		else //m_pPistpol == nullptr
-		{
-			std::cout << "총을 장착하고 장전해줘~!" << std::endl;
-		}
+				}//for need
+			}//if ITEM_TAG::Bullet
+		}//for m_mapInventory
+	}//if m_pGun
+	else //m_pPistpol == nullptr
+	{
+		cout << "Plz, Load after mounting gun." << endl;
 	}
 }
 
 void PlayerAni::KeyFire()
 {
-	/* 총쏘기 RETRUN */ //TODO: 마우스 왼쪽 버튼으로 바꿔야함!!
-	if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
-	{
-		if (m_pPistol) //총이 장착되어있을 때
+    if (m_pGun) //총이 장착되어있을 때
+    {
+		if (m_pGun->GetBulletNum() > 0)
 		{
-			m_pPistol->Fire();
-			if (m_pPistol->GetBulletNum() > 0)
-				std::cout << "빵야빵야~!" << std::endl;
-			else
-				std::cout << "총알이 없따 ㅠㅠㅠㅠ" << std::endl;
+			m_pGun->Fire();
 		}
 		else
-		{
-			std::cout << "총을 장착해줘!" << std::endl;
-		}
+			cout << "No Bullet!!" << endl;
+	}
+	else
+	{
+		cout << "Plz, Mount Gun." << endl;
 	}
 }
 
-PlayerAniCollisionListner::PlayerAniCollisionListner(BaseObject & owner)
-	: ICollisionListner(owner)
+void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
+{
+	if (m_pGun == nullptr) //아무것도 장착되어있지 않을 때
+	{
+		KeyInHand(gunTag);
+	}
+	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //장착이 되어있으면서, 이미 장착하고 있는 총이 아닐 때
+	{
+		//장착 해제 후 장착
+		KeyOutHand(); 
+		KeyInHand(gunTag);
+	}
+}
+
+void PlayerAni::KeyChangeFireMode()
+{
+    if (m_pGun)
+    {
+        if (m_fireMode == FIRE_MODE::SingleShot)
+        {
+            if (m_pGun->GetCanChangeBurstMode())
+                m_fireMode = FIRE_MODE::Burst;
+        }
+        else if (m_fireMode == FIRE_MODE::Burst)
+            m_fireMode = FIRE_MODE::SingleShot;
+    }
+}
+
+void PlayerAni::UpdateRotation()
+{
+    const float dt = g_pTimeManager->GetDeltaTime();
+
+    POINT mouse;
+    GetCursorPos(&mouse);
+    ScreenToClient(g_hWnd, &mouse);
+
+    POINT diff;
+    diff.x = mouse.x - 1280 / 2;
+    diff.y = mouse.y - 720 / 2;
+    const float factorX = 0.3f;
+    const float factorY = 0.3f;
+
+    if (g_pKeyManager->IsOnceKeyDown(VK_MENU))
+    {
+        m_vRotForAlt = m_rot;
+    }
+
+    if (g_pKeyManager->IsStayKeyDown(VK_MENU) &&
+        g_pCurrentCamera->GetState() == CameraState::THIRDPERSON)
+    {
+        m_vRotForAlt.x += diff.y * factorX * dt;
+        m_vRotForAlt.y += diff.x * factorY * dt;
+        g_pCameraManager->SetTarget(m_pos, m_vRotForAlt);
+
+    }
+    else
+    {
+        m_rot.x += diff.y * factorX * dt;
+        m_rot.y += diff.x * factorY * dt;
+        g_pCameraManager->SetTarget(m_pos, m_rot);
+    }
+
+    POINT center;
+    center.x = 1280 / 2;
+    center.y = 720 / 2;
+    ClientToScreen(g_hWnd, &center);
+    SetCursorPos(center.x, center.y);
+}
+
+void PlayerAni::UpdateGunInHandPosition()
+{
+    /* 총 장착시 총 위치 업데이트 */
+    if (m_pGun)
+    {
+        m_pGun->SetPosition(D3DXVECTOR3(
+            m_pos.x + m_forward.x * 2.3f + m_right.x * 1.3f,
+            m_pos.y + 4.f,
+            m_pos.z + m_forward.z * 2.3f + m_right.z * 1.3f));
+
+        m_pGun->SyncRot(m_rot.y);
+    }
+}
+
+void PlayerAni::UpdateGunInEquipPosition()
+{
+    for (auto gun : m_mapGuns)
+    {
+        if (gun.second->GetItemState() == ITEM_STATE::Equipped)
+        {
+            switch (gun.second->GetGunTag())
+            {
+            case GUN_TAG::Pistol:
+                gun.second->SetPosition(D3DXVECTOR3(
+                    m_pos.x + m_forward.x * -1.3f + m_right.x * -0.3f,
+                    m_pos.y + 3.f,
+                    m_pos.z + m_forward.z * -1.3f + m_right.z * -0.3f));
+                break;
+            case GUN_TAG::Rifle:
+                gun.second->SetPosition(D3DXVECTOR3(
+                    m_pos.x + m_forward.x * -1.3f + m_right.x * 0.3f,
+                    m_pos.y + 4.f,
+                    m_pos.z + m_forward.z * -1.3f + m_right.z * 0.3f));
+                break;
+            }
+            gun.second->SyncRot(m_rot.y + D3DXToRadian(90));
+        }
+    }
+}
+
+void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
+{
+    if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
+    {
+        if (m_pItemPicker)
+        {
+            SAFE_RELEASE(m_pItemPicker);
+            g_pUIManager->Destroy(*m_pUIInventory);
+            m_pUIInventory = nullptr;
+
+            POINT center;
+            center.x = 1280 / 2;
+            center.y = 720 / 2;
+            ClientToScreen(g_hWnd, &center);
+            SetCursorPos(center.x, center.y);
+        }
+        else
+        {
+            m_pItemPicker = ItemPicker::Create(*this, m_pos, m_rot);
+            m_pUIInventory = UIInventory::Create();
+            m_pUIInventory->AttachToObject(*this);
+        }
+    }
+
+    if (m_pItemPicker && m_pUIInventory)
+    {
+        vector<Item*> pickables;
+        m_pItemPicker->Update(pickables, transform);
+        m_pUIInventory->Update(m_pPicked, m_mapInventory, pickables);
+    }
+}
+
+bool PlayerAni::IsShowingInventory()
+{
+    return m_pItemPicker || m_pUIInventory;
+}
+
+void PlayerAni::Pick(Item& item)
+{
+    switch (item.GetItemTag())
+    {
+    case ITEM_TAG::Gun:
+        {
+            Gun* g = static_cast<Gun*>(&item);
+            if (m_mapGuns.find(g->GetGunTag()) == m_mapGuns.end()) //Add the gun to the equipment list if it does not exist
+                PutGunInEquip(g);
+            else
+                PutItemInInventory(&item);
+        }
+        break;
+    default:
+        PutItemInInventory(&item);
+        break;
+    }
+}
+
+PlayerAniCollisionListener::PlayerAniCollisionListener(BaseObject& owner)
+	: ICollisionListener(owner)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionEnter(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionExit(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionExit(const ColliderBase& other)
 {
 }
 
-void PlayerAniCollisionListner::OnCollisionStay(const ColliderBase & other)
+void PlayerAniCollisionListener::OnCollisionStay(const ColliderBase& other)
 {
+}
+
+/* 디버그용 */
+void PlayerAni::ShowInventoryForDebug()
+{
+    Debug->AddText("<Guns list>");
+    Debug->EndLine();
+    for (auto item : m_mapGuns)
+    {
+        auto itemTag = item.first;
+        switch (itemTag)
+        {
+        case GUN_TAG::Pistol:
+            Debug->AddText("- Pistol, ");
+            ShowItemStateForDebug(item.second->GetItemState());
+            Debug->EndLine();
+            break;
+        case GUN_TAG::Rifle:
+            Debug->AddText("- Rifle, ");
+            ShowItemStateForDebug(item.second->GetItemState());
+            Debug->EndLine();
+            break;
+        }
+    } //for m_mapGuns
+
+    Debug->EndLine();
+    Debug->AddText("<Inventory>");
+    Debug->EndLine();
+    Debug->AddText("the number of Items: ");
+    Debug->AddText(GetInventorySize() + GetGunsNum());
+    Debug->EndLine();
+    for (auto item : m_mapInventory)
+    {
+        auto itemTag = item.first;
+        switch (itemTag)
+        {
+        case ITEM_TAG::Bullet:
+            Debug->AddText("- Bullet: ");
+            Debug->AddText(item.second.size());
+            Debug->EndLine();
+
+            for (auto i : item.second)
+            {
+                switch (static_cast<Bullet*>(i)->GetBulletFor())
+                {
+                case GUN_TAG::Pistol:
+                    Debug->AddText("for Pistol, ");
+                    break;
+                case GUN_TAG::Rifle:
+                    Debug->AddText("for Rifle, ");
+                    break;
+                }
+                ShowItemStateForDebug(i->GetItemState());
+                Debug->EndLine();
+            } // for item.second()
+            break;
+        } //switch itemTag
+    } //for m_mapInventory
+}
+
+void PlayerAni::ShowFireModeForDebug()
+{
+    Debug->EndLine();
+    Debug->AddText("<Fire Mode>");
+    switch (m_fireMode)
+    {
+    case FIRE_MODE::SingleShot:
+        Debug->AddText("Single Mode");
+        Debug->EndLine();
+        break;
+
+    case FIRE_MODE::Burst:
+        Debug->AddText("Burst Mode");
+        Debug->EndLine();
+        break;
+
+    }
+}
+
+void PlayerAni::ShowItemStateForDebug(ITEM_STATE itemState)
+{
+    switch (itemState)
+    {
+    case ITEM_STATE::Dropped:
+        Debug->AddText("Dropped");
+        break;
+    case ITEM_STATE::InInventory:
+        Debug->AddText("InInventory");
+        break;
+    case ITEM_STATE::Equipped:
+        Debug->AddText("Equipped");
+        break;
+    case ITEM_STATE::InHand:
+        Debug->AddText("In Hand");
+        break;
+    } //swtich ItemState
 }

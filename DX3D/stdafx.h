@@ -76,6 +76,12 @@ using std::hash;
 #include <bitset>
 using std::bitset;
 
+#include <typeindex>
+using std::type_index;
+
+#include <ostream>
+using std::ostream;
+
 #include <d3dx9.h>
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
@@ -111,3 +117,5 @@ extern HWND g_hWnd;
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console") 
 #endif
 #define D3DX_DEBUG
+
+
