@@ -92,7 +92,7 @@ bool Item::IsVisible()
     {
     case ITEM_STATE::Dropped:
     case ITEM_STATE::Equipped:
-    case ITEM_STATE::Held:
+    case ITEM_STATE::InHand:
         return true;
     default:
         return false;

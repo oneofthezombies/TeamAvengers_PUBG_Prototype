@@ -72,10 +72,9 @@ void PlayerAni::Init()
 }
 
 void PlayerAni::Update()
-{
+{   
     //이동 ASDW
-	KeyMove();
-
+    KeyMove();
     if (!IsShowingInventory())
     {
         //장착 1, 2
@@ -85,7 +84,7 @@ void PlayerAni::Update()
             KeyChangeGun(GUN_TAG::Rifle);
         //장착해제 X
         if (g_pKeyManager->IsOnceKeyDown('X'))
-            KeyUnmount();
+            KeyOutHand();
         //총 장전 R
         if (g_pKeyManager->IsOnceKeyDown('R'))
             KeyLoad();
@@ -119,7 +118,7 @@ void PlayerAni::Update()
         //뛰고 걷기 LShift
         RunAndWalk(); 
 
-        UpdateRotation(); 
+        UpdateRotation();
     }
 
 	//점프 Space
@@ -147,6 +146,10 @@ void PlayerAni::Update()
 	/* TM = prevM^(-1) * currM */
     tm = prevM * currM;
 	m_pBoxCollider->Update(tm);
+
+    // change position for Gun in hand
+    UpdateGunInHandPosition();
+    UpdateGunInEquipPosition();
 
 	/* 디버그 */
     //발사모드 디버그용
@@ -371,77 +374,62 @@ void PlayerAni::DiedAni()
     }
 }
 
+PlayerParts * PlayerAni::GetChild(int index)
+{
+    return static_cast<PlayerParts*>(m_pRootParts->GetChildVec()[index]);
+}
+
+size_t PlayerAni::GetInventorySize()
+{
+    return m_mapInventory.size();
+}
+
+size_t PlayerAni::GetGunsNum()
+{
+    return m_mapGuns.size();
+}
+
 void PlayerAni::PutItemInInventory(Item* item)
 {
 	item->SetItemState(ITEM_STATE::InInventory);
 	m_mapInventory[item->GetItemTag()].push_back(item);
 }
 
-void PlayerAni::EquipGun(Gun* gun)
+void PlayerAni::PutGunInEquip(Gun* gun)
 {
 	gun->SetItemState(ITEM_STATE::Equipped);
 	m_mapGuns[gun->GetGunTag()] = gun;
-    gun->SetPosition(m_pos);
+    UpdateGunInEquipPosition();
 }
 
 void PlayerAni::ShowInventoryForDebug()
 {
-	Debug->AddText("<Inventory>");
-	Debug->EndLine();
-	Debug->AddText("the number of Items: ");
-	Debug->AddText(GetInventorySize() + GetGunsNum());
-	Debug->EndLine();
-
+    Debug->AddText("<Guns list>");
+    Debug->EndLine();
 	for (auto item : m_mapGuns)
 	{
 		auto itemTag = item.first;
 		switch (itemTag)
 		{
 		case GUN_TAG::Pistol:
-			Debug->AddText("- Pistol: ");
-			Debug->EndLine();
-
-			switch (item.second->GetItemState())
-			{
-			case ITEM_STATE::Dropped:
-				Debug->AddText("Dropped");
-				break;
-			case ITEM_STATE::InInventory:
-				Debug->AddText("InInventory");
-				break;
-            case ITEM_STATE::Equipped:
-				Debug->AddText("Equipped");
-				break;
-            case ITEM_STATE::Held:
-                Debug->AddText("Held");
-                break;
-			} //swtich ItemState
+			Debug->AddText("- Pistol, ");
+            ShowItemStateForDebug(item.second->GetItemState());
 			Debug->EndLine();
 			break;
 		case GUN_TAG::Rifle:
-			Debug->AddText("- Rifle: ");
-			Debug->EndLine();
-
-			switch (item.second->GetItemState())
-			{
-			case ITEM_STATE::Dropped:
-				Debug->AddText("Dropped");
-				break;
-			case ITEM_STATE::InInventory:
-				Debug->AddText("InInventory");
-				break;
-            case ITEM_STATE::Equipped:
-                Debug->AddText("Equipped");
-                break;
-            case ITEM_STATE::Held:
-                Debug->AddText("Held");
-                break;
-			} //swtich ItemState
+			Debug->AddText("- Rifle, ");
+            ShowItemStateForDebug(item.second->GetItemState());
 			Debug->EndLine();
 			break;
 		} 
 	} //for m_mapGuns
 
+    Debug->EndLine();
+    Debug->AddText("<Inventory>");
+    Debug->EndLine();
+    Debug->AddText("the number of Items: ");
+    Debug->AddText(GetInventorySize() + GetGunsNum());
+    Debug->EndLine();
 	for (auto item : m_mapInventory)
 	{
 		auto itemTag = item.first;
@@ -454,33 +442,17 @@ void PlayerAni::ShowInventoryForDebug()
 
 			for (auto i : item.second)
 			{
-				switch (i->GetItemState())
-				{
-				case ITEM_STATE::Dropped:
-					Debug->AddText("Dropped");
-					break;
-				case ITEM_STATE::InInventory:
-					Debug->AddText("InInventory");
-					break;
-                case ITEM_STATE::Equipped:
-                    Debug->AddText("Equipped");
+                switch (static_cast<Bullet*>(i)->GetBulletFor())
+                {
+                case GUN_TAG::Pistol:
+                    Debug->AddText("for Pistol, ");
                     break;
-                case ITEM_STATE::Held:
-                    Debug->AddText("Held");
+                case GUN_TAG::Rifle:
+                    Debug->AddText("for Rifle, ");
                     break;
-				} //swtich ItemState
-				Debug->EndLine();
-
-				switch (static_cast<Bullet*>(i)->GetBulletFor())
-				{
-				case GUN_TAG::Pistol:
-					Debug->AddText("Pistol");
-					break;
-				case GUN_TAG::Rifle:
-					Debug->AddText("Rifle");
-					break;
-				}
-				Debug->EndLine();
+                }
+                ShowItemStateForDebug(i->GetItemState());
+                Debug->EndLine();
 			} // for item.second()
 			break;
 		} //switch itemTag
@@ -504,6 +476,25 @@ void PlayerAni::ShowFireModeForDebug()
         break;
     
     }
+}
+
+void PlayerAni::ShowItemStateForDebug(ITEM_STATE itemState)
+{
+    switch (itemState)
+    {
+    case ITEM_STATE::Dropped:
+        Debug->AddText("Dropped");
+        break;
+    case ITEM_STATE::InInventory:
+        Debug->AddText("InInventory");
+        break;
+    case ITEM_STATE::Equipped:
+        Debug->AddText("Equipped");
+        break;
+    case ITEM_STATE::InHand:
+        Debug->AddText("In Hand");
+        break;
+    } //swtich ItemState
 }
 
 void PlayerAni::KeyMove()
@@ -533,20 +524,9 @@ void PlayerAni::KeyMove()
 	{
 		m_deltaPos.z = 0;
 	}
-
-	/* 총 장착시 총 위치 업데이트 */
-	if (m_pGun)
-	{
-        m_pGun->SetPosition(D3DXVECTOR3(
-            m_pos.x + m_forward.x * 2.3f + m_right.x * 1.3f, 
-            m_pos.y + 4.f, 
-            m_pos.z + m_forward.z * 2.3f + m_right.z * 1.3f));
-
-        m_pGun->SyncRot(m_rot.y);
-	}
 }
 
-void PlayerAni::KeyMount(GUN_TAG gunTag)
+void PlayerAni::KeyInHand(GUN_TAG gunTag)
 {
 	/* 무기 장착 */
 	for (auto gun : m_mapGuns)
@@ -555,20 +535,20 @@ void PlayerAni::KeyMount(GUN_TAG gunTag)
 		{
 			DrawGunInOut();
 			m_pGun = static_cast<Gun*>(gun.second);
-			m_pGun->SetItemState(ITEM_STATE::Held); //장착중
+			m_pGun->SetItemState(ITEM_STATE::InHand); //장착중
 			cout << m_pGun->GunTagToStrForDebug(gunTag) << " OK, Mount." << endl;
 			break; //총한개만 찾지롱
 		}
 	}
 }
 
-void PlayerAni::KeyUnmount()
+void PlayerAni::KeyOutHand()
 {
 	/* 무기 장착 해제 */
 	if (m_pGun)
 	{
 		DrawGunInOut();
-		m_pGun->SetItemState(ITEM_STATE::InInventory); //장착해제중
+		m_pGun->SetItemState(ITEM_STATE::Equipped); //장착해제중
 		m_pGun = nullptr;
 		cout << "Ok, Unmount." << endl;
 	}
@@ -601,7 +581,7 @@ void PlayerAni::KeyLoad()
 						auto pLastBullet = static_cast<Bullet*>(vecSpecificBullets.back());
 						if(pLastBullet->IsBulletForThisGun(m_pGun->GetGunTag()))
 						{
-							pLastBullet->SetItemState(ITEM_STATE::Held);
+							pLastBullet->SetItemState(ITEM_STATE::InHand);
 							m_pGun->Load(pLastBullet);
 							for (auto it = bullets.begin(); it != bullets.end(); )
 							{
@@ -649,13 +629,13 @@ void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
 {
 	if (m_pGun == nullptr) //아무것도 장착되어있지 않을 때
 	{
-		KeyMount(gunTag);
+		KeyInHand(gunTag);
 	}
 	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //장착이 되어있으면서, 이미 장착하고 있는 총이 아닐 때
 	{
 		//장착 해제 후 장착
-		KeyUnmount(); 
-		KeyMount(gunTag);
+		KeyOutHand(); 
+		KeyInHand(gunTag);
 	}
 }
 
@@ -714,6 +694,44 @@ void PlayerAni::UpdateRotation()
     SetCursorPos(center.x, center.y);
 }
 
+void PlayerAni::UpdateGunInHandPosition()
+{
+    /* 총 장착시 총 위치 업데이트 */
+    if (m_pGun)
+    {
+        m_pGun->SetPosition(D3DXVECTOR3(
+            m_pos.x + m_forward.x * 2.3f + m_right.x * 1.3f,
+            m_pos.y + 4.f,
+            m_pos.z + m_forward.z * 2.3f + m_right.z * 1.3f));
+
+        m_pGun->SyncRot(m_rot.y);
+
+        Debug->AddText(m_rot.y);
+        Debug->EndLine();
+    }
+}
+
+void PlayerAni::UpdateGunInEquipPosition()
+{
+    for (auto gun : m_mapGuns)
+    {
+        if (gun.second->GetItemState() == ITEM_STATE::Equipped)
+        {
+            switch (gun.second->GetGunTag())
+            {
+            case GUN_TAG::Pistol:
+                gun.second->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 2.f, m_pos.z - 2.f));
+                break;
+            case GUN_TAG::Rifle:
+                gun.second->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 3.5f, m_pos.z - 2.f));
+                break;
+            }
+            gun.second->SyncRot(m_rot.y);
+           
+        }
+    }
+}
+
 void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
 {
     if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
@@ -749,6 +767,25 @@ void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
 bool PlayerAni::IsShowingInventory()
 {
     return m_pItemPicker || m_pUIInventory;
+}
+
+void PlayerAni::Pick(Item& item)
+{
+    switch (item.GetItemTag())
+    {
+    case ITEM_TAG::Gun:
+        {
+            Gun* g = static_cast<Gun*>(&item);
+            if (m_mapGuns.find(g->GetGunTag()) == m_mapGuns.end()) //Add the gun to the equipment list if it does not exist
+                PutGunInEquip(g);
+            else
+                PutItemInInventory(&item);
+        }
+        break;
+    default:
+        PutItemInInventory(&item);
+        break;
+    }
 }
 
 PlayerAniCollisionListener::PlayerAniCollisionListener(BaseObject& owner)

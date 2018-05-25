@@ -52,10 +52,8 @@ private:
     bool            m_isRunnig;
     bool            m_isLive;
 
-	/* 우리 추가 */
-	//TODO: multimap으로 변경할 것
-    FIRE_MODE       m_fireMode;      //단발 연발
-	Gun*            m_pGun;          //장착중인 총
+    FIRE_MODE       m_fireMode;
+	Gun*            m_pGun;      //Gun that in hand
 	map<ITEM_TAG, vector<Item*>> m_mapInventory;
 	map<GUN_TAG, Gun*>           m_mapGuns;
 
@@ -83,31 +81,34 @@ public:
     void RunAndWalk();
     void DiedAni();
 
-    PlayerParts* GetChild(int index)
-    {
-        return static_cast<PlayerParts*>(m_pRootParts->GetChildVec()[index]);
-    }
+    PlayerParts* GetChild(int index);
+    size_t GetInventorySize();
+    size_t GetGunsNum();
 
-	size_t GetInventorySize() { return m_mapInventory.size(); }
-	size_t GetGunsNum() { return m_mapGuns.size(); }
 	void PutItemInInventory(Item* item);
-	void EquipGun(Gun* gun);
+	void PutGunInEquip(Gun* gun);
+
+    /* For Debug */
 	void ShowInventoryForDebug();
     void ShowFireModeForDebug();
+    void ShowItemStateForDebug(ITEM_STATE itemState);
 
-	/* 키 입력 관련 함수로 분리*/
-	void KeyMove();    //이동
-	void KeyMount(GUN_TAG gunTag); //장착
-	void KeyUnmount(); //장착해제
-	void KeyLoad();    //총 장전
-	void KeyFire();    //총 쏘기
-	void KeyChangeGun(GUN_TAG gunTag); //무기바꾸기
-    void KeyChangeFireMode(); //단, 연발 모드변경
+	/* For Key Input*/
+	void KeyMove();
+	void KeyInHand(GUN_TAG gunTag);
+	void KeyOutHand();
+	void KeyLoad();
+	void KeyFire();
+	void KeyChangeGun(GUN_TAG gunTag);
+    void KeyChangeFireMode();
 
     void UpdateRotation();
+    void UpdateGunInHandPosition();
+    void UpdateGunInEquipPosition();
 
     void ShowInventory(const D3DXMATRIXA16& transform);
     bool IsShowingInventory();
+    void Pick(Item& item);
 
 public:
     vector<vector<int>> uvBody = {

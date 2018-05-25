@@ -48,7 +48,7 @@ void SceneShotting::Init()
 	AddSimpleDisplayObj(m_pPistol);
 
 	//¼ÒÃÑ
-	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 1.2f, -D3DXToRadian(90));
+	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 1.5f, -D3DXToRadian(90));
 	m_pRifle->Init();
     m_pRifle->SetPosition(D3DXVECTOR3(3.0f, 0.0f, 15.0f));
 	AddSimpleDisplayObj(m_pRifle);

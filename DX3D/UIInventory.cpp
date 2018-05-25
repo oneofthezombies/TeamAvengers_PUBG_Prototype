@@ -45,7 +45,8 @@ void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& invent
             {
                 // push to inventory
                 PlayerAni* o = static_cast<PlayerAni*>(GetAttachedObject());
-                o->PutItemInInventory(OutPPicked);
+                o->Pick(*OutPPicked);
+                //o->PutItemInInventory(OutPPicked);
 
                 IScene* s = g_pCurrentScene;
                 SceneShotting* ss = static_cast<SceneShotting*>(s);

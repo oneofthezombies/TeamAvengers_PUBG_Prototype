@@ -35,7 +35,7 @@ Gun::~Gun()
 
 void Gun::Init()
 {
-	m_pos = D3DXVECTOR3(0.f, 4.f, -9 * 2.f);        //일단 하드코딩으로 위치 박음
+	//m_pos = D3DXVECTOR3(0.f, 4.f, -9 * 2.f);        //일단 하드코딩으로 위치 박음
 
 	D3DXCreateTeapot(g_pDevice, &m_pGunMesh, NULL); //총 메쉬 생성 (임시로 주전자 모양)
 	m_bulletFireCoolDown = m_bulletFireCoolTime;    //쿨다운을 쿨타임으로 초기화
@@ -50,11 +50,8 @@ void Gun::Update()
     if (m_state != ITEM_STATE::Dropped)
     {
         float deltaTime = g_pTimeManager->GetDeltaTime(); //프레임당 초단위 시간간격
-
-                                                          //총알 발사 쿨타임
         m_bulletFireCoolDown -= deltaTime;
         if (m_bulletFireCoolDown <= 0.f) m_bulletFireCoolDown = 0.f;
-
 
         D3DXMatrixRotationY(&m_matRotY, m_rotY);
 
@@ -68,15 +65,21 @@ void Gun::Update()
 
 void Gun::Render()
 {
-	if (m_state == ITEM_STATE::Equipped &&
-        m_state == ITEM_STATE::Held)
+	if (m_state == ITEM_STATE::InHand || m_state == ITEM_STATE::Equipped)
 	{
 		const auto dv = g_pDevice;
 		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
         dv->SetRenderState(D3DRS_LIGHTING, true);
 		dv->SetTransform(D3DTS_WORLD, &m_matWorld);
-        dv->SetMaterial(&DXUtil::BLUE_MTRL);
+        
+        if(m_gunTag == GUN_TAG::Pistol)
+            dv->SetMaterial(&DXUtil::BLUE_MTRL);
+        else if(m_gunTag == GUN_TAG::Rifle)
+            dv->SetMaterial(&DXUtil::RED_MTRL);
+        else
+            dv->SetMaterial(&DXUtil::YELLOW_MTRL);
+
 		m_pGunMesh->DrawSubset(0);
 
 		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
