@@ -78,7 +78,7 @@ const D3DMATERIAL9& Item::GetMaterialByItemTag()
     case ITEM_TAG::Bullet:
         return DXUtil::YELLOW_MTRL;
 
-    case ITEM_TAG::Pistol:
+    case ITEM_TAG::Gun:
         return DXUtil::RED_MTRL;
 
     default:
@@ -91,7 +91,8 @@ bool Item::IsVisible()
     switch (m_state)
     {
     case ITEM_STATE::Dropped:
-    case ITEM_STATE::Mounting:
+    case ITEM_STATE::Equipped:
+    case ITEM_STATE::Held:
         return true;
     default:
         return false;

@@ -46,9 +46,10 @@ enum class ITEM_TAG
 
 enum class ITEM_STATE
 {
-	Dropped,     //땅에 떨어진 상태
-	InInventory, //인벤토리에 있음
-	Mounting     //장착중
+	Dropped,     // 땅에 떨어진 상태
+	InInventory, // 인벤토리에 있음
+    Equipped,    // 장착중
+	Held         // 사용중
 };
 
 enum class GUN_TAG

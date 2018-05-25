@@ -13,6 +13,19 @@ Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireC
 	, m_rotY(rotY)         //-D3DXToRadian(90)
 	, m_pGunMesh(nullptr)
 {
+    switch (gunTag)
+    {
+    case GUN_TAG::Pistol:
+        {
+            m_name = "Pistol";
+            break;
+        }
+    case GUN_TAG::Rifle:
+        {
+            m_name = "Rifle";
+            break;
+        }
+    }
 }
 
 Gun::~Gun()
@@ -55,7 +68,8 @@ void Gun::Update()
 
 void Gun::Render()
 {
-	if (m_state == ITEM_STATE::Mounting)
+	if (m_state == ITEM_STATE::Equipped &&
+        m_state == ITEM_STATE::Held)
 	{
 		const auto dv = g_pDevice;
 		dv->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
@@ -120,7 +134,7 @@ void Gun::Load(Bullet* bullet)
 	m_vecPBullet.emplace_back(bullet);
 }
 
-void Pistol::SyncRot(float rotY)
+void Gun::SyncRot(float rotY)
 {
     m_rotY = rotY - D3DXToRadian(90);
 }

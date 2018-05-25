@@ -13,6 +13,19 @@ Bullet::Bullet(GUN_TAG  bulletFor, float scale, float velocity)
 	, m_isDie(false)
     , m_pBoxCollider(nullptr)
 {
+    switch (bulletFor)
+    {
+    case GUN_TAG::Pistol:
+        {
+            m_name = "Bullet (Pistol)";
+        }
+        break;
+    case GUN_TAG::Rifle:
+        {
+            m_name = "Bullet (Rifle)";
+        }
+        break;
+    }
 }
 
 Bullet::~Bullet()
