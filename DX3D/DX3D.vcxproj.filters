@@ -219,6 +219,7 @@
     <ClCompile Include="UIInventory.cpp">
       <Filter>2. Object\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -451,6 +452,7 @@
     <ClInclude Include="ComponentBase.h" />
     <ClInclude Include="ItemPicker.h" />
     <ClInclude Include="SampleUIButtonListener.h" />
+    <ClInclude Include="SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

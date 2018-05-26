@@ -14,6 +14,7 @@ void Application::Init()
     g_pDeviceManager->Init();
     g_pKeyManager->Init();
     g_pUIManager->Init();
+    g_pSoundManager->Init();
     g_pSceneManager->Init();
     g_pCameraManager->Init();
     g_pCollisionManager->Init();
@@ -23,6 +24,7 @@ void Application::Destroy()
 {
     g_pCollisionManager->Destroy();
     g_pUIManager->Destroy();
+    g_pSoundManager->Destroy();
 	g_pSceneManager->Destroy();
     g_pCameraManager->Destroy();
 	g_pObjMgr->Destroy();
@@ -39,6 +41,7 @@ void Application::Update()
 	g_pTimeManager->Update();
     g_pKeyManager->Update();
 	g_pKeyboardManager->Update();
+    g_pSoundManager->Update();
 	g_pSceneManager->Update();
     g_pCameraManager->Update();
     g_pCollisionManager->Update();

@@ -64,6 +64,14 @@ enum class FIRE_MODE
     Burst       //¿¬¹ß
 };
 
+//For FMOD
+enum class SOUND_TAG
+{
+    Lobby,
+    Shot,
+    Reload
+};
+
 struct KEYBOARD_STATE
 {
 	D3DXVECTOR3 deltaPos;
