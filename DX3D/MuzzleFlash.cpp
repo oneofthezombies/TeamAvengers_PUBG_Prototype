@@ -12,6 +12,8 @@ MuzzleFlash::MuzzleFlash()
 
 MuzzleFlash::~MuzzleFlash()
 {
+    SAFE_RELEASE(m_pTex);
+    SAFE_RELEASE(m_pVB);
 }
 
 void MuzzleFlash::Init()

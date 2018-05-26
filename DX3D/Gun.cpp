@@ -33,6 +33,7 @@ Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireC
 Gun::~Gun()
 {
 	SAFE_RELEASE(m_pGunMesh);
+    SAFE_RELEASE(m_muzzleFlash);
 }
 
 void Gun::Init()
