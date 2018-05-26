@@ -38,12 +38,15 @@ public:
 	void SetText(const LPD3DXFONT font, const LPCTSTR text);
     void SetKeyToRespond(const int key);
     void SetIUIButtonOnMouseListener(IUIButtonOnMouseListener& val);
+
+    static UIButton* Create(const string& idlePath, const string& mouseOverPath, const string& selectPath, const D3DXVECTOR3& pos, UIObject* parent = nullptr);
 };
 
 class IUIButtonOnMouseListener
 {
 private:
     UIButton* m_pUIButton;
+    UIObject* m_pHandle;
 
 public:
     IUIButtonOnMouseListener();
@@ -55,6 +58,9 @@ public:
     virtual void OnMouseUp(const int key) = 0;
     virtual void OnMouseDrag(const int key) = 0;
 
-    void SetUIButton(UIButton& val);
+    void      SetUIButton(UIButton& val);
     UIButton* GetUIButton() const;
+
+    void      SetHandle(UIObject& val);
+    UIObject* GetHandle() const;
 };

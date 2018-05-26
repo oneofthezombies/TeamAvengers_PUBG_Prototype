@@ -30,7 +30,6 @@ void Item::Update()
         {
             m_pBoxCollider = SetComponent<BoxCollider>();
             m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
-            m_pBoxCollider->Move(m_pos);
             m_pBoxCollider->SetTag(CollisionTag::kItem);
 
             D3DXCreateBox(g_pDevice, 0.9f, 0.9f, 0.9f, &m_pMesh, nullptr);      
@@ -48,6 +47,8 @@ void Item::Update()
     }
 
     UpdateTransform();
+    if (m_pBoxCollider)
+        m_pBoxCollider->Update(m_matWorld);
 }
 
 void Item::Render()

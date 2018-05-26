@@ -220,6 +220,18 @@
       <Filter>2. Object\UI</Filter>
     </ClCompile>
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="UILobby.cpp">
+      <Filter>2. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLobby.cpp">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="UIInGame.cpp">
+      <Filter>2. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MuzzleFlash.cpp">
+      <Filter>2. Object\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -453,6 +465,18 @@
     <ClInclude Include="ItemPicker.h" />
     <ClInclude Include="SampleUIButtonListener.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="UILobby.h">
+      <Filter>2. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLobby.h">
+      <Filter>1. Scene\SceneShotting</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInGame.h">
+      <Filter>2. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MuzzleFlash.h">
+      <Filter>2. Object\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">
@@ -516,6 +540,9 @@
     </Filter>
     <Filter Include="Sample">
       <UniqueIdentifier>{fcb27165-7476-42ab-8597-663fd7b2ce28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Object\Particle">
+      <UniqueIdentifier>{1a0d2ec5-83f6-46e4-9e61-aea573ae6eaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

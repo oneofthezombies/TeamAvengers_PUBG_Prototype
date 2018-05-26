@@ -85,7 +85,7 @@ void GoToLobbyButtonListener::OnMouseExit()
 
 void GoToLobbyButtonListener::OnMouseDown(const int key)
 {
-    g_pUIManager->Destroy(*m_pHandle);
+    g_pUIManager->Destroy(*GetHandle());
 }
 
 void GoToLobbyButtonListener::OnMouseUp(const int key)
@@ -95,9 +95,3 @@ void GoToLobbyButtonListener::OnMouseUp(const int key)
 void GoToLobbyButtonListener::OnMouseDrag(const int key)
 {
 }
-
-void GoToLobbyButtonListener::SetHandle(UIObject& val)
-{
-    m_pHandle = &val;
-}
-

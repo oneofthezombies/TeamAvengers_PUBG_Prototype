@@ -2,6 +2,8 @@
 #include "Item.h"
 
 class Bullet;
+class MuzzleFlash;
+
 class Gun : public Item
 {
 private:
@@ -18,11 +20,12 @@ private:
 	const float      m_velocity;           //이동을 위한 속력
 	const float      m_scale;
 	float            m_rotY;
-	//D3DXVECTOR3    m_pos;                //IDisplayObject에 있음
 	
 	D3DXMATRIXA16    m_matS;
 	D3DXMATRIXA16    m_matRotY;
 	D3DXMATRIXA16    m_matT;
+
+    MuzzleFlash* m_muzzleFlash;
 
 public:
 	Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
@@ -33,6 +36,7 @@ public:
 	virtual void Render() override;
 
     size_t GetBulletNum();
+    int GetMaxNumBullet();
     int GetNeedBullet();
     GUN_TAG GetGunTag();
     bool GetCanChangeBurstMode();

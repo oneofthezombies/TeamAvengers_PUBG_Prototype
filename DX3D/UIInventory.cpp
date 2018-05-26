@@ -4,6 +4,7 @@
 #include "UIText.h"
 #include "PlayerAni.h"
 #include "SceneShotting.h"
+#include "Gun.h"
 
 UIInventory::UIInventory()
     : UIImage()
@@ -22,7 +23,7 @@ void UIInventory::Init()
     SetSize(D3DXVECTOR2(1280.0f, 720.f));    
 }
 
-void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& inventory, vector<Item*>& pickables)
+void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& inventory, vector<Item*>& pickables, map<GUN_TAG, Gun*>& equipment)
 {
     ClearChildren();
     RegisterCoreTexts();
@@ -103,6 +104,15 @@ void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& invent
             SetRect(&rects.back(), 350, 100 + 50 * i, 550, 150 + 50 * i);
             ++i;
         }
+    }
+
+    i = 0;
+    for (auto it = equipment.begin(); it != equipment.end(); ++it)
+    {
+        Gun* g = it->second;
+        UIText::Create(Font::kInteractionMessageDescription, g->GetName(), D3DXVECTOR3(600.0f, 100.0f + 50.0f * static_cast<float>(i), 0.0f), D3DXVECTOR2(200.0f, 50.0f), this);
+        rects.emplace_back(RECT{});
+        SetRect(&rects.back(), 600, 100 + 50 * i, 800, 150 + 50 * i);
     }
 }
 

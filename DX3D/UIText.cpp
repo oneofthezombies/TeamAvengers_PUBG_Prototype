@@ -8,6 +8,7 @@ UIText::UIText()
     , m_drawTextFormat(DT_CENTER | DT_VCENTER)
     , m_textString()
     , m_text(nullptr)
+    , m_pTextString(nullptr)
 {
 }
 
@@ -23,6 +24,8 @@ void UIText::Render()
 	    m_pFont->DrawText(g_pSprite, m_text, lstrlen(m_text), &m_rect, m_drawTextFormat, m_color);
     else if (!m_textString.empty())
         m_pFont->DrawTextA(g_pSprite, m_textString.c_str(), m_textString.size(), &m_rect, m_drawTextFormat, m_color);
+    else if (m_pTextString)
+        m_pFont->DrawTextA(g_pSprite, m_pTextString->c_str(), m_pTextString->size(), &m_rect, m_drawTextFormat, m_color);
     
     UIObject::Render();
 }
@@ -40,6 +43,11 @@ void UIText::SetText(const LPCTSTR val)
 void UIText::SetText(const string& val)
 {
     m_textString = val;
+}
+
+void UIText::SetText(string* val)
+{
+    m_pTextString = val;
 }
 
 void UIText::SetDrawTextFormat(const DWORD val)

@@ -92,26 +92,29 @@ void BoxCollider::Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max)
     m_vCenter = (min + max) / 2.0f;
     m_vExtent = max - m_vCenter;
     D3DXMatrixIdentity(&m_mTransform);
+
+    m_vertices.resize(8);
+    m_vertices[0] = VERTEX_PC(D3DXVECTOR3(min.x, min.y, min.z), m_color);
+    m_vertices[1] = VERTEX_PC(D3DXVECTOR3(min.x, max.y, min.z), m_color);
+    m_vertices[2] = VERTEX_PC(D3DXVECTOR3(max.x, max.y, min.z), m_color);
+    m_vertices[3] = VERTEX_PC(D3DXVECTOR3(max.x, min.y, min.z), m_color);
+    m_vertices[4] = VERTEX_PC(D3DXVECTOR3(min.x, min.y, max.z), m_color);
+    m_vertices[5] = VERTEX_PC(D3DXVECTOR3(min.x, max.y, max.z), m_color);
+    m_vertices[6] = VERTEX_PC(D3DXVECTOR3(max.x, max.y, max.z), m_color);
+    m_vertices[7] = VERTEX_PC(D3DXVECTOR3(max.x, min.y, max.z), m_color);
 }
 
 void BoxCollider::Update(const D3DXMATRIXA16& transform)
 {
-    m_mTransform *= transform;
-    D3DXVec3TransformCoord(&m_vCenter, &m_vCenter, &transform);
+    D3DXMATRIXA16 InverseMatrixOfCurrent, TM;
+    D3DXMatrixInverse(&InverseMatrixOfCurrent, nullptr, &m_mTransform);
+    TM = InverseMatrixOfCurrent * transform;
+    m_mTransform = transform;
+    D3DXVec3TransformCoord(&m_vCenter, &m_vCenter, &TM);
 }
 
 void BoxCollider::Render()
 {
-    vector<VERTEX_PC> vertices(8);
-    vertices[0] = VERTEX_PC(D3DXVECTOR3(-m_vExtent.x, -m_vExtent.y, -m_vExtent.z), m_color);
-    vertices[1] = VERTEX_PC(D3DXVECTOR3(-m_vExtent.x, m_vExtent.y, -m_vExtent.z), m_color);
-    vertices[2] = VERTEX_PC(D3DXVECTOR3(m_vExtent.x, m_vExtent.y, -m_vExtent.z), m_color);
-    vertices[3] = VERTEX_PC(D3DXVECTOR3(m_vExtent.x, -m_vExtent.y, -m_vExtent.z), m_color);
-    vertices[4] = VERTEX_PC(D3DXVECTOR3(-m_vExtent.x, -m_vExtent.y, m_vExtent.z), m_color);
-    vertices[5] = VERTEX_PC(D3DXVECTOR3(-m_vExtent.x, m_vExtent.y, m_vExtent.z), m_color);
-    vertices[6] = VERTEX_PC(D3DXVECTOR3(m_vExtent.x, m_vExtent.y, m_vExtent.z), m_color);
-    vertices[7] = VERTEX_PC(D3DXVECTOR3(m_vExtent.x, -m_vExtent.y, m_vExtent.z), m_color);
-
     vector<WORD> indices =
     {
         0, 1, 1, 2, 2, 3, 3, 0,
@@ -122,21 +125,7 @@ void BoxCollider::Render()
     const auto dv = g_pDevice;
     dv->SetTransform(D3DTS_WORLD, &m_mTransform);
     dv->SetTexture(0, nullptr);
-    dv->DrawIndexedPrimitiveUP(D3DPT_LINELIST, 0, vertices.size(), indices.size() / 2, indices.data(), D3DFMT_INDEX16, vertices.data(), sizeof VERTEX_PC);
-}
-
-void BoxCollider::Move(const D3DXVECTOR3& val)
-{
-    D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, val.x, val.y, val.z);
-    Update(m);
-}
-
-void BoxCollider::MoveTo(const D3DXVECTOR3& val)
-{
-    D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, val.x - m_mTransform._41, val.y - m_mTransform._42, val.z - m_mTransform._43);
-    Update(m);
+    dv->DrawIndexedPrimitiveUP(D3DPT_LINELIST, 0, m_vertices.size(), indices.size() / 2, indices.data(), D3DFMT_INDEX16, m_vertices.data(), sizeof VERTEX_PC);
 }
 
 D3DXVECTOR3 BoxCollider::GetExtent() const

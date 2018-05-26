@@ -182,7 +182,7 @@ void SceneShotting::InitSkyBox()
     D3DXMATRIXA16 s, t, m;
     const float scale = 100.0f;
     D3DXMatrixScaling(&s, scale, scale, scale);
-    D3DXMatrixTranslation(&t, 50.0f, 50.0f, 50.0f);
+    D3DXMatrixTranslation(&t, 50.0f, 10.0f, 50.0f);
     m = s * t;
     skyBox->Init(m);
     AddSimpleDisplayObj(skyBox);
@@ -206,7 +206,7 @@ void SceneShotting::InitHeightMap()
     m_pHeightMap->Load("resources/heightmap/HeightMap.raw", &s);
     m_pHeightMap->Init();
     D3DMATERIAL9 mtl = DXUtil::WHITE_MTRL;
-    m_pHeightMap->SetMtlTex(mtl, g_pTextureManager->GetTexture("resources/heightmap/terrain2.jpg"));
+    m_pHeightMap->SetMtlTex(mtl, g_pTextureManager->GetTexture("resources/heightmap/terrain3.jpg"));
 
     g_pMapManager->AddMap("heightmap", m_pHeightMap);
     g_pMapManager->SetCurrentMap("heightmap");
