@@ -32,3 +32,20 @@ void UIImage::SetTexture(const string fullPath)
 	m_vSize.x = info.Width;
 	m_vSize.y = info.Height;
 }
+
+UIImage* UIImage::Create(const string texturePath, const D3DXVECTOR3& pos, UIObject* parent, const D3DXVECTOR2& size)
+{
+    UIImage* ret = new UIImage;
+    ret->SetTexture(texturePath);
+    ret->SetPosition(pos);
+
+    if (!(size.x == 0.0f && size.y == 0.0f))
+        ret->SetSize(size);
+
+    if (parent)
+        parent->AddChild(*ret);
+    else
+        g_pUIManager->RegisterUIObject(*ret);
+
+    return ret;
+}

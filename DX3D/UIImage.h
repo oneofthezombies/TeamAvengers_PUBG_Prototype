@@ -13,5 +13,7 @@ public:
 	virtual void Render() override;
 
 	void SetTexture(const string fullPath);
+
+    static UIImage* Create(const string texturePath, const D3DXVECTOR3& pos, UIObject* parent = nullptr, const D3DXVECTOR2& size = D3DXVECTOR2(0.0f, 0.0f));
 };
 

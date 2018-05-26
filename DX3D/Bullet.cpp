@@ -12,17 +12,18 @@ Bullet::Bullet(GUN_TAG  bulletFor, float scale, float velocity)
 	, m_pBulletMesh(nullptr)
 	, m_isDie(false)
     , m_pBoxCollider(nullptr)
+    , m_vDir(0.0f, 1.0f, 0.0f)
 {
     switch (bulletFor)
     {
     case GUN_TAG::Pistol:
         {
-            m_name = "Bullet (Pistol)";
+            m_name = "총알 (권총)";
         }
         break;
     case GUN_TAG::Rifle:
         {
-            m_name = "Bullet (Rifle)";
+            m_name = "총알 (소총)";
         }
         break;
     }
@@ -53,10 +54,12 @@ void Bullet::Update()
             m_pBoxCollider->SetTag(CollisionTag::kBullet);
         }
 
-		m_pos.z += deltaTime * m_velocity; //이동거리 = 속력 * 경과시간, 즉 기존의 위치에 이동거리를 더해주어 앞으로 나아가게한다
+        D3DXVECTOR3 dist = deltaTime * m_velocity * m_vDir;
+        m_pos += dist;
+		//m_pos.z += deltaTime * m_velocity; //이동거리 = 속력 * 경과시간, 즉 기존의 위치에 이동거리를 더해주어 앞으로 나아가게한다
 
         D3DXMATRIXA16 m;
-        D3DXMatrixTranslation(&m, 0.0f, 0.0f, deltaTime * m_velocity);
+        D3DXMatrixTranslation(&m, dist.x, dist.y, dist.z);
         m_pBoxCollider->Update(m);
 
 		if (IsInBorderArea()) //경계구역 안이면 총알 이동
@@ -66,6 +69,10 @@ void Bullet::Update()
 
         //변환행렬
         m_matWorld = m_matS * m_matT;
+
+        Debug->AddText("fired bullet pos : ");
+        Debug->AddText(m_pos);
+        Debug->EndLine();
 	}
     else
     {
@@ -129,9 +136,20 @@ bool Bullet::IsBulletForThisGun(GUN_TAG gunTag)
 
 bool Bullet::IsInBorderArea()
 {
-	if (m_pos.z < 20.f) //현재는 Ground의 행이 20이므로
-		return true;
+	if (m_pos.x < -10.0f || 
+        m_pos.y < -10.0f ||
+        m_pos.z < -10.0f || 
+        m_pos.x > 1000.0f || 
+        m_pos.y > 1000.0f ||
+        m_pos.z > 1000.0f)
+		return false;
 	else
 		m_isDie = true;
-	return false;
+
+	return true;
+}
+
+void Bullet::SetDirection(const D3DXVECTOR3& val)
+{
+    m_vDir = val;
 }

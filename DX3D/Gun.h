@@ -37,7 +37,7 @@ public:
     GUN_TAG GetGunTag();
     bool GetCanChangeBurstMode();
 
-	void Fire(); //총쏘기
+	void Fire(const D3DXVECTOR3& dir); //총쏘기
 	void Load(Bullet* bullet); //장전
     void SyncRot(float rotY);   //캐릭터 위치에 맞게 고정. (해당 주전자 로컬좌표 때문에 -D3DXToRadian(90)해줌)
 

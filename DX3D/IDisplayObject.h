@@ -7,6 +7,7 @@ protected:
 	D3DXVECTOR3				m_pos;
 	D3DXVECTOR3				m_rot;
 	D3DXMATRIXA16			m_matWorld;
+    float                   m_heightOffset;
 
 	IDisplayObject*			m_pParent;
 	vector<IDisplayObject*> m_vecPChild;
@@ -27,13 +28,17 @@ public:
 
     void			     SetPosition(const D3DXVECTOR3& pos);
     D3DXVECTOR3		     GetPosition() const;
+
     D3DXVECTOR3		     GetRotation() const;
     const D3DXMATRIXA16& GetWorldMatrix() const;
     const vector<IDisplayObject*>& GetChildVec() const;
+
+    void SetHeightOffset(const float val);
 
     void UpdateChildren();
     void RenderChildren();
     void ReleaseChildren();
 
+    void UpdatePositionYOnMap();
 };
 

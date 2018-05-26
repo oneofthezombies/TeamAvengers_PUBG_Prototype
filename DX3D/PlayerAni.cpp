@@ -52,7 +52,8 @@ PlayerAni::~PlayerAni()
 
 void PlayerAni::Init()
 {
-	m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
+	//m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
+    m_pos = D3DXVECTOR3(0.5f, 0.0f, 0.5f);
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
@@ -68,8 +69,7 @@ void PlayerAni::Init()
     m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
     /* end collider init */
 
-    GetClientRect(g_hWnd, &m_RC);   //留곗 醫 珥湲고瑜  api硫 諛ㅺ린
-    ShowCursor(true);              //留곗 而ㅼ 蹂댁닿린 蹂댁닿린
+    ShowCursor(true);     
 }
 
 void PlayerAni::Update()
@@ -78,6 +78,9 @@ void PlayerAni::Update()
     KeyMove();
     if (!IsShowingInventory())
     {
+        UpdateRotation();
+        UpdateDirection();
+
         //장착 1, 2
         if (g_pKeyManager->IsOnceKeyDown('1'))
             KeyChangeGun(GUN_TAG::Pistol);
@@ -96,7 +99,7 @@ void PlayerAni::Update()
         if (m_fireMode == FIRE_MODE::SingleShot)
         {
             if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                KeyFire();
+                KeyFire(m_dir);
         }
         //총 쏘기(연발)
         else if (m_fireMode == FIRE_MODE::Burst)
@@ -106,20 +109,18 @@ void PlayerAni::Update()
                 if (m_pGun->GetCanChangeBurstMode())             //연발이 지원되는 총이라면
                 {
                     if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
-                        KeyFire();
+                        KeyFire(m_dir);
                 }
                 else //m_pGun->GetCanChangeBurstMode() == false //연발이 지원되지 않는 총이라면
                 {
                     if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                        KeyFire();
+                        KeyFire(m_dir);
                 }
             }
         }
 
         //뛰고 걷기 LShift
         RunAndWalk(); 
-
-        UpdateRotation();
     }
 
 	//점프 Space
@@ -514,13 +515,13 @@ void PlayerAni::KeyLoad()
 	}
 }
 
-void PlayerAni::KeyFire()
+void PlayerAni::KeyFire(const D3DXVECTOR3& dir)
 {
     if (m_pGun) //총이 장착되어있을 때
     {
 		if (m_pGun->GetBulletNum() > 0)
 		{
-			m_pGun->Fire();
+			m_pGun->Fire(dir);
 		}
 		else
 			cout << "No Bullet!!" << endl;
@@ -598,6 +599,14 @@ void PlayerAni::UpdateRotation()
     center.y = 720 / 2;
     ClientToScreen(g_hWnd, &center);
     SetCursorPos(center.x, center.y);
+}
+
+void PlayerAni::UpdateDirection()
+{
+    D3DXMATRIXA16 r;
+    D3DXMatrixRotationYawPitchRoll(&r, m_rot.y, m_rot.x, m_rot.z);
+    D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &r);
+    D3DXVec3Normalize(&m_dir, &m_dir);
 }
 
 void PlayerAni::UpdateGunInHandPosition()

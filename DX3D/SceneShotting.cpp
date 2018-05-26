@@ -12,9 +12,11 @@
 #include "UIInteractionMessage.h"
 #include "Cubeman.h"
 #include "SampleCollider.h"
+#include "HeightMap.h"
 
 SceneShotting::SceneShotting()
-	: m_pGround(nullptr)
+    : m_pHeightMap(nullptr)
+	, m_pGround(nullptr)
 	, m_pPlayerAni(nullptr)
     , m_pPistol(nullptr)
 	, m_pRifle(nullptr)
@@ -31,12 +33,13 @@ void SceneShotting::Init()
 {
     InitSkyBox();
     InitLight();
+    InitHeightMap();
 
     //x, y, z 기준선
-    InitAxises();
+    //InitAxises();
 
 	//바닥
-    InitGroundGrid();
+    //InitGroundGrid();
 
 	//플레이어
     InitPlayer();
@@ -44,13 +47,17 @@ void SceneShotting::Init()
 	//권총
 	m_pPistol = new Gun(GUN_TAG::Pistol, false, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
-    m_pPistol->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 15.0f));
+    m_pPistol->SetPosition(D3DXVECTOR3(20.0f, 0.0f, 20.0f));
+    m_pPistol->SetHeightOffset(0.5f);
+    m_pPistol->UpdatePositionYOnMap();
 	AddSimpleDisplayObj(m_pPistol);
 
 	//소총
 	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pRifle->Init();
-    m_pRifle->SetPosition(D3DXVECTOR3(3.0f, 0.0f, -15.0f));
+    m_pRifle->SetPosition(D3DXVECTOR3(15.0f, 0.0f, 15.0f));
+    m_pRifle->SetHeightOffset(0.5f);
+    m_pRifle->UpdatePositionYOnMap();
 	AddSimpleDisplayObj(m_pRifle);
 
 	//권총용 총알 5개 생성
@@ -59,7 +66,9 @@ void SceneShotting::Init()
 	{
 		Bullet* bullet = new Bullet(GUN_TAG::Pistol, 0.08f, 10.f);
 		bullet->Init();
-        bullet->SetPosition(D3DXVECTOR3(2.0f, 0.0f, 2.0f + static_cast<float>(i)));
+        bullet->SetPosition(D3DXVECTOR3(20.0f, 0.0f, 21.0f + static_cast<float>(i)));
+        bullet->SetHeightOffset(0.5f);
+        bullet->UpdatePositionYOnMap();
 		m_vecPBulletForPistol.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
@@ -69,14 +78,17 @@ void SceneShotting::Init()
 	{
 		Bullet* bullet = new Bullet(GUN_TAG::Rifle, 0.05f, 15.f);
 		bullet->Init();
-        bullet->SetPosition(D3DXVECTOR3(3.0f, 0.0f, 2.0f + static_cast<float>(i)));
+        bullet->SetPosition(D3DXVECTOR3(15.0f, 0.0f, 16.0f + static_cast<float>(i)));
+        bullet->SetHeightOffset(0.5f);
+        bullet->UpdatePositionYOnMap();
 		m_vecPBulletForRifle.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
 
     Cubeman* cm = new Cubeman;
     cm->Init();
-    cm->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 20.0f));
+    cm->SetPosition(D3DXVECTOR3(0.5f, 0.0f, 20.0f));
+    cm->UpdatePositionYOnMap();
     AddSimpleDisplayObj(cm);
 
     //InitSamples();
@@ -148,13 +160,15 @@ void SceneShotting::Render()
 	
 	dv->SetTransform(D3DTS_WORLD, &matI);
 	dv->SetFVF(VERTEX_PC::FVF);
-	dv->DrawPrimitiveUP(D3DPT_LINELIST, m_vecBaseline.size() / 2, &m_vecBaseline[0], sizeof(VERTEX_PC));
+
+	//dv->DrawPrimitiveUP(D3DPT_LINELIST, m_vecBaseline.size() / 2, &m_vecBaseline[0], sizeof(VERTEX_PC));
+    
     //잠시 ray를 test 하기 위한 vertex //JH
     dv->DrawPrimitiveUP(D3DPT_TRIANGLELIST, vecVertex_sample.size() / 3, &vecVertex_sample[0], sizeof(VERTEX_PC));
-	dv->SetRenderState(D3DRS_LIGHTING, true);
+	
+    dv->SetRenderState(D3DRS_LIGHTING, true);
 
-    RenderAxises();
-
+    //RenderAxises();
 }
 
 void SceneShotting::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -164,9 +178,11 @@ void SceneShotting::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 void SceneShotting::InitSkyBox()
 {
     SkyBox* skyBox = new SkyBox;
-    D3DXMATRIXA16 m;
+    D3DXMATRIXA16 s, t, m;
     const float scale = 100.0f;
-    D3DXMatrixScaling(&m, scale, scale, scale);
+    D3DXMatrixScaling(&s, scale, scale, scale);
+    D3DXMatrixTranslation(&t, 50.0f, 50.0f, 50.0f);
+    m = s * t;
     skyBox->Init(m);
     AddSimpleDisplayObj(skyBox);
 }
@@ -177,6 +193,22 @@ void SceneShotting::InitLight()
     const auto dv = g_pDevice;
     dv->SetLight(0, &light);
     dv->LightEnable(0, true);
+}
+
+void SceneShotting::InitHeightMap()
+{
+    D3DXMATRIXA16 s;
+    D3DXMatrixScaling(&s, 0.4f, 0.03f, 0.4f);
+    m_pHeightMap = new HeightMap; 
+    AddSimpleDisplayObj(m_pHeightMap);
+    m_pHeightMap->SetDimension(257);
+    m_pHeightMap->Load("resources/heightmap/HeightMap.raw", &s);
+    m_pHeightMap->Init();
+    D3DMATERIAL9 mtl = DXUtil::WHITE_MTRL;
+    m_pHeightMap->SetMtlTex(mtl, g_pTextureManager->GetTexture("resources/heightmap/terrain2.jpg"));
+
+    g_pMapManager->AddMap("heightmap", m_pHeightMap);
+    g_pMapManager->SetCurrentMap("heightmap");
 }
 
 void SceneShotting::InitAxises()
@@ -205,6 +237,7 @@ void SceneShotting::InitPlayer()
 {
     m_pPlayerAni = new PlayerAni;
     m_pPlayerAni->Init();
+    m_pPlayerAni->UpdatePositionYOnMap();
     AddSimpleDisplayObj(m_pPlayerAni);
 }
 
