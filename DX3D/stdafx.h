@@ -110,6 +110,7 @@ extern HWND g_hWnd;
 #include "IScene.h"
 #include "UIManager.h"
 #include "CollisionManager.h"
+#include "SoundManager.h"
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console") 

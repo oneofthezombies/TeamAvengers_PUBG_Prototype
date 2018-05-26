@@ -135,6 +135,7 @@ void SceneShotting::Init()
 
 void SceneShotting::Update()
 {
+    g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Lobby), SOUND_TAG::Lobby);
 	OnUpdateIScene();
 
     if (g_pKeyManager->IsOnceKeyDown('0'))
