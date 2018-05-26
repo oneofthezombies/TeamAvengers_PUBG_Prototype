@@ -79,6 +79,20 @@ void UIButton::SetIUIButtonOnMouseListener(IUIButtonOnMouseListener& val)
     m_pIUIButtonOnMouseListener = &val;
 }
 
+UIButton* UIButton::Create(const string& idlePath, const string& mouseOverPath, const string& selectPath, const D3DXVECTOR3& pos, UIObject* parent)
+{
+    UIButton* ret = new UIButton;
+    ret->SetTexture(idlePath, mouseOverPath, selectPath);
+    ret->SetPosition(pos);
+    
+    if (parent)
+        parent->AddChild(*ret);
+    else
+        g_pUIManager->RegisterUIObject(*ret);
+
+    return ret;
+}
+
 void UIButton::UpdateOnMouseEnterExit()
 {
     if (!m_pIUIButtonOnMouseListener) return;
@@ -215,6 +229,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
 
 IUIButtonOnMouseListener::IUIButtonOnMouseListener()
     : m_pUIButton(nullptr)
+    , m_pHandle(nullptr)
 {
 }
 
@@ -227,4 +242,14 @@ void IUIButtonOnMouseListener::SetUIButton(UIButton& val)
 UIButton* IUIButtonOnMouseListener::GetUIButton() const
 {
     return m_pUIButton;
+}
+
+void IUIButtonOnMouseListener::SetHandle(UIObject& val)
+{
+    m_pHandle = &val;
+}
+
+UIObject* IUIButtonOnMouseListener::GetHandle() const
+{
+    return m_pHandle;
 }

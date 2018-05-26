@@ -12,7 +12,7 @@ Bullet::Bullet(GUN_TAG  bulletFor, float scale, float velocity)
 	, m_pBulletMesh(nullptr)
 	, m_isDie(false)
     , m_pBoxCollider(nullptr)
-    , m_vDir(0.0f, 1.0f, 0.0f)
+    , m_dir(0.0f, 0.0f, 1.0f)
 {
     switch (bulletFor)
     {
@@ -46,21 +46,8 @@ void Bullet::Update()
 
 	if (m_isFire)
 	{
-        if (!m_pBoxCollider)
-        {
-            m_pBoxCollider = SetComponent<BoxCollider>();
-            m_pBoxCollider->Init(D3DXVECTOR3(-0.2f, -0.2f, -0.4f), D3DXVECTOR3(0.2f, 0.2f, 0.4f));
-            m_pBoxCollider->Move(GetPosition());
-            m_pBoxCollider->SetTag(CollisionTag::kBullet);
-        }
-
-        D3DXVECTOR3 dist = deltaTime * m_velocity * m_vDir;
+        D3DXVECTOR3 dist = deltaTime * m_velocity * m_dir;
         m_pos += dist;
-		//m_pos.z += deltaTime * m_velocity; //이동거리 = 속력 * 경과시간, 즉 기존의 위치에 이동거리를 더해주어 앞으로 나아가게한다
-
-        D3DXMATRIXA16 m;
-        D3DXMatrixTranslation(&m, dist.x, dist.y, dist.z);
-        m_pBoxCollider->Update(m);
 
 		if (IsInBorderArea()) //경계구역 안이면 총알 이동
 			D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
@@ -68,7 +55,11 @@ void Bullet::Update()
 			g_pCurrentScene->Destroy(this);
 
         //변환행렬
-        m_matWorld = m_matS * m_matT;
+        D3DXMATRIXA16 matR;
+        GetRotationMatrixFromDirection(matR, m_dir);
+        m_matWorld = m_matS * matR * m_matT;
+
+        m_pBoxCollider->Update(m_matWorld);
 
         Debug->AddText("fired bullet pos : ");
         Debug->AddText(m_pos);
@@ -108,6 +99,29 @@ bool Bullet::GetIsFire() const
 
 void Bullet::SetIsFire(const bool isFire)
 {
+    if (isFire)
+    {
+        if (!m_pBoxCollider)
+        {
+            m_pBoxCollider = SetComponent<BoxCollider>();
+
+            struct ULTSTRUCT
+            {
+                float x, y, z;
+                float v, u;
+            };
+
+            D3DXVECTOR3 min, max;
+            void* v;
+            m_pBulletMesh->LockVertexBuffer(D3DLOCK_READONLY, &v);
+            D3DXComputeBoundingBox((D3DXVECTOR3*)v, m_pBulletMesh->GetNumVertices(), D3DXGetFVFVertexSize(m_pBulletMesh->GetFVF()), &min, &max);
+            m_pBulletMesh->UnlockVertexBuffer();
+
+            m_pBoxCollider->Init(min, max/*D3DXVECTOR3(-0.2f, -0.2f, -0.4f), D3DXVECTOR3(0.2f, 0.2f, 0.4f)*/);
+            m_pBoxCollider->SetTag(CollisionTag::kBullet);
+        }
+    }
+
     m_isFire = isFire;
 }
 
@@ -151,5 +165,5 @@ bool Bullet::IsInBorderArea()
 
 void Bullet::SetDirection(const D3DXVECTOR3& val)
 {
-    m_vDir = val;
+    m_dir = val;
 }

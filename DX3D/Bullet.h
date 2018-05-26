@@ -14,7 +14,7 @@ private:
 	bool          m_isDie;        //경계범위를 벗어나거나 어딘가 충돌할 때 죽음
 
 	const float   m_velocity;     //이동을 위한 속력
-    D3DXVECTOR3   m_vDir;
+    D3DXVECTOR3   m_dir;
 	const float   m_scale;
 
 	D3DXMATRIXA16 m_matS;

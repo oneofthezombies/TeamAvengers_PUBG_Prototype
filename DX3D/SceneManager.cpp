@@ -6,6 +6,7 @@
 #include "SceneHeightmap.h"
 #include "SceneTest.h"
 #include "SceneShotting.h"
+#include "SceneLobby.h"
 
 SceneManager::SceneManager()
 {
@@ -18,17 +19,21 @@ SceneManager::~SceneManager()
 
 void SceneManager::Init()
 {
+    m_vecScene.push_back(new SceneLobby);
+    m_vecScene.push_back(new SceneShotting);
+
 	//m_vecScene.push_back(new SceneGrid());
 	//m_vecScene.push_back(new SceneObjMap());
 	//m_vecScene.push_back(new SceneHeightmap());
 	//m_vecScene.push_back(new SceneTest());
-	m_vecScene.push_back(new SceneShotting());
+
+    SetCurrentScene(SCENE_LOBBY);
+    //SetCurrentScene(SCENE_SHOTTING);
 
 	//SetCurrentScene(SCENE_GRID);
 	//SetCurrentScene(SCENE_OBJMAP);
 	//SetCurrentScene(SCENE_HEIGHTMAP);
 	//SetCurrentScene(SCENE_TEST);
-	SetCurrentScene(SCENE_SHOTTING);
 }
 
 void SceneManager::Destroy()
@@ -53,8 +58,8 @@ void SceneManager::Render()
 
 void SceneManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	if (m_pCurrScene)
-		m_pCurrScene->WndProc(hWnd, message, wParam, lParam);
+	//if (m_pCurrScene)
+	//	m_pCurrScene->WndProc(hWnd, message, wParam, lParam);
 }
 
 void SceneManager::SetCurrentScene(size_t index)

@@ -66,6 +66,7 @@ private:
     // row 2 : x, y and z of axis 2
     // row 3 : x, y and z of translation
     D3DXMATRIXA16 m_mTransform;
+    vector<VERTEX_PC> m_vertices;
 
 public:
     BoxCollider(BaseObject& owner);
@@ -74,9 +75,6 @@ public:
     void Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max);
     void Update(const D3DXMATRIXA16& transform);
     virtual void Render() override;
-
-    void Move(const D3DXVECTOR3& val);
-    void MoveTo(const D3DXVECTOR3& val);
 
     D3DXVECTOR3 GetExtent() const;
     const D3DXMATRIXA16& GetTransform() const;

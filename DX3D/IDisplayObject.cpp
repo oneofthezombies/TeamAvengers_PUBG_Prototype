@@ -19,7 +19,7 @@ void IDisplayObject::UpdateTransform()
 {
     D3DXMATRIXA16 r, t;
     D3DXMatrixRotationYawPitchRoll(&r, m_rot.y, m_rot.x, m_rot.z);
-    D3DXMatrixTranslation(&t, m_pos.x, m_pos.y, m_pos.z);
+    D3DXMatrixTranslation(&t, m_pos.x, m_pos.y + m_heightOffset, m_pos.z);
     m_matWorld = r * t;
 }
 

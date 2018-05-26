@@ -27,11 +27,12 @@ public:\
 
 
 enum SCENE_INDEX {
+    SCENE_LOBBY,
     SCENE_SHOTTING,
 	SCENE_GRID,
 	SCENE_OBJMAP,
 	SCENE_HEIGHTMAP,
-	SCENE_TEST
+	SCENE_TEST,
 };
 
 enum TAG_DISPLAYOBJECT {
@@ -216,3 +217,5 @@ struct BoundingSphere
 DWORD FtoDw(float f);
 
 float GetRandomFloat(float lowBound, float highBound);
+
+void GetRotationMatrixFromDirection(D3DXMATRIXA16& OutRotation, const D3DXVECTOR3& direction, const D3DXVECTOR3& up = D3DXVECTOR3(0.0f, 1.0f, 0.0f));

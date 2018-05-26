@@ -18,12 +18,7 @@ void ItemPicker::Init(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
 {
     m_pCollisionListener = SetComponent<ItemPickerCollisionListener>();
     m_pBoxCollider = SetComponent<BoxCollider>();
-    m_pBoxCollider->Init(D3DXVECTOR3(-4.0f, -2.0f, -4.5f), D3DXVECTOR3(4.0f, 2.0f, 4.5f));
-    m_pBoxCollider->Move(D3DXVECTOR3(2.0f, 1.0f, 4.0f));
-    D3DXMATRIXA16 m;
-    D3DXMatrixRotationYawPitchRoll(&m, rot.y, 0.0f, 0.0f);
-    m_pBoxCollider->Update(m);
-    m_pBoxCollider->Move(pos);
+    m_pBoxCollider->Init(D3DXVECTOR3(-3.0f, -1.0f, -3.0f), D3DXVECTOR3(5.0f, 3.0f, 6.0f));
     m_pBoxCollider->SetTag(CollisionTag::kItemPicker);
 }
 

@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "ItemPicker.h"
 #include "UIInventory.h"
+#include "UIInGame.h"
 
 enum enumParts
 {
@@ -25,6 +26,7 @@ PlayerAni::PlayerAni()
     , m_pUIInventory(nullptr)
     , m_pPicked(nullptr)
     , m_vRotForAlt()
+    , m_forward(0.0f, 0.0f, 1.0f)
 {
     m_pRootParts = NULL;
 
@@ -53,7 +55,7 @@ PlayerAni::~PlayerAni()
 void PlayerAni::Init()
 {
 	//m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
-    m_pos = D3DXVECTOR3(0.5f, 0.0f, 0.5f);
+    m_pos = D3DXVECTOR3(30.0f, 0.0f, 30.0f);
 
 	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
@@ -65,17 +67,19 @@ void PlayerAni::Init()
 
     m_pBoxCollider = SetComponent<BoxCollider>();
     m_pBoxCollider->SetListener(*m_pCollisionListener);
-	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 0.0f));
+	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, 0.0f, -0.7f), D3DXVECTOR3(2.0f, 6.0f, 0.7f));
     /* end collider init */
 
     ShowCursor(true);     
+
+    UIInGame::Create(&m_pGun);
 }
 
 void PlayerAni::Update()
 {   
     //이동 ASDW
     KeyMove();
+
     if (!IsShowingInventory())
     {
         UpdateRotation();
@@ -131,23 +135,13 @@ void PlayerAni::Update()
     if (g_pKeyManager->IsOnceKeyDown('G'))
         DiedAni();
 
-	D3DXMATRIXA16 prevM = m_matWorld;
     if (m_isLive)
         UpdatePosition();
-	D3DXMATRIXA16 currM = m_matWorld;
-	D3DXMatrixInverse(&prevM, nullptr, &prevM);
-
-    D3DXMATRIXA16 m, tm;
-    D3DXMatrixRotationYawPitchRoll(&m, m_rot.y, m_rot.x, m_rot.z);
-    D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &m);
-    D3DXVec3Normalize(&m_dir, &m_dir);
 
     m_pRootParts->SetMovingState(m_isMoving);
     m_pRootParts->Update();
 
-	/* TM = prevM^(-1) * currM */
-    tm = prevM * currM;
-	m_pBoxCollider->Update(tm);
+	m_pBoxCollider->Update(m_matWorld);
 
     // change position for Gun in hand
     UpdateGunInHandPosition();
@@ -164,7 +158,18 @@ void PlayerAni::Update()
 	if (m_pGun)
 		m_pGun->ShowBulletNumForDebug();
 
-    ShowInventory(tm);
+    ShowInventory(m_matWorld);
+
+    if (g_pKeyManager->IsOnceKeyDown('8'))
+    {
+        Bullet* bullet = new Bullet(GUN_TAG::Pistol, 0.08f, 10.f);
+        bullet->Init();
+        bullet->SetPosition(m_pos);
+        bullet->SetHeightOffset(0.5f);
+        bullet->UpdatePositionYOnMap();
+        g_pCurrentScene->AddSimpleDisplayObj(bullet);
+        Pick(*bullet);
+    }
 }
 
 void PlayerAni::Render()
@@ -677,7 +682,7 @@ void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
     {
         vector<Item*> pickables;
         m_pItemPicker->Update(pickables, transform);
-        m_pUIInventory->Update(m_pPicked, m_mapInventory, pickables);
+        m_pUIInventory->Update(m_pPicked, m_mapInventory, pickables, m_mapGuns);
     }
 }
 

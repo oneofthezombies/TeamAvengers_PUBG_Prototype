@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Gun.h"
 #include "Bullet.h"
+#include "MuzzleFlash.h"
 
 Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
 	: Item(ITEM_TAG::Gun, "Gun", "I am a Gun")
@@ -12,6 +13,7 @@ Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireC
 	, m_scale(scale)       //0.7f
 	, m_rotY(rotY)         //-D3DXToRadian(90)
 	, m_pGunMesh(nullptr)
+    , m_muzzleFlash(nullptr)
 {
     switch (gunTag)
     {
@@ -43,6 +45,9 @@ void Gun::Init()
 	D3DXMatrixScaling(&m_matS, m_scale, m_scale, m_scale);
 	D3DXMatrixRotationY(&m_matRotY, m_rotY);
 	D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
+
+    m_muzzleFlash = new MuzzleFlash;
+    m_muzzleFlash->Init();
 }
 
 void Gun::Update()
@@ -68,6 +73,8 @@ void Gun::Update()
         Debug->AddText(b->GetPosition());
         Debug->EndLine();
     }
+
+    m_muzzleFlash->Update();
 }
 
 void Gun::Render()
@@ -95,11 +102,18 @@ void Gun::Render()
     {
         Item::Render();
     }
+
+    m_muzzleFlash->Render();
 }
 
 size_t Gun::GetBulletNum()
 {
     return m_vecPBullet.size();
+}
+
+int Gun::GetMaxNumBullet()
+{
+    return m_maxBullet;
 }
 
 int Gun::GetNeedBullet()
@@ -131,9 +145,12 @@ void Gun::Fire(const D3DXVECTOR3& dir)
 			Bullet* bullet = m_vecPBullet.back(); //총알을 하나 꺼내고
 			m_vecPBullet.pop_back();              //벡터에서 지워줌 (실제 릴리즈는 현재씬의 Update에서)
 			bullet->SetIsFire(true);
-			bullet->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z) + dir);
+            D3DXVECTOR3 firePos = m_pos + dir;
+			bullet->SetPosition(firePos);
             bullet->SetDirection(dir);
 			g_pCurrentScene->AddSimpleDisplayObj(bullet);
+
+            m_muzzleFlash->Flash(firePos);
 		}
 	}
 }

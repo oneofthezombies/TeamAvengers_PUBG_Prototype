@@ -42,8 +42,7 @@ void Cubeman::Init()
     m_pCollisionListener = SetComponent<CubemanCollisionListener>();
     m_pBoxCollider = SetComponent<BoxCollider>();
     m_pBoxCollider->SetListener(*m_pCollisionListener);
-    m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, -3.0f, -0.7f), D3DXVECTOR3(2.0f, 3.0f, 0.7f));
-    m_pBoxCollider->Move(D3DXVECTOR3(0.0f, 3.0f, 20.0f));
+    m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, 0.0f, -0.7f), D3DXVECTOR3(2.0f, 6.0f, 0.7f));
     m_pBoxCollider->SetTag(CollisionTag::kEnemy);
 
     m_rot.y += D3DX_PI;
@@ -76,9 +75,7 @@ void Cubeman::Update()
 	m_pRootParts->SetMovingState(m_isMoving);
 	m_pRootParts->Update();
 
-    D3DXMATRIXA16 m;
-    D3DXMatrixTranslation(&m, 0.0f, 0.0f, currZ - prevZ);
-    m_pBoxCollider->Update(m);
+    m_pBoxCollider->Update(m_matWorld);
 }
 
 void Cubeman::Render()

@@ -64,6 +64,8 @@ private:
     UIInventory* m_pUIInventory;
     Item*        m_pPicked;
 
+
+
 public:
     PlayerAni();
     ~PlayerAni();
