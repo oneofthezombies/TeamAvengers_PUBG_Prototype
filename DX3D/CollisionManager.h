@@ -21,8 +21,7 @@ class BoxCollider;
 class SphereCollider;
 class ICollisionListener;
 
-class CollisionManager
-    : public SingletonBase<CollisionManager>
+class CollisionManager : public SingletonBase<CollisionManager>
 {
 private:
     struct HashColliderBase

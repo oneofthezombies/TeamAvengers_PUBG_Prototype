@@ -109,7 +109,7 @@ void SkyBox::Init()
 
 void SkyBox::Init(const D3DXMATRIXA16& transform)
 {
-    m_pTex = g_pTextureManager->GetTexture("resources/images/skybox002.png");
+    m_pTex = g_pTextureManager->GetTexture("resources/images/skybox004.png");
 
     int verticesMemorySize = 0;
     vector<VERTEX_PT> vertices;

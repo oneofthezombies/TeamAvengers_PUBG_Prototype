@@ -67,9 +67,6 @@
     <ClCompile Include="Hexagon.cpp">
       <Filter>2. Object</Filter>
     </ClCompile>
-    <ClCompile Include="ICollidable.cpp">
-      <Filter>Common Interface</Filter>
-    </ClCompile>
     <ClCompile Include="IDisplayObject.cpp">
       <Filter>Common Interface</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Utilitiy</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleCollidable.cpp">
-      <Filter>Sample</Filter>
     </ClCompile>
     <ClCompile Include="SampleUI.cpp">
       <Filter>Sample</Filter>
@@ -196,9 +190,6 @@
     <ClCompile Include="DrawingGroup.cpp">
       <Filter>Utilitiy</Filter>
     </ClCompile>
-    <ClCompile Include="SampleUIButtonListner.cpp">
-      <Filter>Sample</Filter>
-    </ClCompile>
     <ClCompile Include="UIInteractionMessage.cpp">
       <Filter>2. Object\UI</Filter>
     </ClCompile>
@@ -206,7 +197,6 @@
     <ClCompile Include="SampleCollider.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
-    <ClCompile Include="ICollisionListner.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="ICamera.cpp" />
@@ -222,6 +212,12 @@
     </ClCompile>
     <ClCompile Include="Gun.cpp">
       <Filter>1. Scene\SceneShotting</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentBase.cpp" />
+    <ClCompile Include="ItemPicker.cpp" />
+    <ClCompile Include="SampleUIButtonListener.cpp" />
+    <ClCompile Include="UIInventory.cpp">
+      <Filter>2. Object\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,9 +287,6 @@
     <ClInclude Include="Hexagon.h">
       <Filter>2. Object</Filter>
     </ClInclude>
-    <ClInclude Include="ICollidable.h">
-      <Filter>Common Interface</Filter>
-    </ClInclude>
     <ClInclude Include="IDisplayObject.h">
       <Filter>Common Interface</Filter>
     </ClInclude>
@@ -338,9 +331,6 @@
     </ClInclude>
     <ClInclude Include="Ray.h">
       <Filter>Utilitiy</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleCollidable.h">
-      <Filter>Sample</Filter>
     </ClInclude>
     <ClInclude Include="SampleUI.h">
       <Filter>Sample</Filter>
@@ -438,9 +428,6 @@
     <ClInclude Include="DrawingGroup.h">
       <Filter>Utilitiy</Filter>
     </ClInclude>
-    <ClInclude Include="SampleUIButtonListner.h">
-      <Filter>Sample</Filter>
-    </ClInclude>
     <ClInclude Include="UIInteractionMessage.h">
       <Filter>2. Object\UI</Filter>
     </ClInclude>
@@ -448,7 +435,6 @@
     <ClInclude Include="SampleCollider.h">
       <Filter>Sample</Filter>
     </ClInclude>
-    <ClInclude Include="ICollisionListner.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="ICamera.h" />
@@ -462,6 +448,9 @@
     <ClInclude Include="Gun.h">
       <Filter>1. Scene\SceneShotting</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentBase.h" />
+    <ClInclude Include="ItemPicker.h" />
+    <ClInclude Include="SampleUIButtonListener.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

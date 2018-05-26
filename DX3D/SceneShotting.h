@@ -7,15 +7,17 @@ class Gun;
 class Bullet;
 class SampleUIButtonListener;
 class Item;
+class HeightMap;
 
 class SceneShotting : public IScene
 {
 private:
+    HeightMap*        m_pHeightMap;
 	Ground*           m_pGround;
 	PlayerAni*        m_pPlayerAni;
 	Gun*              m_pPistol;
 	Gun*              m_pRifle;
-	vector<Bullet*>   m_vecPBulletForPistol; //±ÇÃÑ¿ë ÃÑÀÏ
+	vector<Bullet*>   m_vecPBulletForPistol; //±ÇÃÑ¿ë ÃÑ¾Ë
 	vector<Bullet*>   m_vecPBulletForRifle;  //¼ÒÃÑ¿ë ÃÑ¾Ë
 	
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z ±âÁØ¼±
@@ -42,6 +44,7 @@ public:
 
     void InitSkyBox();
     void InitLight();
+    void InitHeightMap();
     void InitAxises();
     void InitGroundGrid();
     void InitPlayer();

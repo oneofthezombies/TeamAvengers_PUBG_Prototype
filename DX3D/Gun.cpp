@@ -17,12 +17,12 @@ Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireC
     {
     case GUN_TAG::Pistol:
         {
-            m_name = "Pistol";
+            m_name = "±ÇÃÑ";
             break;
         }
     case GUN_TAG::Rifle:
         {
-            m_name = "Rifle";
+            m_name = "¼ÒÃÑ";
             break;
         }
     }
@@ -60,6 +60,13 @@ void Gun::Update()
         //º¯È¯Çà·Ä
         D3DXMatrixTranslation(&m_matT, m_pos.x, m_pos.y, m_pos.z);
         m_matWorld = m_matS * m_matRotY * m_matT;
+    }
+
+    for (auto b : m_vecPBullet)
+    {
+        Debug->AddText("bullet pos : ");
+        Debug->AddText(b->GetPosition());
+        Debug->EndLine();
     }
 }
 
@@ -110,7 +117,7 @@ bool Gun::GetCanChangeBurstMode()
     return  m_canChangeBurstMode;
 }
 
-void Gun::Fire()
+void Gun::Fire(const D3DXVECTOR3& dir)
 {
 	if (m_bulletFireCoolDown <= 0.f)
 	{
@@ -122,7 +129,8 @@ void Gun::Fire()
 			Bullet* bullet = m_vecPBullet.back(); //ÃÑ¾ËÀ» ÇÏ³ª ²¨³»°í
 			m_vecPBullet.pop_back();              //º¤ÅÍ¿¡¼­ Áö¿öÁÜ (½ÇÁ¦ ¸±¸®Áî´Â ÇöÀç¾ÀÀÇ Update¿¡¼­)
 			bullet->SetIsFire(true);
-			bullet->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z + 1.f));
+			bullet->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y, m_pos.z) + dir);
+            bullet->SetDirection(dir);
 			g_pCurrentScene->AddSimpleDisplayObj(bullet);
 		}
 	}

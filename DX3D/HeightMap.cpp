@@ -38,10 +38,7 @@ void HeightMap::Load(const char * fullPath, D3DXMATRIXA16 * pMat)
 					1 - (z / (float)m_numTile));
 
 			if (pMat != NULL)
-			{
-				D3DXVec3TransformCoord(&vecVertex[index].p, 
-					&vecVertex[index].p, pMat);
-			}
+				D3DXVec3TransformCoord(&vecVertex[index].p, &vecVertex[index].p, pMat);
 
 			m_vecVertex[index] = vecVertex[index].p;
 		}
@@ -139,10 +136,10 @@ void HeightMap::SetMtlTex(D3DMATERIAL9 & mtl, LPDIRECT3DTEXTURE9 pTex)
 
 void HeightMap::Init()
 {
-	m_pAStar = new AStar(); m_pAStar->Init(); m_pAStar->InitNode(this);
-	SetSurface();
-	SetObstacle();
-	m_pAStar->SetObstacle(m_vecObstacleVertex);
+	//m_pAStar = new AStar(); m_pAStar->Init(); m_pAStar->InitNode(this);
+	//SetSurface();
+	//SetObstacle();
+	//m_pAStar->SetObstacle(m_vecObstacleVertex);
 }
 
 void HeightMap::Update()
@@ -151,15 +148,15 @@ void HeightMap::Update()
 
 void HeightMap::Render()
 {
-	//--안개--
-	g_pDevice->SetRenderState(D3DRS_FOGENABLE, true);
-	g_pDevice->SetRenderState(D3DRS_FOGCOLOR, 0xffbbbbbb);
-	g_pDevice->SetRenderState(D3DRS_FOGDENSITY, FtoDw(0.1f)); //강도 0~1f
-	//안개적용되는 최소 거리
-	g_pDevice->SetRenderState(D3DRS_FOGSTART, FtoDw(20.0f));
-	//안개 최대치로 적용되는 거리
-	g_pDevice->SetRenderState(D3DRS_FOGEND, FtoDw(40.0f));
-	g_pDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
+	////--안개--
+	//g_pDevice->SetRenderState(D3DRS_FOGENABLE, true);
+	//g_pDevice->SetRenderState(D3DRS_FOGCOLOR, 0xffbbbbbb);
+	//g_pDevice->SetRenderState(D3DRS_FOGDENSITY, FtoDw(0.1f)); //강도 0~1f
+	////안개적용되는 최소 거리
+	//g_pDevice->SetRenderState(D3DRS_FOGSTART, FtoDw(20.0f));
+	////안개 최대치로 적용되는 거리
+	//g_pDevice->SetRenderState(D3DRS_FOGEND, FtoDw(40.0f));
+	//g_pDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
 
 
 	//g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
@@ -168,20 +165,20 @@ void HeightMap::Render()
 	g_pDevice->SetMaterial(&m_pMtlTex->GetMaterial());
 	g_pDevice->SetTexture(0, m_pMtlTex->GetTexture());
 	m_pMesh->DrawSubset(0);
-	g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	//g_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	
-	SAFE_RENDER(m_pAStar);
+	//SAFE_RENDER(m_pAStar);
 	//g_pDevice->SetMaterial(&DXUtil::YELLOW_MTRL);
 	//g_pDevice->SetTexture(0, NULL);
 	//g_pDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST,
 	//	m_vecSurfaceVertex.size() / 3,
 	//	&m_vecSurfaceVertex[0], sizeof(D3DXVECTOR3));
 
-	g_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	g_pDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, m_vecObstacleVertex.size() / 3, &m_vecObstacleVertex[0], sizeof(D3DXVECTOR3));
-	g_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	//g_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	//g_pDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, m_vecObstacleVertex.size() / 3, &m_vecObstacleVertex[0], sizeof(D3DXVECTOR3));
+	//g_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
-	g_pDevice->SetRenderState(D3DRS_FOGENABLE, false);
+	//g_pDevice->SetRenderState(D3DRS_FOGENABLE, false);
 }
 
 bool HeightMap::GetHeight(OUT float & height, const D3DXVECTOR3 & pos)

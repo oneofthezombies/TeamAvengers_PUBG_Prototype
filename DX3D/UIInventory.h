@@ -15,5 +15,7 @@ public:
     void Init();
     void Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& inventory, vector<Item*>& pickables);
 
+    void RegisterCoreTexts();
+
     static UIInventory* Create();
 };

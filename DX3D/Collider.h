@@ -18,8 +18,8 @@ public:
 
 private:
     ICollisionListener* m_pListener;
-    Type               m_type;
-    CollisionTag       m_tag;
+    Type                m_type;
+    CollisionTag        m_tag;
 
 protected:
     D3DXVECTOR3 m_vCenter;
@@ -35,7 +35,7 @@ public:
     void SetColor(const D3DCOLOR color);
     D3DXVECTOR3 GetCenter() const;
     
-    void               SetListener(ICollisionListener& Listener);
+    void                SetListener(ICollisionListener& Listener);
     ICollisionListener* GetListener() const;
 
     void         SetTag(const CollisionTag tag);

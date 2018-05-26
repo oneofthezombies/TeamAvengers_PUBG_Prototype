@@ -17,9 +17,9 @@ public:
 	PlayerAniCollisionListener(BaseObject& owner);
 	virtual ~PlayerAniCollisionListener() = default;
 
-	virtual void OnCollisionEnter(const ColliderBase & other) override;
-	virtual void OnCollisionExit(const ColliderBase & other) override;
-	virtual void OnCollisionStay(const ColliderBase & other) override;
+	virtual void OnCollisionEnter(const ColliderBase& other) override;
+	virtual void OnCollisionExit(const ColliderBase& other) override;
+	virtual void OnCollisionStay(const ColliderBase& other) override;
 };
 
 class PlayerAni : public IDisplayObject
@@ -93,11 +93,12 @@ public:
 	void KeyInHand(GUN_TAG gunTag);
 	void KeyOutHand();
 	void KeyLoad();
-	void KeyFire();
+	void KeyFire(const D3DXVECTOR3& dir);
 	void KeyChangeGun(GUN_TAG gunTag);
     void KeyChangeFireMode();
 
     void UpdateRotation();
+    void UpdateDirection();
     void UpdateGunInHandPosition();
     void UpdateGunInEquipPosition();
 

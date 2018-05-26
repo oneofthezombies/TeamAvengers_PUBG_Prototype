@@ -6,6 +6,7 @@ IDisplayObject::IDisplayObject()
     , m_pParent(nullptr)
     , m_pos(0.0f, 0.0f, 0.0f)
     , m_rot(0.0f, 0.0f, 0.0f)
+    , m_heightOffset(0.0f)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
@@ -53,6 +54,11 @@ const vector<IDisplayObject*>& IDisplayObject::GetChildVec() const
     return m_vecPChild;
 }
 
+void IDisplayObject::SetHeightOffset(const float val)
+{
+    m_heightOffset = val;
+}
+
 void IDisplayObject::Release()
 {
     ReleaseChildren();
@@ -75,4 +81,14 @@ void IDisplayObject::ReleaseChildren()
 {
     for (auto c : m_vecPChild)
         SAFE_RELEASE(c);
+}
+
+void IDisplayObject::UpdatePositionYOnMap()
+{
+    IMap* map = g_pCurrentMap;
+    if (!map) return;
+
+    float height = 0.0f;
+    map->GetHeight(height, m_pos);
+    m_pos.y = height + m_heightOffset;
 }

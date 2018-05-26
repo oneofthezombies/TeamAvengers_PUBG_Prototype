@@ -14,13 +14,14 @@ private:
 	bool          m_isDie;        //경계범위를 벗어나거나 어딘가 충돌할 때 죽음
 
 	const float   m_velocity;     //이동을 위한 속력
+    D3DXVECTOR3   m_vDir;
 	const float   m_scale;
-	//D3DXVECTOR3 m_pos;          //IDisplayObject에 있음
 
 	D3DXMATRIXA16 m_matS;
 	D3DXMATRIXA16 m_matT;
 
     BoxCollider* m_pBoxCollider;
+
 
 public:
 	Bullet(GUN_TAG bulletFor, float scale, float velocity);
@@ -38,4 +39,6 @@ public:
 	bool IsBulletForThisGun(GUN_TAG gunTag);
 
 	bool IsInBorderArea(); //경계구역 안에 있는지 체크
+
+    void SetDirection(const D3DXVECTOR3& val);
 };

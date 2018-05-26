@@ -46,3 +46,20 @@ void UIText::SetDrawTextFormat(const DWORD val)
 {
     m_drawTextFormat = val;
 }
+
+UIText* UIText::Create(const Font::Type font, const string& text, const D3DXVECTOR3& pos, const D3DXVECTOR2& size, UIObject* parent, const DWORD format)
+{
+    UIText* ret = new UIText;
+    ret->SetFont(g_pFontManager->GetFont(font));
+    ret->SetText(text);
+    ret->SetPosition(pos);
+    ret->SetSize(size);
+    ret->SetDrawTextFormat(format);
+
+    if (parent)
+        parent->AddChild(*ret);
+    else
+        g_pUIManager->RegisterUIObject(*ret);
+
+    return ret;
+}
