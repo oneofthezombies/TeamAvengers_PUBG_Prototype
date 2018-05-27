@@ -4,6 +4,7 @@
 
 class CubemanParts;
 class CubemanCollisionListener;
+class CubemanAI;
 
 class Cubeman : public IDisplayObject
 {
@@ -29,6 +30,8 @@ private:
 
     BoxCollider* m_pBoxCollider;
     CubemanCollisionListener* m_pCollisionListener;
+
+    CubemanAI* m_cubemanAI;
 
 public:
 	Cubeman();

@@ -169,6 +169,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ColorCube.h" />
     <ClInclude Include="Cubeman.h" />
+    <ClInclude Include="CubemanAI.h" />
     <ClInclude Include="CubemanParts.h" />
     <ClInclude Include="D3DUtility.h" />
     <ClInclude Include="Debug.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ColorCube.cpp" />
     <ClCompile Include="Cubeman.cpp" />
+    <ClCompile Include="CubemanAI.cpp" />
     <ClCompile Include="CubemanParts.cpp" />
     <ClCompile Include="D3DUtility.cpp" />
     <ClCompile Include="Debug.cpp" />

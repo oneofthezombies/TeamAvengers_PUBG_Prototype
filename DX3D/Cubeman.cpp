@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "UIGameOver.h"
 #include "Collider.h"
+#include "CubemanAI.h"
 
 Cubeman::Cubeman()
     : IDisplayObject()
@@ -15,8 +16,8 @@ Cubeman::Cubeman()
 
 	m_isMoving = false;
 	m_moveSpeed = 0.05f;
-	m_currMoveSpeedRate = 1.0f;
-	m_rotationSpeed = 0.1f;
+	m_currMoveSpeedRate = 0.7f;
+	m_rotationSpeed = 0.07f;
 
 	m_isJumping = false;
 	m_jumpPower = 1.0f;
@@ -46,15 +47,23 @@ void Cubeman::Init()
     m_pBoxCollider->SetTag(CollisionTag::kEnemy);
 
     m_rot.y += D3DX_PI;
+
+    m_cubemanAI = new CubemanAI;
+    m_cubemanAI->Init();
 }
 
 void Cubeman::Update()
 {
-    const float prevZ = m_pos.z;
-    m_deltaPos.z = 1.0f;
-
+    m_cubemanAI->Move(m_deltaPos, m_deltaRot, m_rot, m_pos);
 	UpdatePosition();
-    const float currZ = m_pos.z;
+
+    Debug->AddText("cubeman pos : ");
+    Debug->AddText(m_pos);
+    Debug->EndLine();
+    Debug->AddText("cubeman rot : ");
+    Debug->AddText(m_rot);
+    Debug->EndLine();
+
 	//if (GetAsyncKeyState('1') & 0x0001)
 	//{
 	//	m_isTurnedOnLight = !m_isTurnedOnLight;
