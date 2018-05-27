@@ -8,6 +8,7 @@ class Bullet;
 class SampleUIButtonListener;
 class Item;
 class HeightMap;
+class CubemanBarrack;
 
 class SceneShotting : public IScene
 {
@@ -23,6 +24,8 @@ private:
 	vector<VERTEX_PC> m_vecBaseline; //x, y, z 기준선
 
     SampleUIButtonListener* m_pSampleUIButtonListener;
+
+    CubemanBarrack* m_cubemanBarrack;
 
 public:
     //잠시 test sample    //JH---------

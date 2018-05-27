@@ -9,14 +9,14 @@ class UIGameOver
     : public UIImage
 {
 private:
-    std::wstring temp;
+    string m_temp;
     GoToLobbyButtonListener* m_pGoToLobbyButtonListener;
 
 public:
     UIGameOver();
     virtual ~UIGameOver();
 
-    virtual void Init() override;
+    void Init(bool isWon, const int rank, const int total);
 };
 
 class GoToLobbyButtonListener : public IUIButtonOnMouseListener

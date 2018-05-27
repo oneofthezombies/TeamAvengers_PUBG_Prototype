@@ -69,7 +69,7 @@ void SceneManager::SetCurrentScene(size_t index)
 	IScene* pScene = m_vecScene[index];
 	if (pScene)
 	{
+        m_pCurrScene = pScene;
 		pScene->Init();
-		m_pCurrScene = pScene;
 	}
 }

@@ -15,7 +15,7 @@ UIGameOver::~UIGameOver()
     SAFE_DELETE(m_pGoToLobbyButtonListener);
 }
 
-void UIGameOver::Init()
+void UIGameOver::Init(bool isWon, const int rank, const int total)
 {
     g_pUIManager->RegisterUIObject(*this);
 
@@ -24,7 +24,7 @@ void UIGameOver::Init()
 
     UIText* nickname = new UIText;
     nickname->SetFont(g_pFontManager->GetFont(Font::kGameOverNickname));
-    nickname->SetText(TEXT("oneofthezombies"));
+    nickname->SetText(string("oneofthezombies"));
     nickname->SetColor(D3DCOLOR_XRGB(255, 255, 255));
     nickname->SetPosition(D3DXVECTOR3(50.0f, 50.0f, 0.0f));
     nickname->SetSize(D3DXVECTOR2(500.0f, 50.0f));
@@ -33,7 +33,14 @@ void UIGameOver::Init()
 
     UIText* description = new UIText;
     description->SetFont(g_pFontManager->GetFont(Font::kGameOverDescription));
-    description->SetText(TEXT("ÀÌ°å´ß! ¿À´Ã Àú³áÀº Ä¡Å²ÀÌ´ß!"));
+
+    if (isWon)
+        m_temp = "ÀÌ°å´ß! ¿À´Ã Àú³áÀº Ä¡Å²ÀÌ´ß!";
+
+    else
+        m_temp = "±×·² ¼ö ÀÖ¾î. ÀÌ·± ³¯µµ ÀÖ´Â °ÅÁö ¹¹.";
+
+    description->SetText(m_temp);
     description->SetColor(D3DCOLOR_XRGB(242, 199, 35));
     description->SetPosition(D3DXVECTOR3(0.0f, 60.0f, 0.0f));
     description->SetSize(D3DXVECTOR2(500.0f, 50.0f));
@@ -42,7 +49,7 @@ void UIGameOver::Init()
 
     UIText* ranking = new UIText;
     ranking->SetFont(g_pFontManager->GetFont(Font::kGameOverRanking));
-    ranking->SetText(TEXT("#1"));
+    ranking->SetText(string("#" + to_string(rank)));
     ranking->SetColor(D3DCOLOR_XRGB(242, 199, 35));
     ranking->SetPosition(D3DXVECTOR3(1280.0f - 200.0f, 50.0f, 0.0f));
     ranking->SetSize(D3DXVECTOR2(80.0f, 50.0f));
@@ -51,7 +58,7 @@ void UIGameOver::Init()
 
     UIText* rankingNumOther = new UIText;
     rankingNumOther->SetFont(g_pFontManager->GetFont(Font::kGameOverRankingNumOther));
-    rankingNumOther->SetText(TEXT("/50"));
+    rankingNumOther->SetText(string("/" + to_string(total)));
     rankingNumOther->SetColor(D3DCOLOR_XRGB(90, 94, 97));
     rankingNumOther->SetPosition(D3DXVECTOR3(80.0f, 8.0f, 0.0f));
     rankingNumOther->SetSize(D3DXVECTOR2(80.0f, 50.0f));
@@ -59,20 +66,12 @@ void UIGameOver::Init()
     ranking->AddChild(*rankingNumOther);
 
     UIButton* goToLobby = new UIButton;
-    goToLobby->SetSize(D3DXVECTOR2(200.0f, 80.0f));
-    goToLobby->SetPosition(D3DXVECTOR3(1280.0f - 300.0f, 720.0f - 150.0f, 0.0f));
+    goToLobby->SetTexture("resources/images/exit_btn_idle.png", "resources/images/exit_btn_mouseover.png", "resources/images/exit_btn_mouseover.png");
+    goToLobby->SetPosition(D3DXVECTOR3(1280.0f - 400.0f, 720.0f - 150.0f, 0.0f));
     AddChild(*goToLobby);
     m_pGoToLobbyButtonListener = new GoToLobbyButtonListener;
     m_pGoToLobbyButtonListener->SetUIButton(*goToLobby);
     m_pGoToLobbyButtonListener->SetHandle(*this);
-
-    UIText* goToLobbyText = new UIText;
-    goToLobbyText->SetFont(g_pFontManager->GetFont(Font::kGameOverGoToLobby));
-    goToLobbyText->SetSize(D3DXVECTOR2(200.0f, 60.0f));
-    goToLobbyText->SetPosition(D3DXVECTOR3(0.0f, 20.0f, 0.0f));
-    goToLobbyText->SetText(TEXT("·Îºñ·Î ³ª°¡±â"));
-    goToLobbyText->SetColor(D3DCOLOR_XRGB(93, 93, 93));
-    goToLobby->AddChild(*goToLobbyText);
 }
 
 void GoToLobbyButtonListener::OnMouseEnter()
@@ -85,11 +84,12 @@ void GoToLobbyButtonListener::OnMouseExit()
 
 void GoToLobbyButtonListener::OnMouseDown(const int key)
 {
-    g_pUIManager->Destroy(*GetHandle());
 }
 
 void GoToLobbyButtonListener::OnMouseUp(const int key)
 {
+    //g_pUIManager->Destroy(*GetHandle());
+    SendMessage(g_hWnd, WM_DESTROY, 0, 0);
 }
 
 void GoToLobbyButtonListener::OnMouseDrag(const int key)

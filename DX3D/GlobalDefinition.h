@@ -36,7 +36,8 @@ enum SCENE_INDEX {
 };
 
 enum TAG_DISPLAYOBJECT {
-	TAG_PLAYER
+	TAG_PLAYER,
+    TAG_CUBEMAN_BARRACK
 };
 
 enum class ITEM_TAG
@@ -61,6 +62,7 @@ enum class GUN_TAG
 
 enum class FIRE_MODE
 {
+    Idle,
     SingleShot, //단발
     Burst       //연발
 };

@@ -104,6 +104,9 @@ public:
 
 class CubemanCollisionListener : public ICollisionListener
 {
+private:
+    string gameOverText;
+
 public:
     CubemanCollisionListener(BaseObject& owner);
     virtual ~CubemanCollisionListener() = default;

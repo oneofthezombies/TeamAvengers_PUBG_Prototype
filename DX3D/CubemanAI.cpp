@@ -28,7 +28,7 @@ void CubemanAI::Move(D3DXVECTOR3& OutDeltaPos, D3DXVECTOR3& OutDeltaRot, D3DXVEC
     const D3DXVECTOR3 diff = D3DXVECTOR3(playerPos.x, 0.0f, playerPos.z) - D3DXVECTOR3(myPos.x, 0.0f, myPos.z);
     float diffLength = D3DXVec3Length(&diff);
 
-    if (diffLength > 20.0f) return;
+    if (diffLength > 25.0f) return;
 
     const D3DXVECTOR3 diffNorm = diff / diffLength;
 
@@ -61,7 +61,7 @@ void CubemanAI::Move(D3DXVECTOR3& OutDeltaPos, D3DXVECTOR3& OutDeltaRot, D3DXVEC
         return;
     }
     
-    if (diffLength > 15.0f) return;
+    if (diffLength > 20.0f) return;
 
     if (yAxis.y < 0.0f)
         OutDeltaRot.y = -1.0f;

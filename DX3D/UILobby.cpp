@@ -17,7 +17,7 @@ void UILobby::Init()
     g_pUIManager->RegisterUIObject(*this);
     SetTexture("resources/images/background.png");
 
-    UIButton* startButton = UIButton::Create("resources/images/start_btn_default.png", 
+    UIButton* startButton = UIButton::Create("resources/images/start_btn_idle.png", 
                                              "resources/images/start_btn_mouseover.png", 
                                              "resources/images/start_btn_clicked.png", 
                                              D3DXVECTOR3(729.0f, 536.0f, 0.0f), this);

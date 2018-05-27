@@ -20,10 +20,10 @@ void UIText::Render()
 {
     if (!m_pFont) return;
 
-    if (m_text)
-	    m_pFont->DrawText(g_pSprite, m_text, lstrlen(m_text), &m_rect, m_drawTextFormat, m_color);
-    else if (!m_textString.empty())
+    if (!m_textString.empty())
         m_pFont->DrawTextA(g_pSprite, m_textString.c_str(), m_textString.size(), &m_rect, m_drawTextFormat, m_color);
+    else if (m_text)
+	    m_pFont->DrawText(g_pSprite, m_text, lstrlen(m_text), &m_rect, m_drawTextFormat, m_color);
     else if (m_pTextString)
         m_pFont->DrawTextA(g_pSprite, m_pTextString->c_str(), m_pTextString->size(), &m_rect, m_drawTextFormat, m_color);
     

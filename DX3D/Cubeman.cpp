@@ -6,6 +6,8 @@
 #include "UIGameOver.h"
 #include "Collider.h"
 #include "CubemanAI.h"
+#include "PlayerAni.h"
+#include "CubemanBarrack.h"
 
 Cubeman::Cubeman()
     : IDisplayObject()
@@ -237,15 +239,16 @@ void CubemanCollisionListener::OnCollisionEnter(const ColliderBase& other)
     {
     case CollisionTag::kBullet:
         {
-            auto a = static_cast<IDisplayObject*>(GetOwner());
-            g_pCurrentScene->Destroy(a);
+            IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+            if (search)
+            {
+                CubemanBarrack* cb = static_cast<CubemanBarrack*>(search);
+                Cubeman* c = static_cast<Cubeman*>(GetOwner());
+                cb->RemoveCubeman(*c);
+            }
 
             auto b = static_cast<IDisplayObject*>(other.GetOwner());
             g_pCurrentScene->Destroy(b);
-
-            UIGameOver* uigo = new UIGameOver;
-            uigo->Init();
-            g_pUIManager->RegisterUIObject(*uigo);
         }
         break;
     }

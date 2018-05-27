@@ -13,6 +13,7 @@
 #include "Cubeman.h"
 #include "SampleCollider.h"
 #include "HeightMap.h"
+#include "CubemanBarrack.h"
 
 SceneShotting::SceneShotting()
     : m_pHeightMap(nullptr)
@@ -27,6 +28,8 @@ SceneShotting::SceneShotting()
 SceneShotting::~SceneShotting()
 {
 	OnDestructIScene();
+
+    SAFE_RELEASE(m_cubemanBarrack);
 }
 
 void SceneShotting::Init()
@@ -85,11 +88,8 @@ void SceneShotting::Init()
 		AddSimpleDisplayObj(bullet);
 	}
 
-    Cubeman* cm = new Cubeman;
-    cm->Init();
-    cm->SetPosition(D3DXVECTOR3(10.0f, 0.0f, 10.0f));
-    cm->UpdatePositionYOnMap();
-    AddSimpleDisplayObj(cm);
+    m_cubemanBarrack = new CubemanBarrack;
+    m_cubemanBarrack->Init();
 
     //InitSamples();
 
@@ -131,6 +131,7 @@ void SceneShotting::Init()
 
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kFoo, CollisionTag::kBar);
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kBullet, CollisionTag::kEnemy);
+    g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kEnemy, CollisionTag::kPlayer);
 }
 
 void SceneShotting::Update()

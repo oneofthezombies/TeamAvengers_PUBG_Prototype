@@ -7,6 +7,8 @@
 #include "ItemPicker.h"
 #include "UIInventory.h"
 #include "UIInGame.h"
+#include "UIGameOver.h"
+#include "CubemanBarrack.h"
 
 enum enumParts
 {
@@ -18,7 +20,7 @@ enum enumParts
 };
 
 PlayerAni::PlayerAni()
-    : m_fireMode(FIRE_MODE::SingleShot) //처음은 단발모드
+    : m_fireMode(FIRE_MODE::Idle)
 	, m_pGun(nullptr)
 	, m_pBoxCollider(nullptr)
     , m_pCollisionListener(nullptr)
@@ -27,6 +29,7 @@ PlayerAni::PlayerAni()
     , m_pPicked(nullptr)
     , m_vRotForAlt()
     , m_forward(0.0f, 0.0f, 1.0f)
+    , m_isGameOver(false)
 {
     m_pRootParts = NULL;
 
@@ -68,15 +71,18 @@ void PlayerAni::Init()
     m_pBoxCollider = SetComponent<BoxCollider>();
     m_pBoxCollider->SetListener(*m_pCollisionListener);
 	m_pBoxCollider->Init(D3DXVECTOR3(-2.0f, 0.0f, -0.7f), D3DXVECTOR3(2.0f, 6.0f, 0.7f));
+    m_pBoxCollider->SetTag(CollisionTag::kPlayer);
     /* end collider init */
 
     ShowCursor(true);     
 
-    UIInGame::Create(&m_pGun);
+    UIInGame::Create(&m_pGun, &m_fireMode);
 }
 
 void PlayerAni::Update()
 {   
+    if (m_isGameOver) return;
+
     //이동 ASDW
     KeyMove();
 
@@ -169,6 +175,24 @@ void PlayerAni::Update()
         bullet->UpdatePositionYOnMap();
         g_pCurrentScene->AddSimpleDisplayObj(bullet);
         Pick(*bullet);
+    }
+
+    IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+    if (search)
+    {
+        CubemanBarrack* cb = static_cast<CubemanBarrack*>(search);
+        if (cb->GetNumCubemans() == 0)
+        {
+            UIGameOver* uigo = new UIGameOver;
+            uigo->Init(true, 1, 10);
+            g_pUIManager->RegisterUIObject(*uigo);
+
+            IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
+            if (!search) return;
+
+            PlayerAni* player = static_cast<PlayerAni*>(search);
+            player->SetIsGameOver(true);
+        }
     }
 }
 
@@ -379,6 +403,7 @@ void PlayerAni::DiedAni()
         m_rot.x = D3DX_PI / 2.1f;
         UpdatePosition();
         m_isMoving = false;
+        m_isGameOver = true;
     }
 }
 
@@ -450,9 +475,12 @@ void PlayerAni::KeyInHand(GUN_TAG gunTag)
 	{
 		if (gun.first == gunTag)
 		{
+            g_pSoundManager->Play(static_cast<int>(SOUND_TAG::InHand), SOUND_TAG::InHand);
+
 			DrawGunInOut();
 			m_pGun = static_cast<Gun*>(gun.second);
 			m_pGun->SetItemState(ITEM_STATE::InHand); //장착중
+            m_fireMode = FIRE_MODE::SingleShot;
 			cout << m_pGun->GunTagToStrForDebug(gunTag) << " OK, Mount." << endl;
 			break; //총한개만 찾지롱
 		}
@@ -558,12 +586,10 @@ void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
 {
 	if (m_pGun == nullptr) //아무것도 장착되어있지 않을 때
 	{
-        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::InHand), SOUND_TAG::InHand);
 		KeyInHand(gunTag);
 	}
 	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //장착이 되어있으면서, 이미 장착하고 있는 총이 아닐 때
 	{
-        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::InHand), SOUND_TAG::InHand);
 		//장착 해제 후 장착
 		KeyOutHand(); 
 		KeyInHand(gunTag);
@@ -736,6 +762,20 @@ PlayerAniCollisionListener::PlayerAniCollisionListener(BaseObject& owner)
 
 void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
 {
+    switch (other.GetTag())
+    {
+    case CollisionTag::kEnemy:
+        {
+            BaseObject* owner = GetOwner();
+            PlayerAni* player = static_cast<PlayerAni*>(owner);
+            player->DiedAni();
+
+            UIGameOver* uigo = new UIGameOver;
+            uigo->Init(false, 2, 10);
+            g_pUIManager->RegisterUIObject(*uigo);
+        }
+        break;
+    }
 }
 
 void PlayerAniCollisionListener::OnCollisionExit(const ColliderBase& other)
@@ -840,4 +880,9 @@ void PlayerAni::ShowItemStateForDebug(ITEM_STATE itemState)
         Debug->AddText("In Hand");
         break;
     } //swtich ItemState
+}
+
+void PlayerAni::SetIsGameOver(const bool val)
+{
+    m_isGameOver = val;
 }

@@ -235,6 +235,9 @@
     <ClCompile Include="CubemanAI.cpp">
       <Filter>2. Object\CubeMan</Filter>
     </ClCompile>
+    <ClCompile Include="CubemanBarrack.cpp">
+      <Filter>2. Object\CubeMan</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -481,6 +484,9 @@
       <Filter>2. Object\Particle</Filter>
     </ClInclude>
     <ClInclude Include="CubemanAI.h">
+      <Filter>2. Object\CubeMan</Filter>
+    </ClInclude>
+    <ClInclude Include="CubemanBarrack.h">
       <Filter>2. Object\CubeMan</Filter>
     </ClInclude>
   </ItemGroup>

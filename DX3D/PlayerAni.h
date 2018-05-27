@@ -13,6 +13,9 @@ class UIInventory;
 
 class PlayerAniCollisionListener : public ICollisionListener
 {
+private:
+    string gameOverText;
+
 public:
 	PlayerAniCollisionListener(BaseObject& owner);
 	virtual ~PlayerAniCollisionListener() = default;
@@ -64,7 +67,7 @@ private:
     UIInventory* m_pUIInventory;
     Item*        m_pPicked;
 
-
+    bool m_isGameOver;
 
 public:
     PlayerAni();
@@ -112,6 +115,8 @@ public:
     void ShowInventoryForDebug();
     void ShowFireModeForDebug();
     void ShowItemStateForDebug(ITEM_STATE itemState);
+
+    void SetIsGameOver(const bool val);
 
 public:
     vector<vector<int>> uvBody = {

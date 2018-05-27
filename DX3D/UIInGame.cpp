@@ -13,7 +13,7 @@ UIInGame::~UIInGame()
 {
 }
 
-void UIInGame::Init(Gun** ppGun)
+void UIInGame::Init(Gun** ppGun, FIRE_MODE* pFireMode)
 {
     m_ppGun = ppGun;
 
@@ -23,11 +23,21 @@ void UIInGame::Init(Gun** ppGun)
     numBullet->SetPosition(D3DXVECTOR3(600.0f, 650.0f, 0.0f));
     numBullet->SetText(&m_numBulletText);
     AddChild(*numBullet);
+
+    m_pFireMode = pFireMode;
+
+    UIText* fireMode = new UIText;
+    fireMode->SetFont(g_pFontManager->GetFont(Font::kInteractionMessageDescription));
+    fireMode->SetSize(D3DXVECTOR2(200.0f, 50.0f));
+    fireMode->SetPosition(D3DXVECTOR3(600.0f, 600.0f, 0.0f));
+    fireMode->SetText(&m_fireModeText);
+    AddChild(*fireMode);
 }
 
 void UIInGame::Update()
 {
     UpdateTextNumBullet();
+    UpdateTextFireMode();
     UIObject::Update();
 }
 
@@ -45,10 +55,33 @@ void UIInGame::UpdateTextNumBullet()
     m_numBulletText = "";
 }
 
-UIInGame* UIInGame::Create(Gun** ppGun)
+void UIInGame::UpdateTextFireMode()
+{
+    if (m_pFireMode)
+    {
+        switch (*m_pFireMode)
+        {
+        case FIRE_MODE::SingleShot:
+            {
+                m_fireModeText = "단발 모드";
+            }
+            break;
+        case FIRE_MODE::Burst:
+            {
+                m_fireModeText = "연발 모드";
+            }
+            break;
+        }
+        return;
+    }
+
+    m_fireModeText = "";
+}
+
+UIInGame* UIInGame::Create(Gun** ppGun, FIRE_MODE* pFireMode)
 {
     UIInGame* ret = new UIInGame;
-    ret->Init(ppGun);
+    ret->Init(ppGun, pFireMode);
 
     g_pUIManager->RegisterUIObject(*ret);
 
