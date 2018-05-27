@@ -36,7 +36,8 @@ void SoundManager::Init()
     RegisterSound(SOUND_TAG::ButtonClick, "resources/sounds/button_click.mp3");
     RegisterSound(SOUND_TAG::Background, "resources/sounds/background.mp3");
     RegisterSound(SOUND_TAG::Footstep, "resources/sounds/footstep.mp3");
-    RegisterSound(SOUND_TAG::Die, "resources/sounds/die.mp3");
+    RegisterSound(SOUND_TAG::DieMale, "resources/sounds/die_male2.mp3");
+    RegisterSound(SOUND_TAG::DieFemale, "resources/sounds/die_female.mp3");
     RegisterSound(SOUND_TAG::PutIn, "resources/sounds/put_in.mp3");
     RegisterSound(SOUND_TAG::InHand, "resources/sounds/in_hand.mp3");
     RegisterSound(SOUND_TAG::OutHand, "resources/sounds/out_hand.mp3");

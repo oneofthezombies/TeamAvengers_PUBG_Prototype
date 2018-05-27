@@ -242,6 +242,7 @@ void CubemanCollisionListener::OnCollisionEnter(const ColliderBase& other)
             IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
             if (search)
             {
+                g_pSoundManager->Play(static_cast<int>(SOUND_TAG::DieMale), SOUND_TAG::DieMale);
                 CubemanBarrack* cb = static_cast<CubemanBarrack*>(search);
                 Cubeman* c = static_cast<Cubeman*>(GetOwner());
                 cb->RemoveCubeman(*c);

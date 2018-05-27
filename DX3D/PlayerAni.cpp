@@ -398,7 +398,7 @@ void PlayerAni::DiedAni()
 {
     if (m_isLive == true)
     {
-        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::Die), SOUND_TAG::Die);
+        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::DieFemale), SOUND_TAG::DieFemale);
         m_isLive = false;
         m_rot.x = D3DX_PI / 2.1f;
         UpdatePosition();

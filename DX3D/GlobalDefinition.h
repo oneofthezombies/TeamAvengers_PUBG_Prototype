@@ -77,7 +77,8 @@ enum class SOUND_TAG
     ButtonClick,
     Background,
     Footstep,
-    Die,
+    DieMale,
+    DieFemale,
     PutIn,
     InHand,
     OutHand
