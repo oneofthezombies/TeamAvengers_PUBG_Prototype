@@ -18,6 +18,7 @@ void SceneLobby::Init()
 
 void SceneLobby::Update()
 {
+    g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Lobby), SOUND_TAG::Lobby);
 }
 
 void SceneLobby::Render()

@@ -140,8 +140,6 @@ void Gun::Fire(const D3DXVECTOR3& dir)
 
 		if (m_vecPBullet.empty() == false)        //총알이 있으면
 		{
-            //Sound shot
-            g_pSoundManager->Play(static_cast<int>(SOUND_TAG::Shot), SOUND_TAG::Shot);
             cout << "Bang Bnag~!" << endl;
 			Bullet* bullet = m_vecPBullet.back(); //총알을 하나 꺼내고
 			m_vecPBullet.pop_back();              //벡터에서 지워줌 (실제 릴리즈는 현재씬의 Update에서)
@@ -158,7 +156,6 @@ void Gun::Fire(const D3DXVECTOR3& dir)
 
 void Gun::Load(Bullet* bullet)
 {	
-    g_pSoundManager->Play(static_cast<int>(SOUND_TAG::Reload), SOUND_TAG::Reload);
 	m_vecPBullet.emplace_back(bullet);
 }
 

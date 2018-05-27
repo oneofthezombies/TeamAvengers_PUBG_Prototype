@@ -46,6 +46,7 @@ void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& invent
             if (pos.x > 350 && pos.x < 550)
             {
                 // push to inventory
+                g_pSoundManager->Play(static_cast<int>(SOUND_TAG::PutIn), SOUND_TAG::PutIn);
                 PlayerAni* o = static_cast<PlayerAni*>(GetAttachedObject());
                 o->Pick(*OutPPicked);
 
@@ -112,34 +113,35 @@ void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& invent
         Gun* g = it->second;
         UIText::Create(Font::kInteractionMessageDescription, g->GetName(), D3DXVECTOR3(600.0f, 100.0f + 50.0f * static_cast<float>(i), 0.0f), D3DXVECTOR2(200.0f, 50.0f), this);
         rects.emplace_back(RECT{});
-        SetRect(&rects.back(), 600, 100 + 50 * i, 800, 150 + 50 * i);
+        SetRect(&rects.back(), 600, 100 + 50 * i, 800, 150 + 50 * i); 
+        ++i;
     }
 }
 
 void UIInventory::RegisterCoreTexts()
 {
     UIText::Create(Font::kInteractionMessageDescription,
-                   "바닥 아이템",
+                   "<바닥 아이템>",
                    D3DXVECTOR3(100.0f, 50.0f, 0.0f),
                    D3DXVECTOR2(200.0f, 50.0f),
                    this);
 
-    UIImage::Create("resources/images/line_70.png",
+    UIImage::Create("resources/images/line.png",
                     D3DXVECTOR3(325.0f, 50.0f, 0.0f),
                     this);
 
     UIText::Create(Font::kInteractionMessageDescription,
-                   "내 아이템",
+                   "<내 아이템>",
                    D3DXVECTOR3(350.0f, 50.0f, 0.0f),
                    D3DXVECTOR2(200.0f, 50.0f),
                    this);
 
-    UIImage::Create("resources/images/line_70.png",
+    UIImage::Create("resources/images/line.png",
                     D3DXVECTOR3(575.0f, 50.0f, 0.0f),
                     this);
 
     UIText::Create(Font::kInteractionMessageDescription,
-                   "장착 아이템",
+                   "<장착 아이템>",
                    D3DXVECTOR3(600.0f, 50.0f, 0.0f),
                    D3DXVECTOR2(200.0f, 50.0f),
                    this);

@@ -374,6 +374,7 @@ void PlayerAni::DiedAni()
 {
     if (m_isLive == true)
     {
+        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::Die), SOUND_TAG::Die);
         m_isLive = false;
         m_rot.x = D3DX_PI / 2.1f;
         UpdatePosition();
@@ -413,10 +414,12 @@ void PlayerAni::KeyMove()
 {
 	if (g_pKeyManager->IsStayKeyDown('A'))
 	{
+        g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Footstep), SOUND_TAG::Footstep);
         m_deltaPos.x = -1;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('D'))
 	{
+        g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Footstep), SOUND_TAG::Footstep);
         m_deltaPos.x = 1;
     }
 	else
@@ -426,10 +429,12 @@ void PlayerAni::KeyMove()
 
 	if (g_pKeyManager->IsStayKeyDown('W'))
 	{
+        g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Footstep), SOUND_TAG::Footstep);
 		m_deltaPos.z = 1;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
+        g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Footstep), SOUND_TAG::Footstep);
 		m_deltaPos.z = -1;
 	}
 	else
@@ -459,6 +464,7 @@ void PlayerAni::KeyOutHand()
 	/* 무기 장착 해제 */
 	if (m_pGun)
 	{
+        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::OutHand), SOUND_TAG::OutHand);
 		DrawGunInOut();
 		m_pGun->SetItemState(ITEM_STATE::Equipped); //장착해제중
 		m_pGun = nullptr;
@@ -485,6 +491,9 @@ void PlayerAni::KeyLoad()
 					if (pBullet->GetBulletFor() == m_pGun->GetGunTag())
 						vecSpecificBullets.emplace_back(pBullet);
 				}
+
+                if(vecSpecificBullets.empty() == false)
+                    g_pSoundManager->Play(static_cast<int>(SOUND_TAG::Reload), SOUND_TAG::Reload);
 
 				for (int i = 0; i < need; ++i)
 				{
@@ -525,11 +534,19 @@ void PlayerAni::KeyFire(const D3DXVECTOR3& dir)
     if (m_pGun) //총이 장착되어있을 때
     {
 		if (m_pGun->GetBulletNum() > 0)
-		{
+
+        {
+            //Sound shot
+            if(m_fireMode == FIRE_MODE::SingleShot)
+                g_pSoundManager->Play(static_cast<int>(SOUND_TAG::OneShot), SOUND_TAG::OneShot);
+            else if(m_fireMode == FIRE_MODE::Burst)
+                g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Burst), SOUND_TAG::Burst);
 			m_pGun->Fire(dir);
 		}
-		else
-			cout << "No Bullet!!" << endl;
+        else
+        {
+            cout << "No Bullet!!" << endl;
+        }
 	}
 	else
 	{
@@ -541,10 +558,12 @@ void PlayerAni::KeyChangeGun(GUN_TAG gunTag)
 {
 	if (m_pGun == nullptr) //아무것도 장착되어있지 않을 때
 	{
+        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::InHand), SOUND_TAG::InHand);
 		KeyInHand(gunTag);
 	}
 	else if (m_pGun && m_pGun->GetGunTag() != gunTag) //장착이 되어있으면서, 이미 장착하고 있는 총이 아닐 때
 	{
+        g_pSoundManager->Play(static_cast<int>(SOUND_TAG::InHand), SOUND_TAG::InHand);
 		//장착 해제 후 장착
 		KeyOutHand(); 
 		KeyInHand(gunTag);

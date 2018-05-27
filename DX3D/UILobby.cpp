@@ -17,9 +17,9 @@ void UILobby::Init()
     g_pUIManager->RegisterUIObject(*this);
     SetTexture("resources/images/background.png");
 
-    UIButton* startButton = UIButton::Create("resources/images/start_btn.png", 
-                                             "resources/images/start_btn.png", 
-                                             "resources/images/start_btn.png", 
+    UIButton* startButton = UIButton::Create("resources/images/start_btn_idle.png", 
+                                             "resources/images/start_btn_clicked.png", 
+                                             "resources/images/start_btn_mouseover.png", 
                                              D3DXVECTOR3(729.0f, 536.0f, 0.0f), this);
 
     m_UILobbyButtonOnMouseListener = new UILobbyButtonOnMouseListener;
@@ -42,6 +42,7 @@ void UILobbyButtonOnMouseListener::OnMouseExit()
 
 void UILobbyButtonOnMouseListener::OnMouseDown(const int key)
 {
+    g_pSoundManager->Play(static_cast<int>(SOUND_TAG::ButtonClick), SOUND_TAG::ButtonClick);
     g_pUIManager->Destroy(*GetHandle());
     g_pSceneManager->SetCurrentScene(SCENE_INDEX::SCENE_SHOTTING);
 }

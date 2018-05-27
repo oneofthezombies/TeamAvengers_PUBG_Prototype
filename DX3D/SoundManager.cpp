@@ -30,8 +30,16 @@ void SoundManager::Init()
     /* 사운드 파일은 여기서 등록 */
     //registerSound(SOUND_TAG::Logo, "assets/sound/logo.mp3");
     RegisterSound(SOUND_TAG::Lobby, "resources/sounds/battleground_lobby.mp3");
-    RegisterSound(SOUND_TAG::Shot, "resources/sounds/kar98k_shoot.mp3");
+    RegisterSound(SOUND_TAG::OneShot, "resources/sounds/kar98k_shoot.mp3");
+    RegisterSound(SOUND_TAG::Burst, "resources/sounds/burst.mp3");
     RegisterSound(SOUND_TAG::Reload, "resources/sounds/kar98k_reloading_one_at_the_time.mp3");
+    RegisterSound(SOUND_TAG::ButtonClick, "resources/sounds/button_click.mp3");
+    RegisterSound(SOUND_TAG::Background, "resources/sounds/background.mp3");
+    RegisterSound(SOUND_TAG::Footstep, "resources/sounds/footstep.mp3");
+    RegisterSound(SOUND_TAG::Die, "resources/sounds/die.mp3");
+    RegisterSound(SOUND_TAG::PutIn, "resources/sounds/put_in.mp3");
+    RegisterSound(SOUND_TAG::InHand, "resources/sounds/in_hand.mp3");
+    RegisterSound(SOUND_TAG::OutHand, "resources/sounds/out_hand.mp3");
 }
 
 void SoundManager::Destroy()
