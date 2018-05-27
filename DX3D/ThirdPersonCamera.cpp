@@ -51,7 +51,7 @@ void ThirdPersonCamera::Update()
         g_pCameraManager->SetCurrentCamera(CameraState::KYUNCHAK);
 
     //Ray 카메라 ray를 뒤로 쏘아서 카메라 m_distance를 조정하는 부분
-    CamBackDistResizeing();
+    //CamBackDistResizeing();
 
     ICamera::Update();
 }
