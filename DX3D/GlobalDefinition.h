@@ -69,8 +69,16 @@ enum class FIRE_MODE
 enum class SOUND_TAG
 {
     Lobby,
-    Shot,
-    Reload
+    OneShot,
+    Burst,
+    Reload,
+    ButtonClick,
+    Background,
+    Footstep,
+    Die,
+    PutIn,
+    InHand,
+    OutHand
 };
 
 struct KEYBOARD_STATE

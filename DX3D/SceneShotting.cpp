@@ -53,7 +53,7 @@ void SceneShotting::Init()
 	AddSimpleDisplayObj(m_pPistol);
 
 	//소총
-	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 0.7f, -D3DXToRadian(90));
+	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 0.9f, -D3DXToRadian(90));
 	m_pRifle->Init();
     m_pRifle->SetPosition(D3DXVECTOR3(15.0f, 0.0f, 15.0f));
     m_pRifle->SetHeightOffset(0.5f);
@@ -135,7 +135,9 @@ void SceneShotting::Init()
 
 void SceneShotting::Update()
 {
-    g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Lobby), SOUND_TAG::Lobby);
+    g_pSoundManager->Stop(static_cast<int>(SOUND_TAG::Lobby));
+    g_pSoundManager->RepeatPlay(static_cast<int>(SOUND_TAG::Background), SOUND_TAG::Background);
+
 	OnUpdateIScene();
 
     if (g_pKeyManager->IsOnceKeyDown('0'))

@@ -46,6 +46,7 @@ void UILobbyButtonOnMouseListener::OnMouseDown(const int key)
 
 void UILobbyButtonOnMouseListener::OnMouseUp(const int key)
 {
+    g_pSoundManager->Play(static_cast<int>(SOUND_TAG::ButtonClick), SOUND_TAG::ButtonClick);
     g_pUIManager->Destroy(*GetHandle());
     g_pSceneManager->SetCurrentScene(SCENE_INDEX::SCENE_SHOTTING);
 }
