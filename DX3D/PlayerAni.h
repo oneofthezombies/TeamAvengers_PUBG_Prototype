@@ -117,6 +117,7 @@ public:
     void ShowItemStateForDebug(ITEM_STATE itemState);
 
     void SetIsGameOver(const bool val);
+    bool IsGameOver() const;
 
 public:
     vector<vector<int>> uvBody = {
