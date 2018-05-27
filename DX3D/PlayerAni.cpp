@@ -184,7 +184,7 @@ void PlayerAni::Update()
         if (cb->GetNumCubemans() == 0)
         {
             UIGameOver* uigo = new UIGameOver;
-            uigo->Init(true, 1, 10);
+            uigo->Init(true, 1, 4);
             g_pUIManager->RegisterUIObject(*uigo);
 
             IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
@@ -768,11 +768,18 @@ void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
         {
             BaseObject* owner = GetOwner();
             PlayerAni* player = static_cast<PlayerAni*>(owner);
-            player->DiedAni();
 
-            UIGameOver* uigo = new UIGameOver;
-            uigo->Init(false, 2, 10);
-            g_pUIManager->RegisterUIObject(*uigo);
+            if (!player->IsGameOver())
+            {
+                player->DiedAni();
+
+                IDisplayObject* e = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+                CubemanBarrack* cb = static_cast<CubemanBarrack*>(e);
+
+                UIGameOver* uigo = new UIGameOver;
+                uigo->Init(false, cb->GetNumCubemans() + 1, 4);
+                g_pUIManager->RegisterUIObject(*uigo);
+            }
         }
         break;
     }
@@ -885,4 +892,9 @@ void PlayerAni::ShowItemStateForDebug(ITEM_STATE itemState)
 void PlayerAni::SetIsGameOver(const bool val)
 {
     m_isGameOver = val;
+}
+
+bool PlayerAni::IsGameOver() const
+{
+    return m_isGameOver;
 }

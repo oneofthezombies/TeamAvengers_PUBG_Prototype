@@ -6,7 +6,7 @@ MuzzleFlash::MuzzleFlash()
     , m_pTex(nullptr)
     , m_pVB(nullptr)
     , m_isRender(false)
-    , m_maxLifeTime(0.2f)
+    , m_maxLifeTime(0.3f)
 {
 }
 
