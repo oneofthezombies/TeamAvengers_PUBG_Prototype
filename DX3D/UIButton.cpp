@@ -138,7 +138,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
                     if (m_pIUIButtonOnMouseListener)
                         m_pIUIButtonOnMouseListener->OnMouseDown(m_KeyToRespond);
                 }
-                else
+                else if (!m_bCurrIsMouseOn)
                 {
                     m_state = State::kIdle;
                 }
@@ -152,7 +152,7 @@ void UIButton::UpdateOnMouseDownUpDrag()
                     if (m_pIUIButtonOnMouseListener)
                         m_pIUIButtonOnMouseListener->OnMouseDown(m_KeyToRespond);
                 }
-                else
+                else if (!m_bCurrIsMouseOn)
                 {
                     m_state = State::kIdle;
                 }

@@ -87,7 +87,7 @@ void SceneShotting::Init()
 
     Cubeman* cm = new Cubeman;
     cm->Init();
-    cm->SetPosition(D3DXVECTOR3(0.5f, 0.0f, 20.0f));
+    cm->SetPosition(D3DXVECTOR3(10.0f, 0.0f, 10.0f));
     cm->UpdatePositionYOnMap();
     AddSimpleDisplayObj(cm);
 

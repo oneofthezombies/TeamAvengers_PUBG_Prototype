@@ -37,7 +37,7 @@ void ObjManager::RemoveFromTagList(WORD _tag, IDisplayObject * _pObj)
 	m_tagList[_tag].remove(_pObj);
 }
 
-IDisplayObject * ObjManager::FindObjectByTag(WORD _tag)
+IDisplayObject* ObjManager::FindObjectByTag(WORD _tag)
 {
 	if (m_tagList[_tag].empty() == true) 
 		return NULL;
