@@ -31,7 +31,7 @@ void SceneHeightmap::Init()
 	m_pHeightMap->Init();
 	D3DMATERIAL9 mtl = DXUtil::WHITE_MTRL;
 	m_pHeightMap->SetMtlTex(mtl,
-		g_pTextureManager->GetTexture("resources/heightmap/terrain.jpg"));
+		g_pTextureManager->GetTexture(string("resources/heightmap/terrain.jpg")));
 
 	g_pMapManager->AddMap("heightmap", m_pHeightMap);
 	g_pMapManager->SetCurrentMap("heightmap");

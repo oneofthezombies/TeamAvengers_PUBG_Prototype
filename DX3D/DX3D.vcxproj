@@ -80,6 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -153,6 +155,7 @@
     <ClInclude Include="ActionMoveTo.h" />
     <ClInclude Include="ActionRepeat.h" />
     <ClInclude Include="ActionSequence.h" />
+    <ClInclude Include="AllocateHierarchy.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Asciitok.h" />
     <ClInclude Include="AseCharacter.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="SampleCollider.h" />
     <ClInclude Include="SampleUIButtonListener.h" />
     <ClInclude Include="SceneLobby.h" />
+    <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UIInGame.h" />
@@ -244,6 +248,7 @@
     <ClCompile Include="ActionMoveTo.cpp" />
     <ClCompile Include="ActionRepeat.cpp" />
     <ClCompile Include="ActionSequence.cpp" />
+    <ClCompile Include="AllocateHierarchy.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AseCharacter.cpp" />
     <ClCompile Include="AseLoader.cpp" />
@@ -276,6 +281,7 @@
     <ClCompile Include="SampleCollider.cpp" />
     <ClCompile Include="SampleUIButtonListener.cpp" />
     <ClCompile Include="SceneLobby.cpp" />
+    <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="UIGameOver.cpp" />
     <ClCompile Include="GlobalDefinition.cpp" />

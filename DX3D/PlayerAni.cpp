@@ -81,7 +81,17 @@ void PlayerAni::Init()
 
 void PlayerAni::Update()
 {   
-    if (m_isGameOver) return;
+    if (m_isGameOver)
+    {
+        if (IsShowingInventory())
+        {
+            SAFE_RELEASE(m_pItemPicker);
+            g_pUIManager->Destroy(*m_pUIInventory);
+            m_pUIInventory = nullptr;
+        }
+
+        return;
+    }
 
     //이동 ASDW
     KeyMove();

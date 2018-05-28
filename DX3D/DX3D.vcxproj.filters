@@ -238,6 +238,8 @@
     <ClCompile Include="CubemanBarrack.cpp">
       <Filter>2. Object\CubeMan</Filter>
     </ClCompile>
+    <ClCompile Include="AllocateHierarchy.cpp" />
+    <ClCompile Include="SkinnedMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -489,6 +491,8 @@
     <ClInclude Include="CubemanBarrack.h">
       <Filter>2. Object\CubeMan</Filter>
     </ClInclude>
+    <ClInclude Include="AllocateHierarchy.h" />
+    <ClInclude Include="SkinnedMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

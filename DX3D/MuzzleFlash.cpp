@@ -6,7 +6,7 @@ MuzzleFlash::MuzzleFlash()
     , m_pTex(nullptr)
     , m_pVB(nullptr)
     , m_isRender(false)
-    , m_maxLifeTime(0.3f)
+    , m_maxLifeTime(0.4f)
 {
 }
 
@@ -18,7 +18,7 @@ MuzzleFlash::~MuzzleFlash()
 
 void MuzzleFlash::Init()
 {
-    m_pTex = g_pTextureManager->GetTexture("resources/images/boom_960_720.png");
+    m_pTex = g_pTextureManager->GetTexture(TEXT("resources/images/boom_960_720.png"));
 
     g_pDevice->CreateVertexBuffer(sizeof VERTEX_PC, D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY, VERTEX_PC::FVF, D3DPOOL_MANAGED, &m_pVB, NULL);
 

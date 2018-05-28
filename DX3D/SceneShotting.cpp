@@ -14,6 +14,7 @@
 #include "SampleCollider.h"
 #include "HeightMap.h"
 #include "CubemanBarrack.h"
+#include "SkinnedMesh.h"
 
 SceneShotting::SceneShotting()
     : m_pHeightMap(nullptr)
@@ -129,6 +130,10 @@ void SceneShotting::Init()
     //g_pCameraManager->SetWall(wallArr);
     ////---------------
 
+    SkinnedMesh* m_skinnedMesh = new SkinnedMesh;
+    m_skinnedMesh->Init();
+    AddSimpleDisplayObj(m_skinnedMesh);
+
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kFoo, CollisionTag::kBar);
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kBullet, CollisionTag::kEnemy);
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kEnemy, CollisionTag::kPlayer);
@@ -209,7 +214,7 @@ void SceneShotting::InitHeightMap()
     m_pHeightMap->Load("resources/heightmap/HeightMap.raw", &s);
     m_pHeightMap->Init();
     D3DMATERIAL9 mtl = DXUtil::WHITE_MTRL;
-    m_pHeightMap->SetMtlTex(mtl, g_pTextureManager->GetTexture("resources/heightmap/terrain3.jpg"));
+    m_pHeightMap->SetMtlTex(mtl, g_pTextureManager->GetTexture(string("resources/heightmap/terrain3.jpg")));
 
     g_pMapManager->AddMap("heightmap", m_pHeightMap);
     g_pMapManager->SetCurrentMap("heightmap");

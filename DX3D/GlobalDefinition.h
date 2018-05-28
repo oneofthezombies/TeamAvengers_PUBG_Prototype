@@ -15,11 +15,13 @@ public:\
 		return &instance;\
 	}
 
-#define SAFE_WNDPROC(p) if(p) {(p)->WndProc(hWnd, message, wParam, lParam);}
-#define SAFE_UPDATE(p) if(p) { (p)->Update();}
-#define SAFE_RENDER(p) if(p) { (p)->Render();}
-#define SAFE_RELEASE(p) if(p) { (p)->Release(); (p) = NULL;}
-#define SAFE_DELETE(p) if(p) { delete (p); (p) = NULL;}
+#define SAFE_WNDPROC(p)      if(p) { (p)->WndProc(hWnd, message, wParam, lParam); }
+#define SAFE_UPDATE(p)       if(p) { (p)->Update(); }
+#define SAFE_RENDER(p)       if(p) { (p)->Render(); }
+#define SAFE_RELEASE(p)      if(p) { (p)->Release(); (p) = NULL; }
+#define SAFE_DELETE(p)       if(p) { delete (p); (p) = NULL; }
+#define SAFE_DELETE_ARRAY(p) if(p) { delete[] (p); (p) = NULL; }
+#define SAFE_ADDREF(p)       if(p) { (p)->AddRef(); }
 
 #define SCREEN_POINT(lParam) LOWORD(lParam), HIWORD(lParam)
 
@@ -29,10 +31,10 @@ public:\
 enum SCENE_INDEX {
     SCENE_LOBBY,
     SCENE_SHOTTING,
+    SCENE_TEST,
 	SCENE_GRID,
 	SCENE_OBJMAP,
 	SCENE_HEIGHTMAP,
-	SCENE_TEST,
 };
 
 enum TAG_DISPLAYOBJECT {

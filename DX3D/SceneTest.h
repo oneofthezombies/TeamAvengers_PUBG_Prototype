@@ -1,11 +1,18 @@
 #pragma once
 #include "IScene.h"
+
 class Grid;
+class SkinnedMesh;
+
 class SceneTest :
 	public IScene
 {
+private:
+    SkinnedMesh* m_skinnedMesh;
+
 public:
-	Grid * m_pGrid;
+	Grid* m_pGrid;
+
 	SceneTest();
 	~SceneTest();
 

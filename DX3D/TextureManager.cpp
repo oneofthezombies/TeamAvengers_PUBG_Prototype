@@ -33,6 +33,13 @@ LPDIRECT3DTEXTURE9 TextureManager::GetTexture(string fullPath)
 	return m_mapTexture[fullPath];
 }
 
+LPDIRECT3DTEXTURE9 TextureManager::GetTexture(CString fullPath)
+{
+    CT2CA pszConvertedAnsiString(fullPath);
+    std::string _str(pszConvertedAnsiString);
+    return GetTexture(_str);
+}
+
 void TextureManager::Destroy()
 {
 	for (auto it : m_mapTexture)

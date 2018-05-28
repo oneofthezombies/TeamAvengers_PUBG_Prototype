@@ -5,6 +5,7 @@
 #include "ParticleTest.h"
 #include "SkyBox.h"
 #include "UIText.h"
+#include "SkinnedMesh.h"
 
 SceneTest::SceneTest()
 {
@@ -38,10 +39,14 @@ void SceneTest::Init()
 
 	g_pDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
 
-	g_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	g_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	g_pDevice->SetSamplerState(1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	g_pDevice->SetSamplerState(1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	//g_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	//g_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	//g_pDevice->SetSamplerState(1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	//g_pDevice->SetSamplerState(1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+
+    m_skinnedMesh = new SkinnedMesh;
+    m_skinnedMesh->Init();
+    AddSimpleDisplayObj(m_skinnedMesh);
 }
 
 void SceneTest::Update()

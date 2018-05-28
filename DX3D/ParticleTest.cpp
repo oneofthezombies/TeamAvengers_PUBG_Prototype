@@ -15,7 +15,7 @@ ParticleTest::~ParticleTest()
 void ParticleTest::Init()
 {
 	//이미지 파일 넣어주어서 쓸것이다.
-	m_pTex = g_pTextureManager->GetTexture("resources/particle/im.png"/*"resources/particle/sf.jpg"*/);
+	m_pTex = g_pTextureManager->GetTexture(string("resources/particle/im.png")/*"resources/particle/sf.jpg"*/);
 	if (m_pTex == NULL)
 	{
 		MessageBox(NULL, TEXT("텍스쳐 없어\n"), 0, 0);

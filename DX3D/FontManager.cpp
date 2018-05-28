@@ -86,5 +86,8 @@ void FontManager::Destroy()
 	for (auto p : m_umapFont)
 		SAFE_RELEASE(p.second);
 
+    RemoveFontResource(TEXT("resources/fonts/SeoulNamsanM.ttf"));
+    RemoveFontResource(_T("resources/fonts/umberto.tff"));
+
     m_umapFont.clear();
 }
