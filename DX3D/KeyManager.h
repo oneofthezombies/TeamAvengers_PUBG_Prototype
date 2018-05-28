@@ -1,12 +1,12 @@
-#pragma once
+﻿#pragma once
 #define g_pKeyManager KeyManager::GetInstance()
-#define KEYMAX 256
 
-class KeyManager
+class KeyManager : public SingletonBase<KeyManager>
 {
 private:
-	bitset<KEYMAX> m_keyUp;
-	bitset<KEYMAX> m_keyDown;
+    static const int m_kKeyMax = 256;
+	bitset<m_kKeyMax> m_keyUp;
+	bitset<m_kKeyMax> m_keyDown;
 
     POINT m_prevMousePos;
     POINT m_currMousePos;
@@ -19,13 +19,6 @@ private:
 	~KeyManager();
 
 public:
-	//싱글톤
-	static KeyManager* GetInstance()
-	{
-		static KeyManager instance;
-		return &instance;
-	}
-
 	HRESULT Init();
     void Update();
 	void Destroy();
@@ -41,4 +34,6 @@ public:
     bool GetPrevIsKeyDownMouseR() const;
     bool IsKeyDownMouseL() const;
     bool IsKeyDownMouseR() const;
+
+    friend SingletonBase<KeyManager>;
 };

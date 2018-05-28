@@ -39,16 +39,16 @@ void SceneShotting::Init()
     InitLight();
     InitHeightMap();
 
-    //x, y, z ê¸°ì¤€ì„ 
+    //x, y, z ±âÁØ¼±
     //InitAxises();
 
-	//ë°”ë‹¥
+	//¹Ù´Ú
     //InitGroundGrid();
 
-	//í”Œë ˆì´ì–´
+	//ÇÃ·¹ÀÌ¾î
     InitPlayer();
 
-	//ê¶Œì´
+	//±ÇÃÑ
 	m_pPistol = new Gun(GUN_TAG::Pistol, false, 10, 0.4f, 5.f, 0.7f, -D3DXToRadian(90));
 	m_pPistol->Init();
     m_pPistol->SetPosition(D3DXVECTOR3(20.0f, 0.0f, 20.0f));
@@ -56,7 +56,7 @@ void SceneShotting::Init()
     m_pPistol->UpdatePositionYOnMap();
 	AddSimpleDisplayObj(m_pPistol);
 
-	//ì†Œì´
+	//¼ÒÃÑ
 	m_pRifle = new Gun(GUN_TAG::Rifle, true, 10, 10.f, 5.f, 0.9f, -D3DXToRadian(90));
 	m_pRifle->Init();
     m_pRifle->SetPosition(D3DXVECTOR3(15.0f, 0.0f, 15.0f));
@@ -64,7 +64,7 @@ void SceneShotting::Init()
     m_pRifle->UpdatePositionYOnMap();
 	AddSimpleDisplayObj(m_pRifle);
 
-	//ê¶Œì´ìš© ì´ì•Œ 5ê°œ ìƒì„±
+	//±ÇÃÑ¿ë ÃÑ¾Ë 5°³ »ı¼º
 	m_vecPBulletForPistol.reserve(5);
 	for (int i = 0; i < 5; ++i)
 	{
@@ -76,7 +76,7 @@ void SceneShotting::Init()
 		m_vecPBulletForPistol.push_back(bullet);
 		AddSimpleDisplayObj(bullet);
 	}
-	//ì†Œì´ìš© ì´ì•Œ 5ê°œ ìƒì„±
+	//¼ÒÃÑ¿ë ÃÑ¾Ë 5°³ »ı¼º
 	m_vecPBulletForRifle.reserve(5);
 	for (int i = 0; i < 5; ++i)
 	{
@@ -94,25 +94,25 @@ void SceneShotting::Init()
 
     //InitSamples();
 
-    ////ì ì‹œ rayë¥¼ test í•˜ê¸° ìœ„í•œ vertex //JH
+    ////Àá½Ã ray¸¦ test ÇÏ±â À§ÇÑ vertex //JH
     //float factor = 15.0f;
     //vector<D3DXVECTOR3> wallArr;
     //wallArr.resize(18);
-    ////ì •ë©´
+    ////Á¤¸é
     //wallArr[0]=D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     //wallArr[1]=D3DXVECTOR3(0.0f, factor, 0.0f);
     //wallArr[2]=D3DXVECTOR3(factor, 0.0f, 0.0f);
     //wallArr[3]=D3DXVECTOR3(factor, 0.0f, 0.0f);
     //wallArr[4]=D3DXVECTOR3(0.0f, factor, 0.0f);
     //wallArr[5]=D3DXVECTOR3(factor, factor, 0.0f);
-    ////ì˜¤ë¥¸ìª½ í¸
+    ////¿À¸¥ÂÊ Æí
     //wallArr[6] = D3DXVECTOR3(factor, 0.0f, 0.0f);
     //wallArr[7] = D3DXVECTOR3(factor, factor, 0.0f);
     //wallArr[8] = D3DXVECTOR3(factor, 0.0f, -factor);
     //wallArr[9] = D3DXVECTOR3(factor, 0.0f, -factor);
     //wallArr[10] = D3DXVECTOR3(factor, factor, 0.0f);
     //wallArr[11] = D3DXVECTOR3(factor, factor, -factor);
-    ////ìœ„ í¸
+    ////À§ Æí
     //wallArr[12] = D3DXVECTOR3(0.0f, factor, 0.0f);
     //wallArr[13] = D3DXVECTOR3(0.0f, factor, -factor);
     //wallArr[14] = D3DXVECTOR3(factor, factor, 0.0f);
@@ -159,7 +159,7 @@ void SceneShotting::Render()
 {
 	OnRenderIScene();
 
-	//x, y, z ê¸°ì¤€ì„  ê·¸ë¦¬ê¸° 
+	//x, y, z ±âÁØ¼± ±×¸®±â 
 
 	D3DXMATRIXA16 matI;
 	D3DXMatrixIdentity(&matI);
@@ -172,7 +172,7 @@ void SceneShotting::Render()
 
 	//dv->DrawPrimitiveUP(D3DPT_LINELIST, m_vecBaseline.size() / 2, &m_vecBaseline[0], sizeof(VERTEX_PC));
     
-    ////ì ì‹œ rayë¥¼ test í•˜ê¸° ìœ„í•œ vertex //JH
+    ////Àá½Ã ray¸¦ test ÇÏ±â À§ÇÑ vertex //JH
     //dv->DrawPrimitiveUP(D3DPT_TRIANGLELIST, vecVertex_sample.size() / 3, &vecVertex_sample[0], sizeof(VERTEX_PC));
 	
     dv->SetRenderState(D3DRS_LIGHTING, true);

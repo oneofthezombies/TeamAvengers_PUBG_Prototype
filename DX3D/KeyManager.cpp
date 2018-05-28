@@ -12,7 +12,7 @@ KeyManager::~KeyManager()
 HRESULT KeyManager::Init()
 {
     //키 값을 전부 눌려져 있지 않은 상태로 초기화
-    for (int i = 0; i < KEYMAX; ++i)
+    for (int i = 0; i < m_kKeyMax; ++i)
     {
         m_keyUp.set(i, false);
         m_keyDown.set(i, false);
