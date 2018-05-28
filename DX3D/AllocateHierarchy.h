@@ -3,7 +3,7 @@
 struct FRAME_EX : public D3DXFRAME
 {
 	
-	D3DXMATRIXA16 CombinedTM;	//root 부터 자신 프레임 까지의 누적된 행렬정보
+	D3DXMATRIX CombinedTM;	//root 부터 자신 프레임 까지의 누적된 행렬정보
 };
 
 struct MESHCONTAINER_EX : public D3DXMESHCONTAINER

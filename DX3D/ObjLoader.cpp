@@ -11,7 +11,7 @@ ObjLoader::~ObjLoader()
 {
 }
 
-void ObjLoader::Load(const char * filePath, const char * fileName, D3DXMATRIXA16 * pMat, OUT vector<DrawingGroup*>& vecGroup)
+void ObjLoader::Load(const char * filePath, const char * fileName, D3DXMATRIX * pMat, OUT vector<DrawingGroup*>& vecGroup)
 {
 	vector<D3DXVECTOR3> vecP;
 	vector<D3DXVECTOR2> vecT;
@@ -63,9 +63,9 @@ void ObjLoader::Load(const char * filePath, const char * fileName, D3DXMATRIXA16
 		}
 		else if (CompareStr(szToken, "vt"))
 		{
-			float x, y;
+			float x, y, z;
 			fin.getline(szToken, 128);
-			sscanf_s(szToken, "%f %f *%f", &x, &y);
+			sscanf_s(szToken, "%f %f %f", &x, &y, &z);
 			vecT.push_back(D3DXVECTOR2(x, y));
 		}
 		else if (CompareStr(szToken, "vn"))
@@ -114,7 +114,7 @@ void ObjLoader::Load(const char * filePath, const char * fileName, D3DXMATRIXA16
 	fin.close();
 }
 
-LPD3DXMESH ObjLoader::LoadMesh(const char * filePath, const char * fileName, D3DXMATRIXA16 * pMat, OUT vector<MTLTEX*>& vecMtlTex)
+LPD3DXMESH ObjLoader::LoadMesh(const char * filePath, const char * fileName, D3DXMATRIX * pMat, OUT vector<MTLTEX*>& vecMtlTex)
 {
 	vector<D3DXVECTOR3> vecP;
 	vector<D3DXVECTOR2> vecT;
@@ -171,9 +171,9 @@ LPD3DXMESH ObjLoader::LoadMesh(const char * filePath, const char * fileName, D3D
 		}
 		else if (CompareStr(szToken, "vt"))
 		{
-			float x, y;
+			float x, y, z;
 			fin.getline(szToken, 128);
-			sscanf_s(szToken, "%f %f *%f", &x, &y);
+			sscanf_s(szToken, "%f %f %f", &x, &y, &z);
 			vecT.push_back(D3DXVECTOR2(x, y));
 		}
 		else if (CompareStr(szToken, "vn"))
@@ -236,7 +236,7 @@ LPD3DXMESH ObjLoader::LoadMesh(const char * filePath, const char * fileName, D3D
 	WORD* pI = NULL;
 	pMesh->LockIndexBuffer(flags, (LPVOID*)&pI);
 	for (size_t i = 0; i < vecPNT.size(); i++)
-		pI[i] = i;
+		pI[i] = static_cast<WORD>(i);
 	pMesh->UnlockIndexBuffer();
 
 	DWORD* pA = NULL;
@@ -254,7 +254,7 @@ LPD3DXMESH ObjLoader::LoadMesh(const char * filePath, const char * fileName, D3D
 }
 
 void ObjLoader::LoadSurface(const char * fullPath,
-	D3DXMATRIXA16 * pMat, OUT vector<D3DXVECTOR3>& vecVertex)
+	D3DXMATRIX * pMat, OUT vector<D3DXVECTOR3>& vecVertex)
 {
 	vector<D3DXVECTOR3> vecP;
 	

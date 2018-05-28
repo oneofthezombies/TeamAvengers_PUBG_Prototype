@@ -32,11 +32,11 @@ void UIObject::DrawBorder()
     D3DCOLOR c = D3DCOLOR_XRGB(255, 255, 255);
     vector<VERTEX_RHWC> vertices = 
     {
-        VERTEX_RHWC( m_rect.left,  m_rect.top,    0, 1, c ),
-        VERTEX_RHWC( m_rect.right, m_rect.top,    0, 1, c ),
-        VERTEX_RHWC( m_rect.right, m_rect.bottom, 0, 1, c ),
-        VERTEX_RHWC( m_rect.left,  m_rect.bottom, 0, 1, c ),
-        VERTEX_RHWC( m_rect.left,  m_rect.top,    0, 1, c ),
+        VERTEX_RHWC( static_cast<float>(m_rect.left),  static_cast<float>(m_rect.top),    0, 1, c ),
+        VERTEX_RHWC( static_cast<float>(m_rect.right), static_cast<float>(m_rect.top),    0, 1, c ),
+        VERTEX_RHWC( static_cast<float>(m_rect.right), static_cast<float>(m_rect.bottom), 0, 1, c ),
+        VERTEX_RHWC( static_cast<float>(m_rect.left),  static_cast<float>(m_rect.bottom), 0, 1, c ),
+        VERTEX_RHWC( static_cast<float>(m_rect.left),  static_cast<float>(m_rect.top),    0, 1, c ),
     };
     
     const auto dv = g_pDevice;
@@ -60,7 +60,7 @@ void UIObject::UpdateViewportPosition()
 
 void UIObject::UpdateRect()
 {
-    D3DXMATRIXA16 m;
+    D3DXMATRIX m;
     g_pSprite->GetTransform(&m);
     
     const float left = m_vViewportPosition.x * m._11 + m._41;

@@ -94,7 +94,7 @@ STDMETHODIMP AllocateHierarchy::CreateMeshContainer(
 	{
 		MTLTEX* pMtlTex = new MTLTEX;
 		pMtlTex->SetMaterial(pMaterials[i].MatD3D);
-		pMtlTex->SetTexture(g_pTextureManager->GetTexture(m_path + pMaterials[i].pTextureFilename));
+		pMtlTex->SetTexture(g_pTextureManager->GetTexture(CStringToStdString(m_path + pMaterials[i].pTextureFilename)));
 		pMeshContainerEx->vecMtlTex.push_back(pMtlTex);
 	}
 

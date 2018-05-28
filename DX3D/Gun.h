@@ -12,8 +12,8 @@ private:
 	vector<Bullet*>  m_vecPBullet;          //총알 담을 벡터
 	const int        m_maxBullet;           //최대 장전 개수
 
-	const int        m_bulletFireCoolTime; 
-	int              m_bulletFireCoolDown; //총알 발사는 지정된 쿨타임 시간이 지나야 다시 발사가능
+	const float      m_bulletFireCoolTime; 
+	float            m_bulletFireCoolDown; //총알 발사는 지정된 쿨타임 시간이 지나야 다시 발사가능
 
     bool             m_canChangeBurstMode; //연발이 가능한 총인지
 
@@ -21,14 +21,14 @@ private:
 	const float      m_scale;
 	float            m_rotY;
 	
-	D3DXMATRIXA16    m_matS;
-	D3DXMATRIXA16    m_matRotY;
-	D3DXMATRIXA16    m_matT;
+	D3DXMATRIX    m_matS;
+	D3DXMATRIX    m_matRotY;
+	D3DXMATRIX    m_matT;
 
     MuzzleFlash* m_muzzleFlash;
 
 public:
-	Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY);
+	Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, float bulletFireCoolTime, float velocity, float scale, float rotY);
 	virtual ~Gun();
 
 	virtual void Init() override;

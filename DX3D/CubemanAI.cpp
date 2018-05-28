@@ -32,7 +32,7 @@ void CubemanAI::Move(D3DXVECTOR3& OutDeltaPos, D3DXVECTOR3& OutDeltaRot, D3DXVEC
 
     const D3DXVECTOR3 diffNorm = diff / diffLength;
 
-    D3DXMATRIXA16 r;
+    D3DXMATRIX r;
     D3DXMatrixRotationY(&r, OutMyRot.y);
     D3DXVECTOR3 dir = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
     D3DXVec3TransformNormal(&dir, &dir, &r);

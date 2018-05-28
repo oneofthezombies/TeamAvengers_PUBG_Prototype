@@ -21,7 +21,7 @@ SceneTest::~SceneTest()
 void SceneTest::Init()
 {
     //SkyBox* skyBox = new SkyBox;
-    //D3DXMATRIXA16 tr;
+    //D3DXMATRIX tr;
     //const float scale = 20.0f;
     //D3DXMatrixScaling(&tr, scale, scale, scale);
     //skyBox->Init(&tr);

@@ -18,7 +18,7 @@ ObjMap::~ObjMap()
 
 void ObjMap::Init()
 {
-	D3DXMATRIXA16 matRX, matRY, matS, matWorld;
+	D3DXMATRIX matRX, matRY, matS, matWorld;
 	D3DXMatrixRotationX(&matRX, -D3DX_PI / 2.0f);
 	D3DXMatrixRotationY(&matRY, D3DX_PI / 2.0f);
 	D3DXMatrixScaling(&matS, 0.04f, 0.04f, 0.04f);
@@ -96,7 +96,7 @@ void ObjMap::RenderEachSubset()
 	else if (GetAsyncKeyState(VK_F2) & 0x0001)
 	{
 		++nSubSet;
-		if (nSubSet > m_vecMtlTex.size() - 1) nSubSet = m_vecMtlTex.size() - 1;
+		if (static_cast<size_t>(nSubSet) > m_vecMtlTex.size() - 1) nSubSet = m_vecMtlTex.size() - 1;
 	}
 
 	g_pDevice->SetMaterial(&m_vecMtlTex[nSubSet]->GetMaterial());

@@ -25,7 +25,7 @@ void TimeManager::Update()
 	sumTime += deltaTime;
 	if (sumTime >= 0.2f)
 	{
-		fps = frameCnt / sumTime;
+		fps = static_cast<int>(frameCnt / sumTime);
 		frameCnt = 0;
 		sumTime = 0;
 	}

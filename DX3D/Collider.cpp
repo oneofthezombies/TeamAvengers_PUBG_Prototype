@@ -65,7 +65,7 @@ void SphereCollider::Init(const float radius)
 {
 }
 
-void SphereCollider::Update(const D3DXMATRIXA16& transform)
+void SphereCollider::Update(const D3DXMATRIX& transform)
 {
 }
 
@@ -104,9 +104,9 @@ void BoxCollider::Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max)
     m_vertices[7] = VERTEX_PC(D3DXVECTOR3(max.x, min.y, max.z), m_color);
 }
 
-void BoxCollider::Update(const D3DXMATRIXA16& transform)
+void BoxCollider::Update(const D3DXMATRIX& transform)
 {
-    D3DXMATRIXA16 InverseMatrixOfCurrent, TM;
+    D3DXMATRIX InverseMatrixOfCurrent, TM;
     D3DXMatrixInverse(&InverseMatrixOfCurrent, nullptr, &m_mTransform);
     TM = InverseMatrixOfCurrent * transform;
     m_mTransform = transform;
@@ -133,7 +133,7 @@ D3DXVECTOR3 BoxCollider::GetExtent() const
     return m_vExtent;
 }
 
-const D3DXMATRIXA16& BoxCollider::GetTransform() const
+const D3DXMATRIX& BoxCollider::GetTransform() const
 {
     return m_mTransform;
 }

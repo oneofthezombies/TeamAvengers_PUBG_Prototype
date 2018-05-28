@@ -77,14 +77,14 @@ void Heap::DownHeap(int targetIdx)
 	int LChildIdx = 2 * targetIdx + 1;
 	int RChildIdx = 2 * targetIdx + 2;
 
-	if (LChildIdx >= m_vecNode.size())
+	if (static_cast<size_t>(LChildIdx) >= m_vecNode.size())
 		return;
 
 	int minChildIdx = LChildIdx;
 	//RChildIdx = LChildIdx + 1;
 
 	//2rodml child중 더 작은 쪽을 찾는다.
-	if (RChildIdx < m_vecNode.size())
+	if (static_cast<size_t>(RChildIdx) < m_vecNode.size())
 	{
 		if (m_vecNode[RChildIdx]->m_f < m_vecNode[LChildIdx]->m_f)
 			minChildIdx = RChildIdx;

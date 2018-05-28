@@ -13,7 +13,7 @@ private:
 
 	D3DXVECTOR3				m_pos;
 	D3DXVECTOR3				m_rot;
-	D3DXMATRIXA16			m_matWorld;
+	D3DXMATRIX			m_matWorld;
 
 public:
 	ColorCube();

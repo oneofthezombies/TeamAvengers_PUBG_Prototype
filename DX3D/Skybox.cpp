@@ -104,10 +104,10 @@ void SkyBox::Init()
 {
     // do nothing
 
-    MessageBox(NULL, TEXT("Do not use this method. use SkyBox::Init(const D3DXMATRIXA16* transform)"), 0, 0);
+    MessageBox(NULL, TEXT("Do not use this method. use SkyBox::Init(const D3DXMATRIX* transform)"), 0, 0);
 }
 
-void SkyBox::Init(const D3DXMATRIXA16& transform)
+void SkyBox::Init(const D3DXMATRIX& transform)
 {
     m_pTex = g_pTextureManager->GetTexture(string("resources/images/skybox002.png"));
 

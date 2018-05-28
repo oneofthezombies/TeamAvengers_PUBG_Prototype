@@ -30,6 +30,6 @@ public:
 		LPDIRECT3DINDEXBUFFER9 &pIb,
 		vector<VERTEX_PC> &vecVertex, vector<WORD> &vecIndex);
 
-	void LookForward(D3DXVECTOR3 &outVec3, D3DXMATRIXA16 &outMat);
+	void LookForward(D3DXVECTOR3 &outVec3, D3DXMATRIX &outMat);
 };
 

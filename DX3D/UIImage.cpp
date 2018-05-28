@@ -29,8 +29,8 @@ void UIImage::SetTexture(const string fullPath)
 	D3DXIMAGE_INFO info;
 	m_pTex = g_pTextureManager->GetTexture(fullPath);
 	D3DXGetImageInfoFromFileA(fullPath.c_str(), &info);
-	m_vSize.x = info.Width;
-	m_vSize.y = info.Height;
+	m_vSize.x = static_cast<float>(info.Width);
+	m_vSize.y = static_cast<float>(info.Height);
 }
 
 UIImage* UIImage::Create(const string texturePath, const D3DXVECTOR3& pos, UIObject* parent, const D3DXVECTOR2& size)

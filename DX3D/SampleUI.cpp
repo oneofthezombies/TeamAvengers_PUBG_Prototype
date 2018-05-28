@@ -68,7 +68,7 @@ void SampleUI::Init()
 	//		"resources/ui/btn-med-down.png.png");
 	//	pButton->SetText(g_pFontMgr->GetFont(FONT::QUEST), _T("Button2"));
 	//}
-	//D3DXMATRIXA16 matT,matS;
+	//D3DXMATRIX matT,matS;
 	//D3DXMatrixScaling(&matS, 1.5f, 1.5f, 1);
 	//D3DXMatrixTranslation(&matT, 150, 150, 0);
 	//m_matWorld = matS*matT;
@@ -104,7 +104,7 @@ void SampleUI::Render()
 	//m_pSprite->End();
 	//RECT clientRect;
 	//GetClientRect(g_hWnd, &clientRect);
-	//D3DXMATRIXA16 matR, matT, matWorld;
+	//D3DXMATRIX matR, matT, matWorld;
 	//static float fAngle = 0.0f;
 	//fAngle += 0.1f;
 	//D3DXMatrixRotationZ(&matR, fAngle);

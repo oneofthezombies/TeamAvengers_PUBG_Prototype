@@ -2,8 +2,9 @@
 #include "Gun.h"
 #include "Bullet.h"
 #include "MuzzleFlash.h"
+#include "IScene.h"
 
-Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, int bulletFireCoolTime, float velocity, float scale, float rotY)
+Gun::Gun(GUN_TAG gunTag, bool canChangeBurstMode, int bulletNum, float bulletFireCoolTime, float velocity, float scale, float rotY)
 	: Item(ITEM_TAG::Gun, "Gun", "I am a Gun")
 	, m_gunTag(gunTag)
 	, m_canChangeBurstMode(canChangeBurstMode)

@@ -120,7 +120,7 @@ void SceneShotting::Init()
     //wallArr[16] = D3DXVECTOR3(0.0f, factor, -factor);
     //wallArr[17] = D3DXVECTOR3(factor, factor, -factor);
 
-    //D3DXMATRIXA16 matT;
+    //D3DXMATRIX matT;
     //D3DXMatrixTranslation(&matT, 10.0f, 0.0f, 10.0f);
     //for (int i = 0; i < 18; i++)
     //{
@@ -161,7 +161,7 @@ void SceneShotting::Render()
 
 	//x, y, z 기준선 그리기 
 
-	D3DXMATRIXA16 matI;
+	D3DXMATRIX matI;
 	D3DXMatrixIdentity(&matI);
 
 	const auto dv = g_pDevice;
@@ -187,7 +187,7 @@ void SceneShotting::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 void SceneShotting::InitSkyBox()
 {
     SkyBox* skyBox = new SkyBox;
-    D3DXMATRIXA16 s, t, m;
+    D3DXMATRIX s, t, m;
     const float scale = 100.0f;
     D3DXMatrixScaling(&s, scale, scale, scale);
     D3DXMatrixTranslation(&t, 50.0f, 10.0f, 50.0f);
@@ -206,7 +206,7 @@ void SceneShotting::InitLight()
 
 void SceneShotting::InitHeightMap()
 {
-    D3DXMATRIXA16 s;
+    D3DXMATRIX s;
     D3DXMatrixScaling(&s, 0.4f, 0.03f, 0.4f);
     m_pHeightMap = new HeightMap; 
     AddSimpleDisplayObj(m_pHeightMap);
@@ -271,7 +271,7 @@ void SceneShotting::InitSamples()
 
 void SceneShotting::RenderAxises()
 {
-    D3DXMATRIXA16 matI;
+    D3DXMATRIX matI;
     D3DXMatrixIdentity(&matI);
 
     const auto dv = g_pDevice;

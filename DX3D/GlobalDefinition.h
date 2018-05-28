@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BaseObject.h"
+
 #define CUBE_INDEX_SIZE 36
 extern WORD g_aCubeIndex[];
 #define CUBE_VERTEX_SIZE 8
@@ -231,4 +233,6 @@ DWORD FtoDw(float f);
 
 float GetRandomFloat(float lowBound, float highBound);
 
-void GetRotationMatrixFromDirection(D3DXMATRIXA16& OutRotation, const D3DXVECTOR3& direction, const D3DXVECTOR3& up = D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+void GetRotationMatrixFromDirection(D3DXMATRIX& OutRotation, const D3DXVECTOR3& direction, const D3DXVECTOR3& up = D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+
+string CStringToStdString(const CString val);

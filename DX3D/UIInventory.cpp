@@ -67,7 +67,7 @@ void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& invent
     Debug->AddText("num of pickables : " + to_string(pickables.size()) + '\n');
 
     vector<RECT> rects;
-    for (int i = 0; i < pickables.size(); ++i)
+    for (size_t i = 0u; i < pickables.size(); ++i)
     {
         UIText* pickable = new UIText;
         pickable->SetFont(g_pFontManager->GetFont(Font::kInteractionMessageDescription));
@@ -81,7 +81,7 @@ void UIInventory::Update(Item*& OutPPicked, map<ITEM_TAG, vector<Item*>>& invent
 
     if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
     {
-        for (int i = 0; i < pickables.size(); ++i)
+        for (size_t i = 0u; i < pickables.size(); ++i)
         {
             if (PtInRect(&rects[i], g_pKeyManager->GetCurrentMousePos()))
             {

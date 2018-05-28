@@ -49,7 +49,7 @@ void SampleColliderOwner1::Init()
     m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
     m_pBoxCollider->SetTag(CollisionTag::kFoo);
 
-    D3DXMATRIXA16 m;
+    D3DXMATRIX m;
     D3DXMatrixTranslation(&m, 7.0f, 0.0f, 5.0f);
     m_pBoxCollider->Update(m);
 }
@@ -63,7 +63,7 @@ void SampleColliderOwner1::Update()
     if (GetKeyState('P') & 0x8000)
         trZ -= 0.1f;
 
-    D3DXMATRIXA16 m;
+    D3DXMATRIX m;
     D3DXMatrixTranslation(&m, 0.0f, 0.0f, trZ);
     m_pBoxCollider->Update(m);
 
@@ -121,7 +121,7 @@ void SampleColliderOwner2::Init()
     m_pBoxCollider->Init(D3DXVECTOR3(-0.5f, -0.5f, -0.5f), D3DXVECTOR3(0.5f, 0.5f, 0.5f));
     m_pBoxCollider->SetTag(CollisionTag::kBar);
 
-    D3DXMATRIXA16 m;
+    D3DXMATRIX m;
     D3DXMatrixTranslation(&m, 7.0f, 0.0f, 7.0f);
     m_pBoxCollider->Update(m);
 }

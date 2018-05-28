@@ -41,7 +41,7 @@ void Camera::Update()
 {
 	m_eye = D3DXVECTOR3(0, m_basePosY, -m_distance);
 
-	D3DXMATRIXA16 matRotX, matRotY, matRot;
+	D3DXMATRIX matRotX, matRotY, matRot;
 	D3DXMatrixRotationX(&matRotX, m_rotX);
 	D3DXMatrixRotationY(&matRotY, m_rotY);
 	matRot = matRotX * matRotY;
@@ -131,7 +131,7 @@ void Camera::SetProjVert()
 void Camera::ChangeToWorldVert()
 {
 	m_vecWorldVert.resize(m_vecProjVert.size());
-	for (int i = 0; i < m_vecProjVert.size(); i++)
+	for (size_t i = 0u; i < m_vecProjVert.size(); i++)
 	{
 		D3DXVec3Unproject(&m_vecWorldVert[i], &m_vecProjVert[i], NULL, &m_matProj, &m_matView, NULL);
 	}

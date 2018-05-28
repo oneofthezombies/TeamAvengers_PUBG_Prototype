@@ -67,7 +67,7 @@ void ThirdPersonCamera::CamBackDistResizeing()
     vector<D3DXVECTOR3> wall = g_pCameraManager->GetWall(); //벽의 정보를 갖고 있는 vector, 지금은 call by value 로 받고 있지만, 나중에는 reference로 받아서 성능을 빨리 하자
     
     m_distance = TP_DISTANCE; //Ray가 벽을 걸리지 않을 경우 distance 초기화
-    for (int i = 0; i < wall.size(); i+=3)
+    for (size_t i = 0u; i < wall.size(); i+=3)
     {
         //ray가 벽에 걸리게 된다면
         if (m_pCamBackCheckingRay->CalcIntersectTri(&wall[i], &ray2wallDist))

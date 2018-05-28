@@ -19,7 +19,7 @@ public:
     virtual ~SkyBox();
 
     virtual void Init() override;
-    void Init(const D3DXMATRIXA16& transform);
+    void Init(const D3DXMATRIX& transform);
 
     virtual void Update() override;
     virtual void Render() override;

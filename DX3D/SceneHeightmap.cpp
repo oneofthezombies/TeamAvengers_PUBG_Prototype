@@ -22,7 +22,7 @@ SceneHeightmap::~SceneHeightmap()
 
 void SceneHeightmap::Init()
 {
-	D3DXMATRIXA16 matS;
+	D3DXMATRIX matS;
 	D3DXMatrixScaling(&matS, 0.2f, 0.03f, 0.2f);
 
 	m_pHeightMap = new HeightMap; AddSimpleDisplayObj(m_pHeightMap);

@@ -40,7 +40,7 @@ void UIManager::Update()
     const int width = rect.right - rect.left;
     const int height = rect.bottom - rect.top;
 
-    D3DXMATRIXA16 mat;
+    D3DXMATRIX mat;
     D3DXMatrixScaling(&mat, static_cast<float>(width) / 1280.0f, static_cast<float>(height) / 720.0f, 0.0f);
     m_pSprite->SetTransform(&mat);
 

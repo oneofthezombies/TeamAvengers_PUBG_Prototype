@@ -14,7 +14,7 @@ public:
 	HeightMap();
 	virtual ~HeightMap();
 
-	void Load(const char* fullPath, D3DXMATRIXA16* pMat = NULL);
+	void Load(const char* fullPath, D3DXMATRIX* pMat = NULL);
 	void SetMtlTex(D3DMATERIAL9 &mtl, LPDIRECT3DTEXTURE9 pTex);
 
 	// IMap을(를) 통해 상속됨

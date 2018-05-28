@@ -6,7 +6,7 @@ class IDisplayObject : public BaseObject
 protected:
 	D3DXVECTOR3				m_pos;
 	D3DXVECTOR3				m_rot;
-	D3DXMATRIXA16			m_matWorld;
+	D3DXMATRIX			m_matWorld;
     float                   m_heightOffset;
 
 	IDisplayObject*			m_pParent;
@@ -30,7 +30,7 @@ public:
     D3DXVECTOR3		     GetPosition() const;
 
     D3DXVECTOR3		     GetRotation() const;
-    const D3DXMATRIXA16& GetWorldMatrix() const;
+    const D3DXMATRIX& GetWorldMatrix() const;
     const vector<IDisplayObject*>& GetChildVec() const;
 
     void SetHeightOffset(const float val);

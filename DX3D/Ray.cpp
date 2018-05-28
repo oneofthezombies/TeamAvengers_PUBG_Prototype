@@ -18,7 +18,7 @@ Ray Ray::RayAtViewSpace(int x, int y)
 	D3DVIEWPORT9 vp;
 	g_pDevice->GetViewport(&vp);
 
-	D3DXMATRIXA16 matProj;
+	D3DXMATRIX matProj;
 	g_pDevice->GetTransform(D3DTS_PROJECTION, &matProj);
 
 	Ray ray;
@@ -34,7 +34,7 @@ Ray Ray::RayAtWorldSpace(int x, int y)
 	Ray ray = Ray::RayAtViewSpace(x, y);
 
 	//View 에 있는 ray 를 World 로 변환
-	D3DXMATRIXA16 matView, matInvView;
+	D3DXMATRIX matView, matInvView;
 	g_pDevice->GetTransform(D3DTS_VIEW, &matView);
 	D3DXMatrixInverse(&matInvView, NULL, &matView);
 

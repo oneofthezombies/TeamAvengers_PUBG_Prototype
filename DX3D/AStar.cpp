@@ -1,8 +1,11 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "AStar.h"
 #include "AStarNode.h"
 #include "Ray.h"
 #include "Heap.h"
+#include "IMap.h"
+#include "D3DUtility.h"
+
 AStar::AStar()
 {
 }
@@ -26,7 +29,7 @@ void AStar::Init()
 
 void AStar::Render()
 {
-	D3DXMATRIXA16 mat;
+	D3DXMATRIX mat;
 	g_pDevice->SetTexture(0, NULL);
 
 	for (auto p : m_vecNode)
@@ -157,7 +160,7 @@ void AStar::FindPath(D3DXVECTOR3 startPos, D3DXVECTOR3 destPos, OUT vector<int>&
 
 void AStar::RestNodes()
 {
-	for (int i = 0; i < m_vecNode.size(); i++)
+	for (size_t i = 0u; i < m_vecNode.size(); i++)
 	{
 		if (m_vecNode[i]->m_nodeState != STATE_WALL)
 			m_vecNode[i]->m_nodeState = STATE_NONE;
@@ -169,7 +172,7 @@ int AStar::FindClosestNode(const D3DXVECTOR3& pos)
 	float minDist = FLT_MAX;
 	int closestNodeIndex = -1;
 
-	for (int i = 0; i < m_vecNode.size(); i++)
+	for (size_t i = 0u; i < m_vecNode.size(); i++)
 	{
 		if (m_vecNode[i]->m_nodeState == STATE_WALL)//장애물 노드는 무시하고
 			continue;
@@ -219,7 +222,7 @@ void AStar::Extend(int targetIdx, int destIdx)
 {
 	vector<EDGE_INFO*> vecEdge = m_vecNode[targetIdx]->GetEdgeInfos();
 
-	for (int i = 0; i < vecEdge.size(); i++)
+	for (size_t i = 0u; i < vecEdge.size(); i++)
 	{
 		int index = vecEdge[i]->index;
 		AStarNode* currNode = m_vecNode[index];

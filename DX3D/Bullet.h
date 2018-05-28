@@ -17,8 +17,8 @@ private:
     D3DXVECTOR3   m_dir;
 	const float   m_scale;
 
-	D3DXMATRIXA16 m_matS;
-	D3DXMATRIXA16 m_matT;
+	D3DXMATRIX m_matS;
+	D3DXMATRIX m_matT;
 
     BoxCollider* m_pBoxCollider;
 

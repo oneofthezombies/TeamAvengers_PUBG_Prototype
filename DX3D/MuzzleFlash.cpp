@@ -18,7 +18,7 @@ MuzzleFlash::~MuzzleFlash()
 
 void MuzzleFlash::Init()
 {
-    m_pTex = g_pTextureManager->GetTexture(TEXT("resources/images/boom_960_720.png"));
+    m_pTex = g_pTextureManager->GetTexture("resources/images/boom_960_720.png");
 
     g_pDevice->CreateVertexBuffer(sizeof VERTEX_PC, D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY, VERTEX_PC::FVF, D3DPOOL_MANAGED, &m_pVB, NULL);
 
@@ -82,10 +82,10 @@ void MuzzleFlash::Flash(const D3DXVECTOR3& pos)
 {
     m_pointScale = GetRandomFloat(0.75f, 1.25f);
 
-    D3DXMATRIXA16 r;
+    D3DXMATRIX r;
     D3DXMatrixRotationZ(&r, GetRandomFloat(0.0f, D3DX_PI * 2.0f));
 
-    D3DXMATRIXA16 t;
+    D3DXMATRIX t;
     D3DXMatrixTranslation(&t, pos.x, pos.y, pos.z);
 
     m_matWorld = r * t;

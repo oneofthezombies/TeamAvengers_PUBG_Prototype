@@ -19,9 +19,9 @@ void AseObject::Init()
 	CalcLocalTM();
 }
 
-void AseObject::Update(int tickCount, D3DXMATRIXA16 * pMatParent)
+void AseObject::Update(int tickCount, D3DXMATRIX * pMatParent)
 {
-	D3DXMATRIXA16 matLocalT, matLocalR;
+	D3DXMATRIX matLocalT, matLocalR;
 
 	CalcLocalTranslationMatrix(tickCount, matLocalT);
 	CalcLocalRotationMatrix(tickCount, matLocalR);
@@ -86,7 +86,7 @@ void AseObject::CalcLocalTM(AseObject * pParent)
 
 	if (pParent != NULL)
 	{
-		D3DXMATRIXA16 matInvParent;
+		D3DXMATRIX matInvParent;
 		D3DXMatrixInverse(&matInvParent, 0, &pParent->m_matWorldTM);
 		m_matLocalTM *= matInvParent;
 	}
@@ -97,7 +97,7 @@ void AseObject::CalcLocalTM(AseObject * pParent)
 	}
 }
 
-void AseObject::CalcLocalTranslationMatrix(IN int tickCount, OUT D3DXMATRIXA16 & mat)
+void AseObject::CalcLocalTranslationMatrix(IN int tickCount, OUT D3DXMATRIX & mat)
 {
 	D3DXMatrixIdentity(&mat);
 
@@ -145,7 +145,7 @@ void AseObject::CalcLocalTranslationMatrix(IN int tickCount, OUT D3DXMATRIXA16 &
 	}
 }
 
-void AseObject::CalcLocalRotationMatrix(IN int tickCount, OUT D3DXMATRIXA16 & mat)
+void AseObject::CalcLocalRotationMatrix(IN int tickCount, OUT D3DXMATRIX & mat)
 {
 	D3DXMatrixIdentity(&mat);
 

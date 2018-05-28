@@ -29,7 +29,7 @@ void Picking::Init()
 			for (int k = 0; k < dim; k++)
 			{
 				BoundingSphere* s = new BoundingSphere(
-					D3DXVECTOR3(i + 5, j + 5, k + 5), radius);
+					D3DXVECTOR3(static_cast<float>(i + 5), static_cast<float>(j + 5), static_cast<float>(k + 5)), radius);
 				m_vecBoundary.push_back(s);
 			}
 		}
@@ -55,7 +55,7 @@ void Picking::Render()
 		{
 			g_pDevice->SetMaterial(&DXUtil::WHITE_MTRL);
 		}
-		D3DXMATRIXA16 mat;
+		D3DXMATRIX mat;
 		D3DXMatrixTranslation(&mat, p->center.x, p->center.y, p->center.z);
 		g_pDevice->SetTransform(D3DTS_WORLD, &mat);
 		g_pDevice->SetTexture(0, NULL);

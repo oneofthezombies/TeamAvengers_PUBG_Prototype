@@ -17,7 +17,7 @@ IDisplayObject::~IDisplayObject()
 
 void IDisplayObject::UpdateTransform()
 {
-    D3DXMATRIXA16 r, t;
+    D3DXMATRIX r, t;
     D3DXMatrixRotationYawPitchRoll(&r, m_rot.y, m_rot.x, m_rot.z);
     D3DXMatrixTranslation(&t, m_pos.x, m_pos.y + m_heightOffset, m_pos.z);
     m_matWorld = r * t;
@@ -44,7 +44,7 @@ D3DXVECTOR3 IDisplayObject::GetRotation() const
     return m_rot;
 }
 
-const D3DXMATRIXA16& IDisplayObject::GetWorldMatrix() const
+const D3DXMATRIX& IDisplayObject::GetWorldMatrix() const
 {
     return m_matWorld;
 }

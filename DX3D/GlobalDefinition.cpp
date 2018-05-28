@@ -33,7 +33,7 @@ float GetRandomFloat(float lowBound, float highBound)
 	return (f*(highBound - lowBound)) + lowBound;
 }
 
-void GetRotationMatrixFromDirection(D3DXMATRIXA16& OutRotation, const D3DXVECTOR3& direction, const D3DXVECTOR3& up)
+void GetRotationMatrixFromDirection(D3DXMATRIX& OutRotation, const D3DXVECTOR3& direction, const D3DXVECTOR3& up)
 {
     D3DXVECTOR3 xAxis, yAxis;
     D3DXVec3Cross(&xAxis, &up, &direction);
@@ -46,4 +46,9 @@ void GetRotationMatrixFromDirection(D3DXMATRIXA16& OutRotation, const D3DXVECTOR
     OutRotation._11 = xAxis.x;      OutRotation._12 = xAxis.y;      OutRotation._13 = xAxis.z;
     OutRotation._21 = yAxis.x;      OutRotation._22 = yAxis.y;      OutRotation._23 = yAxis.z;
     OutRotation._31 = direction.x;  OutRotation._32 = direction.y;  OutRotation._33 = direction.z;
+}
+
+string CStringToStdString(const CString val)
+{
+    return string(CT2CA(val));
 }

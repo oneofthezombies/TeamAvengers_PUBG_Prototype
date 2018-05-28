@@ -17,7 +17,7 @@ void PlayerParts::Init()
 {
 }
 
-void PlayerParts::Init(D3DXMATRIXA16* pMat, vector<vector<int>> &vecUV)
+void PlayerParts::Init(D3DXMATRIX* pMat, vector<vector<int>> &vecUV)
 {
     vector<D3DXVECTOR3> vecVertex;
     for (int i = 0; i < CUBE_VERTEX_SIZE; i++)
@@ -27,7 +27,7 @@ void PlayerParts::Init(D3DXMATRIXA16* pMat, vector<vector<int>> &vecUV)
 
     if (pMat)
     {
-        for (int i = 0; i < vecVertex.size(); i++)
+        for (size_t i = 0u; i < vecVertex.size(); i++)
         {
             D3DXVec3TransformCoord(&vecVertex[i],
                 &vecVertex[i], pMat);
@@ -40,7 +40,7 @@ void PlayerParts::Init(D3DXMATRIXA16* pMat, vector<vector<int>> &vecUV)
 
 void PlayerParts::Update()
 {
-    D3DXMATRIXA16 matR, matT;
+    D3DXMATRIX matR, matT;
 
     if (m_isMoving && m_ePartTag == tEmpty)
     {

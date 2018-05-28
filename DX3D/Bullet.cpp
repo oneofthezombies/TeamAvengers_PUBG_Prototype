@@ -55,7 +55,7 @@ void Bullet::Update()
 			g_pCurrentScene->Destroy(this);
 
         //변환행렬
-        D3DXMATRIXA16 matR;
+        D3DXMATRIX matR;
         GetRotationMatrixFromDirection(matR, m_dir);
         m_matWorld = m_matS * matR * m_matT;
 

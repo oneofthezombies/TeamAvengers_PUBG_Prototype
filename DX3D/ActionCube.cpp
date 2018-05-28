@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ActionCube.h"
-
+#include "ActionSequence.h"
 
 ActionCube::ActionCube()
 {
@@ -26,15 +26,14 @@ void ActionCube::Init()
 	{
 		D3DXVECTOR2 pt(cos(D3DX_PI * i / 3.0f) * radius,
 			sin(D3DX_PI * i / 3.0f) * radius);
-		seq->AddAction(new ActionMoveTo(
-			0.7, D3DXVECTOR3(pt.x, 0, pt.y)));
+		seq->AddAction(new ActionMoveTo(0.7f, D3DXVECTOR3(pt.x, 0, pt.y)));
 	}
 	this->RunAction(new ActionRepeat(seq));
 }
 
 void ActionCube::Update()
 {
-	D3DXMATRIXA16 matT, matR;
+	D3DXMATRIX matT, matR;
 
 	UpdateAction();
 	LookForward(m_forward, matR);
@@ -118,7 +117,7 @@ void ActionCube::SetBuffer(LPDIRECT3DVERTEXBUFFER9 & pVb,
 	vecIndex.clear();
 }
 
-void ActionCube::LookForward(D3DXVECTOR3 & outVec3, D3DXMATRIXA16 & outMat)
+void ActionCube::LookForward(D3DXVECTOR3 & outVec3, D3DXMATRIX & outMat)
 {
 	D3DXVECTOR3 forward = m_pos - m_prevPos;
 	if (D3DXVec3LengthSq(&forward) > FLT_EPSILON)

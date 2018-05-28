@@ -104,7 +104,7 @@ int AseLoader::GetTokenAsInt()
 
 float AseLoader::GetTokenAsFloat()
 {
-	return atof(GetToken());
+	return static_cast<float>(atof(GetToken()));
 }
 
 bool AseLoader::CompareStr(char * str1, const char * str2)
@@ -295,7 +295,7 @@ AseObject * AseLoader::ProcessGEOMOBJECT(OUT AseObject *& pObj)
 
 void AseLoader::ProcessNODE_TM(OUT AseObject *& pObj)
 {
-	D3DXMATRIXA16 matWorld;
+	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity(&matWorld);
 
 	int level = 0;
@@ -400,7 +400,7 @@ void AseLoader::ProcessMESH(OUT AseObject * &pObj)
 		}
 	} while (level > 0);
 
-	D3DXMATRIXA16 matInvWorld;
+	D3DXMATRIX matInvWorld;
 	D3DXMatrixInverse(&matInvWorld, 0, &pObj->m_matWorldTM);
 
 	for (size_t i = 0; i < vecVertex.size(); i++)

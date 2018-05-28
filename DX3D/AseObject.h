@@ -4,8 +4,8 @@
 class AseObject : public BaseObject
 {
 public:
-	D3DXMATRIXA16		m_matLocalTM;
-	D3DXMATRIXA16		m_matWorldTM;
+	D3DXMATRIX		m_matLocalTM;
+	D3DXMATRIX		m_matWorldTM;
 	vector<AseObject*>	m_vecChild;
 	vector<VERTEX_PNT>	m_vecVertex;
 	LPDIRECT3DTEXTURE9	m_pTex;
@@ -18,15 +18,15 @@ public:
 	~AseObject();
 
 	void Init();
-	void Update(int tickCount, D3DXMATRIXA16* pMatParent);
+	void Update(int tickCount, D3DXMATRIX* pMatParent);
 	void Render();
 	void AddChild(AseObject* pChild);
 	void ReleaseAll();
 	void SetupTexture();
 	void CalcLocalTM(AseObject* pParent = NULL);
 	void CalcLocalTranslationMatrix(IN int tickCount,
-		OUT D3DXMATRIXA16& mat);
+		OUT D3DXMATRIX& mat);
 	void CalcLocalRotationMatrix(IN int tickCount, 
-		OUT D3DXMATRIXA16& mat);
+		OUT D3DXMATRIX& mat);
 };
 

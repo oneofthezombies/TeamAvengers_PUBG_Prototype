@@ -59,7 +59,7 @@ void Grid::Init()
 
 void Grid::Render()
 {
-	D3DXMATRIXA16 matI;
+	D3DXMATRIX matI;
 	D3DXMatrixIdentity(&matI);
 	g_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pDevice->SetTransform(D3DTS_WORLD, &matI);

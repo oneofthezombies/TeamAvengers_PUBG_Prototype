@@ -50,7 +50,7 @@ void IUnitObject::UpdateKeyboardState()
 	if (m_deltaPos.z == 0 && m_deltaRot.y == 0)
 		return;
 
-	D3DXMATRIXA16 matRY;
+	D3DXMATRIX matRY;
 	D3DXMatrixRotationY(&matRY, m_deltaRot.y * m_rotationSpeed);
 	D3DXVec3TransformNormal(&m_forward, &m_forward, &matRY); //내가 정말로 보고있는 방향벡터 m_forward
 
@@ -67,14 +67,14 @@ void IUnitObject::UpdatePositionToDestination()
 	UpdateTargetPosition(targetPos);
 	ApplyTargetPosition(targetPos);
 
-	D3DXMATRIXA16 m_matRotY;
+	D3DXMATRIX m_matRotY;
 	D3DXMatrixLookAtLH(&m_matRotY, &D3DXVECTOR3(0, 0, 0), &m_forward, &D3DXVECTOR3(0, 1, 0));
 	D3DXMatrixTranspose(&m_matRotY, &m_matRotY);//역행렬도 괜찮지만 역행렬 연산량이 더 많아
 
-	D3DXMATRIXA16 matBaseR;
+	D3DXMATRIX matBaseR;
 	D3DXMatrixRotationY(&matBaseR, m_baseRotY);
 
-	D3DXMATRIXA16 matT;
+	D3DXMATRIX matT;
 	D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
 
 	m_matWorld = m_matRotY * matBaseR * matT;
@@ -209,7 +209,7 @@ void IUnitObject::UpdatePosition()
 {
 	m_rot += m_deltaRot * m_rotationSpeed;
 
-	D3DXMATRIXA16 matRotY;
+	D3DXMATRIX matRotY;
 	D3DXMatrixRotationY(&matRotY, m_rot.y);
 	D3DXVec3TransformNormal(&m_forward,
 		&D3DXVECTOR3(0, 0, 1), &matRotY);
@@ -282,7 +282,7 @@ void IUnitObject::UpdatePosition()
 		//m_pos = targetPos;
 	}
 
-	D3DXMATRIXA16 matT;
+	D3DXMATRIX matT;
 	D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixRotationY(&matRotY, m_rot.y + m_baseRotY);
 	m_matWorld = matRotY * matT;

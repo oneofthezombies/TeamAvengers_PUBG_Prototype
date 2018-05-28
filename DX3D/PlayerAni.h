@@ -107,7 +107,7 @@ public:
     void UpdateGunInHandPosition();
     void UpdateGunInEquipPosition();
 
-    void ShowInventory(const D3DXMATRIXA16& transform);
+    void ShowInventory(const D3DXMATRIX& transform);
     bool IsShowingInventory();
     void Pick(Item& item);
 

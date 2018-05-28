@@ -30,7 +30,7 @@ public:
     virtual ~ItemPicker();
 
     void Init(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot);
-    void Update(vector<Item*>& OutItems, const D3DXMATRIXA16& transform);
+    void Update(vector<Item*>& OutItems, const D3DXMATRIX& transform);
 
     static ItemPicker* Create(PlayerAni& owner, const D3DXVECTOR3& pos, const D3DXVECTOR3& rot);
 };

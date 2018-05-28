@@ -22,7 +22,7 @@ void ItemPicker::Init(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
     m_pBoxCollider->SetTag(CollisionTag::kItemPicker);
 }
 
-void ItemPicker::Update(vector<Item*>& OutItems, const D3DXMATRIXA16& transform)
+void ItemPicker::Update(vector<Item*>& OutItems, const D3DXMATRIX& transform)
 {
     m_pBoxCollider->Update(transform);
 

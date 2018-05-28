@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "PlayerAni.h"
 #include "PlayerParts.h"
 #include "Gun.h"
@@ -9,6 +9,7 @@
 #include "UIInGame.h"
 #include "UIGameOver.h"
 #include "CubemanBarrack.h"
+#include "IScene.h"
 
 enum enumParts
 {
@@ -215,7 +216,7 @@ void PlayerAni::Render()
 void PlayerAni::UpdatePosition()
 {
     m_rot += m_deltaRot * m_rotationSpeed;
-    D3DXMATRIXA16 matRotY;
+    D3DXMATRIX matRotY;
 
     if (m_isLive)
     {
@@ -300,7 +301,7 @@ void PlayerAni::UpdatePosition()
         //m_pos = targetPos;
     }
 
-    D3DXMATRIXA16 matT;
+    D3DXMATRIX matT;
     //m_pos.x += m_deltaPos.x * m_moveSpeed;
     D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
     m_matWorld = matRotY * matT;
@@ -349,7 +350,7 @@ void PlayerAni::CreateAllParts()
 
 void PlayerAni::CreateParts(PlayerParts *& pParts, IDisplayObject * pParent, D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 trans, vector<vector<int>>& vecUV, PartTag tag)
 {
-    D3DXMATRIXA16 matS, matT, mat;
+    D3DXMATRIX matS, matT, mat;
     D3DXMatrixScaling(&matS, scale.x, scale.y, scale.z);
     D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
     mat = matS * matT;
@@ -382,8 +383,8 @@ void PlayerAni::RunAndWalk()
     {
         if (m_isRunnig == false)
         {
-            m_moveSpeed = 0.35;
-            for (int i = 1; i < m_pRootParts->GetChildVec().size(); i++)
+            m_moveSpeed = 0.35f;
+            for (size_t i = 1u; i < m_pRootParts->GetChildVec().size(); i++)
             {
                 GetChild(i)->SetRotXspeed(GetChild(i)->GetRotXspeed() * 1.5f);
             }
@@ -395,7 +396,7 @@ void PlayerAni::RunAndWalk()
         if (m_isRunnig == true)
         {
             m_moveSpeed = 0.2f;
-            for (int i = 1; i < m_pRootParts->GetChildVec().size(); i++)
+            for (size_t i = 1u; i < m_pRootParts->GetChildVec().size(); i++)
             {
                 GetChild(i)->SetRotXspeed(GetChild(i)->GetRotXspeed()/ 1.5f);
             }
@@ -663,7 +664,7 @@ void PlayerAni::UpdateRotation()
 
 void PlayerAni::UpdateDirection()
 {
-    D3DXMATRIXA16 r;
+    D3DXMATRIX r;
     D3DXMatrixRotationYawPitchRoll(&r, m_rot.y, m_rot.x, m_rot.z);
     D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &r);
     D3DXVec3Normalize(&m_dir, &m_dir);
@@ -709,7 +710,7 @@ void PlayerAni::UpdateGunInEquipPosition()
     }
 }
 
-void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
+void PlayerAni::ShowInventory(const D3DXMATRIX& transform)
 {
     if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
     {

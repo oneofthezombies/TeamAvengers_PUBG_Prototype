@@ -52,7 +52,7 @@ public:
     virtual ~SphereCollider() = default;
 
     void Init(const float radius);
-    void Update(const D3DXMATRIXA16& transform);
+    void Update(const D3DXMATRIX& transform);
     virtual void Render() override;
 };
 
@@ -65,7 +65,7 @@ private:
     // row 1 : x, y and z of axis 1
     // row 2 : x, y and z of axis 2
     // row 3 : x, y and z of translation
-    D3DXMATRIXA16 m_mTransform;
+    D3DXMATRIX m_mTransform;
     vector<VERTEX_PC> m_vertices;
 
 public:
@@ -73,11 +73,11 @@ public:
     virtual ~BoxCollider();
 
     void Init(const D3DXVECTOR3& min, const D3DXVECTOR3& max);
-    void Update(const D3DXMATRIXA16& transform);
+    void Update(const D3DXMATRIX& transform);
     virtual void Render() override;
 
     D3DXVECTOR3 GetExtent() const;
-    const D3DXMATRIXA16& GetTransform() const;
+    const D3DXMATRIX& GetTransform() const;
 };
 
 class ICollisionListener : public ComponentBase

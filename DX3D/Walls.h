@@ -19,7 +19,7 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-	void MakePlane(vector<VERTEX_PN> &vecOut, vector<D3DXVECTOR3> &vecPos, D3DXMATRIXA16 &mat);
+	void MakePlane(vector<VERTEX_PN> &vecOut, vector<D3DXVECTOR3> &vecPos, D3DXMATRIX &mat);
 	void MakePlaneGroup(vector<VERTEX_PN> &vecOut, vector<D3DXVECTOR3> vecWall);
 };
 

@@ -3,6 +3,8 @@
 #include "Ray.h"
 #include "AStar.h"
 #include "AStarNode.h"
+#include "IUnitObject.h"
+
 HeightMap::HeightMap()
 {
 	m_pMesh = NULL;
@@ -17,7 +19,7 @@ HeightMap::~HeightMap()
 	SAFE_RELEASE(m_pAStar);
 }
 
-void HeightMap::Load(const char * fullPath, D3DXMATRIXA16 * pMat)
+void HeightMap::Load(const char * fullPath, D3DXMATRIX * pMat)
 {
 	vector<VERTEX_PNT> vecVertex;
 	vecVertex.resize(m_dimension * m_dimension);
@@ -25,13 +27,13 @@ void HeightMap::Load(const char * fullPath, D3DXMATRIXA16 * pMat)
 
 	std::ifstream fin(fullPath, std::ios::binary);
 
-	for (int z = 0; z < m_dimension; z++)
+	for (size_t z = 0u; z < m_dimension; z++)
 	{
-		for (int x = 0; x < m_dimension; x++)
+		for (size_t x = 0u; x < m_dimension; x++)
 		{
 			int index = z * m_dimension + x;
 			int y = fin.get();
-			vecVertex[index].p = D3DXVECTOR3(x, y, z);
+			vecVertex[index].p = D3DXVECTOR3(static_cast<float>(x), static_cast<float>(y), static_cast<float>(z));
 			vecVertex[index].n = D3DXVECTOR3(0, 1, 0);
 			vecVertex[index].t = 
 				D3DXVECTOR2(x / (float)m_numTile, 
@@ -58,9 +60,9 @@ void HeightMap::Load(const char * fullPath, D3DXMATRIXA16 * pMat)
 	vector<DWORD> vecIndex;
 	vecIndex.reserve(m_numTile * m_numTile * 3 * 2);
 
-	for (int z = 0; z < m_numTile; z++)
+	for (size_t z = 0u; z < m_numTile; z++)
 	{
-		for (int x = 0; x < m_numTile; x++)
+		for (size_t x = 0u; x < m_numTile; x++)
 		{
 			// 1--3
 			// 0--2
@@ -78,9 +80,9 @@ void HeightMap::Load(const char * fullPath, D3DXMATRIXA16 * pMat)
 		}
 	}
 	//set normal
-	for (int z = 1; z < m_numTile; z++)
+	for (size_t z = 1u; z < m_numTile; z++)
 	{
-		for (int x = 1; x < m_numTile; x++)
+		for (size_t x = 1u; x < m_numTile; x++)
 		{
 			//--u--
 			//l-n-r
@@ -230,7 +232,7 @@ bool HeightMap::CalcPickedPosition(D3DXVECTOR3 & vOut, WORD screenX, WORD screen
 	float intersectionDist;
 	bool bIntersect = false;
 
-	for (int i = 0; i < m_vecSurfaceVertex.size(); i += 3)
+	for (size_t i = 0u; i < m_vecSurfaceVertex.size(); i += 3)
 	{
 		if (ray.CalcIntersectTri(
 			&m_vecSurfaceVertex[i], &intersectionDist))
@@ -256,21 +258,19 @@ void HeightMap::SetSurface()
 	int numSurfaceTile = surfaceDim - 1;
 
 	vecPos.reserve(surfaceDim * surfaceDim);
-	for (size_t z = 0; z < surfaceDim; z++)
+	for (int z = 0; z < surfaceDim; z++)
 	{
-		for (size_t x = 0; x < surfaceDim; x++)
+		for (int x = 0; x < surfaceDim; x++)
 		{
-			DWORD index = z / (float)numSurfaceTile *
-				m_numTile * m_dimension
-				+ x / (float)numSurfaceTile * m_numTile;
+			DWORD index = static_cast<DWORD>(z / (float)numSurfaceTile * m_numTile * m_dimension + x / (float)numSurfaceTile * m_numTile);
 			vecPos.push_back(m_vecVertex[index]);
 		}
 	}
 
 	vecIndex.reserve(numSurfaceTile * numSurfaceTile * 2 * 3);
-	for (size_t z = 0; z < numSurfaceTile; z++)
+	for (int z = 0; z < numSurfaceTile; z++)
 	{
-		for (size_t x = 0; x < numSurfaceTile; x++)
+		for (int x = 0; x < numSurfaceTile; x++)
 		{
 			//1--3
 			//|--|

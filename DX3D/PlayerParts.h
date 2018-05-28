@@ -32,7 +32,7 @@ public:
     virtual void Update() override;
     virtual void Render() override;
 
-    void Init(D3DXMATRIXA16* pMat, vector<vector<int>> &vecUV);
+    void Init(D3DXMATRIX* pMat, vector<vector<int>> &vecUV);
     void SetPCVertex(vector<VERTEX_PC> &vecOut,
         vector<D3DXVECTOR3> &vecVertex);
     void SetPTVertex(vector<VERTEX_PT> &vecOut,

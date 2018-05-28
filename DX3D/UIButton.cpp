@@ -56,8 +56,8 @@ void UIButton::SetTexture(const string& idle, const string& mouseOver, const str
 	m_vecTexture[State::kSelect] = texMgr->GetTexture(select);
 
 	D3DXGetImageInfoFromFileA(idle.c_str(), &info);
-	m_vSize.x = info.Width;
-	m_vSize.y = info.Height;
+	m_vSize.x = static_cast<float>(info.Width);
+	m_vSize.y = static_cast<float>(info.Height);
 }
 
 void UIButton::SetText(const LPD3DXFONT font, const LPCTSTR text)

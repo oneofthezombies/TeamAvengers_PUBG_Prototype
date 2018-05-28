@@ -8,6 +8,7 @@
 #include "CubemanAI.h"
 #include "PlayerAni.h"
 #include "CubemanBarrack.h"
+#include "IMap.h"
 
 Cubeman::Cubeman()
     : IDisplayObject()
@@ -99,7 +100,7 @@ void Cubeman::UpdatePosition()
 {
 	m_rot += m_deltaRot * m_rotationSpeed;
 
-	D3DXMATRIXA16 matRotY;
+	D3DXMATRIX matRotY;
 	D3DXMatrixRotationY(&matRotY, m_rot.y);
 	D3DXVec3TransformNormal(&m_forward, 
 		&D3DXVECTOR3(0, 0, 1), &matRotY);
@@ -173,7 +174,7 @@ void Cubeman::UpdatePosition()
 		//m_pos = targetPos;
 	}
 
-	D3DXMATRIXA16 matT;
+	D3DXMATRIX matT;
 	D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
 	m_matWorld = matRotY * matT;
 
@@ -219,7 +220,7 @@ void Cubeman::CreateParts(CubemanParts *& pParts,
 	D3DXVECTOR3 scale, D3DXVECTOR3 trans,
 	vector<vector<int>> &vecUV)
 {
-	D3DXMATRIXA16 matS, matT, mat;
+	D3DXMATRIX matS, matT, mat;
 	D3DXMatrixScaling(&matS, scale.x, scale.y, scale.z);
 	D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
 	mat = matS * matT;

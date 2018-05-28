@@ -35,7 +35,7 @@ void ICamera::Init()
 
 void ICamera::Update()
 {
-    D3DXMATRIXA16 matWorld,matR, matT;
+    D3DXMATRIX matWorld,matR, matT;
     D3DXMatrixIdentity(&matWorld);
 
     m_pTargetPos = g_pCameraManager->GetTargetPos();

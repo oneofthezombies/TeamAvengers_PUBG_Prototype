@@ -67,7 +67,7 @@ void Frustum::Render()
 	{
 		if (IsSphereInsideFrustum(p) == true)
 		{
-			D3DXMATRIXA16 mat;
+			D3DXMATRIX mat;
 			D3DXMatrixTranslation(&mat, p->center.x, p->center.y, p->center.z);
 			g_pDevice->SetTransform(D3DTS_WORLD, &mat);
 			m_pMesh->DrawSubset(0);
@@ -77,7 +77,7 @@ void Frustum::Render()
 
 void Frustum::UpdateFrustum()
 {
-	D3DXMATRIXA16 matProj, matView;
+	D3DXMATRIX matProj, matView;
 	g_pDevice->GetTransform(D3DTS_PROJECTION, &matProj);
 	g_pDevice->GetTransform(D3DTS_VIEW, &matView);
 

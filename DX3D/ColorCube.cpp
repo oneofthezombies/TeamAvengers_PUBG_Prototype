@@ -32,7 +32,7 @@ void ColorCube::Init()
 	m_pVB->GetDesc(&m_VBDesc);
 	m_pIB->GetDesc(&m_IBDesc);
 
-    D3DXMATRIXA16 matT;
+    D3DXMATRIX matT;
     D3DXMatrixTranslation(&matT, 0, 2, 10);
     m_matWorld = matT;
 }
@@ -40,7 +40,7 @@ void ColorCube::Init()
 void ColorCube::Update()
 {
 	m_rot.y += 0.01f;
-	D3DXMATRIXA16 matR;
+	D3DXMATRIX matR;
 	D3DXMatrixRotationY(&matR, m_rot.y);
 	m_matWorld = matR;
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CubemanBarrack.h"
 #include "Cubeman.h"
+#include "IScene.h"
 
 CubemanBarrack::CubemanBarrack()
     : IDisplayObject()

@@ -24,7 +24,7 @@ void Walls::Init()
 	MakePlaneGroup(m_vecWall0, vecWall);
 	MakePlaneGroup(m_vecWall1, vecWall);
 
-	D3DXMATRIXA16 matT;
+	D3DXMATRIX matT;
 	D3DXMatrixTranslation(&matT, 5, 0, 0);
 	for (size_t i = 0; i < m_vecWall0.size(); i++)
 	{
@@ -93,7 +93,7 @@ void Walls::Init()
 	m_vecFloor.push_back(VERTEX_PN(vecFloor[3], D3DXVECTOR3(1, 1, -1)));
 	
 	{
-		D3DXMATRIXA16 matS, matT;
+		D3DXMATRIX matS, matT;
 		D3DXMatrixScaling(&matS, 10, 10, 10);
 		D3DXMatrixTranslation(&matT, 0, 0, -5);
 		for (size_t i = 0; i < m_vecFloor.size(); i++)
@@ -124,7 +124,7 @@ void Walls::Render()
 		&m_vecFloor[0], sizeof(VERTEX_PN));
 }
 
-void Walls::MakePlane(vector<VERTEX_PN>& vecOut, vector<D3DXVECTOR3> &vecPos, D3DXMATRIXA16 &mat)
+void Walls::MakePlane(vector<VERTEX_PN>& vecOut, vector<D3DXVECTOR3> &vecPos, D3DXMATRIX &mat)
 {
 	D3DXVECTOR3 tmpVec3;
 	D3DXVECTOR3 normal;
@@ -141,7 +141,7 @@ void Walls::MakePlane(vector<VERTEX_PN>& vecOut, vector<D3DXVECTOR3> &vecPos, D3
 
 void Walls::MakePlaneGroup(vector<VERTEX_PN>& vecOut, vector<D3DXVECTOR3> vecWall)
 {
-	D3DXMATRIXA16 matS, matR, matT, mat;
+	D3DXMATRIX matS, matR, matT, mat;
 	float size = 1.5;
 	D3DXMatrixScaling(&matS, size, size, size);
 	D3DXMatrixTranslation(&matT, 0, size, 0);

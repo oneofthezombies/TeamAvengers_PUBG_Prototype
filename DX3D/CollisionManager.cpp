@@ -56,8 +56,8 @@ bool CollisionManager::HasCollision(ColliderBase& lhs, ColliderBase& rhs)
 
 bool CollisionManager::HasCollision(const BoxCollider& lhs, const BoxCollider& rhs)
 {
-    const D3DXMATRIXA16& A_transform = lhs.GetTransform();
-    const D3DXMATRIXA16& B_transform = rhs.GetTransform();
+    const D3DXMATRIX& A_transform = lhs.GetTransform();
+    const D3DXMATRIX& B_transform = rhs.GetTransform();
 
     const D3DXVECTOR3& A_extent = lhs.GetExtent();
     const D3DXVECTOR3& B_extent = rhs.GetExtent();

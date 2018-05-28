@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SkinnedMesh.h"
 #include "AllocateHierarchy.h"
+#include "D3DUtility.h"
 
 SkinnedMesh::SkinnedMesh()
 {
@@ -107,7 +108,7 @@ void SkinnedMesh::Update()
 	
 	if (g_pKeyManager->IsOnceKeyDown('1')/*Keyboard::Get()->KeyDown('1')*/)
 	{
-		if (m_animIndex < m_pAnimController->GetMaxNumAnimationSets() - 1)
+		if (static_cast<UINT>(m_animIndex) < m_pAnimController->GetMaxNumAnimationSets() - 1)
 			m_animIndex++;
 
 		SetAnimationIndex(m_animIndex, true);
@@ -301,8 +302,8 @@ void SkinnedMesh::DrawSkeleton(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
 
 	if (pParent != NULL && pFrame->Name != NULL && pParent->Name != NULL)
 	{
-		D3DXMATRIXA16 matThis = pFrameEx->CombinedTM;
-		D3DXMATRIXA16 matParent = pParentFrameEx->CombinedTM;
+		D3DXMATRIX matThis = pFrameEx->CombinedTM;
+		D3DXMATRIX matParent = pParentFrameEx->CombinedTM;
 
 		D3DXVECTOR3 posThis(matThis(3, 0), matThis(3, 1), matThis(3, 2));
 		D3DXVECTOR3 posParent(matParent(3, 0), matParent(3, 1), matParent(3, 2));
@@ -310,7 +311,7 @@ void SkinnedMesh::DrawSkeleton(LPD3DXFRAME pFrame, LPD3DXFRAME pParent)
 		vector<VERTEX_PC> line{ VERTEX_PC(posThis, BLUE), VERTEX_PC(posParent, YELLOW) };
 		g_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 		g_pDevice->SetFVF(VERTEX_PC::FVF);
-		D3DXMATRIXA16 mat;
+		D3DXMATRIX mat;
 		D3DXMatrixIdentity(&mat);
 
 		g_pDevice->SetTransform(D3DTS_WORLD, &mat);

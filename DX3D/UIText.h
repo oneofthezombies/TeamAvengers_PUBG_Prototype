@@ -22,6 +22,6 @@ public:
     void SetText(string* val);
     void SetDrawTextFormat(const DWORD val);
 
-    static UIText* Create(const const Font::Type font, const string& text, const D3DXVECTOR3& pos, const D3DXVECTOR2& size, UIObject* parent = nullptr, const DWORD format = DT_CENTER | DT_VCENTER);
+    static UIText* Create(const Font::Type font, const string& text, const D3DXVECTOR3& pos, const D3DXVECTOR2& size, UIObject* parent = nullptr, const DWORD format = DT_CENTER | DT_VCENTER);
 };
 
