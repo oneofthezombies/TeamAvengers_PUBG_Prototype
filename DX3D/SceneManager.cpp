@@ -21,16 +21,16 @@ void SceneManager::Init()
 {
     m_vecScene.push_back(new SceneLobby);
     m_vecScene.push_back(new SceneShotting);
-    m_vecScene.push_back(new SceneTest);
+    //m_vecScene.push_back(new SceneTest);
 
 	//m_vecScene.push_back(new SceneGrid());
 	//m_vecScene.push_back(new SceneObjMap());
 	//m_vecScene.push_back(new SceneHeightmap());
 
 
-    //SetCurrentScene(SCENE_LOBBY);
+    SetCurrentScene(SCENE_LOBBY);
     //SetCurrentScene(SCENE_SHOTTING);
-    SetCurrentScene(SCENE_TEST);
+    //SetCurrentScene(SCENE_TEST);
 
 	//SetCurrentScene(SCENE_GRID);
 	//SetCurrentScene(SCENE_OBJMAP);

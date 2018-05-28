@@ -130,9 +130,9 @@ void SceneShotting::Init()
     //g_pCameraManager->SetWall(wallArr);
     ////---------------
 
-    SkinnedMesh* m_skinnedMesh = new SkinnedMesh;
-    m_skinnedMesh->Init();
-    AddSimpleDisplayObj(m_skinnedMesh);
+    //SkinnedMesh* m_skinnedMesh = new SkinnedMesh;
+    //m_skinnedMesh->Init();
+    //AddSimpleDisplayObj(m_skinnedMesh);
 
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kFoo, CollisionTag::kBar);
     g_pCollisionManager->SubscribeCollisionEvent(CollisionTag::kBullet, CollisionTag::kEnemy);

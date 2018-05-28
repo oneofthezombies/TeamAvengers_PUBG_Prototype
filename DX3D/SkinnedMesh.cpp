@@ -48,10 +48,10 @@ void SkinnedMesh::Load(LPCTSTR path, LPCTSTR filename)
 
 	CString fullPath(path);
 	fullPath.Append(filename);
-	
+
 	D3DXLoadMeshHierarchyFromX(fullPath, D3DXMESH_MANAGED, g_pDevice,
 		&alloc, NULL, &m_pRootFrame, &m_pAnimController);
-	
+
 	SetupBoneMatrixPointers(m_pRootFrame);
 }
 
