@@ -1,4 +1,4 @@
-// DX3D.cpp: 응용 프로그램의 진입점을 정의합니다.
+﻿// DX3D.cpp: 응용 프로그램의 진입점을 정의합니다.
 //
 
 #include "stdafx.h"
@@ -8,8 +8,8 @@
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
-WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
-WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+CHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
+CHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 HWND g_hWnd;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
@@ -17,9 +17,9 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+int APIENTRY WinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
+                     _In_ LPSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
@@ -28,8 +28,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // TODO: 여기에 코드를 입력합니다.
 
     // 전역 문자열을 초기화합니다.
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_DX3D, szWindowClass, MAX_LOADSTRING);
+    LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+    LoadString(hInstance, IDC_DX3D, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 응용 프로그램 초기화를 수행합니다.
@@ -108,9 +108,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    const int top = 0;
    const int width = 1280;
    const int height = 720;
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, style,
-                             left, top, width, height, 
-                             nullptr, nullptr, hInstance, nullptr);
+   HWND hWnd = CreateWindow(szWindowClass, szTitle, style,
+                            left, top, width, height, 
+                            nullptr, nullptr, hInstance, nullptr);
 
    g_hWnd = hWnd;
 
@@ -162,7 +162,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
    }
    break;
     case WM_DESTROY:
-        PostQuitMessage(0);
+        {
+            PostQuitMessage(0);
+        }
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
