@@ -1,7 +1,7 @@
 #pragma once
 #include "IDisplayObject.h"
-class Walls :
-	public IDisplayObject
+
+class Walls : public IDisplayObject
 {
 private:
 	vector<VERTEX_PN> m_vecFloor;

@@ -333,9 +333,7 @@ void HeightMap::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			//static_cast<IUnitObject*>
 			//	(g_pObjMgr->FindObjectByTag(TAG_PLAYER))
 			//	->SetPosition(&pos);
-			static_cast<IUnitObject*>
-				(g_pObjMgr->FindObjectByTag(TAG_PLAYER))
-				->SetDestination(pos);
+			static_cast<IUnitObject*>(g_pObjectManager->FindObjectByTag(TAG_PLAYER))->SetDestination(pos);
 		}
 	}
 	break;

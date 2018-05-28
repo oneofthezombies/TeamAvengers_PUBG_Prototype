@@ -61,7 +61,7 @@ void PlayerAni::Init()
 	//m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
     m_pos = D3DXVECTOR3(30.0f, 0.0f, 30.0f);
 
-	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
+    g_pObjectManager->AddToTagList(TAG_PLAYER, this);
 
     g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
@@ -188,7 +188,7 @@ void PlayerAni::Update()
         Pick(*bullet);
     }
 
-    IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+    IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
     if (search)
     {
         CubemanBarrack* cb = static_cast<CubemanBarrack*>(search);
@@ -198,7 +198,7 @@ void PlayerAni::Update()
             uigo->Init(true, 1, 4);
             g_pUIManager->RegisterUIObject(*uigo);
 
-            IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
+            IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
             if (!search) return;
 
             PlayerAni* player = static_cast<PlayerAni*>(search);
@@ -784,7 +784,7 @@ void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
             {
                 player->DiedAni();
 
-                IDisplayObject* e = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+                IDisplayObject* e = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
                 CubemanBarrack* cb = static_cast<CubemanBarrack*>(e);
 
                 UIGameOver* uigo = new UIGameOver;

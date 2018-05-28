@@ -1,16 +1,20 @@
 #pragma once
 
-#define g_pObjMgr ObjManager::GetInstance()
+#include "SingletonBase.h"
+
+#define g_pObjectManager ObjectManager::GetInstance()
 
 class BaseObject;
 class IDisplayObject;
 
-class ObjManager
+class ObjectManager : public SingletonBase<ObjectManager>
 {
-	SINGLETON(ObjManager)
 private:
 	set<BaseObject*> m_setObject;
 	map<WORD, list<IDisplayObject*>> m_tagList;
+
+    ObjectManager();
+    virtual ~ObjectManager();
 
 public:
 	void AddObject(BaseObject* pObj);
@@ -22,5 +26,6 @@ public:
 	IDisplayObject* FindObjectByTag(WORD _tag);
 	list<IDisplayObject*> FindObjectsByTag(WORD _tag);
 
+    friend SingletonBase<ObjectManager>;
 };
 

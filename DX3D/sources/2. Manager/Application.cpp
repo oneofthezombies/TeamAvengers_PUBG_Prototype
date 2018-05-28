@@ -27,7 +27,7 @@ void Application::Destroy()
     g_pSoundManager->Destroy();
 	g_pSceneManager->Destroy();
     g_pCameraManager->Destroy();
-	g_pObjMgr->Destroy();
+	g_pObjectManager->Destroy();
 	g_pTextureManager->Destroy();
 	g_pFontManager->Destroy();
 	Debug->Destroy();

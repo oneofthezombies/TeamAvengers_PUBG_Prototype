@@ -240,7 +240,7 @@ void CubemanCollisionListener::OnCollisionEnter(const ColliderBase& other)
     {
     case CollisionTag::kBullet:
         {
-            IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+            IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
             if (search)
             {
                 g_pSoundManager->Play(static_cast<int>(SOUND_TAG::DieMale), SOUND_TAG::DieMale);

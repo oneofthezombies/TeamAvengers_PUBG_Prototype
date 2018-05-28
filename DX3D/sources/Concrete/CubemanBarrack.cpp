@@ -35,7 +35,7 @@ void CubemanBarrack::Init()
     g_pCurrentScene->AddSimpleDisplayObj(c3);
     m_cubemans.emplace(c3);
 
-    g_pObjMgr->AddToTagList(TAG_CUBEMAN_BARRACK, this);
+    g_pObjectManager->AddToTagList(TAG_CUBEMAN_BARRACK, this);
 }
 
 void CubemanBarrack::Update()

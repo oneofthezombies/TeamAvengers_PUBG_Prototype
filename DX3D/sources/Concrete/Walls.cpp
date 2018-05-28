@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Walls.h"
 
-
 Walls::Walls()
 {
 }

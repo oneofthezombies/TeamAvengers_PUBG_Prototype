@@ -19,7 +19,7 @@ void CubemanAI::Move(D3DXVECTOR3& OutDeltaPos, D3DXVECTOR3& OutDeltaRot, D3DXVEC
     ZeroMemory(&OutDeltaPos, sizeof OutDeltaPos);
     ZeroMemory(&OutDeltaRot, sizeof OutDeltaRot);
 
-    IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_PLAYER);
+    IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_PLAYER);
     if (!search) return;
 
     PlayerAni* player = static_cast<PlayerAni*>(search);

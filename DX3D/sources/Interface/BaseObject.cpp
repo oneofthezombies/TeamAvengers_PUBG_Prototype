@@ -5,7 +5,7 @@
 BaseObject::BaseObject()
 	:m_refCount(1)
 {
-	g_pObjMgr->AddObject(this);
+    g_pObjectManager->AddObject(this);
 }
 
 BaseObject::~BaseObject()
@@ -13,7 +13,7 @@ BaseObject::~BaseObject()
     for (auto& kv : m_umapComponents)
         SAFE_DELETE(kv.second);
 
-	g_pObjMgr->RemoveObject(this);
+    g_pObjectManager->RemoveObject(this);
 	assert(m_refCount <= 0 && "Release 를 이용해서 해제하세요.");
 }
 
