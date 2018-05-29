@@ -321,21 +321,21 @@ void HeightMap::SetObstacle()
 
 void HeightMap::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message)
-	{
-	case WM_RBUTTONUP:
-	{
-		D3DXVECTOR3 pos;
-		if (CalcPickedPosition(pos, SCREEN_POINT(lParam)) == true)
-		{
-			//케릭터 pos 로 이동하게 하기
-			GetHeight(pos.y, pos);
-			//static_cast<IUnitObject*>
-			//	(g_pObjMgr->FindObjectByTag(TAG_PLAYER))
-			//	->SetPosition(&pos);
-			static_cast<IUnitObject*>(g_pObjectManager->FindObjectByTag(TAG_PLAYER))->SetDestination(pos);
-		}
-	}
-	break;
-	}
+	//switch (message)
+	//{
+	//case WM_RBUTTONUP:
+	//{
+	//	D3DXVECTOR3 pos;
+	//	if (CalcPickedPosition(pos, SCREEN_POINT(lParam)) == true)
+	//	{
+	//		//케릭터 pos 로 이동하게 하기
+	//		GetHeight(pos.y, pos);
+	//		//static_cast<IUnitObject*>
+	//		//	(g_pObjMgr->FindObjectByTag(TAG_PLAYER))
+	//		//	->SetPosition(&pos);
+	//		static_cast<IUnitObject*>(g_pObjectManager->FindObjectByTag(TAG_PLAYER))->SetDestination(pos);
+	//	}
+	//}
+	//break;
+	//}
 }

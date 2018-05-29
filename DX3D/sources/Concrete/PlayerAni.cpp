@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "PlayerAni.h"
 #include "PlayerParts.h"
 #include "Gun.h"
@@ -61,7 +61,7 @@ void PlayerAni::Init()
 	//m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
     m_pos = D3DXVECTOR3(30.0f, 0.0f, 30.0f);
 
-	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
+	g_pObjectManager->AddToTagList(TAG_PLAYER, this);
 
     g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
@@ -201,7 +201,7 @@ void PlayerAni::Update()
         Pick(*bullet);
     }
 
-    IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+    IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
     if (search)
     {
         CubemanBarrack* cb = static_cast<CubemanBarrack*>(search);
@@ -211,7 +211,7 @@ void PlayerAni::Update()
             uigo->Init(true, 1, 4);
             g_pUIManager->RegisterUIObject(*uigo);
 
-            IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
+            IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
             if (!search) return;
 
             PlayerAni* player = static_cast<PlayerAni*>(search);
@@ -396,8 +396,8 @@ void PlayerAni::RunAndWalk()
     {
         if (m_isRunnig == false)
         {
-            m_moveSpeed = 0.35;
-            for (int i = 1; i < m_pRootParts->GetChildVec().size(); i++)
+            m_moveSpeed = 0.35f;
+            for (size_t i = 1u; i < m_pRootParts->GetChildVec().size(); i++)
             {
                 GetChild(i)->SetRotXspeed(GetChild(i)->GetRotXspeed() * 1.5f);
             }
@@ -409,7 +409,7 @@ void PlayerAni::RunAndWalk()
         if (m_isRunnig == true)
         {
             m_moveSpeed = 0.2f;
-            for (int i = 1; i < m_pRootParts->GetChildVec().size(); i++)
+            for (size_t i = 1u; i < m_pRootParts->GetChildVec().size(); i++)
             {
                 GetChild(i)->SetRotXspeed(GetChild(i)->GetRotXspeed()/ 1.5f);
             }
@@ -739,7 +739,7 @@ void PlayerAni::UpdateGunInEquipPosition()
     }
 }
 
-void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
+void PlayerAni::ShowInventory(const D3DXMATRIX& transform)
 {
     if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
     {
@@ -813,7 +813,7 @@ void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
             {
                 player->DiedAni();
 
-                IDisplayObject* e = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+                IDisplayObject* e = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
                 CubemanBarrack* cb = static_cast<CubemanBarrack*>(e);
 
                 UIGameOver* uigo = new UIGameOver;

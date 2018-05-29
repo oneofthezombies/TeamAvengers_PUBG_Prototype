@@ -31,8 +31,8 @@ protected:
     D3DXVECTOR3		m_eye;
     D3DXVECTOR3		m_lookAt;
     D3DXVECTOR3		m_up;
-    D3DXMATRIXA16	m_matView;
-    D3DXMATRIXA16	m_matProj;
+    D3DXMATRIX	    m_matView;
+    D3DXMATRIX	    m_matProj;
     D3DXVECTOR3		m_eyeBackRay;   //뒤로쏘는 ray의 시작점
     D3DXVECTOR3		m_eyeDir;       //카메라가 보는 방향
 

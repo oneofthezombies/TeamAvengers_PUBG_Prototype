@@ -27,8 +27,8 @@ public:
     }
     void SetCurrentCamera(int cameraState);
     ICamera* GetCurrentCamera() { return m_pCurrentCamera; }
-    D3DXVECTOR3 GetCurrentCameraDir() { return m_pCurrentCamera->GetEyeDir(); }
-    D3DXVECTOR3 GetCurrentCameraEye() { return m_pCurrentCamera->GetEyePos(); }
+    D3DXVECTOR3 GetCurrentCameraDir();
+    D3DXVECTOR3 GetCurrentCameraEye();
 
     void Init();    
     void Destroy();

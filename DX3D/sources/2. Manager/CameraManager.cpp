@@ -117,3 +117,13 @@ D3DXVECTOR3* CameraManager::GetTargetRot() const
 {
     return m_pTargetDir;
 }
+
+D3DXVECTOR3 CameraManager::GetCurrentCameraDir() 
+{ 
+    return m_pCurrentCamera->GetEyeDir(); 
+}
+
+D3DXVECTOR3 CameraManager::GetCurrentCameraEye() 
+{ 
+    return m_pCurrentCamera->GetEyePos(); 
+}
