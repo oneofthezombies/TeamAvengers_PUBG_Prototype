@@ -17,8 +17,7 @@ protected:
 public:
 	virtual ~IMap() {}
 	virtual bool GetHeight(OUT float & height, const D3DXVECTOR3 & pos) = 0;
-	virtual bool CalcPickedPosition(D3DXVECTOR3 &vOut,
-		WORD screenX, WORD screenY) = 0;
+	virtual bool CalcPickedPosition(D3DXVECTOR3 &vOut, WORD screenX, WORD screenY) = 0;
 
 	const vector<D3DXVECTOR3>& GetVertex() { return m_vecVertex; }
 	void SetDimension(size_t dimension) 

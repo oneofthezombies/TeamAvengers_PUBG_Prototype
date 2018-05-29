@@ -14,7 +14,7 @@ private:
 	};
     static const int m_kNumState = 3;
 
-    IUIButtonOnMouseListener*   m_pIUIButtonOnMouseListener;
+    IUIButtonOnMouseListener*  m_pIUIButtonOnMouseListener;
     State                      m_state;
     int                        m_KeyToRespond;
     bool                       m_bPrevIsMouseOn;

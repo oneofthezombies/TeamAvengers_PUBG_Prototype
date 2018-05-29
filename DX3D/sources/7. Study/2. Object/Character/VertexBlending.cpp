@@ -25,10 +25,18 @@ void VertexBlending::Init()
     m_pVB->Lock(0, 0, (LPVOID*)&pV, 0);
     for (int i = 0; i < numHalfVertices; ++i)
     {
+        // 0 40 80 120 160 200 240 280 320 360
         float theta = (2.0f * D3DX_PI * i) / (float)(numHalfVertices - 1);
 
-        pV[2 * i + 0] = VERTEX_BLENDING(D3DXVECTOR3(cos(theta), 1.0, sin(theta)), weight1, 0x00000100, D3DXVECTOR2(i / (float)(numHalfVertices - 1), 0));
-        pV[2 * i + 1] = VERTEX_BLENDING(D3DXVECTOR3(cos(theta), -1.0, sin(theta)), weight2, 0x00000100, D3DXVECTOR2(i / (float)(numHalfVertices - 1), 1));
+        pV[2 * i + 0] = VERTEX_BLENDING(D3DXVECTOR3(cos(theta), 1.0, sin(theta)), 
+                                        weight1, 
+                                        0x00000100, 
+                                        D3DXVECTOR2(i / (float)(numHalfVertices - 1), 0));
+
+        pV[2 * i + 1] = VERTEX_BLENDING(D3DXVECTOR3(cos(theta), -1.0, sin(theta)), 
+                                        weight2, 
+                                        0x00000100, 
+                                        D3DXVECTOR2(i / (float)(numHalfVertices - 1), 1));
     }
     m_pVB->Unlock();
     m_pTex = g_pTextureManager->GetTexture("resources/images/ham2.png");
@@ -38,6 +46,7 @@ void VertexBlending::Update()
 {
     D3DXMatrixIdentity(&m_mat0);
     DWORD d = GetTickCount() % ((int)(D3DX_PI * 2 * 1000));
+    cout << d << endl;
     D3DXMatrixRotationY(&m_mat1, d / 1000.0);
     D3DXMatrixScaling(&m_mat2, 0.5 * sin(d / 1000.0), 0, 0.5 * sin(d / 1000.0));
 }

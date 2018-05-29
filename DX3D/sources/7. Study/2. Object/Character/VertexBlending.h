@@ -1,6 +1,7 @@
 #pragma once
 #include "IDisplayObject.h"
 
+
 class VertexBlending : public IDisplayObject
 {
 private:
