@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="sources\1. Scene\SceneGrid.cpp" />
     <ClCompile Include="sources\1. Scene\SceneHeightmap.cpp" />
     <ClCompile Include="sources\1. Scene\SceneLobby.cpp" />
-    <ClCompile Include="sources\1. Scene\SceneManager.cpp" />
     <ClCompile Include="sources\1. Scene\SceneObjMap.cpp" />
     <ClCompile Include="sources\1. Scene\SceneShotting.cpp" />
     <ClCompile Include="sources\1. Scene\SceneTest.cpp" />
@@ -88,6 +86,8 @@
     <ClCompile Include="sources\Utility\Loader\ASE\AseLoader.cpp" />
     <ClCompile Include="sources\Utility\Loader\OBJs\ObjLoader.cpp" />
     <ClCompile Include="sources\Utility\Loader\X\AllocateHierarchy.cpp" />
+    <ClCompile Include="VertexBlending.cpp" />
+    <ClCompile Include="sources\2. Manager\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D.h" />
@@ -97,7 +97,6 @@
     <ClInclude Include="sources\1. Scene\SceneGrid.h" />
     <ClInclude Include="sources\1. Scene\SceneHeightmap.h" />
     <ClInclude Include="sources\1. Scene\SceneLobby.h" />
-    <ClInclude Include="sources\1. Scene\SceneManager.h" />
     <ClInclude Include="sources\1. Scene\SceneObjMap.h" />
     <ClInclude Include="sources\1. Scene\SceneShotting.h" />
     <ClInclude Include="sources\1. Scene\SceneTest.h" />
@@ -180,6 +179,8 @@
     <ClInclude Include="sources\Utility\Loader\ASE\AseLoader.h" />
     <ClInclude Include="sources\Utility\Loader\OBJs\ObjLoader.h" />
     <ClInclude Include="sources\Utility\Loader\X\AllocateHierarchy.h" />
+    <ClInclude Include="VertexBlending.h" />
+    <ClInclude Include="sources\2. Manager\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico" />

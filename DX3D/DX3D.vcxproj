@@ -155,7 +155,6 @@
     <ClInclude Include="sources\1. Scene\SceneGrid.h" />
     <ClInclude Include="sources\1. Scene\SceneHeightmap.h" />
     <ClInclude Include="sources\1. Scene\SceneLobby.h" />
-    <ClInclude Include="sources\1. Scene\SceneManager.h" />
     <ClInclude Include="sources\1. Scene\SceneObjMap.h" />
     <ClInclude Include="sources\1. Scene\SceneShotting.h" />
     <ClInclude Include="sources\1. Scene\SceneTest.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="sources\2. Manager\KeyManager.h" />
     <ClInclude Include="sources\2. Manager\MapManager.h" />
     <ClInclude Include="sources\2. Manager\ObjectManager.h" />
+    <ClInclude Include="sources\2. Manager\SceneManager.h" />
     <ClInclude Include="sources\2. Manager\SoundManager.h" />
     <ClInclude Include="sources\2. Manager\TextureManager.h" />
     <ClInclude Include="sources\2. Manager\TimeManager.h" />
@@ -241,13 +241,13 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="VertexBlending.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="sources\1. Scene\SceneGrid.cpp" />
     <ClCompile Include="sources\1. Scene\SceneHeightmap.cpp" />
     <ClCompile Include="sources\1. Scene\SceneLobby.cpp" />
-    <ClCompile Include="sources\1. Scene\SceneManager.cpp" />
     <ClCompile Include="sources\1. Scene\SceneObjMap.cpp" />
     <ClCompile Include="sources\1. Scene\SceneShotting.cpp" />
     <ClCompile Include="sources\1. Scene\SceneTest.cpp" />
@@ -261,6 +261,7 @@
     <ClCompile Include="sources\2. Manager\KeyManager.cpp" />
     <ClCompile Include="sources\2. Manager\MapManager.cpp" />
     <ClCompile Include="sources\2. Manager\ObjectManager.cpp" />
+    <ClCompile Include="sources\2. Manager\SceneManager.cpp" />
     <ClCompile Include="sources\2. Manager\SoundManager.cpp" />
     <ClCompile Include="sources\2. Manager\TextureManager.cpp" />
     <ClCompile Include="sources\2. Manager\TimeManager.cpp" />
@@ -334,6 +335,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="VertexBlending.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc" />
