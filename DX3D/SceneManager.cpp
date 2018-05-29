@@ -29,8 +29,8 @@ void SceneManager::Init()
 
 
     //SetCurrentScene(SCENE_LOBBY);
-    //SetCurrentScene(SCENE_SHOTTING);
-    SetCurrentScene(SCENE_TEST);
+    SetCurrentScene(SCENE_SHOTTING);
+    //SetCurrentScene(SCENE_TEST);
 
 	//SetCurrentScene(SCENE_GRID);
 	//SetCurrentScene(SCENE_OBJMAP);
