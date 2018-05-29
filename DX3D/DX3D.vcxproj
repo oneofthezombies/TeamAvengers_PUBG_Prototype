@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)dll;$(ProjectDir)sources\Utility\Loader\X;$(ProjectDir)sources\Utility\Loader\OBJs;$(ProjectDir)sources\Utility\Loader\ASE;$(ProjectDir)sources\Utility\Loader;$(ProjectDir)sources\Utility\AStar;$(ProjectDir)sources\Utility;$(ProjectDir)sources\Sample;$(ProjectDir)sources\Map;$(ProjectDir)sources\Interface;$(ProjectDir)sources\Concrete;$(ProjectDir)sources\2. Manager;$(ProjectDir)sources\1. Scene;$(ProjectDir)sources;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)sources\Utility\Loader\X;$(ProjectDir)sources\Utility\Loader\OBJs;$(ProjectDir)sources\Utility\Loader\ASE;$(ProjectDir)sources\Utility\Loader;$(ProjectDir)sources\Utility\AStar;$(ProjectDir)sources\Utility;$(ProjectDir)sources\Sample;$(ProjectDir)sources\Map;$(ProjectDir)sources\Interface;$(ProjectDir)sources\Concrete;$(ProjectDir)sources\2. Manager;$(ProjectDir)sources\1. Scene;$(ProjectDir)sources;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -341,6 +341,9 @@
   <ItemGroup>
     <Image Include="DX3D.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fmod.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="IDisplayObject.cpp" />
-    <ClCompile Include="IDisplayObject.cpp" />
     <ClCompile Include="DX3D.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="sources\1. Scene\SceneGrid.cpp" />
@@ -188,5 +187,8 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DX3D.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fmod.dll" />
   </ItemGroup>
 </Project>
