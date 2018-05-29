@@ -61,7 +61,7 @@ void ThirdPersonCamera::CamBackDistResizeing()
     D3DXVECTOR3 camBackDir = m_eye - m_lookAt;      //방향을 알아냄
     D3DXVec3Normalize(&camBackDir, &camBackDir);    //단위화
     //ray의 pos를 player의 distance와 같게, 쏘는 방향은 카메라 뒤쪽으로
-    m_pCamBackCheckingRay->SetRay(m_eyeRay, camBackDir);   
+    m_pCamBackCheckingRay->SetRay(m_eyeBackRay, camBackDir);
 
     float ray2wallDist;//m_eyeRay 2(to) 벽까지의 거리
     vector<D3DXVECTOR3> wall = g_pCameraManager->GetWall(); //벽의 정보를 갖고 있는 vector, 지금은 call by value 로 받고 있지만, 나중에는 reference로 받아서 성능을 빨리 하자

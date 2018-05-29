@@ -9,6 +9,7 @@
 #include "UIInGame.h"
 #include "UIGameOver.h"
 #include "CubemanBarrack.h"
+#include "Ray.h"
 
 enum enumParts
 {
@@ -119,7 +120,12 @@ void PlayerAni::Update()
         if (m_fireMode == FIRE_MODE::SingleShot)
         {
             if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                KeyFire(m_dir);
+                //KeyFire(m_dir); 
+            {//JH
+                m_camDir = FireDirection();
+                KeyFire(m_camDir);
+            }
+                
         }
         //총 쏘기(연발)
         else if (m_fireMode == FIRE_MODE::Burst)
@@ -129,12 +135,20 @@ void PlayerAni::Update()
                 if (m_pGun->GetCanChangeBurstMode())             //연발이 지원되는 총이라면
                 {
                     if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
-                        KeyFire(m_dir);
+                        //KeyFire(m_dir);
+                    {//JH
+                        m_camDir = FireDirection();
+                        KeyFire(m_camDir);
+                    }
                 }
                 else //m_pGun->GetCanChangeBurstMode() == false //연발이 지원되지 않는 총이라면
                 {
                     if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                        KeyFire(m_dir);
+                        //KeyFire(m_dir);
+                    {//JH
+                        m_camDir = FireDirection();
+                        KeyFire(m_camDir);
+                    }
                 }
             }
         }
@@ -565,6 +579,15 @@ void PlayerAni::KeyLoad()
 	{
 		cout << "Plz, Load after mounting gun." << endl;
 	}
+}
+
+D3DXVECTOR3 PlayerAni::FireDirection()
+{
+    Ray camRay(g_pCameraManager->GetCurrentCameraEye(), g_pCameraManager->GetCurrentCameraDir());
+    //camRay.CalcIntersectTri
+    
+
+    return D3DXVECTOR3(0, 0, 0);
 }
 
 void PlayerAni::KeyFire(const D3DXVECTOR3& dir)

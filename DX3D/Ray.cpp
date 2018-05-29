@@ -8,6 +8,12 @@ Ray::Ray()
 {
 }
 
+Ray::Ray(D3DXVECTOR3 pos, D3DXVECTOR3 dir)
+    :m_pos(pos)
+    ,m_dir(dir)
+{
+}
+
 
 Ray::~Ray()
 {

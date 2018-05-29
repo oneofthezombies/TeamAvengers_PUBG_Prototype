@@ -33,7 +33,9 @@ protected:
     D3DXVECTOR3		m_up;
     D3DXMATRIXA16	m_matView;
     D3DXMATRIXA16	m_matProj;
-    D3DXVECTOR3		m_eyeRay;
+    D3DXVECTOR3		m_eyeBackRay;   //뒤로쏘는 ray의 시작점
+    D3DXVECTOR3		m_eyeDir;       //카메라가 보는 방향
+
 
     float           m_basePosX;
     float			m_basePosY;
@@ -72,5 +74,13 @@ public:
     //bool CheckSphere(BoundingSphere* sphere);
 
     CameraState::CameraState GetState() const;
+    D3DXVECTOR3 GetEyeDir()
+    {
+        return m_eyeDir;
+    }
+    D3DXVECTOR3 GetEyePos()
+    {
+        return m_eye;
+    }
 };
 
