@@ -6,6 +6,7 @@
 #include "Walls.h"
 #include "ActionCube.h"
 #include "Hexagon.h"
+#include "VertexBlending.h"
 
 SceneGrid::SceneGrid()
 {
@@ -26,23 +27,32 @@ SceneGrid::~SceneGrid()
 	SAFE_RELEASE(m_pWalls);
 	SAFE_RELEASE(m_pActionCube);
 	SAFE_RELEASE(m_pHexagon);
+
+    OnDestructIScene();
 }
 
 void SceneGrid::Init()
 {
 	m_pColorCube = new ColorCube(); m_pColorCube->Init();
-	m_pGrid = new Grid(); m_pGrid->Init();
-	m_pCubeman = new Cubeman(); m_pCubeman->Init();
+
+	//m_pGrid = new Grid(); m_pGrid->Init();
+	//m_pCubeman = new Cubeman(); m_pCubeman->Init();
 	//m_pWalls = new Walls(); m_pWalls->Init();
 	//m_pActionCube = new ActionCube(); m_pActionCube->Init();
 	//m_pHexagon = new Hexagon(); m_pHexagon->Init();
+
+    VertexBlending* vb = new VertexBlending;
+    vb->Init();
+    AddSimpleDisplayObj(vb);
 }
 
 void SceneGrid::Update()
 {
-	//SAFE_UPDATE(m_pColorCube);
+	SAFE_UPDATE(m_pColorCube);
 	SAFE_UPDATE(m_pCubeman);
 	SAFE_UPDATE(m_pActionCube);
+
+    OnUpdateIScene();
 }
 
 void SceneGrid::Render()
@@ -53,6 +63,8 @@ void SceneGrid::Render()
 	SAFE_RENDER(m_pWalls);
 	SAFE_RENDER(m_pActionCube);
 	SAFE_RENDER(m_pHexagon);
+
+    OnRenderIScene();
 }
 
 void SceneGrid::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

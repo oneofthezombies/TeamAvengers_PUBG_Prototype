@@ -35,14 +35,26 @@ void ColorCube::Init()
     D3DXMATRIX matT;
     D3DXMatrixTranslation(&matT, 0, 2, 10);
     m_matWorld = matT;
+
+    g_pCameraManager->SetTarget(m_pos, m_rot);
 }
 
 void ColorCube::Update()
 {
-	m_rot.y += 0.01f;
-	D3DXMATRIX matR;
-	D3DXMatrixRotationY(&matR, m_rot.y);
-	m_matWorld = matR;
+    if (g_pKeyManager->IsStayKeyDown('W'))
+    {
+        m_pos.z += 0.1f;
+    }
+
+    if (g_pKeyManager->IsStayKeyDown('S'))
+    {
+        m_pos.z -= 0.1f;
+    }
+
+    D3DXMATRIX matT;
+    D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
+
+    m_matWorld =  matT;
 }
 
 void ColorCube::Render()

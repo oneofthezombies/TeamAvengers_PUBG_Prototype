@@ -1,7 +1,6 @@
 #pragma once
 #include "IDisplayObject.h"
 
-
 //불값으로 해도됨.
 enum PartTag
 {
