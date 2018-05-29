@@ -8,7 +8,7 @@ TeamAvengers_PUBG
 - John Han
 
 # PDF
-[PDF](https://github.com/oneofthezombies/TeamAvengers_PUBG/blob/master/Prototype_Discription/Prototype_Presentation_Kor.pdf)
+[Prototype description PDF](https://github.com/oneofthezombies/TeamAvengers_PUBG/blob/master/Prototype_Discription/Prototype_Presentation_Kor.pdf)
 
 # Prototype Screenshot
 ![Screenshot1](https://github.com/oneofthezombies/TeamAvengers_PUBG/blob/master/Prototype_Discription/Prototype_Screenshot/1.png)
