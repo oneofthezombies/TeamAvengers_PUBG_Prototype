@@ -241,6 +241,7 @@
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIText.h" />
+    <ClInclude Include="VertexBlending.h" />
     <ClInclude Include="Walls.h" />
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +336,7 @@
     <ClCompile Include="UIImage.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIText.cpp" />
+    <ClCompile Include="VertexBlending.cpp" />
     <ClCompile Include="Walls.cpp" />
   </ItemGroup>
   <ItemGroup>

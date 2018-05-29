@@ -240,6 +240,7 @@
     </ClCompile>
     <ClCompile Include="AllocateHierarchy.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
+    <ClCompile Include="VertexBlending.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneGrid.h">
@@ -493,6 +494,7 @@
     </ClInclude>
     <ClInclude Include="AllocateHierarchy.h" />
     <ClInclude Include="SkinnedMesh.h" />
+    <ClInclude Include="VertexBlending.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="DX3D.ico">

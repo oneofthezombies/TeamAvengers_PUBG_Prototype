@@ -99,7 +99,7 @@ public:
 	void KeyInHand(GUN_TAG gunTag);
 	void KeyOutHand();
 	void KeyLoad();
-    D3DXVECTOR3 FireDirection();    //JH
+    D3DXVECTOR3 FireDirection(const D3DXVECTOR3& dir);    //JH
 	void KeyFire(const D3DXVECTOR3& dir);
 	void KeyChangeGun(GUN_TAG gunTag);
     void KeyChangeFireMode();

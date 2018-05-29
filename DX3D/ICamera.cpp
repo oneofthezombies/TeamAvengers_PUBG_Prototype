@@ -69,6 +69,7 @@ void ICamera::Update()
     D3DXVec3TransformCoord(&m_lookAt, &m_lookAt, &matWorld);
     D3DXVec3TransformCoord(&m_eyeBackRay, &m_eyeBackRay, &matWorld);
     m_eyeDir = m_lookAt - m_eye;    //eye가 보는 방향 Update;
+    D3DXVec3Normalize(&m_eyeDir, &m_eyeDir); //normalize
 
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);

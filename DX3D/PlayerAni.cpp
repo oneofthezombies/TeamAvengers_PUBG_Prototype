@@ -122,7 +122,7 @@ void PlayerAni::Update()
             if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
                 //KeyFire(m_dir); 
             {//JH
-                m_camDir = FireDirection();
+                m_camDir = FireDirection(m_dir);
                 KeyFire(m_camDir);
             }
                 
@@ -137,7 +137,7 @@ void PlayerAni::Update()
                     if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
                         //KeyFire(m_dir);
                     {//JH
-                        m_camDir = FireDirection();
+                        m_camDir = FireDirection(m_dir);
                         KeyFire(m_camDir);
                     }
                 }
@@ -146,7 +146,7 @@ void PlayerAni::Update()
                     if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
                         //KeyFire(m_dir);
                     {//JH
-                        m_camDir = FireDirection();
+                        m_camDir = FireDirection(m_dir);
                         KeyFire(m_camDir);
                     }
                 }
@@ -581,13 +581,20 @@ void PlayerAni::KeyLoad()
 	}
 }
 
-D3DXVECTOR3 PlayerAni::FireDirection()
+D3DXVECTOR3 PlayerAni::FireDirection(const D3DXVECTOR3& dir)
 {
-    Ray camRay(g_pCameraManager->GetCurrentCameraEye(), g_pCameraManager->GetCurrentCameraDir());
+    //Ray camRay(g_pCameraManager->GetCurrentCameraEye(), g_pCameraManager->GetCurrentCameraDir());
     //camRay.CalcIntersectTri
-    
+    D3DXVECTOR3 bulletDir = dir;
 
-    return D3DXVECTOR3(0, 0, 0);
+    D3DXVECTOR3 v;
+    if (g_pCurrentMap->CalcPickedPosition(v, 1280 / 2, 720 / 2))
+    {
+        bulletDir = v - m_pGun->GetPosition();
+        D3DXVec3Normalize(&bulletDir, &bulletDir);
+    }
+    
+    return bulletDir;
 }
 
 void PlayerAni::KeyFire(const D3DXVECTOR3& dir)
