@@ -28,8 +28,8 @@ void SceneManager::Init()
 	//m_vecScene.push_back(new SceneHeightmap());
 
 
-    SetCurrentScene(SCENE_LOBBY);
-    //SetCurrentScene(SCENE_SHOTTING);
+    //SetCurrentScene(SCENE_LOBBY);
+    SetCurrentScene(SCENE_SHOTTING);
     //SetCurrentScene(SCENE_TEST);
 
 	//SetCurrentScene(SCENE_GRID);

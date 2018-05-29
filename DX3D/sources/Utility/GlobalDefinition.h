@@ -180,6 +180,25 @@ struct VERTEX_RHWC	//w의 역수라는 의미 //w값으로 같은 차원인지 아닌지를 계산하는
 	enum { FVF = D3DFVF_XYZRHW | D3DFVF_DIFFUSE };
 };
 
+struct VERTEX_BLENDING
+{
+    D3DXVECTOR3 p;
+    float       weight[3];
+    DWORD       index;
+    D3DXVECTOR3 t;
+
+    VERTEX_BLENDING() {}
+    VERTEX_BLENDING(D3DXVECTOR3 _p, float* _weights, DWORD _i,
+        D3DXVECTOR2 _t) : p(_p), index(_i), t(_t) 
+    {
+        weight[0] = _weights[0];
+        weight[1] = _weights[1];
+        weight[2] = _weights[2];
+    }
+
+    enum{ FVF = D3DFVF_XYZB4 | D3DFVF_LASTBETA_UBYTE4 | D3DFVF_TEX1};
+};
+
 struct MTLTEX : public BaseObject
 {
 	D3DMATERIAL9		material;

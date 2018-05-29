@@ -22,5 +22,6 @@ public:
 	void SetCurrentMap(string mapName)
 	{ m_pCurrentMap = m_mapList[mapName]; }
 	IMap* GetCurrentMap() { return m_pCurrentMap; }
+
 };
 

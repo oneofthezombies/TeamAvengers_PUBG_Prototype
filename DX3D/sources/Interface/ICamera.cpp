@@ -45,7 +45,7 @@ void ICamera::Update()
 
     m_eye = D3DXVECTOR3(m_basePosX, m_basePosY, -m_distance);
     m_lookAt = D3DXVECTOR3(m_eye.x, m_eye.y, m_eye.z + 1);
-    m_eyeRay = D3DXVECTOR3(m_basePosX, m_basePosY, 0);  //CamEye에서 dist만큼 떨어진 거리에서 Ray를 쏘기 위함
+    m_eyeBackRay = D3DXVECTOR3(m_basePosX, m_basePosY, 0);  //CamEye에서 dist만큼 떨어진 거리에서 Ray를 쏘기 위함
 
     if (!m_isALTbuttonStay) //Alt가 눌리지 않았으면
     {
@@ -67,7 +67,9 @@ void ICamera::Update()
     matWorld = matWorld * matR * matT;
     D3DXVec3TransformCoord(&m_eye, &m_eye, &matWorld);
     D3DXVec3TransformCoord(&m_lookAt, &m_lookAt, &matWorld);
-    D3DXVec3TransformCoord(&m_eyeRay, &m_eyeRay, &matWorld);
+    D3DXVec3TransformCoord(&m_eyeBackRay, &m_eyeBackRay, &matWorld);
+    m_eyeDir = m_lookAt - m_eye;    //eye가 보는 방향 Update;
+    D3DXVec3Normalize(&m_eyeDir, &m_eyeDir); //normalize
 
     D3DXMatrixLookAtLH(&m_matView, &m_eye, &m_lookAt, &m_up);
     g_pDevice->SetTransform(D3DTS_VIEW, &m_matView);

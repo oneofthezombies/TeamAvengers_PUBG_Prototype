@@ -36,6 +36,7 @@ private:
     D3DXVECTOR3		m_forward;
 
     D3DXVECTOR3		m_test1;
+    D3DXVECTOR3     m_camDir;   //JH
     D3DXVECTOR3     m_dir;
     D3DXVECTOR3		m_right;
     D3DXVECTOR3     m_vRotForAlt;
@@ -98,6 +99,7 @@ public:
 	void KeyInHand(GUN_TAG gunTag);
 	void KeyOutHand();
 	void KeyLoad();
+    D3DXVECTOR3 FireDirection(const D3DXVECTOR3& dir);    //JH
 	void KeyFire(const D3DXVECTOR3& dir);
 	void KeyChangeGun(GUN_TAG gunTag);
     void KeyChangeFireMode();

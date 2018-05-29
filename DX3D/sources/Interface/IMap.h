@@ -26,5 +26,7 @@ public:
 	size_t GetDimension() { return m_dimension; }
 	const D3DXVECTOR3& GetSize() { return m_size; }
 	AStar* GetAStar() { return m_pAStar; }
+
+
 	
 };

@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "PlayerAni.h"
 #include "PlayerParts.h"
 #include "Gun.h"
@@ -9,7 +9,7 @@
 #include "UIInGame.h"
 #include "UIGameOver.h"
 #include "CubemanBarrack.h"
-#include "IScene.h"
+#include "Ray.h"
 
 enum enumParts
 {
@@ -61,7 +61,7 @@ void PlayerAni::Init()
 	//m_pos = D3DXVECTOR3(0.f, 0.f, -20.f);
     m_pos = D3DXVECTOR3(30.0f, 0.0f, 30.0f);
 
-    g_pObjectManager->AddToTagList(TAG_PLAYER, this);
+	g_pObjMgr->AddToTagList(TAG_PLAYER, this);
 
     g_pCameraManager->SetTarget(m_pos, m_rot);
     CreateAllParts();
@@ -120,7 +120,12 @@ void PlayerAni::Update()
         if (m_fireMode == FIRE_MODE::SingleShot)
         {
             if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                KeyFire(m_dir);
+                //KeyFire(m_dir); 
+            {//JH
+                m_camDir = FireDirection(m_dir);
+                KeyFire(m_camDir);
+            }
+                
         }
         //총 쏘기(연발)
         else if (m_fireMode == FIRE_MODE::Burst)
@@ -130,12 +135,20 @@ void PlayerAni::Update()
                 if (m_pGun->GetCanChangeBurstMode())             //연발이 지원되는 총이라면
                 {
                     if (g_pKeyManager->IsStayKeyDown(VK_LBUTTON))
-                        KeyFire(m_dir);
+                        //KeyFire(m_dir);
+                    {//JH
+                        m_camDir = FireDirection(m_dir);
+                        KeyFire(m_camDir);
+                    }
                 }
                 else //m_pGun->GetCanChangeBurstMode() == false //연발이 지원되지 않는 총이라면
                 {
                     if (g_pKeyManager->IsOnceKeyDown(VK_LBUTTON))
-                        KeyFire(m_dir);
+                        //KeyFire(m_dir);
+                    {//JH
+                        m_camDir = FireDirection(m_dir);
+                        KeyFire(m_camDir);
+                    }
                 }
             }
         }
@@ -188,7 +201,7 @@ void PlayerAni::Update()
         Pick(*bullet);
     }
 
-    IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+    IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
     if (search)
     {
         CubemanBarrack* cb = static_cast<CubemanBarrack*>(search);
@@ -198,7 +211,7 @@ void PlayerAni::Update()
             uigo->Init(true, 1, 4);
             g_pUIManager->RegisterUIObject(*uigo);
 
-            IDisplayObject* search = g_pObjectManager->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
+            IDisplayObject* search = g_pObjMgr->FindObjectByTag(TAG_DISPLAYOBJECT::TAG_PLAYER);
             if (!search) return;
 
             PlayerAni* player = static_cast<PlayerAni*>(search);
@@ -216,7 +229,7 @@ void PlayerAni::Render()
 void PlayerAni::UpdatePosition()
 {
     m_rot += m_deltaRot * m_rotationSpeed;
-    D3DXMATRIX matRotY;
+    D3DXMATRIXA16 matRotY;
 
     if (m_isLive)
     {
@@ -301,7 +314,7 @@ void PlayerAni::UpdatePosition()
         //m_pos = targetPos;
     }
 
-    D3DXMATRIX matT;
+    D3DXMATRIXA16 matT;
     //m_pos.x += m_deltaPos.x * m_moveSpeed;
     D3DXMatrixTranslation(&matT, m_pos.x, m_pos.y, m_pos.z);
     m_matWorld = matRotY * matT;
@@ -350,7 +363,7 @@ void PlayerAni::CreateAllParts()
 
 void PlayerAni::CreateParts(PlayerParts *& pParts, IDisplayObject * pParent, D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 trans, vector<vector<int>>& vecUV, PartTag tag)
 {
-    D3DXMATRIX matS, matT, mat;
+    D3DXMATRIXA16 matS, matT, mat;
     D3DXMatrixScaling(&matS, scale.x, scale.y, scale.z);
     D3DXMatrixTranslation(&matT, trans.x, trans.y, trans.z);
     mat = matS * matT;
@@ -383,8 +396,8 @@ void PlayerAni::RunAndWalk()
     {
         if (m_isRunnig == false)
         {
-            m_moveSpeed = 0.35f;
-            for (size_t i = 1u; i < m_pRootParts->GetChildVec().size(); i++)
+            m_moveSpeed = 0.35;
+            for (int i = 1; i < m_pRootParts->GetChildVec().size(); i++)
             {
                 GetChild(i)->SetRotXspeed(GetChild(i)->GetRotXspeed() * 1.5f);
             }
@@ -396,7 +409,7 @@ void PlayerAni::RunAndWalk()
         if (m_isRunnig == true)
         {
             m_moveSpeed = 0.2f;
-            for (size_t i = 1u; i < m_pRootParts->GetChildVec().size(); i++)
+            for (int i = 1; i < m_pRootParts->GetChildVec().size(); i++)
             {
                 GetChild(i)->SetRotXspeed(GetChild(i)->GetRotXspeed()/ 1.5f);
             }
@@ -568,6 +581,22 @@ void PlayerAni::KeyLoad()
 	}
 }
 
+D3DXVECTOR3 PlayerAni::FireDirection(const D3DXVECTOR3& dir)
+{
+    //Ray camRay(g_pCameraManager->GetCurrentCameraEye(), g_pCameraManager->GetCurrentCameraDir());
+    //camRay.CalcIntersectTri
+    D3DXVECTOR3 bulletDir = dir;
+
+    D3DXVECTOR3 v;
+    if (g_pCurrentMap->CalcPickedPosition(v, 1280 / 2, 720 / 2))
+    {
+        bulletDir = v - m_pGun->GetPosition();
+        D3DXVec3Normalize(&bulletDir, &bulletDir);
+    }
+    
+    return bulletDir;
+}
+
 void PlayerAni::KeyFire(const D3DXVECTOR3& dir)
 {
     if (m_pGun) //총이 장착되어있을 때
@@ -664,7 +693,7 @@ void PlayerAni::UpdateRotation()
 
 void PlayerAni::UpdateDirection()
 {
-    D3DXMATRIX r;
+    D3DXMATRIXA16 r;
     D3DXMatrixRotationYawPitchRoll(&r, m_rot.y, m_rot.x, m_rot.z);
     D3DXVec3TransformNormal(&m_dir, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &r);
     D3DXVec3Normalize(&m_dir, &m_dir);
@@ -710,7 +739,7 @@ void PlayerAni::UpdateGunInEquipPosition()
     }
 }
 
-void PlayerAni::ShowInventory(const D3DXMATRIX& transform)
+void PlayerAni::ShowInventory(const D3DXMATRIXA16& transform)
 {
     if (g_pKeyManager->IsOnceKeyDown(VK_TAB))
     {
@@ -784,7 +813,7 @@ void PlayerAniCollisionListener::OnCollisionEnter(const ColliderBase& other)
             {
                 player->DiedAni();
 
-                IDisplayObject* e = g_pObjectManager->FindObjectByTag(TAG_CUBEMAN_BARRACK);
+                IDisplayObject* e = g_pObjMgr->FindObjectByTag(TAG_CUBEMAN_BARRACK);
                 CubemanBarrack* cb = static_cast<CubemanBarrack*>(e);
 
                 UIGameOver* uigo = new UIGameOver;

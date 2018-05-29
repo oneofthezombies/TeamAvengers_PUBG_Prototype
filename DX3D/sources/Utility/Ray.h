@@ -6,6 +6,7 @@ public:
 	D3DXVECTOR3 m_dir;
 
 	Ray();
+    Ray(D3DXVECTOR3 pos, D3DXVECTOR3 dir);
 	~Ray();
 
     void SetRay(D3DXVECTOR3 pos, D3DXVECTOR3 dir)
