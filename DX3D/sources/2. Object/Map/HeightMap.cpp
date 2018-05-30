@@ -139,7 +139,7 @@ void HeightMap::SetMtlTex(D3DMATERIAL9 & mtl, LPDIRECT3DTEXTURE9 pTex)
 void HeightMap::Init()
 {
 	//m_pAStar = new AStar(); m_pAStar->Init(); m_pAStar->InitNode(this);
-	//SetSurface();
+	SetSurface();
 	//SetObstacle();
 	//m_pAStar->SetObstacle(m_vecObstacleVertex);
 }
