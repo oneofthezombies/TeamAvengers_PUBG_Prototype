@@ -7,6 +7,10 @@ TeamAvengers_PUBG_Prototype
 - HunHoe Kim
 - John Han
 
+# Tools used for programming
+- C++
+- DirectX
+
 # PDF
 [Prototype description PDF](https://github.com/oneofthezombies/TeamAvengers_PUBG_Prototype/blob/master/Prototype_Discription/Prototype_Presentation_Kor.pdf)
 
