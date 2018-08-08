@@ -14,7 +14,7 @@ TeamAvengers_PUBG_Prototype
 - FMOD Studio API
 
 # PDF
-[Prototype description PDF](https://github.com/oneofthezombies/TeamAvengers_PUBG_Prototype/blob/master/Prototype_Discription/Prototype_Presentation_Kor.pdf)
+[Prototype description PDF](https://github.com/johngamecoder/HalloweenDefense/blob/master/HalloweenDefense.pdf)
 
 # Prototype Screenshot
 ![Screenshot1](https://github.com/oneofthezombies/TeamAvengers_PUBG_Prototype/blob/master/Prototype_Discription/Prototype_Screenshot/1.png)
