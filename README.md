@@ -1,6 +1,10 @@
 # TeamAvengers_PUBG_Prototype
 TeamAvengers_PUBG_Prototype
 
+# Final Implementation's Link
+https://github.com/oneofthezombies/TeamAvengers_PUBG
+The final implementation is here.
+
 # Team Member
 - Woori Ahn
 - SeungHoon Han
