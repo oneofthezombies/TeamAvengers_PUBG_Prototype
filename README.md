@@ -9,7 +9,7 @@ The final implementation is in here.
 - Woori Ahn
 - SeungHoon Han
 - HunHoe Kim
-- John Han
+- John Han https://github.com/johngamecoder
 
 # Tools used for programming
 - C/C++
