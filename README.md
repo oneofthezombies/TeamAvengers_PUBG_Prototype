@@ -6,10 +6,10 @@ https://github.com/oneofthezombies/TeamAvengers_PUBG
 The final implementation is in here.
 
 # Team Member
-- Woori Ahn https://github.com/HelloWoori
-- SeungHoon Han https://github.com/SeungHoons
-- John Han https://github.com/johngamecoder
-- HunHoe Kim https://github.com/oneofthezombies
+- HelloWoori      (안우리)[Woori Ahn] https://github.com/HelloWoori
+- JohnGameCoder   (한찬응)[John Han] https://github.com/johngamecoder
+- Hoons           (한승훈)[SeungHoon Han] https://github.com/SeungHoons
+- OneOfTheZombies (김훈회)[HunHoe Kim] https://github.com/oneofthezombies
 
 # Tools used for programming
 - C/C++
