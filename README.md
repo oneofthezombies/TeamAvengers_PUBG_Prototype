@@ -6,7 +6,7 @@ https://github.com/oneofthezombies/TeamAvengers_PUBG
 The final implementation is in here.
 
 # Team Member
-- Woori Ahn
+- Woori Ahn https://github.com/HelloWoori
 - SeungHoon Han
 - HunHoe Kim
 - John Han https://github.com/johngamecoder
