@@ -8,8 +8,8 @@ The final implementation is in here.
 # Team Member
 - Woori Ahn https://github.com/HelloWoori
 - SeungHoon Han https://github.com/SeungHoons
-- HunHoe Kim https://github.com/oneofthezombies
 - John Han https://github.com/johngamecoder
+- HunHoe Kim https://github.com/oneofthezombies
 
 # Tools used for programming
 - C/C++
