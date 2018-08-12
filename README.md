@@ -7,7 +7,7 @@ The final implementation is in here.
 
 # Team Member
 - Woori Ahn https://github.com/HelloWoori
-- SeungHoon Han
+- SeungHoon Han https://github.com/SeungHoons
 - HunHoe Kim
 - John Han https://github.com/johngamecoder
 
